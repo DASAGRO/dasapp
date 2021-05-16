@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">DAS Accounting</string>
+    <string name="action_settings">Настройки</string>
+
+    <string name="common_next">Следующий</string>
+    <string name="common_continue">Продолжить</string>
+    <string name="common_previous">Предыдущий</string>
+
+    <!-- Auth -->
+    <string name="enter_phone">Введите номер телефона</string>
+    <string name="forget_password">Забыли пароль?</string>
+    <string name="forget_password_reset_descr">На ваш номер телефона, вам будет отправлено сообщение с паролем.</string>
+    <string name="enter_welcome">Добро пожаловать!/n %s</string>
+    <string name="enter_password_from_sms">Введите пароль из смс</string>
+    <string name="enter_password_retry">Отправить пароль заново через %s</string>
+    <string name="welcome_title">Добро пожаловать!</string>
+    <string name="enter">Войти</string>
+    <string name="password_reset">Восстановление пароля</string>
+    <string name="get_started">Понятно</string>
+    <string name="skip">Пропустить</string>
+
+    <!-- On boarding -->
+    <string name="screen_one_title">ДУЦ</string>
+    <string name="screen_two_title">Наши возможности</string>
+    <string name="screen_three_title">Как передать ТМЦ?</string>
+    <string name="screen_four_title">Как получить прицеп?</string>
+    <string name="screen_five_title">Как получить ТС?</string>
+
+    <string name="screen_one_descr">Раздел новости позволяет же следить за новыми постами, новостями групп, сообществ, друзей на которых вы подписаны. А так же создать, собственное сообщество на разную тематику на ваш выбор.</string>
+    <string name="screen_two_descr">Раздел новости позволяет же следить за новыми постами, новостями групп, сообществ, друзей на которых вы подписаны. А так же создать, собственное сообщество на разную тематику на ваш выбор.</string>
+    <string name="screen_three_descr">Раздел новости позволяет же следить за новыми постами, новостями групп, сообществ, друзей на которых вы подписаны. А так же создать, собственное сообщество на разную тематику на ваш выбор.</string>
+    <string name="screen_four_descr">Раздел новости позволяет же следить за новыми постами, новостями групп, сообществ, друзей на которых вы подписаны. А так же создать, собственное сообщество на разную тематику на ваш выбор.</string>
+    <string name="screen_five_descr">Раздел новости позволяет же следить за новыми постами, новостями групп, сообществ, друзей на которых вы подписаны. А так же создать, собственное сообщество на разную тематику на ваш выбор.</string>
+
+    <!-- Common error -->
+    <string name="common_error_of_server">Ошибка сервера!</string>
+    <string name="common_error">Ошибка</string>
+    <string name="common_unexpected_error">Неожиданная ошибка</string>
+    <string name="common_banner_success">Успешно</string>
+    <string name="common_banner_error">Ошибка</string>
+    <string name="common_banner_await">В ожидании</string>
+    <string name="common_error_no_internet_connection">Нету подключение к интернету!\n Вы уверены что хотите продолжить?</string>
+    <string name="common_error_no_connection">Нету подключение к интернету</string>
+    <string name="common_error_could_not_connect_to_server">Не удалось подключится к серверу</string>
+    <string name="common_no_data">Нет данных</string>
+
+</resources>

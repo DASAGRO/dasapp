@@ -1,0 +1,114 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+//    id 'com.google.gms.google-services'
+//    id 'com.google.firebase.crashlytics'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "kz.das.dasaccounting"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+
+    // PLAY SERVICE LOCATION
+    implementation rootProject.ext.dependencies["play_services_location"]
+
+    // LIFECYCLE
+    implementation rootProject.ext.dependencies["lifecycle_extension"]
+    implementation rootProject.ext.dependencies["lifecycle_ktx"]
+
+    // KOIN
+    implementation rootProject.ext.dependencies["koin_android"]
+    implementation rootProject.ext.dependencies["koin_viewmodel"]
+
+    // COROUTINES
+    implementation rootProject.ext.dependencies["coroutines_core"]
+    implementation rootProject.ext.dependencies["coroutines_reactive"]
+
+    // DEVICE NAME
+    implementation rootProject.ext.dependencies["device_names"]
+
+    // WORK MANAGER
+    implementation rootProject.ext.dependencies["work_manager"]
+
+    //BASE
+    implementation rootProject.ext.dependencies["coordinator_layout"]
+    implementation rootProject.ext.dependencies["constraint_layout"]
+    implementation rootProject.ext.dependencies["material_components"]
+    implementation rootProject.ext.dependencies["cicerone_navigation"]
+    implementation rootProject.ext.dependencies["legacy_support"]
+    implementation rootProject.ext.dependencies["android_core_ktx"]
+
+
+    // RETROFIT, GSON, INTERCEPTOR
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
+
+    // HAWK
+    implementation 'com.orhanobut:hawk:2.0.1'
+
+    // COROUTINES
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
+
+    // KOIN
+    implementation "org.koin:koin-android:2.1.5"
+
+    // LOTTIE
+    implementation rootProject.ext.dependencies["lottie_animation"]
+
+    implementation rootProject.ext.dependencies["room_runtime"]
+    kapt rootProject.ext.dependencies["room_compiler"]
+    implementation rootProject.ext.dependencies["room_ktx"]
+    testImplementation rootProject.ext.dependencies["room_testing"]
+
+    testImplementation 'junit:junit:4.+'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
