@@ -1,4 +1,7 @@
 package kz.das.dasaccounting.ui.auth.login
 
-class LoginVM {
+import kz.das.dasaccounting.core.ui.view_model.BaseVM
+
+class LoginVM: BaseVM() {
+
 }

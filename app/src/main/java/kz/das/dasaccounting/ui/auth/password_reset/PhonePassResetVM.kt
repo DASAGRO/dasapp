@@ -1,5 +1,7 @@
 package kz.das.dasaccounting.ui.auth.password_reset
 
-class PhonePassResetVM {
+import kz.das.dasaccounting.core.ui.view_model.BaseVM
+
+class PhonePassResetVM: BaseVM() {
 
 }

@@ -43,5 +43,10 @@
     <string name="common_error_no_connection">Нету подключение к интернету</string>
     <string name="common_error_could_not_connect_to_server">Не удалось подключится к серверу</string>
     <string name="common_no_data">Нет данных</string>
+    <string name="profile">Профиль</string>
+    <string name="log_out">Выйти</string>
+    <string name="support">Поддержка</string>
+    <string name="history">История</string>
+    <string name="home">Главная</string>
 
 </resources>

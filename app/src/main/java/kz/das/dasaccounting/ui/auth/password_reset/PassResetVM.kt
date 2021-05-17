@@ -1,4 +1,6 @@
 package kz.das.dasaccounting.ui.auth.password_reset
 
-class PassResetVM {
+import kz.das.dasaccounting.core.ui.view_model.BaseVM
+
+class PassResetVM: BaseVM() {
 }

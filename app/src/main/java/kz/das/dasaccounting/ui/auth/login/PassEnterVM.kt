@@ -1,5 +1,7 @@
 package kz.das.dasaccounting.ui.auth.login
 
-class PassEnterVM {
+import kz.das.dasaccounting.core.ui.view_model.BaseVM
+
+class PassEnterVM: BaseVM() {
 
 }

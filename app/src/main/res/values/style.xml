@@ -40,6 +40,11 @@
         <item name="boxStrokeColor">@color/color_grey</item>
     </style>
 
+    <style name="Theme.Fab_Bottom_app_bar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#0F9D58</item>
+        <item name="colorPrimaryVariant">#0F9D58</item>
+        <item name="colorOnPrimary">#000</item>
+    </style>
 
     <!-- TextField style -->
     <style name="Widget.MaterialComponents.TextInputEditText.DAS" parent="Widget.AppCompat.EditText">
