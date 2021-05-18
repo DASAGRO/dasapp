@@ -25,6 +25,13 @@
     </style>
     <!-- end -->
 
+    <!-- Full Screen Dialog -->
+    <style name="DialogFullScreenTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
     <!-- TextLayout style -->
     <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.DAS" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="endIconDrawable">@drawable/ic_close_input</item>

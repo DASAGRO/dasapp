@@ -61,5 +61,9 @@
     <string name="iin_title">ИИН</string>
     <string name="name_title">ФИО</string>
     <string name="begin_work">Начать работу</string>
+    <string name="navigate_to_qr">Наведите камеру на QR</string>
+    <string name="error_type_qr">Не верный формат QR!</string>
+    <string name="error_scan">Ошибка сканирование!</string>
+    <string name="success_qr_scan">Qr успешно сканирован!</string>
 
 </resources>

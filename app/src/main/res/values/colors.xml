@@ -12,6 +12,7 @@
     <color name="color_grey_text">#FFA5BDC7</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="color_grey">#FFE5ECEF</color>
+    <color name="color_grey_semi">#80E5ECEF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

@@ -1,7 +1,10 @@
 package kz.das.dasaccounting.ui
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import kz.das.dasaccounting.R
@@ -12,6 +15,8 @@ import kz.das.dasaccounting.core.ui.view.expand
 import kz.das.dasaccounting.core.ui.view.zoomAnimation
 import kz.das.dasaccounting.databinding.FragmentNavBarParentBinding
 import kz.das.dasaccounting.ui.container.ContainerFragment
+import kz.das.dasaccounting.ui.qr.QrFragment
+import kz.das.dasaccounting.ui.utils.CameraUtils
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, FragmentNavBarParentBinding>() {
@@ -30,6 +35,13 @@ class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, Fra
     }
 
     override fun setupUI() {
+        mViewBinding.fabQr.setOnClickListener {
+            if (!CameraUtils.isPermissionGranted(requireContext())) {
+                requestCameraPermissionsLaunch.launch(Manifest.permission.CAMERA)
+            } else {
+                showQr()
+            }
+        }
         mViewBinding.bottomNavigationView.background = null
         mViewBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -76,12 +88,8 @@ class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, Fra
     }
 
     private fun hideFragments(fm: FragmentManager, tag: String) {
-        val locationFragment = fm.findFragmentByTag(
-                Screens.ScreenLinks.location.toString()
-        )
-        val profileFragment = fm.findFragmentByTag(
-                Screens.ScreenLinks.profile.toString()
-        )
+        val locationFragment = fm.findFragmentByTag(Screens.ScreenLinks.location.toString())
+        val profileFragment = fm.findFragmentByTag(Screens.ScreenLinks.profile.toString())
 
         if (tag != Screens.ScreenLinks.location.toString() && locationFragment != null && !locationFragment.isHidden) {
             fm.beginTransaction().hide(locationFragment).commit()
@@ -105,7 +113,38 @@ class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, Fra
         }
     }
 
+    private val requestCameraPermissionsLaunch =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (!isGranted) {
+                val provideRationale =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
+                    } else {
+                        false
+                    }
+
+                if (provideRationale) {
+                    showCameraPermissionRequireDialog()
+                }
+            }
+        }
+
+
+    private fun showCameraPermissionRequireDialog() {
+
+    }
+
+    private fun showQr() {
+        val qrFragment = QrFragment.Builder()
+            .setCancelable(true)
+            .setOnScanCallback(object : QrFragment.OnScanCallback {
+                override fun onScan(qrScan: String) { }
+            })
+            .build()
+        qrFragment.show(childFragmentManager, "QrFragment")
+    }
 }
+
 
 fun Fragment.hideBottomNavMenu() {
     if (parentFragment?.parentFragment is ParentBottomNavigationFragment) {
