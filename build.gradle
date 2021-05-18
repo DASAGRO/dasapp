@@ -1,0 +1,140 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.kotlin_version = "1.4.30"
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.1.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven {
+            url 'https://api.mapbox.com/downloads/v2/releases/maven'
+            authentication {
+                basic(BasicAuthentication)
+            }
+            credentials {
+                // Do not change the username below.
+                // This should always be `mapbox` (not your username).
+                username = 'mapbox'
+                // Use the secret token you stored in gradle.properties as the password
+                password = project.properties['MAPBOX_ACCESS_TOKEN'] ?: ""
+            }
+        }
+
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    app_version_code = 1
+    app_version_name = "1.0"
+
+    minSdkVersion = 21
+    targetSdkVersion = 30
+
+    dependencies = [
+            // Play service location
+            "play_services_location"     : "com.google.android.gms:play-services-location:18.0.0",
+
+            // APPCOMPAT
+            "appcompat"                  : "androidx.appcompat:appcompat:1.2.0",
+
+            // LEGACY SUPPORT
+            "legacy_support"             : "androidx.legacy:legacy-support-v4:1.0.0",
+
+            // AMPLITUDE
+            "amplitude"                  : "com.amplitude:android-sdk:2.31.0",
+
+            // KTX
+            "fragment_ktx"               : "androidx.fragment:fragment-ktx:1.3.0-beta01",
+            "activity_ktx"               : "androidx.activity:activity-ktx:1.2.2",
+
+            // LIFECYCLE
+            "lifecycle_extension"        : "androidx.lifecycle:lifecycle-extensions:2.2.0",
+            "lifecycle_ktx"              : "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1",
+            "lifecycle_livedata"         : "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1",
+
+            // VIEWS
+            "tinkoff_decora"             : "ru.tinkoff.decoro:decoro:1.4.0",
+            "constraint_layout"          : "androidx.constraintlayout:constraintlayout:2.0.4",
+            "daimajia_animation"         : "com.daimajia.androidanimations:library:2.4@aar",
+            "swipe_refresh_layout"       : "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0",
+            "card_view"                  : "androidx.cardview:cardview:1.0.0",
+            "coordinator_layout"         : "androidx.coordinatorlayout:coordinatorlayout:1.1.0",
+
+            // KTX
+            "android_core_ktx"           : "androidx.core:core-ktx:1.3.2",
+
+            // KOIN
+            "koin_android"               : "org.koin:koin-android:2.1.5",
+            "koin_viewmodel"             : "org.koin:koin-android-viewmodel:2.1.5",
+
+            // WORK MANAGER
+            "work_manager"               : "androidx.work:work-runtime-ktx:2.5.0",
+
+            // ROOM DATABASE
+            "room_runtime"               : "androidx.room:room-runtime:2.2.6",
+            "room_compiler"              : "androidx.room:room-compiler:2.2.6",
+
+            // optional - Kotlin Extensions and Coroutines support for Room
+            "room_ktx"                   : "androidx.room:room-ktx:2.2.6",
+
+            // optional - Test helpers
+            "room_testing"               : "androidx.room:room-testing:2.2.6",
+
+
+            // MATERIAL COMPONENTS
+            "material_components"        : "com.google.android.material:material:1.3.0",
+
+            //CICERONE
+            "cicerone_navigation"        : "ru.terrakok.cicerone:cicerone:5.1.1",
+
+            // COROUTINES
+            "coroutines_core"            : "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9",
+            "coroutines_reactive"        : "org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.3.9",
+
+            // KEYBOARD'S EVENT
+            "keyboard_event"             : "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0",
+
+            // IMAGE FIELDS
+            "image_ucrop"                : "com.github.yalantis:ucrop:2.2.6",
+            "image_picasso"              : "com.squareup.picasso:picasso:2.71828",
+            "circle_imageview_hdodeenhof": "de.hdodenhof:circleimageview:3.1.0",
+
+            //DEVICE NAMES
+            "device_names"               : "com.jaredrummler:android-device-names:2.0.0",
+
+            // UI | MATERIAL SHADOW
+            "shadow_layout"              : "com.github.lihangleo2:ShadowLayout:2.1.6",
+
+            // LOTTIE ANIMATION
+            "lottie_animation"           : "com.airbnb.android:lottie:3.4.0",
+
+            // FLEXBOX LAYOUT
+            "flexbox_layout"             : "com.google.android:flexbox:2.0.1",
+
+            // GSON, RETROFIT
+            "gson"                       : "com.google.code.gson:gson:2.8.6",
+            "retrofit"                   : "com.squareup.retrofit2:retrofit:2.9.0",
+            "retrofit_gson_converter"    : "com.squareup.retrofit2:converter-gson:2.6.0",
+            "okhttp_interceptor"         : "com.squareup.okhttp3:logging-interceptor:4.8.1",
+
+            //HAWK
+            "hawk"                       : "com.orhanobut:hawk:2.0.1",
+
+    ]
+}

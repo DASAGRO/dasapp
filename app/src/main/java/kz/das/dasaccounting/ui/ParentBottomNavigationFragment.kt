@@ -2,21 +2,19 @@ package kz.das.dasaccounting.ui
 
 import android.os.Bundle
 import android.view.View
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
-import kz.das.dasaccounting.core.navigation.RouterProvider
-import kz.das.dasaccounting.core.navigation.ScreenNavigator
-import kz.das.dasaccounting.core.navigation.container.AppRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
+import kz.das.dasaccounting.core.ui.view.collapse
+import kz.das.dasaccounting.core.ui.view.expand
+import kz.das.dasaccounting.core.ui.view.zoomAnimation
 import kz.das.dasaccounting.databinding.FragmentNavBarParentBinding
-import kz.das.dasaccounting.ui.container.AppNavigator
-import kz.das.dasaccounting.ui.container.FirstTabContainer
-import kz.das.dasaccounting.ui.container.SecondTabContainer
+import kz.das.dasaccounting.ui.container.ContainerFragment
 import org.koin.android.viewmodel.ext.android.viewModel
-import ru.terrakok.cicerone.Cicerone
 
-class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, FragmentNavBarParentBinding>(), RouterProvider {
+class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, FragmentNavBarParentBinding>() {
 
     companion object {
         fun getScreen() = DasAppScreen(ParentBottomNavigationFragment())
@@ -24,52 +22,99 @@ class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, Fra
 
     override val mViewModel: ParentBottomNavigationVM by viewModel()
 
-    private val cicerone = Cicerone.create(AppRouter())
-
-    private val appNavigator: AppNavigator by lazy {
-            AppNavigator(requireActivity(), childFragmentManager, R.id.navContainer)
-    }
-
-    override fun getRouter() = cicerone.router
-
     override fun getViewBinding() = FragmentNavBarParentBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (savedInstanceState == null) { showFragment(Screens.ScreenLinks.location.toString()) }
+    }
 
-        appNavigator.initContainers()
-
-        if (savedInstanceState == null) {
-            val screen = DasAppScreen(FirstTabContainer.newInstance())
-            getRouter().replaceTab(screen)
-        }
-
+    override fun setupUI() {
         mViewBinding.bottomNavigationView.background = null
         mViewBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home-> {
-                    getRouter().replaceTab(DasAppScreen(FirstTabContainer.newInstance()))
+                    showFragment(Screens.ScreenLinks.location.toString())
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    getRouter().replaceTab(DasAppScreen(SecondTabContainer.newInstance()))
+                    showFragment(Screens.ScreenLinks.profile.toString())
                     return@setOnNavigationItemSelectedListener true
                 } else -> { return@setOnNavigationItemSelectedListener false }
             }
         }
     }
 
-    override fun setupUI() { }
+    private fun showFragment(tab: String) {
+        val fm = childFragmentManager
+        var tabFragment = fm.findFragmentByTag(tab)
 
-    override fun onResume() {
-        super.onResume()
-        cicerone.navigatorHolder.setNavigator(appNavigator)
+        val isFragmentExist = tabFragment != null
+        tabFragment = if (isFragmentExist) {
+            tabFragment
+        } else {
+            when (tab) {
+                Screens.ScreenLinks.profile.toString() -> {
+                    ContainerFragment.newInstance(
+                            Screens.ScreenLinks.profile.toString())
+                }
+                else -> {
+                    ContainerFragment.newInstance(
+                            Screens.ScreenLinks.location.toString())
+                }
+            }
+        }
+
+        hideFragments(fm, tab)
+
+        if (isFragmentExist) {
+            fm.beginTransaction().show(tabFragment!!).commit()
+        } else {
+            fm.beginTransaction().add(R.id.navContainer, tabFragment!!, tab)
+                    .commit()
+        }
     }
 
-    override fun onPause() {
-        super.onPause()
-        cicerone.navigatorHolder.removeNavigator()
+    private fun hideFragments(fm: FragmentManager, tag: String) {
+        val locationFragment = fm.findFragmentByTag(
+                Screens.ScreenLinks.location.toString()
+        )
+        val profileFragment = fm.findFragmentByTag(
+                Screens.ScreenLinks.profile.toString()
+        )
+
+        if (tag != Screens.ScreenLinks.location.toString() && locationFragment != null && !locationFragment.isHidden) {
+            fm.beginTransaction().hide(locationFragment).commit()
+        } else if (tag != Screens.ScreenLinks.profile.toString() && profileFragment != null && !profileFragment.isHidden) {
+            fm.beginTransaction().hide(profileFragment).commit()
+        }
     }
 
 
+    fun showBottomMenu() {
+        if (mViewBinding.bottomAppBar.visibility ==  View.GONE) {
+            mViewBinding.bottomAppBar.expand()
+            mViewBinding.fabQr.zoomAnimation(300, true)
+        }
+    }
+
+    fun hideBottomMenu() {
+        if (mViewBinding.bottomAppBar.visibility == View.VISIBLE) {
+            mViewBinding.bottomAppBar.collapse()
+            mViewBinding.fabQr.zoomAnimation(300, false)
+        }
+    }
+
+}
+
+fun Fragment.hideBottomNavMenu() {
+    if (parentFragment?.parentFragment is ParentBottomNavigationFragment) {
+        (parentFragment?.parentFragment as ParentBottomNavigationFragment).hideBottomMenu()
+    }
+}
+
+fun Fragment.showBottomNavMenu() {
+    if (parentFragment?.parentFragment is ParentBottomNavigationFragment) {
+        (parentFragment?.parentFragment as ParentBottomNavigationFragment).showBottomMenu()
+    }
 }

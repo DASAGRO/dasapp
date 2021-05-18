@@ -102,7 +102,7 @@ fun View.expand() {
     }
 
     // Expansion speed of 1dp/ms
-    a.duration = 200
+    a.duration = 300
     this.startAnimation(a)
 }
 
@@ -128,7 +128,7 @@ fun View.collapse() {
     }
 
     // Collapse speed of 1dp/ms
-    a.duration = 200
+    a.duration = 300
     this.startAnimation(a)
 }
 

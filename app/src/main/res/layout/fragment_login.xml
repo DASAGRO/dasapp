@@ -51,16 +51,20 @@
         android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
         android:text="@string/common_continue"
+        android:enabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_phone" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_password_reset"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/forget_password"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
         android:clickable="true"
+        android:background="@drawable/selectable_accent"
         android:focusable="true"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"

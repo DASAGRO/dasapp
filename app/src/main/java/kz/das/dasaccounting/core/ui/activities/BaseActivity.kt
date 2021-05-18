@@ -32,6 +32,7 @@ abstract class BaseActivity<VM: ViewModel, VB: ViewBinding>: AppCompatActivity()
     protected abstract fun getViewBinding(): VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        dialogLoading = ProgressDialogFragment()
         mViewBinding = getViewBinding()
         super.onCreate(savedInstanceState)
 

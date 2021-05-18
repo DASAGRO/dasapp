@@ -1,9 +1,12 @@
 <resources>
+    <string name="mapbox_access_token" translatable="false">sk.eyJ1IjoiZGFzYWdybyIsImEiOiJja291YnZkcWQwNTg5MnFxajlpZW1iendxIn0.pavabtbp9TwjeGC6GUfSow</string>
+
     <string name="app_name">DAS Accounting</string>
     <string name="action_settings">Настройки</string>
 
     <string name="common_next">Следующий</string>
     <string name="common_continue">Продолжить</string>
+    <string name="common_enter">Войти</string>
     <string name="common_previous">Предыдущий</string>
 
     <!-- Auth -->
@@ -16,8 +19,11 @@
     <string name="welcome_title">Добро пожаловать!</string>
     <string name="enter">Войти</string>
     <string name="password_reset">Восстановление пароля</string>
+    <string name="password">Пароль</string>
     <string name="get_started">Понятно</string>
     <string name="skip">Пропустить</string>
+    <string name="not_specified">Не указано</string>
+
 
     <!-- On boarding -->
     <string name="screen_one_title">ДУЦ</string>
@@ -48,5 +54,12 @@
     <string name="support">Поддержка</string>
     <string name="history">История</string>
     <string name="home">Главная</string>
+    <string name="common_phone_mask">+7</string>
+    <string name="change_avatar">Изменить аватар</string>
+    <string name="phone_number_title">Номер телефона</string>
+    <string name="birth_date_title">Дата рождения</string>
+    <string name="iin_title">ИИН</string>
+    <string name="name_title">ФИО</string>
+    <string name="begin_work">Начать работу</string>
 
 </resources>

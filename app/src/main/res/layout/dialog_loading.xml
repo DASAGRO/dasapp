@@ -8,18 +8,19 @@
 
     <FrameLayout
         android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_gravity="center"
         android:background="@drawable/default_shape_16dp"
         android:indeterminateTint="@android:color/white">
 
         <com.airbnb.lottie.LottieAnimationView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
-            app:lottie_rawRes="@raw/dots_anim"/>
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/anim_loading_dots"/>
 
     </FrameLayout>
 

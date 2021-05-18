@@ -35,9 +35,9 @@
         <item name="boxCornerRadiusTopEnd">8dp</item>
         <item name="boxCornerRadiusTopStart">8dp</item>
         <item name="errorIconDrawable">@drawable/ic_error_input</item>
-        <item name="hintTextColor">@color/color_grey</item>
+        <item name="hintTextColor">@color/purple_700_pressed</item>
         <item name="boxStrokeWidth">1dp</item>
-        <item name="boxStrokeColor">@color/color_grey</item>
+        <item name="boxStrokeColor">@color/purple_700_pressed</item>
     </style>
 
     <style name="Theme.Fab_Bottom_app_bar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
