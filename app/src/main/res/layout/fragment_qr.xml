@@ -4,17 +4,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_qr_title"
-        android:textStyle="bold"
-        android:textSize="22sp"
-        android:textColor="@color/white"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="36dp"
-        android:text="@string/navigate_to_qr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
     <com.budiyev.android.codescanner.CodeScannerView
         android:id="@+id/scanner_view"
         android:layout_width="match_parent"
@@ -28,9 +17,21 @@
         app:frameCornersRadius="10dp"
         app:frameAspectRatioWidth="1"
         app:frameAspectRatioHeight="1"
-        app:frameSize="0.75"
+        app:frameSize="0.8"
         app:frameThickness="2dp"
         app:maskColor="#77000000"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_qr_title"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="76dp"
+        android:gravity="center"
+        android:text="@string/navigate_to_qr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ib_qr"

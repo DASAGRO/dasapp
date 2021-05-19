@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import kz.das.dasaccounting.di.*
 import kz.das.dasaccounting.di.getAuthViewModels
 import kz.das.dasaccounting.di.getConfigViewModels
 import kz.das.dasaccounting.di.getLocationViewModels
@@ -41,6 +42,7 @@ class DasApplication: Application(), LifecycleObserver {
                 getConfigViewModels(),
                 getAuthViewModels(),
                 getMainViewModels(),
+                getProfileViewModels(),
                 getLocationViewModels()
             )
         }

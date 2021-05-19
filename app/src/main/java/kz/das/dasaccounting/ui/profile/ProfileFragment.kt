@@ -18,9 +18,22 @@ class ProfileFragment: BaseFragment<ProfileVM, FragmentProfileBinding>() {
     override fun getViewBinding() = FragmentProfileBinding.inflate(layoutInflater)
 
     override fun setupUI() {
-        mViewBinding.clProfile.setOnClickListener {
-            hideBottomNavMenu()
-            requireRouter().navigateTo(ProfileInfoFragment.getScreen())
+        mViewBinding.run {
+            clProfile.setOnClickListener {
+                hideBottomNavMenu()
+                requireRouter().navigateTo(ProfileInfoFragment.getScreen())
+            }
+            this.rlHistory.setOnClickListener {
+                hideBottomNavMenu()
+                requireRouter().navigateTo(ProfileHistoryFragment.getScreen())
+            }
+            this.rlSupport.setOnClickListener {
+                hideBottomNavMenu()
+                requireRouter().navigateTo(ProfileSupportFragment.getScreen())
+            }
+            this.rlLogOut.setOnClickListener {
+
+            }
         }
     }
 

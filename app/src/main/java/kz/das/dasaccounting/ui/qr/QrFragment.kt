@@ -24,6 +24,7 @@ class QrFragment: BaseFullDialogFragment<FragmentQrBinding>() {
 
     override fun setupUI() {
         mViewBinding.tvQrTitle.text = arguments?.getCharSequence(TITLE) ?: getString(R.string.navigate_to_qr)
+        mViewBinding.ibQr.setOnClickListener { dismiss() }
         isCancelable = arguments?.getBoolean(CANCELABLE) ?: true
         codeScanner = CodeScanner(requireContext(), mViewBinding.scannerView)
 

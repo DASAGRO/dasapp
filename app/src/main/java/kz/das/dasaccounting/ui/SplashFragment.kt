@@ -2,6 +2,7 @@ package kz.das.dasaccounting.ui
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
@@ -22,6 +23,7 @@ class SplashFragment: BaseFragment<SplashVM, FragmentSplashBinding>() {
     override fun getViewBinding() = FragmentSplashBinding.inflate(layoutInflater)
 
     override fun setupUI() {
+        changeStatusColor(R.color.white)
         mViewBinding.ivLogo.animateInfinitePulse(0.5f, 0.5f, 250)
         delayedTask(1000, CoroutineScope(Dispatchers.Main)) {
             requireRouter().newRootScreen(LoginFragment.getScreen())

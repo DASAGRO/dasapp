@@ -9,7 +9,9 @@ import kz.das.dasaccounting.ui.auth.onboarding.OnBoardingVM
 import kz.das.dasaccounting.ui.auth.password_reset.PassResetVM
 import kz.das.dasaccounting.ui.auth.password_reset.PhonePassResetVM
 import kz.das.dasaccounting.ui.location.LocationVM
+import kz.das.dasaccounting.ui.profile.ProfileHistoryVM
 import kz.das.dasaccounting.ui.profile.ProfileInfoVM
+import kz.das.dasaccounting.ui.profile.ProfileSupportVM
 import kz.das.dasaccounting.ui.profile.ProfileVM
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -27,6 +29,11 @@ internal fun getMainViewModels() = module {
     viewModel { ProfileVM() }
     viewModel { ProfileInfoVM() }
     viewModel { ParentBottomNavigationVM() }
+}
+
+internal fun getProfileViewModels() = module {
+    viewModel { ProfileSupportVM() }
+    viewModel { ProfileHistoryVM() }
 }
 
 internal fun getLocationViewModels() = module {

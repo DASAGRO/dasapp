@@ -94,6 +94,10 @@ abstract class BaseFragment<VM: BaseVM, VB: ViewBinding>(): Fragment(), ViewCall
         }
     }
 
+    fun changeStatusColor(colorId: Int) {
+        (requireActivity() as? BaseActivity<*, *>)?.changeStatusBarColor(colorId)
+    }
+
     override fun onSaveRequire(title: String?, message: String?, data: Any?) {
         (requireActivity() as? BaseActivity<*, *>)?.saveDataRequired(title, message, data)
     }

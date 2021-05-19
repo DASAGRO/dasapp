@@ -13,7 +13,8 @@
     <string name="enter_phone">Введите номер телефона</string>
     <string name="forget_password">Забыли пароль?</string>
     <string name="forget_password_reset_descr">На ваш номер телефона, вам будет отправлено сообщение с паролем.</string>
-    <string name="enter_welcome">Добро пожаловать!/n %s</string>
+    <string name="enter_welcome">Добро пожаловать!\n %s</string>
+    <string name="enter_password">Введите пароль</string>
     <string name="enter_password_from_sms">Введите пароль из смс</string>
     <string name="enter_password_retry">Отправить пароль заново через %s</string>
     <string name="welcome_title">Добро пожаловать!</string>
@@ -49,6 +50,8 @@
     <string name="common_error_no_connection">Нету подключение к интернету</string>
     <string name="common_error_could_not_connect_to_server">Не удалось подключится к серверу</string>
     <string name="common_no_data">Нет данных</string>
+
+
     <string name="profile">Профиль</string>
     <string name="log_out">Выйти</string>
     <string name="support">Поддержка</string>
@@ -65,5 +68,10 @@
     <string name="error_type_qr">Не верный формат QR!</string>
     <string name="error_scan">Ошибка сканирование!</string>
     <string name="success_qr_scan">Qr успешно сканирован!</string>
+    <string name="enter_pass_info_">Чтобы продолжить введите ваш текущий пароль</string>
+    <string name="enter_pass_confirm_info">Пароль должен состоять не менее чем из 8 и не более\n30 символов.\n\n В пароле обязательно должны присутствовать буквы нижнего (от a до z) и верхнего (от A до Z) регистра и цифры от (1 до 9).</string>
+    <string name="password_repeat">Повторите пароль</string>
+    <string name="new_password">Новый пароль</string>
+
 
 </resources>

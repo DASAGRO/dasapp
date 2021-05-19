@@ -35,6 +35,7 @@ class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, Fra
     }
 
     override fun setupUI() {
+        changeStatusColor(R.color.teal_200)
         mViewBinding.fabQr.setOnClickListener {
             if (!CameraUtils.isPermissionGranted(requireContext())) {
                 requestCameraPermissionsLaunch.launch(Manifest.permission.CAMERA)
