@@ -23,8 +23,6 @@ class QrFragment: BaseFullDialogFragment<FragmentQrBinding>() {
     override fun getViewBinding() = FragmentQrBinding.inflate(layoutInflater)
 
     override fun setupUI() {
-        mViewBinding.tvQrTitle.text = arguments?.getCharSequence(TITLE) ?: getString(R.string.navigate_to_qr)
-        mViewBinding.ibQr.setOnClickListener { dismiss() }
         isCancelable = arguments?.getBoolean(CANCELABLE) ?: true
         codeScanner = CodeScanner(requireContext(), mViewBinding.scannerView)
 
@@ -45,10 +43,15 @@ class QrFragment: BaseFullDialogFragment<FragmentQrBinding>() {
             showQrDecodeErrorBanner()
         }
 
-        mViewBinding.scannerView.setOnClickListener {
-            codeScanner.startPreview()
+        mViewBinding.run {
+            lifecycleOwner = viewLifecycleOwner
+            tvQrTitle.text = arguments?.getCharSequence(TITLE) ?: getString(R.string.navigate_to_qr)
+            ibQr.setOnClickListener { dismiss() }
+            //this.lifeCycleOwner = viewLifecycleOwner
+            scannerView.setOnClickListener {
+                codeScanner.startPreview()
+            }
         }
-
     }
 
     interface OnScanCallback {
@@ -75,7 +78,7 @@ class QrFragment: BaseFullDialogFragment<FragmentQrBinding>() {
             .setText(result)
             .setType(Banner.Type.SUCCESS)
             .build()
-            .show(requireActivity())
+            .show(mViewBinding.root)
     }
 
     private fun showQrDecodeErrorBanner() {
@@ -84,7 +87,7 @@ class QrFragment: BaseFullDialogFragment<FragmentQrBinding>() {
             .setText(getString(R.string.error_type_qr))
             .setType(Banner.Type.ERROR)
             .build()
-            .show(requireActivity())
+            .show(mViewBinding.root)
     }
 
     class Builder {

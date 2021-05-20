@@ -28,13 +28,65 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_history"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:background="@drawable/default_shape_8dp"
+        android:backgroundTint="@color/color_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_support"
+        app:tabIndicator="@drawable/tab_indicator"
+        app:tabIndicatorColor="@color/purple_700"
+        app:tabIndicatorFullWidth="false"
+        app:tabRippleColor="@color/transparent"
+        app:tabTextAppearance="@style/StyledTabTextAppearance"
+        app:tabTextColor="@color/purple_700">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/accept"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/given"
+            android:textAllCaps="false" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="2dp"
+        android:layout_height="22dp"
+        android:background="@color/purple_700"
+        app:layout_constraintBottom_toBottomOf="@+id/tl_history"
+        app:layout_constraintEnd_toEndOf="@+id/tl_history"
+        app:layout_constraintStart_toStartOf="@+id/tl_history"
+        app:layout_constraintTop_toTopOf="@+id/tl_history" />
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_history"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tl_history" />
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="@drawable/bg_top_shadow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tl_history" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

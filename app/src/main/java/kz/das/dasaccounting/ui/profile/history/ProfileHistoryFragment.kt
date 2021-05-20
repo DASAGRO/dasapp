@@ -1,4 +1,4 @@
-package kz.das.dasaccounting.ui.profile
+package kz.das.dasaccounting.ui.profile.history
 
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter

@@ -1,4 +1,4 @@
-package kz.das.dasaccounting.ui.profile
+package kz.das.dasaccounting.ui.profile.support
 
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
@@ -19,7 +19,6 @@ class ProfileSupportFragment: BaseFragment<ProfileSupportVM, FragmentProfileSupp
 
     override fun setupUI() {
         mViewBinding.toolbar.setNavigationOnClickListener { requireRouter().exit() }
-
     }
 
 

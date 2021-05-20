@@ -4,6 +4,7 @@ import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentProfileInfoBinding
+import kz.das.dasaccounting.ui.profile.pass_reset.ProfilePassResetFragment
 import kz.das.dasaccounting.ui.showBottomNavMenu
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -18,9 +19,16 @@ class ProfileInfoFragment: BaseFragment<ProfileInfoVM, FragmentProfileInfoBindin
     override fun getViewBinding() = FragmentProfileInfoBinding.inflate(layoutInflater)
 
     override fun setupUI() {
-        mViewBinding.toolbar.setNavigationOnClickListener {
-            requireRouter().exit()
+
+        mViewBinding.run {
+            this.toolbar.setNavigationOnClickListener {
+                requireRouter().exit()
+            }
+            this.rlPassReset.setOnClickListener {
+                requireRouter().navigateTo(ProfilePassResetFragment.getScreen())
+            }
         }
+
     }
 
     override fun onDestroyView() {

@@ -25,7 +25,6 @@ class LoginFragment: BaseFragment<LoginVM, FragmentLoginBinding>() {
     override fun setupUI() {
         //showLoading()
         setupPhoneField()
-
         mViewBinding.btnConfirm.setOnClickListener {
             requireRouter().navigateTo(PassEnterFragment.getScreen())
         }

@@ -7,6 +7,9 @@
     <color name="purple_700_pressed">#FF0B1529</color>
     <color name="purple_700_semi">#80101F3E</color>
     <color name="teal_200">#FF03DAC5</color>
+    <color name="red">#E84D21</color>
+    <color name="red_semi">#E84D21</color>
+    <color name="red_pressed">#AE3C1C</color>
     <color name="teal_700">#FF018786</color>
     <color name="casper">#A5BDC7</color>
     <color name="color_grey_text">#FFA5BDC7</color>

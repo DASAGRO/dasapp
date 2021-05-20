@@ -34,12 +34,13 @@ android {
         }
     }
 
-    buildFeatures {
-        viewBinding true
-    }
-
     dataBinding {
         enabled = true
+    }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding true
     }
 
     compileOptions {
@@ -54,18 +55,20 @@ android {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
-
-    // PLAY SERVICE LOCATION
-    implementation rootProject.ext.dependencies["play_services_location"]
+    implementation rootProject.ext.dependencies["appcompat"]
+    implementation rootProject.ext.dependencies["coordinator_layout"]
+    implementation rootProject.ext.dependencies["constraint_layout"]
+    implementation rootProject.ext.dependencies["material_components"]
+    implementation rootProject.ext.dependencies["cicerone_navigation"]
+    implementation rootProject.ext.dependencies["legacy_support"]
+    implementation rootProject.ext.dependencies["android_core_ktx"]
 
     // LIFECYCLE
     implementation rootProject.ext.dependencies["lifecycle_extension"]
     implementation rootProject.ext.dependencies["lifecycle_ktx"]
+    implementation rootProject.ext.dependencies["lifecycle_livedata"]
+
 
     // KOIN
     implementation rootProject.ext.dependencies["koin_android"]
@@ -75,59 +78,30 @@ dependencies {
     implementation rootProject.ext.dependencies["coroutines_core"]
     implementation rootProject.ext.dependencies["coroutines_reactive"]
 
-    // DEVICE NAME
-    implementation rootProject.ext.dependencies["device_names"]
-
-    // WORK MANAGER
-    implementation rootProject.ext.dependencies["work_manager"]
-
-    //BASE
-    implementation rootProject.ext.dependencies["coordinator_layout"]
-    implementation rootProject.ext.dependencies["constraint_layout"]
-    implementation rootProject.ext.dependencies["material_components"]
+    implementation rootProject.ext.dependencies["tinkoff_decora"]
+    implementation rootProject.ext.dependencies["circle_imageview_hdodeenhof"]
+    implementation rootProject.ext.dependencies["daimajia_animation"]
+    implementation rootProject.ext.dependencies["activity_ktx"]
+    implementation rootProject.ext.dependencies["fragment_ktx"]
     implementation rootProject.ext.dependencies["cicerone_navigation"]
-    implementation rootProject.ext.dependencies["legacy_support"]
-    implementation rootProject.ext.dependencies["android_core_ktx"]
+    implementation rootProject.ext.dependencies["koin_android"]
+    implementation rootProject.ext.dependencies["koin_viewmodel"]
+    implementation rootProject.ext.dependencies["lottie_animation"]
 
-
-    // RETROFIT, GSON, INTERCEPTOR
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
 
     // SHAPE OF VIEW
     implementation 'io.github.florent37:shapeofview:1.4.7'
 
-    // HAWK
-    implementation 'com.orhanobut:hawk:2.0.1'
-
-    // COROUTINES
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
 
     // MAPBOX
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.1'
 
-    // KOIN
-    implementation "org.koin:koin-android:2.1.5"
 
-    // TINKOFF DECORA
+    // Fingerprint Scanner
+    implementation 'co.infinum:goldfinger:2.0.1'
 
-    implementation rootProject.ext.dependencies["tinkoff_decora"]
-
-    // LOTTIE
-    implementation rootProject.ext.dependencies["lottie_animation"]
-
-    implementation rootProject.ext.dependencies["room_runtime"]
-    kapt rootProject.ext.dependencies["room_compiler"]
-    implementation rootProject.ext.dependencies["room_ktx"]
-    testImplementation rootProject.ext.dependencies["room_testing"]
-
+    // QR Scanner
     implementation 'com.budiyev.android:code-scanner:2.1.0'
-
-    // Extensions
-    api 'androidx.activity:activity-ktx:1.3.0-alpha07'
-    api 'androidx.fragment:fragment-ktx:1.3.3'
 
     testImplementation 'junit:junit:4.+'
 

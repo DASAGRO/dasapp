@@ -5,6 +5,8 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentProfileBinding
 import kz.das.dasaccounting.ui.hideBottomNavMenu
+import kz.das.dasaccounting.ui.profile.history.ProfileHistoryFragment
+import kz.das.dasaccounting.ui.profile.support.ProfileSupportFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ProfileFragment: BaseFragment<ProfileVM, FragmentProfileBinding>() {

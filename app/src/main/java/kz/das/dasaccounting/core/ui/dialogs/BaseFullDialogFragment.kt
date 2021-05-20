@@ -32,8 +32,17 @@ abstract class BaseFullDialogFragment<VB: ViewBinding> : DialogFragment(){
                               savedInstanceState: Bundle?): View? {
         isCancelable = false
         mViewBinding = getViewBinding()
+
         setupUI()
 
         return mViewBinding.root
+    }
+
+    fun showSuccessBanner() {
+
+    }
+
+    fun showErrorBanner() {
+
     }
 }
