@@ -28,7 +28,7 @@ class PhonePassResetFragment: BaseFragment<PhonePassResetVM, FragmentPhonePasswo
             requireRouter().exit()
         }
         mViewBinding.btnConfirm.setOnClickListener {
-            requireRouter().navigateTo(PassEnterFragment.getScreen())
+            requireRouter().navigateTo(PassResetFragment.getScreen())
         }
     }
 

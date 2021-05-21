@@ -26,7 +26,11 @@ class SplashFragment: BaseFragment<SplashVM, FragmentSplashBinding>() {
         changeStatusColor(R.color.white)
         mViewBinding.ivLogo.animateInfinitePulse(0.5f, 0.5f, 250)
         delayedTask(1000, CoroutineScope(Dispatchers.Main)) {
-            requireRouter().newRootScreen(LoginFragment.getScreen())
+            if (mViewModel.isUserOnSession()) {
+                requireRouter().newRootScreen(ParentBottomNavigationFragment.getScreen())
+            } else {
+                requireRouter().newRootScreen(LoginFragment.getScreen())
+            }
         }
     }
 

@@ -38,11 +38,4 @@ abstract class BaseFullDialogFragment<VB: ViewBinding> : DialogFragment(){
         return mViewBinding.root
     }
 
-    fun showSuccessBanner() {
-
-    }
-
-    fun showErrorBanner() {
-
-    }
 }

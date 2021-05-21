@@ -88,6 +88,21 @@ dependencies {
     implementation rootProject.ext.dependencies["koin_viewmodel"]
     implementation rootProject.ext.dependencies["lottie_animation"]
 
+    // RETROFIT
+    implementation rootProject.ext.dependencies["gson"]
+    implementation rootProject.ext.dependencies["retrofit"]
+    implementation rootProject.ext.dependencies["retrofit_gson_converter"]
+    implementation rootProject.ext.dependencies["okhttp_interceptor"]
+
+    // HAWK
+    implementation rootProject.ext.dependencies["hawk"]
+
+
+    // ROOM
+    implementation rootProject.ext.dependencies["room_runtime"]
+    implementation rootProject.ext.dependencies["room_compiler"]
+    implementation rootProject.ext.dependencies["room_ktx"]
+    implementation rootProject.ext.dependencies["room_testing"]
 
     // SHAPE OF VIEW
     implementation 'io.github.florent37:shapeofview:1.4.7'

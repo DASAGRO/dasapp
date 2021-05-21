@@ -35,8 +35,8 @@
 
     <!-- Banner animation-->
     <style name="bannerTopAnimation" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/banner_enter_up_to_down</item>
-        <item name="android:windowExitAnimation">@anim/banner_exit_down_to_up</item>
+        <item name="android:windowEnterAnimation">@anim/zoom_in</item>
+        <item name="android:windowExitAnimation">@anim/zoom_out</item>
     </style>
     <!-- end -->
 

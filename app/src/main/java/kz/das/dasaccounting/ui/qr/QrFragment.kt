@@ -29,14 +29,15 @@ class QrFragment: BaseFullDialogFragment<FragmentQrBinding>() {
         codeScanner.camera = CodeScanner.CAMERA_BACK
         codeScanner.formats = CodeScanner.ALL_FORMATS
         codeScanner.autoFocusMode = AutoFocusMode.SAFE
-        codeScanner.scanMode = ScanMode.SINGLE
+        codeScanner.scanMode = ScanMode.CONTINUOUS
         codeScanner.isAutoFocusEnabled = true
         codeScanner.isFlashEnabled = false
 
         // Callbacks
         codeScanner.decodeCallback = DecodeCallback {
             mListener?.onScan(it.text ?: "")
-            showQrDecodeResultBanner(it.text ?: "")
+
+            //showQrDecodeResultBanner(it.text ?: "")
         }
 
         codeScanner.errorCallback = ErrorCallback {

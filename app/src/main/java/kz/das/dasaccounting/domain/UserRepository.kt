@@ -1,17 +1,20 @@
 package kz.das.dasaccounting.domain
 
+import kz.das.dasaccounting.domain.data.Profile
+
 interface UserRepository {
 
-    fun saveUser()
+    fun updateToken(token: String)
 
-    fun getUser()
+    fun getToken(): String?
+
+    fun getUser(): Profile?
+
+    fun setUser(profile: Profile)
 
     fun changeAvatar()
 
     fun deleteAvatar()
 
-    fun saveUserCoordinates(lat: Double, long: Double)
-
-    fun getUserCoordinates(): String?
-
+    fun isUserOnSession(): Boolean
 }

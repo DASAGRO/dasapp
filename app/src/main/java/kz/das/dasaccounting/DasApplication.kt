@@ -1,11 +1,11 @@
 package kz.das.dasaccounting
 
-
 import android.app.Application
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.orhanobut.hawk.Hawk
 import kz.das.dasaccounting.di.*
 import kz.das.dasaccounting.di.getAuthViewModels
 import kz.das.dasaccounting.di.getConfigViewModels
@@ -20,6 +20,7 @@ class DasApplication: Application(), LifecycleObserver {
 
     override fun onCreate() {
         super.onCreate()
+        Hawk.init(applicationContext).build()
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         setupKoin()
     }
@@ -39,6 +40,10 @@ class DasApplication: Application(), LifecycleObserver {
             androidLogger(Level.ERROR)
             androidContext(this@DasApplication)
             modules(
+                getModulePreferences(applicationContext),
+                getNetworkModule(),
+                getApiModule(),
+                getRepositoriesModule(),
                 getConfigViewModels(),
                 getAuthViewModels(),
                 getMainViewModels(),

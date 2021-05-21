@@ -23,10 +23,9 @@ class LoginFragment: BaseFragment<LoginVM, FragmentLoginBinding>() {
     override fun getViewBinding() = FragmentLoginBinding.inflate(layoutInflater)
 
     override fun setupUI() {
-        //showLoading()
         setupPhoneField()
         mViewBinding.btnConfirm.setOnClickListener {
-            requireRouter().navigateTo(PassEnterFragment.getScreen())
+            mViewModel.checkUser(mViewBinding.edtPhone.text.toString())
         }
 
         mViewBinding.tvPasswordReset.setOnClickListener {
@@ -38,6 +37,14 @@ class LoginFragment: BaseFragment<LoginVM, FragmentLoginBinding>() {
         super.observeLiveData()
         mViewModel.isValidPhoneNumberLV.observe(viewLifecycleOwner, Observer {
             mViewBinding.btnConfirm.isEnabled = it
+        })
+
+        mViewModel.isLoginExist().observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                requireRouter().navigateTo(PassEnterFragment.getScreen(it))
+            } else {
+                showError(getString(R.string.common_error), getString(R.string.error_not_exist))
+            }
         })
     }
 

@@ -1,17 +1,13 @@
 package kz.das.dasaccounting.domain
 
+import kz.das.dasaccounting.domain.data.Profile
+
 interface AuthRepository {
 
-    fun login(phone: String?, password: String?) {
+    suspend fun login(phone: String?, password: String?): Profile
 
-    }
+    suspend fun sendPassword(phone: String?): Any
 
-    fun forgetPassword(phone: String?) {
-
-    }
-
-    fun checkUser() {
-
-    }
+    suspend fun checkPhone(phone: String?): Profile?
 
 }

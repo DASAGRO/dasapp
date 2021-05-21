@@ -1,6 +1,7 @@
 package kz.das.dasaccounting.di
 
 import kz.das.dasaccounting.core.ui.shared.NetworkConnectionVM
+import kz.das.dasaccounting.domain.data.Profile
 import kz.das.dasaccounting.ui.ParentBottomNavigationVM
 import kz.das.dasaccounting.ui.SplashVM
 import kz.das.dasaccounting.ui.auth.login.LoginVM
@@ -19,7 +20,7 @@ import org.koin.dsl.module
 internal fun getAuthViewModels() = module {
     viewModel { SplashVM() }
     viewModel { LoginVM() }
-    viewModel { PassEnterVM() }
+    viewModel { (profile: Profile) -> PassEnterVM(profile) }
     viewModel { OnBoardingVM() }
     viewModel { PassResetVM() }
     viewModel { PhonePassResetVM() }
