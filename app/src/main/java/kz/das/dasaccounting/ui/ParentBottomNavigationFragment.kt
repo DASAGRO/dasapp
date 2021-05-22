@@ -7,7 +7,8 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.ViewModel
+import androidx.viewbinding.ViewBinding
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
@@ -20,13 +21,13 @@ import kz.das.dasaccounting.ui.qr.QrFragment
 import kz.das.dasaccounting.ui.utils.CameraUtils
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, FragmentNavBarParentBinding>() {
+open class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, FragmentNavBarParentBinding>() {
 
     companion object {
         fun getScreen() = DasAppScreen(ParentBottomNavigationFragment())
     }
 
-    override val mViewModel: ParentBottomNavigationVM by viewModel()
+    final override val mViewModel: ParentBottomNavigationVM by viewModel()
 
     override fun getViewBinding() = FragmentNavBarParentBinding.inflate(layoutInflater)
 

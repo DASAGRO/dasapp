@@ -29,7 +29,8 @@ class SplashFragment: BaseFragment<SplashVM, FragmentSplashBinding>() {
             if (mViewModel.isUserOnSession()) {
                 requireRouter().newRootScreen(ParentBottomNavigationFragment.getScreen())
             } else {
-                requireRouter().newRootScreen(LoginFragment.getScreen())
+                requireRouter().newRootScreen(ParentBottomNavigationFragment.getScreen())
+                //requireRouter().newRootScreen(LoginFragment.getScreen())
             }
         }
     }
