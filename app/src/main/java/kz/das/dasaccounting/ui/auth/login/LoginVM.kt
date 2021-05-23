@@ -3,8 +3,8 @@ package kz.das.dasaccounting.ui.auth.login
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import kz.das.dasaccounting.core.ui.view.isValidPhoneNumber
-import kz.das.dasaccounting.core.ui.view.toNetworkFormattedPhone
+import kz.das.dasaccounting.core.ui.extensions.isValidPhoneNumber
+import kz.das.dasaccounting.core.ui.extensions.toNetworkFormattedPhone
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.AuthRepository
 import kz.das.dasaccounting.domain.data.Profile

@@ -3,7 +3,7 @@ package kz.das.dasaccounting.ui.drivers
 import android.os.Bundle
 import android.view.View
 import kz.das.dasaccounting.databinding.FragmentNavBarParentBinding
-import kz.das.dasaccounting.ui.ParentBottomNavigationFragment
+import kz.das.dasaccounting.ui.parent_bottom.ParentBottomNavigationFragment
 
 class DriverBottomNavigationFragment: ParentBottomNavigationFragment() {
 

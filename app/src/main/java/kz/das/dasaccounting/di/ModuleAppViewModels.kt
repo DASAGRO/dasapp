@@ -2,18 +2,18 @@ package kz.das.dasaccounting.di
 
 import kz.das.dasaccounting.core.ui.shared.NetworkConnectionVM
 import kz.das.dasaccounting.domain.data.Profile
-import kz.das.dasaccounting.ui.ParentBottomNavigationVM
+import kz.das.dasaccounting.ui.parent_bottom.ParentBottomNavigationVM
 import kz.das.dasaccounting.ui.SplashVM
 import kz.das.dasaccounting.ui.auth.login.LoginVM
 import kz.das.dasaccounting.ui.auth.login.PassEnterVM
 import kz.das.dasaccounting.ui.auth.onboarding.OnBoardingVM
 import kz.das.dasaccounting.ui.auth.password_reset.PassResetVM
 import kz.das.dasaccounting.ui.auth.password_reset.PhonePassResetVM
-import kz.das.dasaccounting.ui.location.LocationVM
-import kz.das.dasaccounting.ui.profile.history.ProfileHistoryVM
-import kz.das.dasaccounting.ui.profile.ProfileInfoVM
-import kz.das.dasaccounting.ui.profile.support.ProfileSupportVM
-import kz.das.dasaccounting.ui.profile.ProfileVM
+import kz.das.dasaccounting.ui.parent_bottom.location.LocationVM
+import kz.das.dasaccounting.ui.parent_bottom.profile.history.ProfileHistoryVM
+import kz.das.dasaccounting.ui.parent_bottom.profile.ProfileInfoVM
+import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportVM
+import kz.das.dasaccounting.ui.parent_bottom.profile.ProfileVM
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

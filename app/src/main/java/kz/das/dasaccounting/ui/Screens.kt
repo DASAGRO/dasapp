@@ -1,7 +1,7 @@
 package kz.das.dasaccounting.ui
 
-import kz.das.dasaccounting.ui.location.LocationFragment
-import kz.das.dasaccounting.ui.profile.ProfileFragment
+import kz.das.dasaccounting.ui.parent_bottom.location.LocationFragment
+import kz.das.dasaccounting.ui.parent_bottom.profile.ProfileFragment
 import ru.terrakok.cicerone.Screen
 
 object Screens {

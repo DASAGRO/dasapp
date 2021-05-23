@@ -1,6 +1,5 @@
 package kz.das.dasaccounting.ui.container
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +11,8 @@ import kz.das.dasaccounting.core.navigation.OnBackPressedListener
 import kz.das.dasaccounting.core.navigation.RouterProvider
 import kz.das.dasaccounting.core.navigation.ScreenNavigator
 import kz.das.dasaccounting.ui.Screens
-import kz.das.dasaccounting.ui.location.LocationFragment
-import kz.das.dasaccounting.ui.profile.ProfileFragment
+import kz.das.dasaccounting.ui.parent_bottom.location.LocationFragment
+import kz.das.dasaccounting.ui.parent_bottom.profile.ProfileFragment
 import org.koin.core.KoinComponent
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Router

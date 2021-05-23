@@ -81,5 +81,11 @@
     <string name="accept">Принят</string>
     <string name="given">Передан</string>
     <string name="error_not_exist">Такого юзера не существует в базе</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="cancel">Отмена</string>
+    <string name="log_out_title">Выйти из приложения</string>
+    <string name="log_out_desc">Вы уверены что хотите выйти из приложения, все данные будут стерты и не будут доступны для восстановления!</string>
+    <string name="accept_inventory">Принять ТМЦ</string>
+    <string name="available_operations">Доступные операции</string>
 
 </resources>

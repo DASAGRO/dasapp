@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_history_state"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/ic_banner_success"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_inventory_status"
+        style="@style/Widget.MaterialComponents.TextView.DAS"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/iv_history_state"
+        app:layout_constraintStart_toStartOf="@+id/iv_history_state"
+        app:layout_constraintTop_toBottomOf="@+id/iv_history_state" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_inventory_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/default_shape_10dp"
+        android:backgroundTint="@color/silver"
+        android:minHeight="120dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_inventory_status">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_inventory_transport"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_inventory_title"
+            style="@style/Widget.MaterialComponents.TextView.DAS"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/iv_inventory_transport"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="16dp"
+            android:layout_toEndOf="@+id/iv_inventory_transport"
+            android:gravity="start"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_inventory_transport"
+            app:layout_constraintTop_toTopOf="@+id/iv_inventory_transport"
+            tools:text="Флигель 143:32" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_inventory_desc"
+            style="@style/Widget.MaterialComponents.TextView.DAS"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/iv_inventory_transport"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="16dp"
+            android:layout_toEndOf="@+id/iv_inventory_transport"
+            android:gravity="start"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_inventory_transport"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_inventory_transport"
+            app:layout_constraintTop_toBottomOf="@+id/tv_inventory_title"
+            tools:text="Флигель не фишель да флигель" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_inventory_time"
+        style="@style/Widget.MaterialComponents.TextView.DAS"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:gravity="start"
+        android:textSize="14sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/cl_inventory_info"
+        app:layout_constraintStart_toStartOf="@+id/cl_inventory_info"
+        app:layout_constraintTop_toBottomOf="@+id/cl_inventory_info"
+        tools:text="Время получение: 08:00 \nДата получение: 01.10.2021" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

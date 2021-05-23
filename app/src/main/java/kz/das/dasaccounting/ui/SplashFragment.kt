@@ -6,10 +6,10 @@ import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
-import kz.das.dasaccounting.core.ui.view.animateInfinitePulse
-import kz.das.dasaccounting.core.ui.view.delayedTask
+import kz.das.dasaccounting.core.ui.extensions.animateInfinitePulse
+import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.databinding.FragmentSplashBinding
-import kz.das.dasaccounting.ui.auth.login.LoginFragment
+import kz.das.dasaccounting.ui.parent_bottom.ParentBottomNavigationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SplashFragment: BaseFragment<SplashVM, FragmentSplashBinding>() {

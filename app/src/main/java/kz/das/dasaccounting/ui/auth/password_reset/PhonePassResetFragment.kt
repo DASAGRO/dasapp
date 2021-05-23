@@ -7,9 +7,8 @@ import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
-import kz.das.dasaccounting.core.ui.view.setPhoneFormatter
+import kz.das.dasaccounting.core.ui.extensions.setPhoneFormatter
 import kz.das.dasaccounting.databinding.FragmentPhonePasswordResetBinding
-import kz.das.dasaccounting.ui.auth.login.PassEnterFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class PhonePassResetFragment: BaseFragment<PhonePassResetVM, FragmentPhonePasswordResetBinding>() {

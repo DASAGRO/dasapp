@@ -8,7 +8,7 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentPasswordBinding
 import kz.das.dasaccounting.domain.data.Profile
-import kz.das.dasaccounting.ui.ParentBottomNavigationFragment
+import kz.das.dasaccounting.ui.parent_bottom.ParentBottomNavigationFragment
 import kz.das.dasaccounting.ui.auth.password_reset.PhonePassResetFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf

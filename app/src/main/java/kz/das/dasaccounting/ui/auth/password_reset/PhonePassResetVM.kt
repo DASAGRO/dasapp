@@ -1,8 +1,8 @@
 package kz.das.dasaccounting.ui.auth.password_reset
 
 import androidx.lifecycle.MutableLiveData
-import kz.das.dasaccounting.core.ui.view.isValidPhoneNumber
-import kz.das.dasaccounting.core.ui.view.toNetworkFormattedPhone
+import kz.das.dasaccounting.core.ui.extensions.isValidPhoneNumber
+import kz.das.dasaccounting.core.ui.extensions.toNetworkFormattedPhone
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 
 class PhonePassResetVM: BaseVM() {

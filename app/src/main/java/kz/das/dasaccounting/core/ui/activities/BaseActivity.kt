@@ -142,7 +142,6 @@ abstract class BaseActivity<VM: ViewModel, VB: ViewBinding>: AppCompatActivity()
         commonNotificationDialog = NotificationDialog.Builder()
             .setTitle(getString(R.string.common_error_no_connection))
             .setDescription(getString(R.string.common_error_no_internet_connection))
-            .setButtonColor(R.color.white)
             .setButtonText(getString(R.string.common_continue))
             .build()
         commonNotificationDialog?.show(
