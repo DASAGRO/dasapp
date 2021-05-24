@@ -105,5 +105,6 @@
     <string name="gather_tranfer_title">Заполните данные по урожаю</string>
     <string name="transfer_confirm_title">Вы подтверждаете данную передачу?</string>
     <string name="inventory_accept_confirmed_title">Вы успешно приняли ТС</string>
+    <string name="search">Искать</string>
 
 </resources>
