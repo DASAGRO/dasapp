@@ -87,5 +87,23 @@
     <string name="log_out_desc">Вы уверены что хотите выйти из приложения, все данные будут стерты и не будут доступны для восстановления!</string>
     <string name="accept_inventory">Принять ТМЦ</string>
     <string name="available_operations">Доступные операции</string>
+    <string name="camera_qr_scan_permission_required">Нужно дать разрешение камеры для QR-сканера!</string>
+    <string name="camera_access_title">Доступ к камере</string>
+    <string name="make_transfer">Сформировать передачу</string>
+    <string name="barcode_bottom_text">Внимание ! Если Передача была сделано без подключение интернета просим нажать на кнопку “Готова”</string>
+    <string name="ready">Готово</string>
+    <string name="accept_gather">Принять урожай</string>
+    <string name="transport_type">Номер комбайна</string>
+    <string name="field_number">Номер поля</string>
+    <string name="gather_type">Сорт урожая</string>
+    <string name="gather_weight">Вес урожая</string>
+    <string name="gather_wet">Влажность</string>
+    <string name="transfer">Передать</string>
+    <string name="naming">Наименование</string>
+    <string name="total_quantity">Всего:%sкг</string>
+    <string name="transfer_inventory">Передать ТМЦ</string>
+    <string name="gather_tranfer_title">Заполните данные по урожаю</string>
+    <string name="transfer_confirm_title">Вы подтверждаете данную передачу?</string>
+    <string name="inventory_accept_confirmed_title">Вы успешно приняли ТС</string>
 
 </resources>

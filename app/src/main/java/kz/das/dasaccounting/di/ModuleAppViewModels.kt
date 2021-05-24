@@ -9,11 +9,15 @@ import kz.das.dasaccounting.ui.auth.login.PassEnterVM
 import kz.das.dasaccounting.ui.auth.onboarding.OnBoardingVM
 import kz.das.dasaccounting.ui.auth.password_reset.PassResetVM
 import kz.das.dasaccounting.ui.auth.password_reset.PhonePassResetVM
+import kz.das.dasaccounting.ui.drivers.DriverBottomNavigationVM
+import kz.das.dasaccounting.ui.guards.GuardBottomNavigationVM
+import kz.das.dasaccounting.ui.office.OfficeBottomNavigationVM
 import kz.das.dasaccounting.ui.parent_bottom.location.LocationVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.history.ProfileHistoryVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.ProfileInfoVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.ProfileVM
+import kz.das.dasaccounting.ui.warehouse.WarehouseBottomNavigationVM
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -30,6 +34,10 @@ internal fun getMainViewModels() = module {
     viewModel { ProfileVM() }
     viewModel { ProfileInfoVM() }
     viewModel { ParentBottomNavigationVM() }
+    viewModel { OfficeBottomNavigationVM() }
+    viewModel { GuardBottomNavigationVM() }
+    viewModel { DriverBottomNavigationVM() }
+    viewModel { WarehouseBottomNavigationVM() }
 }
 
 internal fun getProfileViewModels() = module {

@@ -1,4 +1,9 @@
 package kz.das.dasaccounting.ui.warehouse
 
-class WarehouseBottomNavigationVM {
+import kz.das.dasaccounting.core.ui.view_model.BaseVM
+
+class WarehouseBottomNavigationVM: BaseVM() {
+
+
+
 }

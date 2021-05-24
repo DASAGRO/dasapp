@@ -49,10 +49,12 @@ open class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM
         mViewBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home-> {
+                    showBottomOptions()
                     showFragment(Screens.ScreenLinks.location.toString())
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
+                    hideBottomOptions()
                     showFragment(Screens.ScreenLinks.profile.toString())
                     return@setOnNavigationItemSelectedListener true
                 } else -> { return@setOnNavigationItemSelectedListener false }
@@ -125,7 +127,6 @@ open class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM
                     } else {
                         false
                     }
-
                 if (provideRationale) {
                     showCameraPermissionRequireDialog()
                 }
@@ -135,9 +136,10 @@ open class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM
 
     private fun showCameraPermissionRequireDialog() {
         val notificationDialog = NotificationDialog.Builder()
-                .setDescription("")
-                .setTitle("")
-                .setCancelable(true)
+                .setDescription(getString(R.string.camera_qr_scan_permission_required))
+                .setTitle(getString(R.string.camera_access_title))
+                .setCancelable(true).build()
+        notificationDialog.show(childFragmentManager, "CameraPermissionNotificationDialog")
     }
 
     private fun showQr() {
@@ -149,6 +151,15 @@ open class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM
             .build()
         qrFragment.show(childFragmentManager, "QrFragment")
     }
+
+    private fun hideBottomOptions() {
+
+    }
+
+    private fun showBottomOptions() {
+
+    }
+
 }
 
 
