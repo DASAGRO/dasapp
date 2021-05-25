@@ -106,5 +106,13 @@
     <string name="transfer_confirm_title">Вы подтверждаете данную передачу?</string>
     <string name="inventory_accept_confirmed_title">Вы успешно приняли ТС</string>
     <string name="search">Искать</string>
+    <string name="warehouse_title">Название Склада</string>
+    <string name="action_list">Список ТС,ПО,ТМЦ</string>
+    <string name="action_add_inventory">Принять ТС, ТМЦ, ПО</string>
+    <string name="action_transfer_inventory">Передать ТС, ТМЦ, ПО</string>
+    <string name="fully_transfer_warehouse">Передать склад полностью</string>
+    <string name="transfer_role_title">Выберите кому вы хотите передать склад</string>
+    <string name="warehouse_head">Зав. Складу</string>
+    <string name="security">Охране</string>
 
 </resources>
