@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.extensions.isValidPhoneNumber
 import kz.das.dasaccounting.core.ui.extensions.toNetworkFormattedPhone
+import kz.das.dasaccounting.core.ui.utils.exceptions.BackendResponseException
+import kz.das.dasaccounting.core.ui.utils.exceptions.NetworkResponseException
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.AuthRepository
 import kz.das.dasaccounting.domain.data.Profile
@@ -40,8 +42,11 @@ class LoginVM: BaseVM(), KoinComponent {
                 val user = authRepository.checkPhone(formattedPhoneNumber.toNetworkFormattedPhone())
                 _isLoginExistLV.postValue(user)
             } catch (t: Throwable) {
-                throwableHandler.handle(t)
-                _isLoginExistLV.postValue(null)
+                if (t is NetworkResponseException && t.httpResponseCode == 400) {
+                    _isLoginExistLV.postValue(null)
+                } else {
+                    throwableHandler.handle(t)
+                }
             } finally {
                 hideLoading()
             }

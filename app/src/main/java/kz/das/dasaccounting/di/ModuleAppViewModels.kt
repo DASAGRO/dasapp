@@ -26,7 +26,7 @@ internal fun getAuthViewModels() = module {
     viewModel { LoginVM() }
     viewModel { (profile: Profile) -> PassEnterVM(profile) }
     viewModel { OnBoardingVM() }
-    viewModel { PassResetVM() }
+    viewModel { (profile: Profile) -> PassResetVM(profile) }
     viewModel { PhonePassResetVM() }
 }
 

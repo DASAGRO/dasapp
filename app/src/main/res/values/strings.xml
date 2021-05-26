@@ -16,7 +16,8 @@
     <string name="enter_welcome">Добро пожаловать!\n %s</string>
     <string name="enter_password">Введите пароль</string>
     <string name="enter_password_from_sms">Введите пароль из смс</string>
-    <string name="enter_password_retry">Отправить пароль заново через %s</string>
+    <string name="enter_password_retry_remaining">Отправить пароль заново через 00:%02d</string>
+    <string name="enter_password_retry">Отправить пароль заново</string>
     <string name="welcome_title">Добро пожаловать!</string>
     <string name="enter">Войти</string>
     <string name="password_reset">Восстановление пароля</string>

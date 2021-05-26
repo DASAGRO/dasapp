@@ -22,7 +22,6 @@ object Screens {
         }
     }
 
-
     public enum class ScreenLinks {
         profile,
         location

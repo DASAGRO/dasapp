@@ -5,48 +5,42 @@ import kz.das.dasaccounting.core.ui.utils.exceptions.BackendResponseException
 import kz.das.dasaccounting.core.ui.utils.exceptions.NetworkResponseException
 import kz.das.dasaccounting.core.ui.utils.exceptions.NullResponseException
 
-data class ApiResponse<T>(
-    val data: T? = null,
-) {
-    val isSuccessful: Boolean
-        get() = data != null
-}
 
-fun <T1, T2> Response<ApiResponse<T1>>.unwrap(converter: (T1) -> T2): T2 {
+fun <T1, T2> Response<T1>.unwrap(converter: (T1) -> T2): T2 {
     if (!isSuccessful) {
         throw NetworkResponseException(message(), code())
-    } else if (body()?.isSuccessful != true) {
+    } else if (code() != 200 && code() < 500) {
         throw BackendResponseException(code(), if (code() < 500) message() ?: "" else "")
-    } else if (body()?.data == null) {
+    } else if (body() == null) {
         throw NullResponseException()
     } else {
-        return converter(body()?.data!!)
+        return converter(body()!!)
     }
 }
 
-fun <T1, T2> Response<ApiResponse<T1>>.unwrap(converter: (T1) -> T2, onResultSaveCallback: onResultSaveCallback<T1>): T2 {
+fun <T1, T2> Response<T1>.unwrap(converter: (T1) -> T2, onResultSaveCallback: onResultSaveCallback<T1>): T2 {
     if (!isSuccessful) {
         throw NetworkResponseException(message(), code())
-    } else if (body()?.isSuccessful != true) {
+    } else if (code() != 200 && code() < 500) {
         throw BackendResponseException(code(), if (code() < 500) message() ?: "" else "")
-    } else if (body()?.data == null) {
+    } else if (body() == null) {
         throw NullResponseException()
     } else {
-        onResultSaveCallback.onSaveData(body()?.data!!)
+        onResultSaveCallback.onSaveData(body()!!)
         onResultSaveCallback.onRetrieveData()
-        return converter(body()?.data!!)
+        return converter(body()!!)
     }
 }
 
-fun <T> Response<ApiResponse<T>>.unwrap(): T {
+fun <T> Response<T>.unwrap(): T {
     if (!isSuccessful) {
         throw NetworkResponseException(message(), code())
-    } else if (body()?.isSuccessful != true) {
+    } else if (code() != 200 && code() < 500) {
         throw BackendResponseException(code(), if (code() < 500) message() ?: "" else "")
-    } else if (body()?.data == null) {
+    } else if (body() == null) {
         throw NullResponseException()
     } else {
-        return body()?.data!!
+        return body()!!
     }
 }
 

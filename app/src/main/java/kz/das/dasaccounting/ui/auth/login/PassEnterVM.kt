@@ -1,6 +1,8 @@
 package kz.das.dasaccounting.ui.auth.login
 
+import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
@@ -11,23 +13,56 @@ import kz.das.dasaccounting.domain.data.Profile
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class PassEnterVM(val profile: Profile): BaseVM(), KoinComponent {
+class PassEnterVM(val profile: Profile?): BaseVM(), KoinComponent {
 
     private val authRepository: AuthRepository by inject()
     private val userRepository: UserRepository by inject()
 
+    private val remainedTimeLV: MutableLiveData<Long> = MutableLiveData()
+    fun getRemainedTime(): LiveData<Long> = remainedTimeLV
+
+    private val timeFinishedLV: MutableLiveData<Boolean> = MutableLiveData()
+    fun isTimerFinished(): LiveData<Boolean> = timeFinishedLV
+
     private val isLoginConfirmedLV = SingleLiveEvent<Boolean>()
     fun isLoginConfirmed(): LiveData<Boolean> = isLoginConfirmedLV
+
+    private val isOnBoardingConfirmedLV = SingleLiveEvent<Boolean>()
+    fun isOnBoardingConfirmed(): LiveData<Boolean> = isOnBoardingConfirmedLV
+
+    private val countDownTimer = object : CountDownTimer(
+        60 * 1000,
+        1000
+    ) {
+        override fun onFinish() {
+            timeFinishedLV.value = true
+        }
+
+        override fun onTick(remainTimeInMillis: Long) {
+            remainedTimeLV.value = remainTimeInMillis / 1000
+        }
+    }
+
+    init {
+        if (isTimeEnabled()) {
+        //    startTimer()
+        }
+    }
+
 
     fun login(password: String) {
         viewModelScope.launch {
             showLoading()
             try {
-                val profile = authRepository.login(profile.phone, password)
+                val onBoardingRequired: Boolean = profile?.hasPassword == false
+                val profile = authRepository.login(profile?.phone, password)
                 userRepository.updateToken(profile.token ?: "")
                 profile.token = ""
                 userRepository.setUser(profile)
-                isLoginConfirmedLV.postValue(true)
+                isOnBoardingConfirmedLV.postValue(onBoardingRequired)
+                if (onBoardingRequired) {
+                    isLoginConfirmedLV.postValue(true)
+                }
             } catch (t: Throwable) {
                 throwableHandler.handle(t)
                 isLoginConfirmedLV.postValue(false)
@@ -35,6 +70,17 @@ class PassEnterVM(val profile: Profile): BaseVM(), KoinComponent {
                 hideLoading()
             }
         }
+    }
+
+    fun isTimeEnabled() = profile?.hasPassword == false
+
+    private fun startTimer() {
+        timeFinishedLV.value = false
+        countDownTimer.start()
+    }
+
+    fun restartTime() {
+        startTimer()
     }
 
 }

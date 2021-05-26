@@ -2,6 +2,10 @@ package kz.das.dasaccounting.core.ui.extensions
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.os.Build
+import android.text.Html
+import android.text.SpannableString
+import android.text.Spanned
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -9,6 +13,7 @@ import android.view.animation.Transformation
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
+import kotlinx.android.synthetic.main.fragment_profile_history.view.*
 
 
 fun View.setGone() {
@@ -23,8 +28,28 @@ fun View.setInvisible() {
     visibility = View.INVISIBLE
 }
 
+@BindingAdapter("app:setVisibility")
+fun View.setVisibility(isVisible: Boolean) {
+    this.view.visibility = if (isVisible) View.VISIBLE else View.GONE
+}
+
 fun TextView.setHtmlText(htmlText: String) {
     text = HtmlCompat.fromHtml(htmlText, HtmlCompat.FROM_HTML_MODE_LEGACY)
+}
+
+@SuppressWarnings("deprecation")
+fun returnSpanned(html: String?): Spanned {
+    return when {
+        html == null -> {
+            SpannableString("")
+        }
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
+            Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
+        }
+        else -> {
+            Html.fromHtml(html)
+        }
+    }
 }
 
 @BindingAdapter("app:animScaleXRatio", "app:animScaleYRatio", "app:pulseAnimDuration")

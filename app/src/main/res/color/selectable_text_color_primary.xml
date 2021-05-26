@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/purple_700" />
-    <item android:color="@color/purple_700" android:state_pressed="false" />
+    <item android:color="@color/purple_700" android:state_enabled="true" />
+    <item android:color="@color/purple_700" android:state_enabled="true" android:state_pressed="false" />
     <item android:color="@color/color_grey_text" android:state_enabled="false" />
-    <item android:color="@color/purple_700_pressed" android:state_pressed="true" />
+    <item android:color="@color/purple_700_pressed" android:state_enabled="true" android:state_pressed="true" />
 </selector>

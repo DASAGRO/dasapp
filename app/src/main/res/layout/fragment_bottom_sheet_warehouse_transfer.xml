@@ -93,6 +93,12 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_number_input_warning"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_upload_video"
             android:layout_width="match_parent"
             android:layout_height="48dp"

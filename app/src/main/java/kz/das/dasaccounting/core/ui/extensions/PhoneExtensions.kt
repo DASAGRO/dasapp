@@ -23,15 +23,15 @@ fun TextView.setPhoneFormatter(): FormatWatcher {
 fun String.toNetworkFormattedPhone(): String {
     var newStr = this
     if (this.startsWith("8")) {
-        newStr = newStr.replaceFirst("8", "+7")
+        newStr = newStr.replaceFirst("8", "7")
     } else if (this.startsWith("+8")) {
-        newStr = newStr.replaceFirst("+8", "+7")
+        newStr = newStr.replaceFirst("+8", "7")
     }
     newStr = newStr.replace(Regex("[\\(\\)\\- \\.]"), "")
     if (newStr.length <= 10) {
-        newStr = "+7$newStr"
+        newStr = "7$newStr"
     }
-
+    newStr = newStr.replace("+", "")
     return newStr
 }
 
