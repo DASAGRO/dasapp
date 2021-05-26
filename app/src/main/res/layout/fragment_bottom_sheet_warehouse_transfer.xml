@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_close"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/default_oval"
+        android:padding="13dp"
+        android:layout_margin="13dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_close"
+        android:tint="@color/color_grey_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_700"
+        android:text="@string/transfer_warehouse"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_close" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ll_warehouse_naming"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.DAS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/loginTopGuidline">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_warehouse_naming"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="@string/warehouse_naming"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:padding="6dp"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ll_quantity"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.DAS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/loginTopGuidline">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="@string/enter_seal_number"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:padding="6dp"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_upload_video"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:background="@drawable/selectable_red_semi_10dp"
+            android:text="@string/shoot_video"
+            android:textColor="@color/red"
+            android:paddingStart="30dp"
+            android:enabled="false"
+            android:paddingEnd="16dp"
+            android:drawableEnd="@drawable/ic_arrow_next_mini"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_inventory_time"
+            app:layout_constraintStart_toStartOf="@+id/tv_inventory_time"
+            app:layout_constraintTop_toBottomOf="@+id/btn_make_transfer_accept" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_media"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_media"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_transfer"
+            style="@style/Widget.MaterialComponents.Button.DAS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="start|center_vertical"
+            android:text="@string/transfer"
+            android:textColor="@color/white"
+            android:layout_marginBottom="20dp"
+            android:paddingStart="30dp"
+            android:enabled="false"
+            android:paddingEnd="16dp"
+            android:drawableEnd="@drawable/ic_arrow_next_mini"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_inventory_time"
+            app:layout_constraintStart_toStartOf="@+id/tv_inventory_time"
+            app:layout_constraintTop_toBottomOf="@+id/btn_make_transfer_accept" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

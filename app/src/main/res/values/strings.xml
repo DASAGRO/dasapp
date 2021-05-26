@@ -114,5 +114,9 @@
     <string name="transfer_role_title">Выберите кому вы хотите передать склад</string>
     <string name="warehouse_head">Зав. Складу</string>
     <string name="security">Охране</string>
+    <string name="transfer_warehouse">Передать Склад</string>
+    <string name="warehouse_naming">Наименование склада</string>
+    <string name="enter_seal_number">Введите номер пломбы</string>
+    <string name="shoot_video">Снять видео</string>
 
 </resources>
