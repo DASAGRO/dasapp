@@ -17,4 +17,6 @@ interface UserRepository {
     fun deleteAvatar()
 
     fun isUserOnSession(): Boolean
+
+    fun logOut()
 }

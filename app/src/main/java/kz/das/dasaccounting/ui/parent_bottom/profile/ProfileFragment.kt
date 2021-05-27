@@ -47,7 +47,9 @@ class ProfileFragment: BaseFragment<ProfileVM, FragmentProfileBinding>() {
                 .setTitle(getString(R.string.log_out_title))
                 .setDescription(getString(R.string.log_out_desc))
                 .setOnConfirmCallback(object : ActionConfirmDialog.OnConfirmCallback {
-                    override fun onConfirmClicked() { }
+                    override fun onConfirmClicked() {
+                        this@ProfileFragment.onLogout()
+                    }
                     override fun onCancelClicked() { }
                 }).build()
         actionDialog.show(childFragmentManager, ActionConfirmDialog.TAG)

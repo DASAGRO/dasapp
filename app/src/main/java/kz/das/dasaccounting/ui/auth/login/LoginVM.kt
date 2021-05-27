@@ -1,11 +1,12 @@
 package kz.das.dasaccounting.ui.auth.login
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.extensions.isValidPhoneNumber
 import kz.das.dasaccounting.core.ui.extensions.toNetworkFormattedPhone
-import kz.das.dasaccounting.core.ui.utils.exceptions.BackendResponseException
+import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.utils.exceptions.NetworkResponseException
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.AuthRepository
@@ -19,12 +20,15 @@ class LoginVM: BaseVM(), KoinComponent {
 
     private var formattedPhoneNumber: String = ""
 
+    private fun clearFormattedNumber() {
+        formattedPhoneNumber = ""
+    }
+
     private val _isValidPhoneNumberLV = MutableLiveData<Boolean>()
     val isValidPhoneNumberLV = _isValidPhoneNumberLV
 
-    private val _isLoginExistLV = MutableLiveData<Profile?>()
-    fun isLoginExist() = _isLoginExistLV
-
+    private val _isLoginExistLV = SingleLiveEvent<Profile?>()
+    fun isLoginExist(): LiveData<Profile?> = _isLoginExistLV
 
     private fun checkPhoneNumber(phoneNumber: String) {
         if (phoneNumber.isNotBlank() && phoneNumber.length == 18) {
@@ -35,7 +39,7 @@ class LoginVM: BaseVM(), KoinComponent {
         }
     }
 
-    fun checkUser(phoneNumber: String?) {
+    fun checkUser() {
         viewModelScope.launch {
             showLoading()
             try {

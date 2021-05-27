@@ -30,7 +30,7 @@ fun View.setInvisible() {
 
 @BindingAdapter("app:setVisibility")
 fun View.setVisibility(isVisible: Boolean) {
-    this.view.visibility = if (isVisible) View.VISIBLE else View.GONE
+    this.visibility = if (isVisible) View.VISIBLE else View.GONE
 }
 
 fun TextView.setHtmlText(htmlText: String) {

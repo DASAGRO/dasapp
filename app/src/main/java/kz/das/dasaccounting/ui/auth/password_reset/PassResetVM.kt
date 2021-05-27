@@ -6,13 +6,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
+import kz.das.dasaccounting.core.ui.utils.exceptions.NetworkResponseException
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.AuthRepository
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.Profile
+import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class PassResetVM(val profile: Profile): BaseVM() {
+class PassResetVM(val profile: Profile): BaseVM(), KoinComponent {
 
     private val authRepository: AuthRepository by inject()
     private val userRepository: UserRepository by inject()
@@ -23,13 +25,12 @@ class PassResetVM(val profile: Profile): BaseVM() {
     private val timeFinishedLV: MutableLiveData<Boolean> = MutableLiveData()
     fun isTimerFinished(): LiveData<Boolean> = timeFinishedLV
 
-    init {
-        startTimer()
-    }
+    private val _isPasswordSentLV = MutableLiveData<Boolean>()
+    fun isPasswordSent() = _isPasswordSentLV
 
     private val countDownTimer = object : CountDownTimer(
-        TIME_IN_MILLIS,
-        INTERVAL
+        60 * 1000,
+        1000
     ) {
         override fun onFinish() {
             timeFinishedLV.value = true
@@ -38,6 +39,10 @@ class PassResetVM(val profile: Profile): BaseVM() {
         override fun onTick(remainTimeInMillis: Long) {
             remainedTimeLV.value = remainTimeInMillis / 1000
         }
+    }
+
+    init {
+        startTimer()
     }
 
     private val isLoginConfirmedLV = SingleLiveEvent<Boolean>()
@@ -52,30 +57,40 @@ class PassResetVM(val profile: Profile): BaseVM() {
                 profile.token = ""
                 userRepository.setUser(profile)
                 isLoginConfirmedLV.postValue(true)
-            } catch (t: Throwable) {
-                throwableHandler.handle(t)
-                isLoginConfirmedLV.postValue(false)
+            }  catch (t: Throwable) {
+                if (t is NetworkResponseException && t.httpResponseCode == 400) {
+                    isLoginConfirmedLV.postValue(false)
+                } else {
+                    throwableHandler.handle(t)
+                }
             } finally {
                 hideLoading()
             }
         }
     }
 
+    fun sendPassword() {
+        viewModelScope.launch {
+            showLoading()
+            try {
+                authRepository.sendPassword(profile.phone)
+                _isPasswordSentLV.postValue(true)
+            } catch (t: Throwable) {
+                _isPasswordSentLV.postValue(false)
+            } finally {
+                hideLoading()
+            }
+        }
+    }
 
     private fun startTimer() {
         timeFinishedLV.value = false
         countDownTimer.start()
+        sendPassword()
     }
 
     fun restartTime() {
         startTimer()
     }
-
-    companion object {
-        private const val TIME_IN_MILLIS: Long = 60 * 1000
-        private const val INTERVAL: Long = 1000
-        private const val CODE_LENGTH = 6
-    }
-
 
 }

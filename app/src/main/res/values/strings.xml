@@ -13,7 +13,7 @@
     <string name="enter_phone">Введите номер телефона</string>
     <string name="forget_password">Забыли пароль?</string>
     <string name="forget_password_reset_descr">На ваш номер телефона, вам будет отправлено сообщение с паролем.</string>
-    <string name="enter_welcome">Добро пожаловать!\n %s</string>
+    <string name="enter_welcome">Добро пожаловать!\n%s</string>
     <string name="enter_password">Введите пароль</string>
     <string name="enter_password_from_sms">Введите пароль из смс</string>
     <string name="enter_password_retry_remaining">Отправить пароль заново через 00:%02d</string>
@@ -119,5 +119,6 @@
     <string name="warehouse_naming">Наименование склада</string>
     <string name="enter_seal_number">Введите номер пломбы</string>
     <string name="shoot_video">Снять видео</string>
+    <string name="error_incorrect_password">Введен неправильный пароль!</string>
 
 </resources>

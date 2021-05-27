@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
+import kz.das.dasaccounting.core.ui.utils.exceptions.NetworkResponseException
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.AuthRepository
 import kz.das.dasaccounting.domain.UserRepository
@@ -45,10 +46,9 @@ class PassEnterVM(val profile: Profile?): BaseVM(), KoinComponent {
 
     init {
         if (isTimeEnabled()) {
-        //    startTimer()
+            startTimer()
         }
     }
-
 
     fun login(password: String) {
         viewModelScope.launch {
@@ -60,12 +60,28 @@ class PassEnterVM(val profile: Profile?): BaseVM(), KoinComponent {
                 profile.token = ""
                 userRepository.setUser(profile)
                 isOnBoardingConfirmedLV.postValue(onBoardingRequired)
-                if (onBoardingRequired) {
+                if (!onBoardingRequired) {
                     isLoginConfirmedLV.postValue(true)
                 }
             } catch (t: Throwable) {
+                if (t is NetworkResponseException && t.httpResponseCode == 400) {
+                    isLoginConfirmedLV.postValue(false)
+                } else {
+                    throwableHandler.handle(t)
+                }
+            } finally {
+                hideLoading()
+            }
+        }
+    }
+
+    fun sendPassword() {
+        viewModelScope.launch {
+            showLoading()
+            try {
+                authRepository.sendPassword(profile?.phone)
+            } catch (t: Throwable) {
                 throwableHandler.handle(t)
-                isLoginConfirmedLV.postValue(false)
             } finally {
                 hideLoading()
             }
@@ -77,6 +93,9 @@ class PassEnterVM(val profile: Profile?): BaseVM(), KoinComponent {
     private fun startTimer() {
         timeFinishedLV.value = false
         countDownTimer.start()
+        if (isTimeEnabled()) {
+            sendPassword()
+        }
     }
 
     fun restartTime() {

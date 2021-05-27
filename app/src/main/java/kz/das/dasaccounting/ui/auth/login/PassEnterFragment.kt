@@ -1,7 +1,6 @@
 package kz.das.dasaccounting.ui.auth.login
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
@@ -13,9 +12,10 @@ import kz.das.dasaccounting.ui.auth.onboarding.OnBoardingFragment
 import kz.das.dasaccounting.ui.parent_bottom.ParentBottomNavigationFragment
 import kz.das.dasaccounting.ui.auth.password_reset.PhonePassResetFragment
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.KoinComponent
 import org.koin.core.parameter.parametersOf
 
-class PassEnterFragment: BaseFragment<PassEnterVM, FragmentPasswordBinding>() {
+class PassEnterFragment: BaseFragment<PassEnterVM, FragmentPasswordBinding>(), KoinComponent {
 
     companion object {
         private const val PROFILE = "profile"
@@ -24,15 +24,6 @@ class PassEnterFragment: BaseFragment<PassEnterVM, FragmentPasswordBinding>() {
             val arguments = Bundle()
             arguments.putParcelable(PROFILE, profile)
             setArgs(arguments)
-        }
-
-        private fun newInstance(profile: Profile): Fragment {
-            val arguments = Bundle()
-            arguments.putParcelable(PROFILE, profile)
-
-            val fragment = PassEnterFragment()
-            fragment.arguments = arguments
-            return fragment
         }
     }
 
@@ -63,6 +54,8 @@ class PassEnterFragment: BaseFragment<PassEnterVM, FragmentPasswordBinding>() {
             isLoginConfirmed().observe(viewLifecycleOwner, Observer {
                 if (it) {
                     requireRouter().newRootScreen(ParentBottomNavigationFragment.getScreen())
+                } else {
+                    showError(getString(R.string.common_error), getString(R.string.error_incorrect_password))
                 }
             })
             isOnBoardingConfirmed().observe(viewLifecycleOwner, Observer {

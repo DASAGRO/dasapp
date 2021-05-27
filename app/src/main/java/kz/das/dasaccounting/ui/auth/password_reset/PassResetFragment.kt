@@ -1,7 +1,6 @@
 package kz.das.dasaccounting.ui.auth.password_reset
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
@@ -11,25 +10,21 @@ import kz.das.dasaccounting.domain.data.Profile
 import androidx.lifecycle.Observer
 import kz.das.dasaccounting.ui.parent_bottom.ParentBottomNavigationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class PassResetFragment: BaseFragment<PassResetVM, FragmentPasswordResetBinding>() {
 
     companion object {
         private const val PROFILE = "profile"
 
-        fun getScreen(profile: Profile) = DasAppScreen(newInstance(profile))
-
-        private fun newInstance(profile: Profile): Fragment {
+        fun getScreen(profile: Profile) = DasAppScreen(PassResetFragment()).apply {
             val args = Bundle()
             args.putParcelable(PROFILE, profile)
-
-            val fragment = PassResetFragment()
-            fragment.arguments = args
-            return fragment
+            this.setArgs(args)
         }
     }
 
-    override val mViewModel: PassResetVM by viewModel()
+    override val mViewModel: PassResetVM by viewModel{ parametersOf(getProfile()) }
 
     override fun getViewBinding() = FragmentPasswordResetBinding.inflate(layoutInflater)
 
@@ -52,6 +47,8 @@ class PassResetFragment: BaseFragment<PassResetVM, FragmentPasswordResetBinding>
             isLoginConfirmed().observe(viewLifecycleOwner, Observer {
                 if (it) {
                     requireRouter().navigateTo(ParentBottomNavigationFragment.getScreen())
+                } else {
+                    showError(getString(R.string.common_error), getString(R.string.error_incorrect_password))
                 }
             })
             isTimerFinished().observe(viewLifecycleOwner, Observer {

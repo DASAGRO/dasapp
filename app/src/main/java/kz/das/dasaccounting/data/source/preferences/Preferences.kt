@@ -27,6 +27,10 @@ class UserPreferences(private val preferences: SharedPreferences) {
         preferences.edit().putString(PREFERENCES_USER_PROFILE, Gson().toJson(user)).apply()
     }
 
+    fun clearUser() {
+        preferences.edit().remove(PREFERENCES_USER_PROFILE).apply()
+    }
+
     fun getUser(): Profile? {
         return try {
             val json = preferences.getString(PREFERENCES_USER_PROFILE, null)

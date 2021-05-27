@@ -2,6 +2,7 @@ package kz.das.dasaccounting
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import com.mapbox.mapboxsdk.Mapbox
 import kz.das.dasaccounting.core.navigation.RouterProvider
 import kz.das.dasaccounting.core.navigation.ScreenNavigator
@@ -40,7 +41,14 @@ class MainActivity: BaseActivity<MainVM, ActivityMainBinding>(), RouterProvider 
 
         val view = mViewBinding.root
         setContentView(view)
+        observeLiveData()
         getRouter().newRootScreen(SplashFragment.getScreen())
+    }
+
+    private fun observeLiveData() {
+        mViewModel.isLogoutCompleted().observe(this, Observer {
+            if (it) { restartActivity() }
+        })
     }
 
     override fun restartActivity() {
@@ -49,6 +57,7 @@ class MainActivity: BaseActivity<MainVM, ActivityMainBinding>(), RouterProvider 
 
     override fun onLogout() {
         super.onLogout()
+        mViewModel.logOut()
     }
 
     override fun onBackPressed() {

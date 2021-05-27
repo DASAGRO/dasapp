@@ -87,9 +87,7 @@ abstract class BaseActivity<VM: ViewModel, VB: ViewBinding>: AppCompatActivity()
         startActivity(intent)
     }
 
-    open fun onLogout() {
-
-    }
+    open fun onLogout() { }
 
     fun showLoading() {
         if (dialogLoading?.isAdded != true) {

@@ -25,7 +25,7 @@ class LoginFragment: BaseFragment<LoginVM, FragmentLoginBinding>() {
     override fun setupUI() {
         setupPhoneField()
         mViewBinding.btnConfirm.setOnClickListener {
-            mViewModel.checkUser(mViewBinding.edtPhone.text.toString())
+            mViewModel.checkUser()
         }
 
         mViewBinding.tvPasswordReset.setOnClickListener {

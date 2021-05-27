@@ -21,18 +21,18 @@ class ProfileInfoFragment: BaseFragment<ProfileInfoVM, FragmentProfileInfoBindin
     override fun setupUI() {
 
         mViewBinding.run {
-            this.toolbar.setNavigationOnClickListener {
+            toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }
-            this.rlPassReset.setOnClickListener {
+            rlPassReset.setOnClickListener {
                 requireRouter().navigateTo(ProfilePassResetFragment.getScreen())
             }
         }
 
     }
 
-    override fun onDestroyView() {
+    override fun onDestroy() {
         showBottomNavMenu()
-        super.onDestroyView()
+        super.onDestroy()
     }
 }

@@ -29,4 +29,9 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
     override fun isUserOnSession(): Boolean {
         return !userPreferences.getUserAccessToken().isNullOrEmpty()
     }
+
+    override fun logOut() {
+        userPreferences.clearUserAccessToken()
+        userPreferences.clearUser()
+    }
 }

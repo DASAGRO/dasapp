@@ -27,7 +27,7 @@ class PhonePassResetFragment: BaseFragment<PhonePassResetVM, FragmentPhonePasswo
             requireRouter().exit()
         }
         mViewBinding.btnConfirm.setOnClickListener {
-            mViewModel.checkUser(mViewBinding.edtPhone.text.toString())
+            mViewModel.checkUser()
         }
     }
 
@@ -39,7 +39,7 @@ class PhonePassResetFragment: BaseFragment<PhonePassResetVM, FragmentPhonePasswo
 
         mViewModel.isLoginExist().observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                requireRouter().navigateTo(PassResetFragment.getScreen(it))
+                requireRouter().newRootScreen(PassResetFragment.getScreen(it))
             } else {
                 showError(getString(R.string.common_error), getString(R.string.error_not_exist))
             }
