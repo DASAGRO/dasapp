@@ -28,6 +28,8 @@ class PassResetVM(val profile: Profile): BaseVM(), KoinComponent {
     private val _isPasswordSentLV = MutableLiveData<Boolean>()
     fun isPasswordSent() = _isPasswordSentLV
 
+    fun getUserRole() = userRepository.getUserRole()
+
     private val countDownTimer = object : CountDownTimer(
         60 * 1000,
         1000

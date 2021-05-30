@@ -10,6 +10,8 @@ interface UserRepository {
 
     fun getUser(): Profile?
 
+    fun getUserRole(): String?
+
     fun setUser(profile: Profile)
 
     fun changeAvatar()
@@ -19,4 +21,10 @@ interface UserRepository {
     fun isUserOnSession(): Boolean
 
     fun logOut()
+
+    fun userOnWork(): Boolean
+
+    fun startWork()
+
+    fun finishWork()
 }

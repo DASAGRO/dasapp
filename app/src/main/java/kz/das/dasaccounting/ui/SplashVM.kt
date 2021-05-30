@@ -11,4 +11,6 @@ class SplashVM: BaseVM(), KoinComponent {
 
     fun isUserOnSession() = userRepository.isUserOnSession()
 
+    fun getUserRole() = userRepository.getUserRole()
+
 }

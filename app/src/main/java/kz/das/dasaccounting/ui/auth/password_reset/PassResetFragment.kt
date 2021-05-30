@@ -8,6 +8,7 @@ import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentPasswordResetBinding
 import kz.das.dasaccounting.domain.data.Profile
 import androidx.lifecycle.Observer
+import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.parent_bottom.ParentBottomNavigationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -46,7 +47,9 @@ class PassResetFragment: BaseFragment<PassResetVM, FragmentPasswordResetBinding>
         mViewModel.run {
             isLoginConfirmed().observe(viewLifecycleOwner, Observer {
                 if (it) {
-                    requireRouter().navigateTo(ParentBottomNavigationFragment.getScreen())
+                    mViewModel.getUserRole()?.let { userRole ->
+                        Screens.getRoleScreens(userRole)?.let { screen -> requireRouter().newRootScreen(screen) }
+                    }
                 } else {
                     showError(getString(R.string.common_error), getString(R.string.error_incorrect_password))
                 }

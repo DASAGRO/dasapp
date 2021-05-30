@@ -9,6 +9,7 @@ import org.koin.core.inject
 class UserRepositoryImpl: UserRepository, KoinComponent {
 
     private val userPreferences: UserPreferences by inject()
+    private val userRepository: UserRepository by inject()
 
     override fun updateToken(token: String) {
         userPreferences.setUserAccessToken(token)
@@ -17,6 +18,10 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
     override fun getToken() = userPreferences.getUserAccessToken()
 
     override fun getUser(): Profile? = userPreferences.getUser()
+
+    override fun getUserRole(): String {
+        return getUser()?.position ?: ""
+    }
 
     override fun setUser(profile: Profile) {
         userPreferences.setUser(profile)
@@ -33,5 +38,17 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
     override fun logOut() {
         userPreferences.clearUserAccessToken()
         userPreferences.clearUser()
+    }
+
+    override fun userOnWork(): Boolean {
+        return userPreferences.isUserOnWork() ?: false
+    }
+
+    override fun startWork() {
+        TODO("Not yet implemented")
+    }
+
+    override fun finishWork() {
+        TODO("Not yet implemented")
     }
 }

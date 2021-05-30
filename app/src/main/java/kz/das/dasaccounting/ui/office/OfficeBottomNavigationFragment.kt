@@ -19,7 +19,6 @@ class OfficeBottomNavigationFragment: ParentBottomNavigationFragment() {
         initView()
     }
 
-
     private fun initView() {
         mViewBinding.rvOperations.run {
 

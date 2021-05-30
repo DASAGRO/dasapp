@@ -7,7 +7,7 @@ import kz.das.dasaccounting.domain.data.Profile
 
 private const val PREFERENCES_USER_ACCESS_TOKEN = "user_access_token"
 private const val PREFERENCES_USER_PROFILE = "user_profile"
-
+private const val PREFERENCES_USER_ON_WORK = "user_on_work"
 
 class UserPreferences(private val preferences: SharedPreferences) {
 
@@ -29,6 +29,10 @@ class UserPreferences(private val preferences: SharedPreferences) {
 
     fun clearUser() {
         preferences.edit().remove(PREFERENCES_USER_PROFILE).apply()
+    }
+
+    fun isUserOnWork(): Boolean {
+        return false
     }
 
     fun getUser(): Profile? {

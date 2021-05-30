@@ -31,6 +31,8 @@ class PassEnterVM(val profile: Profile?): BaseVM(), KoinComponent {
     private val isOnBoardingConfirmedLV = SingleLiveEvent<Boolean>()
     fun isOnBoardingConfirmed(): LiveData<Boolean> = isOnBoardingConfirmedLV
 
+    fun getUserRole() = userRepository.getUserRole()
+
     private val countDownTimer = object : CountDownTimer(
         60 * 1000,
         1000

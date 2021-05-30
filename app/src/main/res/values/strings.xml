@@ -120,5 +120,6 @@
     <string name="enter_seal_number">Введите номер пломбы</string>
     <string name="shoot_video">Снять видео</string>
     <string name="error_incorrect_password">Введен неправильный пароль!</string>
+    <string name="accept_inventory_concat">Принять %s</string>
 
 </resources>
