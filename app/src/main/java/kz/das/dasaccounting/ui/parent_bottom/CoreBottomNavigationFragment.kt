@@ -19,15 +19,15 @@ import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.container.ContainerFragment
 import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
 import kz.das.dasaccounting.ui.utils.CameraUtils
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
-open class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, FragmentNavBarParentBinding>() {
+open class CoreBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, FragmentNavBarParentBinding>() {
 
     companion object {
-        fun getScreen() = DasAppScreen(ParentBottomNavigationFragment())
+        fun getScreen() = DasAppScreen(CoreBottomNavigationFragment())
     }
 
-    final override val mViewModel: ParentBottomNavigationVM by viewModel()
+    final override val mViewModel: ParentBottomNavigationVM by sharedViewModel()
 
     override fun getViewBinding() = FragmentNavBarParentBinding.inflate(layoutInflater)
 
@@ -164,13 +164,13 @@ open class ParentBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM
 
 
 fun Fragment.hideBottomNavMenu() {
-    if (parentFragment?.parentFragment is ParentBottomNavigationFragment) {
-        (parentFragment?.parentFragment as ParentBottomNavigationFragment).hideBottomMenu()
+    if (parentFragment?.parentFragment is CoreBottomNavigationFragment) {
+        (parentFragment?.parentFragment as CoreBottomNavigationFragment).hideBottomMenu()
     }
 }
 
 fun Fragment.showBottomNavMenu() {
-    if (parentFragment?.parentFragment is ParentBottomNavigationFragment) {
-        (parentFragment?.parentFragment as ParentBottomNavigationFragment).showBottomMenu()
+    if (parentFragment?.parentFragment is CoreBottomNavigationFragment) {
+        (parentFragment?.parentFragment as CoreBottomNavigationFragment).showBottomMenu()
     }
 }

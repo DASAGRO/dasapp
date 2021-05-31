@@ -32,7 +32,15 @@ class UserPreferences(private val preferences: SharedPreferences) {
     }
 
     fun isUserOnWork(): Boolean {
-        return false
+        return preferences.getBoolean(PREFERENCES_USER_ON_WORK, false)
+    }
+
+    fun startWork() {
+        preferences.edit().putBoolean(PREFERENCES_USER_ON_WORK, true).apply()
+    }
+
+    fun finishWork() {
+        preferences.edit().putBoolean(PREFERENCES_USER_ON_WORK, false).apply()
     }
 
     fun getUser(): Profile? {

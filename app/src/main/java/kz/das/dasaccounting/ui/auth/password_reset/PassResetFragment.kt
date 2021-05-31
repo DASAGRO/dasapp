@@ -9,7 +9,6 @@ import kz.das.dasaccounting.databinding.FragmentPasswordResetBinding
 import kz.das.dasaccounting.domain.data.Profile
 import androidx.lifecycle.Observer
 import kz.das.dasaccounting.ui.Screens
-import kz.das.dasaccounting.ui.parent_bottom.ParentBottomNavigationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 

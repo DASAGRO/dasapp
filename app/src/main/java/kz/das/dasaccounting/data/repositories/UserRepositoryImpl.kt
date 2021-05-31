@@ -29,7 +29,7 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
 
     override fun changeAvatar() { }
 
-    override fun deleteAvatar() {  }
+    override fun deleteAvatar() { }
 
     override fun isUserOnSession(): Boolean {
         return !userPreferences.getUserAccessToken().isNullOrEmpty()
@@ -45,10 +45,10 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
     }
 
     override fun startWork() {
-        TODO("Not yet implemented")
+        userPreferences.startWork()
     }
 
     override fun finishWork() {
-        TODO("Not yet implemented")
+        userPreferences.finishWork()
     }
 }

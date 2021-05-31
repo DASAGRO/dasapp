@@ -3,10 +3,10 @@ package kz.das.dasaccounting.ui.office
 import android.os.Bundle
 import android.view.View
 import kz.das.dasaccounting.core.navigation.DasAppScreen
-import kz.das.dasaccounting.ui.parent_bottom.ParentBottomNavigationFragment
+import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class OfficeBottomNavigationFragment: ParentBottomNavigationFragment() {
+class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
 
     private val officeBottomNavigationVM: OfficeBottomNavigationVM by viewModel()
 

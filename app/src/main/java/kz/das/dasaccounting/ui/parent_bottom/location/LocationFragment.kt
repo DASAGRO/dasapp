@@ -21,6 +21,7 @@ import kz.das.dasaccounting.ui.utils.GeolocationUtils
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.LocationComponentOptions
 import com.mapbox.mapboxsdk.location.modes.RenderMode
+import kz.das.dasaccounting.MainVM
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -34,6 +35,7 @@ class LocationFragment: BaseFragment<LocationVM, FragmentLocationBinding>(), OnM
     private var mapView: MapView? = null
 
     override val mViewModel: LocationVM by viewModel()
+    private val mainVM: MainVM by viewModel()
 
     override fun getViewBinding() = FragmentLocationBinding.inflate(layoutInflater)
 
@@ -49,7 +51,6 @@ class LocationFragment: BaseFragment<LocationVM, FragmentLocationBinding>(), OnM
     }
 
     override fun setupUI() {
-
     }
 
     override fun onMapReady(mapboxMap: MapboxMap) {

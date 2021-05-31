@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.databinding.FragmentNavBarParentBinding
-import kz.das.dasaccounting.ui.parent_bottom.ParentBottomNavigationFragment
+import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationFragment
 
-class DriverBottomNavigationFragment: ParentBottomNavigationFragment() {
+class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
 
     companion object {
         fun getScreen() = DasAppScreen(DriverBottomNavigationFragment())
