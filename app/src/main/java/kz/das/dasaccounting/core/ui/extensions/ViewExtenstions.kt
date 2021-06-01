@@ -2,10 +2,12 @@ package kz.das.dasaccounting.core.ui.extensions
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.content.Context
 import android.os.Build
 import android.text.Html
 import android.text.SpannableString
 import android.text.Spanned
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -93,6 +95,11 @@ fun View.zoomAnimation(duration: Long, visible: Boolean) {
             .setDuration(duration)
             .start()
     }
+}
+
+fun Context.getDimension(value: Float): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP, value, this.resources.displayMetrics).toInt()
 }
 
 

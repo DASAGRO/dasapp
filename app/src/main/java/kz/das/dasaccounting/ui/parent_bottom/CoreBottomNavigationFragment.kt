@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.ui.dialogs.NotificationDialog
@@ -21,13 +22,13 @@ import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
 import kz.das.dasaccounting.ui.utils.CameraUtils
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
-open class CoreBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, FragmentNavBarParentBinding>() {
+open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, FragmentNavBarParentBinding>() {
 
     companion object {
         fun getScreen() = DasAppScreen(CoreBottomNavigationFragment())
     }
 
-    final override val mViewModel: ParentBottomNavigationVM by sharedViewModel()
+    final override val mViewModel: CoreBottomNavigationVM by sharedViewModel()
 
     override fun getViewBinding() = FragmentNavBarParentBinding.inflate(layoutInflater)
 
@@ -45,6 +46,7 @@ open class CoreBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, 
                 showQr()
             }
         }
+
         mViewBinding.bottomNavigationView.background = null
         mViewBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -60,6 +62,16 @@ open class CoreBottomNavigationFragment: BaseFragment<ParentBottomNavigationVM, 
                 } else -> { return@setOnNavigationItemSelectedListener false }
             }
         }
+    }
+
+    override fun observeLiveData() {
+        super.observeLiveData()
+        mViewModel.isControlOptionsShow().observe(viewLifecycleOwner, Observer {
+            if (it)
+                mViewBinding.bslOperations.expand()
+            else
+                mViewBinding.bslOperations.collapse()
+        })
     }
 
     private fun showFragment(tab: String) {

@@ -10,6 +10,7 @@ import kz.das.dasaccounting.core.ui.extensions.animateInfinitePulse
 import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.databinding.FragmentSplashBinding
 import kz.das.dasaccounting.ui.auth.login.LoginFragment
+import kz.das.dasaccounting.ui.office.OfficeBottomNavigationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SplashFragment: BaseFragment<SplashVM, FragmentSplashBinding>() {
@@ -27,9 +28,10 @@ class SplashFragment: BaseFragment<SplashVM, FragmentSplashBinding>() {
         mViewBinding.ivLogo.animateInfinitePulse(0.5f, 0.5f, 250)
         delayedTask(1000, CoroutineScope(Dispatchers.Main)) {
             if (mViewModel.isUserOnSession()) {
-                mViewModel.getUserRole()?.let {
-                    Screens.getRoleScreens(it)?.let { screen -> requireRouter().newRootScreen(screen) }
-                }
+//                mViewModel.getUserRole()?.let {
+//                    Screens.getRoleScreens(it)?.let { screen -> requireRouter().newRootScreen(screen) }
+//                }
+                requireRouter().newRootScreen(OfficeBottomNavigationFragment.getScreen())
             } else {
                 requireRouter().newRootScreen(LoginFragment.getScreen())
             }

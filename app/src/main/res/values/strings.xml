@@ -121,5 +121,7 @@
     <string name="shoot_video">Снять видео</string>
     <string name="error_incorrect_password">Введен неправильный пароль!</string>
     <string name="accept_inventory_concat">Принять %s</string>
+    <string name="permission_location_desc">Для корректной работы карты и определение текущего местоположения требуется разрешение на геолокацию!</string>
+    <string name="permission_location_title">Разрешение местоположения</string>
 
 </resources>

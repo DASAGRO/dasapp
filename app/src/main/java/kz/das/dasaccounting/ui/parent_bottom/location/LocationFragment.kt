@@ -6,24 +6,27 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.mapbox.android.core.permissions.PermissionsManager
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
+import com.mapbox.mapboxsdk.location.LocationComponentOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
+import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
+import kz.das.dasaccounting.core.ui.dialogs.NotificationDialog
+import kz.das.dasaccounting.core.ui.extensions.getDimension
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentLocationBinding
+import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationVM
 import kz.das.dasaccounting.ui.utils.GeolocationUtils
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
-import com.mapbox.mapboxsdk.location.LocationComponentOptions
-import com.mapbox.mapboxsdk.location.modes.RenderMode
-import kz.das.dasaccounting.MainVM
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
-
 
 class LocationFragment: BaseFragment<LocationVM, FragmentLocationBinding>(), OnMapReadyCallback {
 
@@ -35,7 +38,8 @@ class LocationFragment: BaseFragment<LocationVM, FragmentLocationBinding>(), OnM
     private var mapView: MapView? = null
 
     override val mViewModel: LocationVM by viewModel()
-    private val mainVM: MainVM by viewModel()
+    private val coreMainVM: CoreBottomNavigationVM by sharedViewModel()
+
 
     override fun getViewBinding() = FragmentLocationBinding.inflate(layoutInflater)
 
@@ -51,6 +55,12 @@ class LocationFragment: BaseFragment<LocationVM, FragmentLocationBinding>(), OnM
     }
 
     override fun setupUI() {
+        mViewBinding.run {
+            btnStart.setOnClickListener {
+                coreMainVM.setControlOptionsState(true)
+                updateSessionUi()
+            }
+        }
     }
 
     override fun onMapReady(mapboxMap: MapboxMap) {
@@ -99,6 +109,11 @@ class LocationFragment: BaseFragment<LocationVM, FragmentLocationBinding>(), OnM
 
     override fun onResume() {
         super.onResume()
+        if (!GeolocationUtils.isPermissionGranted(requireContext())) {
+            requestLocationPermissionsLaunch.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        } else {
+            showLocationPermissionRequireDialog()
+        }
         mapView?.onResume()
     }
 
@@ -131,7 +146,6 @@ class LocationFragment: BaseFragment<LocationVM, FragmentLocationBinding>(), OnM
                     } else {
                         false
                     }
-
                 if (provideRationale) {
                     showLocationPermissionRequireDialog()
                 }
@@ -139,7 +153,19 @@ class LocationFragment: BaseFragment<LocationVM, FragmentLocationBinding>(), OnM
         }
 
     private fun showLocationPermissionRequireDialog() {
+        val notificationDialog = NotificationDialog.Builder()
+            .setTitle(getString(R.string.permission_location_title))
+            .setDescription(getString(R.string.permission_location_desc))
+            .build()
+        notificationDialog.show(childFragmentManager, "PermissionNotificationDialog")
+    }
 
+    private fun updateSessionUi() {
+//        val newLayoutParams = mViewBinding.btnStart.layoutParams as ConstraintLayout.LayoutParams
+//        newLayoutParams.topMargin = 0
+//        newLayoutParams.leftMargin = 0
+//        newLayoutParams.bottomMargin = requireContext().getDimension(220f)
+//        mViewBinding.btnStart.layoutParams = newLayoutParams
     }
 
 }

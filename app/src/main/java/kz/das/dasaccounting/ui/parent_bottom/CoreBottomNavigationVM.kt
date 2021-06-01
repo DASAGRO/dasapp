@@ -7,7 +7,7 @@ import kz.das.dasaccounting.domain.UserRepository
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class ParentBottomNavigationVM: BaseVM(), KoinComponent {
+class CoreBottomNavigationVM: BaseVM(), KoinComponent {
 
     private val userRepository: UserRepository by inject()
 

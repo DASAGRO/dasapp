@@ -11,15 +11,17 @@
         android:layout_height="match_parent" />
 
     <kz.das.dasaccounting.core.ui.custom.BottomSheetLayout
+        android:id="@+id/bsl_operations"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="bottom"
-        android:visibility="gone"
-        app:collapsedHeight="98dp">
+        android:visibility="visible"
+        app:collapsedHeight="198dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <io.github.florent37.shapeofview.shapes.RoundRectView
@@ -49,7 +51,6 @@
         </LinearLayout>
 
     </kz.das.dasaccounting.core.ui.custom.BottomSheetLayout>
-
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
