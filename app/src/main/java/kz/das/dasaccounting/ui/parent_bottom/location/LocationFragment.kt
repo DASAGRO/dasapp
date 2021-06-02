@@ -6,8 +6,8 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.LocationComponentOptions
@@ -20,7 +20,7 @@ import com.mapbox.mapboxsdk.maps.Style
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.ui.dialogs.NotificationDialog
-import kz.das.dasaccounting.core.ui.extensions.getDimension
+import kz.das.dasaccounting.core.ui.extensions.zoomAnimation
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentLocationBinding
 import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationVM
@@ -56,10 +56,23 @@ class LocationFragment: BaseFragment<LocationVM, FragmentLocationBinding>(), OnM
 
     override fun setupUI() {
         mViewBinding.run {
+            btnStart.isVisible = !coreMainVM.isOnWork()
+            btnStop.isVisible = coreMainVM.isOnWork()
+
             btnStart.setOnClickListener {
+                coreMainVM.startWork()
                 coreMainVM.setControlOptionsState(true)
-                updateSessionUi()
+                btnStart.zoomAnimation(300L, false)
+                btnStop.zoomAnimation(300L, true)
             }
+
+            btnStop.setOnClickListener {
+                coreMainVM.stopWork()
+                coreMainVM.setControlOptionsState(false)
+                btnStart.zoomAnimation(300L, true)
+                btnStop.zoomAnimation(300L, false)
+            }
+
         }
     }
 
@@ -160,12 +173,5 @@ class LocationFragment: BaseFragment<LocationVM, FragmentLocationBinding>(), OnM
         notificationDialog.show(childFragmentManager, "PermissionNotificationDialog")
     }
 
-    private fun updateSessionUi() {
-//        val newLayoutParams = mViewBinding.btnStart.layoutParams as ConstraintLayout.LayoutParams
-//        newLayoutParams.topMargin = 0
-//        newLayoutParams.leftMargin = 0
-//        newLayoutParams.bottomMargin = requireContext().getDimension(220f)
-//        mViewBinding.btnStart.layoutParams = newLayoutParams
-    }
 
 }

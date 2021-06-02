@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.View
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
+import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.action.OperationInit
+import kz.das.dasaccounting.ui.office.accept.AcceptInfoFragment
 import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -30,9 +32,13 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
         }
         operationsAdapter?.putItems(getOperations())
         operationsAdapter?.setOfficeOperationsAdapterEvent(object : OfficeOperationsAdapter.OnOfficeOperationsAdapterEvent {
-            override fun onOperationAct(operationAct: OperationAct) { }
+            override fun onOperationAct(operationAct: OperationAct) {
+                //requireRouter().navigateTo(AcceptInfoFragment.getScreen())
+            }
 
-            override fun onOperationInit(operationAct: OperationAct) { }
+            override fun onOperationInit(operationAct: OperationAct) {
+                requireRouter().navigateTo(AcceptInfoFragment.getScreen())
+            }
         })
     }
 

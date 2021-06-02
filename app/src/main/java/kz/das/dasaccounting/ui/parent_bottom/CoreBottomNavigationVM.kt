@@ -16,5 +16,10 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
 
     fun setControlOptionsState(isShow: Boolean) = isControlOptionsShowLV.postValue(isShow)
 
+    fun isOnWork() = userRepository.userOnWork()
+
+    fun startWork() = userRepository.startWork()
+
+    fun stopWork() = userRepository.stopWork()
 
 }

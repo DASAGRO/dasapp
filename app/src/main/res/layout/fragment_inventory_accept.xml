@@ -31,8 +31,7 @@
         android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        tools:text="Вы подтверждаете данную передачу ?" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_inventory_info"

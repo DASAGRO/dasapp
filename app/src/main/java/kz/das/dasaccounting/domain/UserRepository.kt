@@ -26,5 +26,5 @@ interface UserRepository {
 
     fun startWork()
 
-    fun finishWork()
+    fun stopWork()
 }

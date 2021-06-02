@@ -48,7 +48,7 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
         userPreferences.startWork()
     }
 
-    override fun finishWork() {
+    override fun stopWork() {
         userPreferences.finishWork()
     }
 }

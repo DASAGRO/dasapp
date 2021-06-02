@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
@@ -46,6 +47,7 @@ open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, Fr
                 showQr()
             }
         }
+        mViewBinding.bslOperations.isVisible = mViewModel.isOnWork()
 
         mViewBinding.bottomNavigationView.background = null
         mViewBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
@@ -67,10 +69,7 @@ open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, Fr
     override fun observeLiveData() {
         super.observeLiveData()
         mViewModel.isControlOptionsShow().observe(viewLifecycleOwner, Observer {
-            if (it)
-                mViewBinding.bslOperations.expand()
-            else
-                mViewBinding.bslOperations.collapse()
+            mViewBinding.bslOperations.isVisible = it
         })
     }
 
@@ -84,10 +83,12 @@ open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, Fr
         } else {
             when (tab) {
                 Screens.ScreenLinks.profile.toString() -> {
+                    if (mViewModel.isOnWork()) mViewBinding.bslOperations.isVisible = false
                     ContainerFragment.newInstance(
                             Screens.ScreenLinks.profile.toString())
                 }
                 else -> {
+                    if (mViewModel.isOnWork()) mViewBinding.bslOperations.isVisible = true
                     ContainerFragment.newInstance(
                             Screens.ScreenLinks.location.toString())
                 }
@@ -165,11 +166,15 @@ open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, Fr
     }
 
     private fun hideBottomOptions() {
-
+        if (mViewModel.isOnWork()) {
+            mViewBinding.bslOperations.collapse()
+        }
     }
 
     private fun showBottomOptions() {
-
+        if (mViewModel.isOnWork()) {
+            mViewBinding.bslOperations.expand()
+        }
     }
 
 }
