@@ -12,10 +12,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.Transformation
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile_history.view.*
+import kz.das.dasaccounting.R
+import ru.tinkoff.decoro.MaskImpl
+import ru.tinkoff.decoro.slots.PredefinedSlots
 
 
 fun View.setGone() {
@@ -52,6 +57,12 @@ fun returnSpanned(html: String?): Spanned {
             Html.fromHtml(html)
         }
     }
+}
+
+
+@BindingAdapter("app:phoneNumberText")
+fun TextView.phoneText(phoneNumberText: String?) {
+    this.text = phoneNumberText?.toUIFormattedPhone()
 }
 
 @BindingAdapter("app:animScaleXRatio", "app:animScaleYRatio", "app:pulseAnimDuration")
@@ -236,3 +247,24 @@ interface OnViewCompletionListener {
     fun onComplete()
     fun onCompletion()
 }
+
+
+// Image View extensions
+@BindingAdapter("app:avatar")
+fun ImageView.setAvatar(url: String?) {
+    Picasso.get()
+            .load(url)
+            .error(R.drawable.image_placeholder)
+            .placeholder(R.drawable.avatar_placeholder)
+            .into(this)
+}
+
+@BindingAdapter("app:productImageUrl")
+fun ImageView.setImage(url: String?) {
+    Picasso.get()
+            .load(url)
+            .error(R.drawable.image_placeholder)
+            .placeholder(R.drawable.image_placeholder)
+            .into(this)
+}
+

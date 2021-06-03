@@ -1,230 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingStart="13dp"
-    android:paddingEnd="13dp">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_profile"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:text="@string/profile"
-        android:textColor="@color/purple_700"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="profileVM"
+            type="kz.das.dasaccounting.ui.parent_bottom.profile.ProfileVM" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_profile"
-        android:layout_width="0dp"
-        android:layout_marginTop="30dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="@drawable/selectable_accent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_profile">
-
-        <io.github.florent37.shapeofview.shapes.CircleView
-            android:id="@+id/circleView"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_avatar"
-                android:src="@drawable/tom"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
-
-        </io.github.florent37.shapeofview.shapes.CircleView>
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="13dp"
+        android:paddingEnd="13dp">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_name"
-            style="@style/Widget.MaterialComponents.TextView.DAS"
+            android:id="@+id/tv_profile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:singleLine="true"
-            android:text="Том Круз"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/circleView"
-            app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
-            app:layout_constraintStart_toEndOf="@+id/circleView"
-            app:layout_constraintTop_toTopOf="@+id/circleView" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/ic_chevron_right"
-            app:layout_constraintBottom_toBottomOf="@+id/circleView"
+            android:layout_marginStart="5dp"
+            android:text="@string/profile"
+            android:textColor="@color/purple_700"
+            android:textSize="32sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/circleView" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_profile"
+            android:layout_width="0dp"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/selectable_accent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_profile">
+
+            <io.github.florent37.shapeofview.shapes.CircleView
+                android:id="@+id/circleView"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_avatar"
+                    android:src="@drawable/tom"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"/>
+
+            </io.github.florent37.shapeofview.shapes.CircleView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_name"
+                style="@style/Widget.MaterialComponents.TextView.DAS"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:singleLine="true"
+                android:text="@{String.format(profileVM.profileLV.firstName + ' ' + profileVM.profileLV.middleName + ' '+ profileVM.profileLV.lastName)}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/circleView"
+                app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
+                app:layout_constraintStart_toEndOf="@+id/circleView"
+                app:layout_constraintTop_toTopOf="@+id/circleView" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_chevron_right"
+                app:layout_constraintBottom_toBottomOf="@+id/circleView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/circleView" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_profile">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:background="@color/color_grey"
+                android:layout_marginBottom="5dp"
+                android:layout_height="1dp"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_history"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/selectable_accent"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_history"
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_history"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextView.DAS"
+                    android:layout_toEndOf="@+id/ic_history"
+                    android:text="@string/history"
+                    android:textSize="16sp"
+                    android:layout_toStartOf="@+id/ic_chevron_history"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_chevron_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_chevron_right"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/color_grey"
+                android:layout_height="1dp"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_support"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/selectable_accent"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_support"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_support"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextView.DAS"
+                    android:layout_toEndOf="@+id/ic_support"
+                    android:text="@string/support"
+                    android:textSize="16sp"
+                    android:layout_toStartOf="@+id/ic_chevron_support"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_chevron_support"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_chevron_right" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/color_grey"
+                android:layout_height="1dp"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_log_out"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/selectable_accent"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_log_out"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_power"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextView.DAS"
+                    android:layout_toEndOf="@+id/ic_log_out"
+                    android:text="@string/log_out"
+                    android:textSize="16sp"
+                    android:layout_toStartOf="@+id/ic_chevron_log_out"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_chevron_log_out"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_chevron_right" />
+
+            </RelativeLayout>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_marginTop="15dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_profile">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
-            android:background="@color/color_grey"
-            android:layout_marginBottom="5dp"
-            android:layout_height="1dp"/>
-
-        <RelativeLayout
-            android:id="@+id/rl_history"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="@drawable/selectable_accent"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ic_history"
-                android:layout_width="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:src="@drawable/ic_history"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                style="@style/Widget.MaterialComponents.TextView.DAS"
-                android:layout_toEndOf="@+id/ic_history"
-                android:text="@string/history"
-                android:textSize="16sp"
-                android:layout_toStartOf="@+id/ic_chevron_history"
-                android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ic_chevron_history"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_chevron_right"/>
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@color/color_grey"
-            android:layout_height="1dp"/>
-
-        <RelativeLayout
-            android:id="@+id/rl_support"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="@drawable/selectable_accent"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ic_support"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_alignParentStart="true"
-                android:src="@drawable/ic_support"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                style="@style/Widget.MaterialComponents.TextView.DAS"
-                android:layout_toEndOf="@+id/ic_support"
-                android:text="@string/support"
-                android:textSize="16sp"
-                android:layout_toStartOf="@+id/ic_chevron_support"
-                android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ic_chevron_support"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_chevron_right" />
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@color/color_grey"
-            android:layout_height="1dp"/>
-
-        <RelativeLayout
-            android:id="@+id/rl_log_out"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="@drawable/selectable_accent"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ic_log_out"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_alignParentStart="true"
-                android:src="@drawable/ic_power"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                style="@style/Widget.MaterialComponents.TextView.DAS"
-                android:layout_toEndOf="@+id/ic_log_out"
-                android:text="@string/log_out"
-                android:textSize="16sp"
-                android:layout_toStartOf="@+id/ic_chevron_log_out"
-                android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ic_chevron_log_out"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="5dp"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_chevron_right" />
-
-        </RelativeLayout>
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

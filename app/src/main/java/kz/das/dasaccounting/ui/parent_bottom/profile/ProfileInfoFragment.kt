@@ -21,6 +21,8 @@ class ProfileInfoFragment: BaseFragment<ProfileInfoVM, FragmentProfileInfoBindin
     override fun setupUI() {
 
         mViewBinding.run {
+            lifecycleOwner = viewLifecycleOwner
+            profileInfoVM = mViewModel
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }

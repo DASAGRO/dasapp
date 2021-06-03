@@ -13,9 +13,6 @@ interface AuthApi {
     @POST("/api/auth/login")
     suspend fun login(@Body hashMap: HashMap<String, String?>): Response<ProfileEntity>
 
-    @POST("/api/auth/profile")
-    suspend fun getProfile(): Response<ProfileEntity>
-
     @POST("/api/auth/send/password")
     suspend fun sendPassword(@Body phone: String?): Response<Any>
 }

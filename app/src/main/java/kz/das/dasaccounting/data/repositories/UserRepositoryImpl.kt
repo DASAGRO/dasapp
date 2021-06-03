@@ -1,5 +1,9 @@
 package kz.das.dasaccounting.data.repositories
 
+import kz.das.dasaccounting.core.extensions.unwrap
+import kz.das.dasaccounting.data.entities.toDomain
+import kz.das.dasaccounting.data.source.network.AuthApi
+import kz.das.dasaccounting.data.source.network.UserApi
 import kz.das.dasaccounting.data.source.preferences.UserPreferences
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.Profile
@@ -10,6 +14,7 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
 
     private val userPreferences: UserPreferences by inject()
     private val userRepository: UserRepository by inject()
+    private val userApi: UserApi by inject()
 
     override fun updateToken(token: String) {
         userPreferences.setUserAccessToken(token)
@@ -21,6 +26,18 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
 
     override fun getUserRole(): String {
         return getUser()?.position ?: ""
+    }
+
+    override suspend fun getUserProfile(): Profile? {
+        return userApi.getProfile().unwrap { it.toDomain() }
+    }
+
+    override suspend fun checkPassword(password: String): Any? {
+        return userApi.checkPassword(password).unwrap()
+    }
+
+    override suspend fun updatePassword(password: String): Any? {
+        return userApi.updatePassword(password)
     }
 
     override fun setUser(profile: Profile) {

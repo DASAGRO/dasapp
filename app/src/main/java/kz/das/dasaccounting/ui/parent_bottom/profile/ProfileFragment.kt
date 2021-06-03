@@ -23,6 +23,8 @@ class ProfileFragment: BaseFragment<ProfileVM, FragmentProfileBinding>() {
 
     override fun setupUI() {
         mViewBinding.run {
+            lifecycleOwner = viewLifecycleOwner
+            profileVM = mViewModel
             clProfile.setOnClickListener {
                 hideBottomNavMenu()
                 requireRouter().navigateTo(ProfileInfoFragment.getScreen())

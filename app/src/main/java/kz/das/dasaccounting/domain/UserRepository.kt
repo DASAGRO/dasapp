@@ -10,6 +10,12 @@ interface UserRepository {
 
     fun getUser(): Profile?
 
+    suspend fun getUserProfile(): Profile?
+
+    suspend fun checkPassword(password: String): Any?
+
+    suspend fun updatePassword(password: String): Any?
+
     fun getUserRole(): String?
 
     fun setUser(profile: Profile)
