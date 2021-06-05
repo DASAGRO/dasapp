@@ -80,6 +80,12 @@ abstract class BaseBottomNavigationFragment<VM: BaseVM, VB: ViewBinding>(): Frag
                 }
             })
 
+            getUiError().observe(viewLifecycleOwner, Observer { error ->
+                error?.let {
+                    (requireActivity() as BaseActivity<*, *>).showUiError(error.message)
+                }
+            })
+
             getNullResponseError().observe(viewLifecycleOwner, Observer { error ->
                 error?.let {
                     (requireActivity() as BaseActivity<*, *>).showNullResponseError()

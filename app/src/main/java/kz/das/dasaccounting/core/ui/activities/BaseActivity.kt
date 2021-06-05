@@ -66,6 +66,10 @@ abstract class BaseActivity<VM: ViewModel, VB: ViewBinding>: AppCompatActivity()
         showError(getString(R.string.common_unexpected_error), message ?: "")
     }
 
+    fun showUiError(message: String?) {
+        showSimpleBanner(getString(R.string.common_error), message, Banner.Type.ERROR)
+    }
+
     fun showError(title: String?, message: String?) {
         showSimpleBanner(title, message, Banner.Type.ERROR)
     }

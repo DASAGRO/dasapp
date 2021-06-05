@@ -47,7 +47,8 @@
             android:layout_height="48dp"
             android:hint="@string/enter_password"
             android:imeOptions="actionDone"
-            android:inputType="textPassword"
+            android:maxLength="6"
+            android:inputType="numberPassword"
             android:padding="6dp"
             android:textSize="14sp" />
 
@@ -71,7 +72,8 @@
             android:layout_height="48dp"
             android:hint="@string/password_repeat"
             android:imeOptions="actionDone"
-            android:inputType="textPassword"
+            android:inputType="numberPassword"
+            android:maxLength="6"
             android:padding="6dp"
             android:textSize="14sp" />
 

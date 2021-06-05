@@ -29,6 +29,10 @@ abstract class BaseVM : ViewModel(), KoinComponent {
             _unknownErrorLV.value = ExceptionModel(message = message)
         }
 
+        override fun onUiResponseError(message: String?) {
+            _unknownErrorLV.value = ExceptionModel(message = message)
+        }
+
         override fun onNullResponseError() {
             _nullResponseErrorLV.value = ExceptionModel()
         }
@@ -46,6 +50,9 @@ abstract class BaseVM : ViewModel(), KoinComponent {
 
     private val _unknownErrorLV = SingleLiveEvent<ExceptionModel>()
     fun getUnknownError(): LiveData<ExceptionModel> = _unknownErrorLV
+
+    private val _uiErrorLV = SingleLiveEvent<ExceptionModel>()
+    fun getUiError(): LiveData<ExceptionModel> = _uiErrorLV
 
     private val _nullResponseErrorLV = SingleLiveEvent<ExceptionModel>()
     fun getNullResponseError(): LiveData<ExceptionModel> = _nullResponseErrorLV

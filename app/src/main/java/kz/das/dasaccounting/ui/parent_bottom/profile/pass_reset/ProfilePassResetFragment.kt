@@ -1,5 +1,7 @@
 package kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset
 
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Observer
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
@@ -18,9 +20,23 @@ class ProfilePassResetFragment: BaseFragment<ProfilePassResetVM, FragmentProfile
 
     override fun setupUI() {
         mViewBinding.run {
+            edtPass.addTextChangedListener {
+                btnConfirm.isEnabled = it?.length == 6
+            }
             toolbar.setNavigationOnClickListener { requireRouter().exit() }
-            btnConfirm.setOnClickListener { requireRouter().navigateTo(ProfilePassResetConfirmFragment.getScreen()) }
+
+            btnConfirm.setOnClickListener {
+                mViewModel.checkPassword(mViewBinding.edtPass.text.toString())
+            }
         }
     }
 
+    override fun observeLiveData() {
+        super.observeLiveData()
+        mViewModel.isValidPassword().observe(viewLifecycleOwner, Observer {
+            if (it) {
+                requireRouter().navigateTo(ProfilePassResetConfirmFragment.getScreen())
+            }
+        })
+    }
 }

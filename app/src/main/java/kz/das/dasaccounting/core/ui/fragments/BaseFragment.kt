@@ -80,6 +80,12 @@ abstract class BaseFragment<VM: BaseVM, VB: ViewBinding>(): Fragment(), ViewCall
                 }
             })
 
+            getUiError().observe(viewLifecycleOwner, Observer { error ->
+                error?.let {
+                    (requireActivity() as BaseActivity<*, *>).showUiError(error.message)
+                }
+            })
+
             getNullResponseError().observe(viewLifecycleOwner, Observer { error ->
                 error?.let {
                     (requireActivity() as BaseActivity<*, *>).showNullResponseError()

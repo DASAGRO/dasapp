@@ -20,6 +20,7 @@ import kz.das.dasaccounting.ui.parent_bottom.profile.history.ProfileHistoryVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.ProfileInfoVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.ProfileVM
+import kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset.ProfilePassResetConfirmVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset.ProfilePassResetVM
 import kz.das.dasaccounting.ui.warehouse.WarehouseBottomNavigationVM
 import org.koin.android.viewmodel.dsl.viewModel
@@ -54,6 +55,7 @@ internal fun getProfileViewModels() = module {
     viewModel { ProfileSupportVM() }
     viewModel { ProfileHistoryVM() }
     viewModel { ProfilePassResetVM() }
+    viewModel { ProfilePassResetConfirmVM() }
 }
 
 internal fun getLocationViewModels() = module {

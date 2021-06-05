@@ -83,6 +83,12 @@ abstract class BaseBottomSheetFragment<VB : ViewBinding, VM : BaseVM> :
                 }
             })
 
+            getUiError().observe(viewLifecycleOwner, Observer { error ->
+                error?.let {
+                    (requireActivity() as BaseActivity<*, *>).showUiError(error.message)
+                }
+            })
+
             getNullResponseError().observe(viewLifecycleOwner, Observer { error ->
                 error?.let {
                     (requireActivity() as BaseActivity<*, *>).showNullResponseError()

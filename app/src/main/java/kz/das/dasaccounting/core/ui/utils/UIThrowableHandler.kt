@@ -3,6 +3,7 @@ package kz.das.dasaccounting.core.ui.utils
 import kz.das.dasaccounting.core.ui.utils.exceptions.BackendResponseException
 import kz.das.dasaccounting.core.ui.utils.exceptions.NetworkResponseException
 import kz.das.dasaccounting.core.ui.utils.exceptions.NullResponseException
+import kz.das.dasaccounting.core.ui.utils.exceptions.UiResponseException
 import java.lang.RuntimeException
 import java.net.UnknownHostException
 
@@ -22,6 +23,9 @@ class UIThrowableHandler(private val callbackListener: Callback? = null) : Throw
             is NullResponseException -> {
                 callbackListener?.onNullResponseError()
             }
+            is UiResponseException -> {
+                callbackListener?.onUiResponseError(throwable.message)
+            }
             is NetworkResponseException -> {
                 callbackListener?.onNetworkResponseError(throwable.message)
             }
@@ -36,6 +40,7 @@ class UIThrowableHandler(private val callbackListener: Callback? = null) : Throw
         fun onBackendResponseError(errorCode: Int, message: String?)
         fun onUnknownError(message: String?)
         fun onNullResponseError()
+        fun onUiResponseError(message: String?)
         fun onNetworkResponseError(message: String?)
     }
 }

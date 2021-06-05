@@ -43,12 +43,13 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_password">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_phone"
+                android:id="@+id/edt_pass"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint="@string/enter_password"
                 android:imeOptions="actionDone"
-                android:inputType="textPassword"
+                android:inputType="numberPassword"
+                android:maxLength="6"
                 android:padding="6dp"
                 android:textSize="14sp" />
 
@@ -78,6 +79,7 @@
             android:layout_marginStart="35dp"
             android:layout_marginEnd="35dp"
             android:text="@string/common_continue"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_pass_info" />

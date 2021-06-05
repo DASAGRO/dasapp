@@ -21,7 +21,9 @@ class ProfilePassResetVM: BaseVM(), KoinComponent {
             showLoading()
             try {
                 val pass = userRepository.checkPassword(password)
+                isValidPasswordLV.postValue(true)
             } catch (t: Throwable) {
+                isValidPasswordLV.postValue(false)
                 throwableHandler.handle(t)
             } finally {
                 hideLoading()

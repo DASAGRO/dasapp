@@ -70,7 +70,7 @@
     <string name="error_scan">Ошибка сканирование!</string>
     <string name="success_qr_scan">Qr успешно сканирован!</string>
     <string name="enter_pass_info_">Чтобы продолжить введите ваш текущий пароль</string>
-    <string name="enter_pass_confirm_info">Пароль должен состоять не менее чем из 8 и не более\n30 символов.\n\n В пароле обязательно должны присутствовать буквы нижнего (от a до z) и верхнего (от A до Z) регистра и цифры от (1 до 9).</string>
+    <string name="enter_pass_confirm_info">Пароль должен состоять не менее чем из 6.\n\n В пароле обязательно должны присутствовать цифры от (1 до 9).</string>
     <string name="password_repeat">Повторите пароль</string>
     <string name="new_password">Новый пароль</string>
     <string name="add_media">Добавить фото или файл</string>
@@ -124,5 +124,7 @@
     <string name="permission_location_desc">Для корректной работы карты и определение текущего местоположения требуется разрешение на геолокацию!</string>
     <string name="permission_location_title">Разрешение местоположения</string>
     <string name="finish_work">Завершить работу</string>
+    <string name="password_change">Изменение пароля</string>
+    <string name="password_changed_successfully">Пароль успешно обновлен!</string>
 
 </resources>
