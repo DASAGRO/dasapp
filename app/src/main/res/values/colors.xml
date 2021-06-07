@@ -21,6 +21,35 @@
     <color name="color_grey_semi">#80E5ECEF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+
+
+    <!-- UMedia image/video picker colors -->
+
+    <color name="colorUwMediaPickerStatusBar">#F6F6F6</color>
+    <color name="colorUwMediaPickerProgressBar">#CDCDCD</color>
+    <color name="colorUwMediaPickerPageBackground">#FFFFFF</color>
+    <color name="colorUwMediaPickerProgressDialogBg">#F9F9F9</color>
+    <color name="colorUwMediaPickerProgressDialogStroke">#D9D9D9</color>
+
+    <!-- Toolbar Colors -->
+    <color name="colorUwMediaPickerToolbarBg">#FF101F3E</color>
+    <color name="colorUwMediaPickerBackButton">#FFFFFFFF</color>
+    <color name="colorUwMediaPickerToolbarTitle">#FFFFFFFF</color>
+    <color name="colorUwMediaPickerToolbarSubtext">#FFFFFFFF</color>
+    <color name="colorUwMediaPickerBtnTextDoneEnable">#FFFFFFFF</color>
+    <color name="colorUwMediaPickerBtnTextDoneDisable">#B3B3B3</color>
+
+    <!-- Gallery Item Colors-->
+    <color name="colorUwMediaPickerBucketBottomStrip">#8C000000</color>
+    <color name="colorUwMediaPickerImagePlaceHolder">#F6F6F6</color>
+    <color name="colorUwMediaPickerUnselectedIconBg">#80FFFFFF</color>
+    <color name="colorUwMediaPickerSelectedIconBg">#0192D2</color>
+    <color name="colorUwMediaPickerSelectedIcon">#FFF</color>
+    <color name="colorUwMediaPickerMediaName">#FFFFFF</color>
+    <color name="colorUwMediaPickerAlbumMediaCount">#D9D9D9</color>
+
 </resources>
 
 <!--

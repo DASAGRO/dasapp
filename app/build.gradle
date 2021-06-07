@@ -9,9 +9,9 @@ plugins {
 
 // Creates a variable called signingPropertiesFile and initializes it to the
 // signing.properties file. Used for singing application
-def signingPropertiesFile = rootProject.file("signing.properties")
-def signingProperties = new Properties()
-signingProperties.load(new FileInputStream(signingPropertiesFile))
+//def signingPropertiesFile = rootProject.file("signing.properties")
+//def signingProperties = new Properties()
+//signingProperties.load(new FileInputStream(signingPropertiesFile))
 
 android {
     compileSdkVersion 30
@@ -34,9 +34,6 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = true
-    }
 
     buildFeatures {
         dataBinding = true
@@ -63,6 +60,7 @@ dependencies {
     implementation rootProject.ext.dependencies["cicerone_navigation"]
     implementation rootProject.ext.dependencies["legacy_support"]
     implementation rootProject.ext.dependencies["android_core_ktx"]
+    implementation rootProject.ext.dependencies["image_picasso"]
 
     // LIFECYCLE
     implementation rootProject.ext.dependencies["lifecycle_extension"]
@@ -107,6 +105,7 @@ dependencies {
     // SHAPE OF VIEW
     implementation 'io.github.florent37:shapeofview:1.4.7'
 
+    implementation 'io.github.ParkSangGwon:tedimagepicker:1.2.2'
 
     // MAPBOX
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.1'
@@ -117,8 +116,9 @@ dependencies {
 
     // QR Scanner
     implementation 'com.budiyev.android:code-scanner:2.1.0'
+    implementation 'com.google.zxing:core:3.3.3'
 
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:4.13.2'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

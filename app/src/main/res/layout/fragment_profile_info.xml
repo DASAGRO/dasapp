@@ -61,7 +61,7 @@
                     </io.github.florent37.shapeofview.shapes.CircleView>
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/appCompatTextView"
+                        android:id="@+id/ivChangeAvatar"
                         style="@style/Widget.MaterialComponents.TextView.DAS"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
