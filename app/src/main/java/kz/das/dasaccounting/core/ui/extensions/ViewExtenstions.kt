@@ -253,8 +253,8 @@ interface OnViewCompletionListener {
 @BindingAdapter("app:avatar")
 fun ImageView.setAvatar(url: String?) {
     Picasso.get()
-            .load(url)
-            .error(R.drawable.image_placeholder)
+            .load("https://app.dasagro.kz$url")
+            .error(R.drawable.avatar_placeholder)
             .placeholder(R.drawable.avatar_placeholder)
             .into(this)
 }
@@ -262,7 +262,7 @@ fun ImageView.setAvatar(url: String?) {
 @BindingAdapter("app:productImageUrl")
 fun ImageView.setImage(url: String?) {
     Picasso.get()
-            .load(url)
+            .load("https://app.dasagro.kz$url")
             .error(R.drawable.image_placeholder)
             .placeholder(R.drawable.image_placeholder)
             .into(this)

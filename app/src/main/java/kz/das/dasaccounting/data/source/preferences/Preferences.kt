@@ -27,6 +27,14 @@ class UserPreferences(private val preferences: SharedPreferences) {
         preferences.edit().putString(PREFERENCES_USER_PROFILE, Gson().toJson(user)).apply()
     }
 
+    fun setImagePath(imagePath: String) {
+        val user = getUser()
+        user?.imagePath = imagePath
+        user?.let {
+            setUser(it)
+        }
+    }
+
     fun clearUser() {
         preferences.edit().remove(PREFERENCES_USER_PROFILE).apply()
     }

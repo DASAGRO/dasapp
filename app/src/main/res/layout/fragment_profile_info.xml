@@ -56,7 +56,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/tom"/>
+                            android:src="@drawable/avatar_placeholder"
+                            app:avatar="@{profileInfoVM.profileLV.imagePath}"/>
 
                     </io.github.florent37.shapeofview.shapes.CircleView>
 

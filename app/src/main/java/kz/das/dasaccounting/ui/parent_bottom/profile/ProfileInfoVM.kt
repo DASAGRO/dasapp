@@ -1,5 +1,7 @@
 package kz.das.dasaccounting.ui.parent_bottom.profile
 
+import android.net.Uri
+import androidx.core.net.toFile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -16,6 +18,9 @@ class ProfileInfoVM: BaseVM(), KoinComponent {
 
     private val profileLV = SingleLiveEvent<Profile>()
     fun getProfileLV(): LiveData<Profile> = profileLV
+
+    private val profileImageLV = SingleLiveEvent<String>()
+    fun getProfileImageLV(): LiveData<String> = profileImageLV
 
     init {
         refresh()
@@ -34,6 +39,20 @@ class ProfileInfoVM: BaseVM(), KoinComponent {
                     profileLV.postValue(it)
                     userRepository.setUser(it)
                 }
+            } catch (t: Throwable) {
+                throwableHandler.handle(t)
+            } finally {
+                hideLoading()
+            }
+        }
+    }
+
+    fun updateImagePath(imageUri: Uri) {
+        viewModelScope.launch {
+            showLoading()
+            try {
+                val profileImagePath = userRepository.updateProfileImage(imageUri)
+                profileImageLV.postValue(profileImagePath)
             } catch (t: Throwable) {
                 throwableHandler.handle(t)
             } finally {

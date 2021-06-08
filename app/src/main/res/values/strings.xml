@@ -52,6 +52,7 @@
     <string name="common_error_could_not_connect_to_server">Не удалось подключится к серверу</string>
     <string name="common_no_data">Нет данных</string>
 
+    <string name="image_url">https://app.dasagro.kz%s</string>
 
     <string name="profile">Профиль</string>
     <string name="log_out">Выйти</string>

@@ -1,8 +1,10 @@
 package kz.das.dasaccounting.data.repositories
 
+import android.content.Context
+import android.net.Uri
 import kz.das.dasaccounting.core.extensions.unwrap
+import kz.das.dasaccounting.core.ui.utils.getImageMultipart
 import kz.das.dasaccounting.data.entities.toDomain
-import kz.das.dasaccounting.data.source.network.AuthApi
 import kz.das.dasaccounting.data.source.network.UserApi
 import kz.das.dasaccounting.data.source.preferences.UserPreferences
 import kz.das.dasaccounting.domain.UserRepository
@@ -12,6 +14,7 @@ import org.koin.core.inject
 
 class UserRepositoryImpl: UserRepository, KoinComponent {
 
+    private val context: Context by inject()
     private val userPreferences: UserPreferences by inject()
     private val userRepository: UserRepository by inject()
     private val userApi: UserApi by inject()
@@ -44,9 +47,11 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
         userPreferences.setUser(profile)
     }
 
-    override fun changeAvatar() { }
-
-    override fun deleteAvatar() { }
+    override suspend fun updateProfileImage(imageUri: Uri): String {
+        val imageUrl = userApi.updateImage(getImageMultipart(context, imageUri)).body()?.message ?: ""
+        userPreferences.setImagePath(imageUrl)
+        return imageUrl
+    }
 
     override fun isUserOnSession(): Boolean {
         return !userPreferences.getUserAccessToken().isNullOrEmpty()
