@@ -15,9 +15,12 @@ import java.io.File
 
 
 fun getImageMultipart(context: Context, path: Uri): MultipartBody.Part? {
-    val file: File? = File(getRealLocalPathFromURI(context, path))
-    val reqFile: RequestBody? = file?.asRequestBody("image/*".toMediaTypeOrNull())
-    return reqFile?.let { MultipartBody.Part.createFormData("image", file.name, it) }
+    val file: File? = File(getRealLocalPathFromURI(context, path)?: "")
+    return if (file?.exists() == true) {
+        val reqFile: RequestBody? = file.asRequestBody("image/*".toMediaTypeOrNull())
+        reqFile?.let { MultipartBody.Part.createFormData("image", file.name, it) }
+    } else null
+
 }
 
 
@@ -42,12 +45,16 @@ fun getRealLocalPathFromURI(mContext: Context, uri: Uri): String? {
             val split = docId.split(":").toTypedArray()
             val type = split[0]
             var contentUri: Uri? = null
-            if ("image" == type) {
-                contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            } else if ("video" == type) {
-                contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-            } else if ("audio" == type) {
-                contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            when (type) {
+                "image" -> {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                }
+                "video" -> {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                }
+                "audio" -> {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+                }
             }
             val selection = "_id=?"
             val selectionArgs = arrayOf(

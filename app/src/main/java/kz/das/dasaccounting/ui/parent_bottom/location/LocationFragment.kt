@@ -122,11 +122,11 @@ class LocationFragment: BaseFragment<LocationVM, FragmentLocationBinding>(), OnM
 
     override fun onResume() {
         super.onResume()
-        if (!GeolocationUtils.isPermissionGranted(requireContext())) {
-            requestLocationPermissionsLaunch.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        } else {
-            showLocationPermissionRequireDialog()
-        }
+//        if (!GeolocationUtils.isPermissionGranted(requireContext())) {
+//            requestLocationPermissionsLaunch.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+//        } else {
+//            showLocationPermissionRequireDialog()
+//        }
         mapView?.onResume()
     }
 

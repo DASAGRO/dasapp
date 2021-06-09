@@ -4,7 +4,9 @@ import android.net.Uri
 import androidx.core.net.toFile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.UserRepository
@@ -51,8 +53,10 @@ class ProfileInfoVM: BaseVM(), KoinComponent {
         viewModelScope.launch {
             showLoading()
             try {
-                val profileImagePath = userRepository.updateProfileImage(imageUri)
-                profileImageLV.postValue(profileImagePath)
+                withContext(Dispatchers.IO) {
+                    val profileImagePath = userRepository.updateProfileImage(imageUri)
+                    profileImageLV.postValue(profileImagePath)
+                }
             } catch (t: Throwable) {
                 throwableHandler.handle(t)
             } finally {
