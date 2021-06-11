@@ -3,7 +3,7 @@ package kz.das.dasaccounting.data.repositories
 import android.content.Context
 import android.net.Uri
 import kz.das.dasaccounting.core.extensions.unwrap
-import kz.das.dasaccounting.core.ui.utils.getImageMultipart
+import kz.das.dasaccounting.core.ui.utils.getFileMultipart
 import kz.das.dasaccounting.data.entities.toDomain
 import kz.das.dasaccounting.data.source.network.UserApi
 import kz.das.dasaccounting.data.source.preferences.UserPreferences
@@ -48,7 +48,7 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
     }
 
     override suspend fun updateProfileImage(imageUri: Uri): String {
-        val imageUrl = userApi.updateImage(getImageMultipart(context, imageUri)).body()?.message ?: ""
+        val imageUrl = userApi.updateImage(getFileMultipart(context, imageUri)).body()?.message ?: ""
         userPreferences.setImagePath(imageUrl)
         return imageUrl
     }

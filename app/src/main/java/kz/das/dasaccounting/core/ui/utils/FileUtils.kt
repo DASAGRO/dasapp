@@ -14,10 +14,10 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 
-fun getImageMultipart(context: Context, path: Uri): MultipartBody.Part? {
+fun getFileMultipart(context: Context, path: Uri): MultipartBody.Part? {
     val file: File? = File(getRealLocalPathFromURI(context, path)?: "")
     return if (file?.exists() == true) {
-        val reqFile: RequestBody? = file.asRequestBody("image/*".toMediaTypeOrNull())
+        val reqFile: RequestBody? = file.asRequestBody("*/*".toMediaTypeOrNull())
         reqFile?.let { MultipartBody.Part.createFormData("image", file.name, it) }
     } else null
 
