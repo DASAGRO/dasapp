@@ -74,7 +74,7 @@
     <string name="enter_pass_confirm_info">Пароль должен состоять не менее чем из 6.\n\n В пароле обязательно должны присутствовать цифры от (1 до 9).</string>
     <string name="password_repeat">Повторите пароль</string>
     <string name="new_password">Новый пароль</string>
-    <string name="add_media">Добавить фото или файл</string>
+    <string name="add_media">Добавить фото или видео</string>
     <string name="write_here">Напишите сообщение сюда</string>
     <string name="send">Отправить</string>
     <string name="text_support_info">Если у вас есть какие либо затруднения с приложением, либо вы хотите подсказать какие-то улучшения, мы обязательно выслушаем вас.</string>
