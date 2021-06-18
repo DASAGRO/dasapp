@@ -1,4 +1,4 @@
-package kz.das.dasaccounting.domain.data.drivers
+package kz.das.dasaccounting.domain.data.office
 
 data class Inventory(
     var inventoryId: Int = 0,
