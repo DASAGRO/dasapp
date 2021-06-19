@@ -13,7 +13,7 @@ data class ProfileEntity(
         val lastName: String?,
         val middleName: String?,
         val phone: String?,
-        val position: String?,
+        val role: String?,
         val token: String?,
         val userId: String?
 )
@@ -30,7 +30,7 @@ fun ProfileEntity.toDomain(): Profile {
             lastName = this.lastName,
             middleName = this.middleName,
             phone = this.phone,
-            position = this.position,
+            position = this.role,
             token = this.token,
             userId = this.userId
     )

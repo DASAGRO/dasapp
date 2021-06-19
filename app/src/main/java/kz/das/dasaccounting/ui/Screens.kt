@@ -2,7 +2,6 @@ package kz.das.dasaccounting.ui
 
 import kz.das.dasaccounting.domain.common.ProfileRole
 import kz.das.dasaccounting.ui.drivers.DriverBottomNavigationFragment
-import kz.das.dasaccounting.ui.drivers.DriverBottomNavigationVM
 import kz.das.dasaccounting.ui.guards.GuardBottomNavigationFragment
 import kz.das.dasaccounting.ui.office.OfficeBottomNavigationFragment
 import kz.das.dasaccounting.ui.parent_bottom.location.LocationFragment

@@ -1,3 +1,0 @@
-package kz.das.dasaccounting.data.repositories
-
-interface OperationRepositoryImpl

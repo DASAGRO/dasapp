@@ -2,12 +2,15 @@ package kz.das.dasaccounting.data.repositories
 
 import android.content.Context
 import android.net.Uri
+import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.core.extensions.unwrap
 import kz.das.dasaccounting.core.ui.utils.getFileMultipart
 import kz.das.dasaccounting.data.entities.toDomain
 import kz.das.dasaccounting.data.source.network.UserApi
 import kz.das.dasaccounting.data.source.preferences.UserPreferences
+import kz.das.dasaccounting.domain.ShiftRepository
 import kz.das.dasaccounting.domain.UserRepository
+import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -17,6 +20,7 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
     private val context: Context by inject()
     private val userPreferences: UserPreferences by inject()
     private val userRepository: UserRepository by inject()
+    private val shiftRepository: ShiftRepository by inject()
     private val userApi: UserApi by inject()
 
     override fun updateToken(token: String) {
@@ -73,4 +77,11 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
     override fun stopWork() {
         userPreferences.finishWork()
     }
+
+    override fun saveLastLocation(location: Location) {
+        userPreferences.saveLastLocation(location)
+    }
+
+    override fun getLastLocation(): Location = userPreferences.getLastLocation()
+
 }

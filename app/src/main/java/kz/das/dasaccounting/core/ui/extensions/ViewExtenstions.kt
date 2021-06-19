@@ -255,8 +255,8 @@ interface OnViewCompletionListener {
 fun ImageView.setAvatar(url: String?) {
     Picasso.get()
             .load("https://app.dasagro.kz$url")
-//            .error(R.drawable.avatar_placeholder)
-//            .placeholder(R.drawable.avatar_placeholder)
+            .error(R.drawable.avatar_placeholder)
+            .placeholder(R.drawable.avatar_placeholder)
             .into(this)
 }
 
@@ -264,8 +264,8 @@ fun ImageView.setAvatar(url: String?) {
 fun ImageView.setImage(url: String?) {
     Picasso.get()
             .load("https://app.dasagro.kz$url")
-//            .error(R.drawable.image_placeholder)
-//            .placeholder(R.drawable.image_placeholder)
+            .error(R.drawable.image_placeholder)
+            .placeholder(R.drawable.image_placeholder)
             .into(this)
 }
 

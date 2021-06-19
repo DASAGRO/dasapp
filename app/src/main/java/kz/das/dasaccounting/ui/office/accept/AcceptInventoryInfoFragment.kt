@@ -6,13 +6,13 @@ import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentInventoryAcceptBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class AcceptInfoFragment: BaseFragment<AcceptInfoVM, FragmentInventoryAcceptBinding>() {
+class AcceptInventoryInfoFragment: BaseFragment<AccepInventorytInfoVM, FragmentInventoryAcceptBinding>() {
 
     companion object {
-        fun getScreen() = DasAppScreen(AcceptInfoFragment())
+        fun getScreen() = DasAppScreen(AcceptInventoryInfoFragment())
     }
 
-    override val mViewModel: AcceptInfoVM by viewModel()
+    override val mViewModel: AccepInventorytInfoVM by viewModel()
 
     override fun getViewBinding() = FragmentInventoryAcceptBinding.inflate(layoutInflater)
 

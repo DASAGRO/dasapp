@@ -7,7 +7,7 @@ import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.action.OperationInit
-import kz.das.dasaccounting.ui.office.accept.AcceptInfoFragment
+import kz.das.dasaccounting.ui.office.accept.AcceptInventoryInfoFragment
 import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -37,7 +37,7 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
 
             override fun onOperationInit(operationAct: OperationAct) {
-                requireRouter().navigateTo(AcceptInfoFragment.getScreen())
+                requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen())
             }
         })
     }

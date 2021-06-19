@@ -3,11 +3,14 @@ package kz.das.dasaccounting.data.source.preferences
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.orhanobut.hawk.Hawk
+import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
 
 private const val PREFERENCES_USER_ACCESS_TOKEN = "user_access_token"
 private const val PREFERENCES_USER_PROFILE = "user_profile"
 private const val PREFERENCES_USER_ON_WORK = "user_on_work"
+
+private const val PREFERENCES_LAST_LOCATION = "last_location"
 
 class UserPreferences(private val preferences: SharedPreferences) {
 
@@ -49,6 +52,19 @@ class UserPreferences(private val preferences: SharedPreferences) {
 
     fun finishWork() {
         preferences.edit().putBoolean(PREFERENCES_USER_ON_WORK, false).apply()
+    }
+
+    fun saveLastLocation(location: Location) {
+        preferences.edit().putString(PREFERENCES_LAST_LOCATION, Gson().toJson(location)).apply()
+    }
+
+    fun getLastLocation(): Location {
+        return try {
+            val json = preferences.getString(PREFERENCES_LAST_LOCATION, null)
+            Gson().fromJson(json, Location::class.java)
+        } catch (e: Exception) {
+            Location(48.005284, 66.9045434)
+        }
     }
 
     fun getUser(): Profile? {

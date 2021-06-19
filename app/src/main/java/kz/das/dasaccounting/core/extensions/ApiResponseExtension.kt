@@ -18,20 +18,6 @@ fun <T1, T2> Response<T1>.unwrap(converter: (T1) -> T2): T2 {
     }
 }
 
-fun <T1, T2> Response<T1>.unwrap(converter: (T1) -> T2, onResultSaveCallback: onResultSaveCallback<T1>): T2 {
-    if (!isSuccessful) {
-        throw NetworkResponseException(this.errorBody()?.string()?.toStringListApiError()?.descr ?: "Ошибка", code())
-    } else if (code() != 200 && code() < 500) {
-        throw BackendResponseException(code(), if (code() < 500) message() ?: "" else "")
-    } else if (body() == null) {
-        throw NullResponseException()
-    } else {
-        onResultSaveCallback.onSaveData(body()!!)
-        onResultSaveCallback.onRetrieveData()
-        return converter(body()!!)
-    }
-}
-
 fun <T> Response<T>.unwrap(): T {
     if (!isSuccessful) {
         throw NetworkResponseException(this.errorBody()?.string()?.toStringListApiError()?.descr ?: "Ошибка", code())
@@ -42,9 +28,4 @@ fun <T> Response<T>.unwrap(): T {
     } else {
         return body()!!
     }
-}
-
-interface onResultSaveCallback<T> {
-    fun onSaveData(data: T)
-    fun onRetrieveData()
 }

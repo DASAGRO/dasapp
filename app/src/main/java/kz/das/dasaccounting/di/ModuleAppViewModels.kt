@@ -14,7 +14,7 @@ import kz.das.dasaccounting.ui.drivers.DriverBottomNavigationVM
 import kz.das.dasaccounting.ui.guards.GuardBottomNavigationVM
 import kz.das.dasaccounting.ui.office.OfficeBottomNavigationVM
 import kz.das.dasaccounting.ui.office.accept.AcceptConfirmationVM
-import kz.das.dasaccounting.ui.office.accept.AcceptInfoVM
+import kz.das.dasaccounting.ui.office.accept.AccepInventorytInfoVM
 import kz.das.dasaccounting.ui.parent_bottom.location.LocationVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.history.ProfileHistoryVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.ProfileInfoVM
@@ -47,7 +47,7 @@ internal fun getMainViewModels() = module {
 
 internal fun getOfficeViewModels() = module {
     viewModel { OfficeBottomNavigationVM() }
-    viewModel { AcceptInfoVM() }
+    viewModel { AccepInventorytInfoVM() }
     viewModel { AcceptConfirmationVM() }
 }
 

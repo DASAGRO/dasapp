@@ -4,7 +4,7 @@ class ApiError(var title: String = "Ошибка",
                var descr: String = "Описание ошибка")
 
 fun String?.toStringListApiError(): ApiError {
-    return if (!this.isNullOrEmpty() && this.length > 1) {
+    return if (!this.isNullOrEmpty()) {
         var list = this
         list = list.replace("[", "")
         list = list.replace("]", "")
@@ -12,8 +12,11 @@ fun String?.toStringListApiError(): ApiError {
         val result: List<String> = list.split(",").map {
             it.trim()
         }
-        ApiError(result[0], result[1])
+        if (result.size > 1)
+            ApiError(result[0], result[1])
+        else
+            ApiError("Неожиданная ошибка", result[0])
     } else {
-        ApiError()
+        ApiError("Неожиданная ошибка", "Что-то пошло не так")
     }
 }

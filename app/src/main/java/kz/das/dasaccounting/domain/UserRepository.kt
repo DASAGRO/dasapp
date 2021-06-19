@@ -1,8 +1,9 @@
 package kz.das.dasaccounting.domain
 
 import android.net.Uri
+import kz.das.dasaccounting.core.extensions.ApiResponseMessage
+import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
-import java.io.File
 
 interface UserRepository {
 
@@ -33,4 +34,9 @@ interface UserRepository {
     fun startWork()
 
     fun stopWork()
+
+    fun saveLastLocation(location: Location)
+
+    fun getLastLocation(): Location
+
 }

@@ -1,29 +1,24 @@
 package kz.das.dasaccounting.data.source.network
 
+import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import retrofit2.Response
-import retrofit2.http.GET
+import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface OperationApi {
+interface ShiftApi {
 
-    @POST
-    fun startWork(): Response<Any>
+    /**
+     * @author kassiend
+     * shift start POST request method
+     * */
+    @POST("api/shift/open")
+    suspend fun startWork(@Body shiftMap: HashMap<String, Any?>): Response<ApiResponseMessage>
 
-    @POST
-    fun finishWork(): Response<Any>
-
-
-    @GET
-    fun getOperationList(): Response<Any>
-
-    @POST
-    fun makeTransfer(): Response<Any>
-
-    @GET
-    fun getReceivedTransfers(): Response<Any>
-
-    @GET
-    fun getAcceptedTransfers(): Response<Any>
-
+    /**
+     * @author kassiend
+     * shift finish POST request method
+     * */
+    @POST("api/shift/close")
+    suspend fun finishWork(): Response<ApiResponseMessage>
 
 }
