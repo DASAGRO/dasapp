@@ -19,6 +19,6 @@ interface ShiftApi {
      * shift finish POST request method
      * */
     @POST("api/shift/close")
-    suspend fun finishWork(): Response<ApiResponseMessage>
+    suspend fun finishWork(@Body shiftMap: HashMap<String, Any?>): Response<ApiResponseMessage>
 
 }

@@ -82,7 +82,6 @@ class OfficeOperationsAdapter(val context: Context, var operations: ArrayList<Op
         override fun bind(item: OperationInit, position: Int) {
             this.itemBinding.run {
                 this.actionName = item.name
-                this.iconId = R.drawable.ic_add
                 this.llAction.setOnClickListener {
                     officeOperationsAdapterEvent?.onOperationInit(item)
                 }

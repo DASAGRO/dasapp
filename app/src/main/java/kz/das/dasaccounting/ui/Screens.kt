@@ -1,6 +1,6 @@
 package kz.das.dasaccounting.ui
 
-import kz.das.dasaccounting.domain.common.ProfileRole
+import kz.das.dasaccounting.domain.common.UserRole
 import kz.das.dasaccounting.ui.drivers.DriverBottomNavigationFragment
 import kz.das.dasaccounting.ui.guards.GuardBottomNavigationFragment
 import kz.das.dasaccounting.ui.office.OfficeBottomNavigationFragment
@@ -29,10 +29,10 @@ object Screens {
 
     fun getRoleScreens(userRole: String): Screen? {
         return mapOf(
-            ProfileRole.DRIVER.role to DriverBottomNavigationFragment.getScreen(),
-            ProfileRole.OFFICE.role to OfficeBottomNavigationFragment.getScreen(),
-            ProfileRole.SECURITY.role to GuardBottomNavigationFragment.getScreen(),
-            ProfileRole.WAREHOUSE.role to WarehouseBottomNavigationFragment.getScreen()
+            UserRole.DRIVER.role to DriverBottomNavigationFragment.getScreen(),
+            UserRole.OFFICE.role to OfficeBottomNavigationFragment.getScreen(),
+            UserRole.SECURITY.role to GuardBottomNavigationFragment.getScreen(),
+            UserRole.WAREHOUSE.role to WarehouseBottomNavigationFragment.getScreen()
         )[userRole]
     }
 

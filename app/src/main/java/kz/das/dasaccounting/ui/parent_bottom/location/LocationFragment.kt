@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Looper
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import com.mapbox.android.core.location.*
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.Mapbox
@@ -23,6 +24,7 @@ import kz.das.dasaccounting.core.ui.dialogs.NotificationDialog
 import kz.das.dasaccounting.core.ui.extensions.zoomAnimation
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentLocationBinding
+import kz.das.dasaccounting.domain.common.UserRole
 import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationVM
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -52,22 +54,42 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
         mViewBinding.apply {
             btnStart.isVisible = !coreMainVM.isOnWork()
             btnStop.isVisible = coreMainVM.isOnWork()
+            coreMainVM.setControlOptionsState(coreMainVM.isOnWork())
 
             btnStart.setOnClickListener {
-                coreMainVM.startWork()
-                btnStart.zoomAnimation(300L, false)
-                btnStop.zoomAnimation(300L, true)
+                if (coreMainVM.getUserRole() == UserRole.OFFICE.role) {
+                    coreMainVM.setStartWorkWithQrLV()
+                } else {
+                    coreMainVM.startWork()
+                }
             }
 
             btnStop.setOnClickListener {
                 coreMainVM.stopWork()
-                btnStart.zoomAnimation(300L, true)
-                btnStop.zoomAnimation(300L, false)
             }
 
             map = this.mapView
             map?.getMapAsync(this@LocationFragment)
         }
+    }
+
+    override fun observeLiveData() {
+        super.observeLiveData()
+        coreMainVM.isWorkStarted().observe(viewLifecycleOwner, Observer {
+            if (it) {
+                coreMainVM.setControlOptionsState(true)
+                mViewBinding.btnStart.zoomAnimation(300L, false)
+                mViewBinding.btnStop.zoomAnimation(300L, true)
+            }
+        })
+
+        coreMainVM.isWorkStarted().observe(viewLifecycleOwner, Observer {
+            if (it) {
+                coreMainVM.setControlOptionsState(false)
+                mViewBinding.btnStart.zoomAnimation(300L, true)
+                mViewBinding.btnStop.zoomAnimation(300L, false)
+            }
+        })
     }
 
     override fun onMapReady(mapboxMap: MapboxMap) {
@@ -210,9 +232,6 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
                     } else {
                         false
                     }
-//                if (provideRationale) {
-//                    showLocationPermissionRequireDialog()
-//                }
             } else {
                 mapboxMap?.setStyle(
                     Style.MAPBOX_STREETS

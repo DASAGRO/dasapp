@@ -1,6 +1,6 @@
 package kz.das.dasaccounting.domain.common
 
-enum class ProfileRole(val role: String) {
+enum class UserRole(val role: String) {
     OFFICE("8hour"),
     WAREHOUSE("Store"),
     SECURITY("Security"),

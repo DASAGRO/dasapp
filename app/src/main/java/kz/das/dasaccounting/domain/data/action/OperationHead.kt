@@ -1,5 +1,3 @@
 package kz.das.dasaccounting.domain.data.action
 
-class OperationHead: OperationAct() {
-    val name: String? = null
-}
+class OperationHead(val name: String? = null): OperationAct()

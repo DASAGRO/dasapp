@@ -127,7 +127,7 @@
     <string name="finish_work">Завершить работу</string>
     <string name="password_change">Изменение пароля</string>
     <string name="password_changed_successfully">Пароль успешно обновлен!</string>
-
+    <string name="inventory_title">ТМЦ</string>
 
 
 </resources>

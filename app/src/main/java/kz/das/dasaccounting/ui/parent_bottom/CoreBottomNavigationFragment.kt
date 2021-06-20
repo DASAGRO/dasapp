@@ -53,12 +53,12 @@ open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, Fr
         mViewBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home-> {
-                    showBottomOptions()
+                    if (mViewModel.isOnWork()) mViewBinding.bslOperations.isVisible = true
                     showFragment(Screens.ScreenLinks.location.toString())
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    hideBottomOptions()
+                    if (mViewModel.isOnWork()) mViewBinding.bslOperations.isVisible = false
                     showFragment(Screens.ScreenLinks.profile.toString())
                     return@setOnNavigationItemSelectedListener true
                 } else -> { return@setOnNavigationItemSelectedListener false }
@@ -83,12 +83,10 @@ open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, Fr
         } else {
             when (tab) {
                 Screens.ScreenLinks.profile.toString() -> {
-                    if (mViewModel.isOnWork()) mViewBinding.bslOperations.isVisible = false
                     ContainerFragment.newInstance(
                             Screens.ScreenLinks.profile.toString())
                 }
                 else -> {
-                    if (mViewModel.isOnWork()) mViewBinding.bslOperations.isVisible = true
                     ContainerFragment.newInstance(
                             Screens.ScreenLinks.location.toString())
                 }
@@ -159,7 +157,9 @@ open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, Fr
         val qrFragment = QrFragment.Builder()
             .setCancelable(true)
             .setOnScanCallback(object : QrFragment.OnScanCallback {
-                override fun onScan(qrScan: String) { }
+                override fun onScan(qrScan: String) {
+                    showSuccess("Scan баркода", qrScan)
+                }
             })
             .build()
         qrFragment.show(childFragmentManager, "QrFragment")

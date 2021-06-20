@@ -11,3 +11,10 @@ internal fun String.hexToString(): String {
     }
     return stringBuilder.toString()
 }
+
+fun String.compareStrAndInit(compareStr: String, action: () -> Unit): Boolean {
+    if (this == compareStr) {
+        action()
+    }
+    return this == compareStr
+}

@@ -41,6 +41,7 @@ class DasApplication: Application(), LifecycleObserver {
             androidContext(this@DasApplication)
             modules(
                 getModulePreferences(applicationContext),
+                getDatabaseModule(applicationContext),
                 getNetworkModule(),
                 getApiModule(),
                 getRepositoriesModule(),

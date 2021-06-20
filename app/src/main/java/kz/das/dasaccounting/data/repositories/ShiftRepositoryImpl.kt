@@ -7,10 +7,9 @@ import kz.das.dasaccounting.domain.ShiftRepository
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class ShiftRepositoryImpl: ShiftRepository, KoinComponent {
+class ShiftRepositoryImpl : ShiftRepository, KoinComponent {
 
     private val shiftApi: ShiftApi by inject()
-
 
     override suspend fun startShift(
         lat: Double,
@@ -19,16 +18,28 @@ class ShiftRepositoryImpl: ShiftRepository, KoinComponent {
         scannedQR: String?
     ): ApiResponseMessage {
 
-        return shiftApi.startWork(hashMapOf(
-            "latitude" to lat,
-            "longitude" to long,
-            "time" to time,
-            "scannedQR" to scannedQR)
+        return shiftApi.startWork(
+            hashMapOf(
+                "latitude" to lat,
+                "longitude" to long,
+                "time" to time,
+                "qr" to scannedQR
+            )
         ).unwrap()
     }
 
-    override suspend fun finishShift(): ApiResponseMessage {
-        return shiftApi.finishWork().unwrap()
+    override suspend fun finishShift(
+        lat: Double,
+        long: Double,
+        time: Long
+    ): ApiResponseMessage {
+        return shiftApi.finishWork(
+            hashMapOf(
+                "latitude" to lat,
+                "longitude" to long,
+                "time" to time
+            )
+        ).unwrap()
     }
 
 }

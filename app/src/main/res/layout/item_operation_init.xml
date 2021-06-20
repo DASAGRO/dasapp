@@ -34,8 +34,8 @@
                 android:id="@+id/iv_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:src="@{iconId}" />
+                android:src="@drawable/ic_add_mini"
+                android:layout_margin="8dp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_name"

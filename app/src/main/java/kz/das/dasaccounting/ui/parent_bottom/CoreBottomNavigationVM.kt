@@ -18,7 +18,20 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
     private val isControlOptionsShowLV = MutableLiveData<Boolean>()
     fun isControlOptionsShow(): LiveData<Boolean> = isControlOptionsShowLV
 
+    private val isStartWorkWithQrLV = MutableLiveData<Boolean>()
+    fun isStartWorkWithQrLV(): LiveData<Boolean> = isStartWorkWithQrLV
+
+    fun setStartWorkWithQrLV() { isStartWorkWithQrLV.postValue(true) }
+
+    private val isWorkStartedLV = MutableLiveData<Boolean>()
+    fun isWorkStarted(): LiveData<Boolean> = isWorkStartedLV
+
+    private val isWorkStoppedLV = MutableLiveData<Boolean>()
+    fun isWorkStopped(): LiveData<Boolean> = isWorkStoppedLV
+
     fun setControlOptionsState(isShow: Boolean) = isControlOptionsShowLV.postValue(isShow)
+
+    fun getUserRole() = userRepository.getUserRole()
 
     fun isOnWork() = userRepository.userOnWork()
 
@@ -31,6 +44,7 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
                     System.currentTimeMillis())
                 userRepository.startWork()
                 setControlOptionsState(isOnWork())
+                isWorkStartedLV.postValue(true)
             } catch (t: Throwable) {
                 throwableHandler.handle(t)
             } finally {
@@ -39,10 +53,32 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
         }
     }
 
+    // TODO add request params from userRepository in shiftRepository
+    fun startWork(qrScan: String) {
+        viewModelScope.launch {
+            showLoading()
+            try {
+                shiftRepository.startShift(userRepository.getLastLocation().lat,
+                    userRepository.getLastLocation().long,
+                    System.currentTimeMillis(), qrScan)
+                userRepository.startWork()
+                setControlOptionsState(isOnWork())
+                isWorkStoppedLV.postValue(true)
+            } catch (t: Throwable) {
+                throwableHandler.handle(t)
+            } finally {
+                hideLoading()
+            }
+        }
+    }
+
+    // TODO add request params from userRepository in shiftRepository
     fun stopWork() {
         viewModelScope.launch {
             try {
-                shiftRepository.finishShift()
+                shiftRepository.finishShift(userRepository.getLastLocation().lat,
+                    userRepository.getLastLocation().long,
+                    System.currentTimeMillis())
                 userRepository.stopWork()
                 setControlOptionsState(isOnWork())
             } catch (t: Throwable) {
@@ -52,5 +88,6 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
             }
         }
     }
+
 
 }

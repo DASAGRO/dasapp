@@ -98,7 +98,7 @@ dependencies {
 
     // ROOM
     implementation rootProject.ext.dependencies["room_runtime"]
-    implementation rootProject.ext.dependencies["room_compiler"]
+    annotationProcessor rootProject.ext.dependencies["room_compiler"]
     implementation rootProject.ext.dependencies["room_ktx"]
     implementation rootProject.ext.dependencies["room_testing"]
 
