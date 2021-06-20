@@ -105,14 +105,6 @@ open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, Fr
         }
     }
 
-    protected fun onShiftStart() {
-
-    }
-
-    protected fun onShiftStop() {
-
-    }
-
     private fun hideFragments(fm: FragmentManager, tag: String) {
         val locationFragment = fm.findFragmentByTag(Screens.ScreenLinks.location.toString())
         val profileFragment = fm.findFragmentByTag(Screens.ScreenLinks.profile.toString())

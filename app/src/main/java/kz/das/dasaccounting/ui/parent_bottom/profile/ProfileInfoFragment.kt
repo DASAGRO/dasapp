@@ -56,8 +56,9 @@ class ProfileInfoFragment: BaseFragment<ProfileInfoVM, FragmentProfileInfoBindin
     override fun observeLiveData() {
         super.observeLiveData()
         mViewModel.getProfileImageLV().observe(viewLifecycleOwner, Observer {
+
             it?.let {
-                mViewBinding.ivAvatar.setAvatar("https://app.dasagro.kz$it")
+                mViewBinding.ivAvatar.setAvatar(it)
             }
         })
     }

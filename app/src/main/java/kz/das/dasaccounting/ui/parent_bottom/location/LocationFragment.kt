@@ -1,8 +1,11 @@
 package kz.das.dasaccounting.ui.parent_bottom.location
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import com.mapbox.android.core.location.*
 import com.mapbox.android.core.permissions.PermissionsManager
@@ -16,10 +19,10 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
+import kz.das.dasaccounting.core.ui.dialogs.NotificationDialog
 import kz.das.dasaccounting.core.ui.extensions.zoomAnimation
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentLocationBinding
-import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationFragment
 import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationVM
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -104,7 +107,7 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
             locationComponent.renderMode = RenderMode.COMPASS
             initLocationEngine()
         } else {
-            // TODO Location permission
+            showLocationPermissionRequireDialog()
         }
     }
 
@@ -197,4 +200,38 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
         fun getScreen() = DasAppScreen(LocationFragment())
 
     }
+
+    private val requestLocationPermissionsLaunch =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (!isGranted) {
+                val provideRationale =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)
+                    } else {
+                        false
+                    }
+//                if (provideRationale) {
+//                    showLocationPermissionRequireDialog()
+//                }
+            } else {
+                mapboxMap?.setStyle(
+                    Style.MAPBOX_STREETS
+                ) { style -> enableLocationComponent(style) }
+            }
+        }
+
+    private fun showLocationPermissionRequireDialog() {
+        val notificationDialog = NotificationDialog.Builder()
+            .setTitle(getString(R.string.permission_location_title))
+            .setDescription(getString(R.string.permission_location_desc))
+            .setOnConfirmCallback(object : NotificationDialog.OnConfirmCallback {
+                override fun onConfirmClicked() {
+                    requestLocationPermissionsLaunch.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                }
+            })
+            .build()
+        notificationDialog.show(childFragmentManager, "PermissionNotificationDialog")
+    }
+
+
 }

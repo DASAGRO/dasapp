@@ -28,7 +28,12 @@ class ProfileInfoVM: BaseVM(), KoinComponent {
     }
 
     private fun refresh() {
+        getProfileLocally()
         getProfile()
+    }
+
+    private fun getProfileLocally() {
+        profileLV.postValue(userRepository.getUser())
     }
 
     private fun getProfile() {
