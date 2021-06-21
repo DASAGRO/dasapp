@@ -3,16 +3,25 @@ package kz.das.dasaccounting.data.source.local
 import android.content.Context
 import androidx.room.*
 import kz.das.dasaccounting.data.entities.driver.DriverInventoryEntity
+import kz.das.dasaccounting.data.entities.office.OfficeInventoryAcceptedEntity
 import kz.das.dasaccounting.data.entities.office.OfficeInventoryEntity
+import kz.das.dasaccounting.data.entities.office.OfficeInventorySentEntity
 import kz.das.dasaccounting.data.entities.warehouse.WarehouseInventoryEntity
-import kz.das.dasaccounting.data.source.local.daos.DriverInventoryDao
-import kz.das.dasaccounting.data.source.local.daos.OfficeInventoryDao
-import kz.das.dasaccounting.data.source.local.daos.WarehouseInventoryDao
+import kz.das.dasaccounting.data.source.local.daos.*
 
-@Database(version = 1, exportSchema = false, entities = [OfficeInventoryEntity::class, WarehouseInventoryEntity::class, DriverInventoryEntity::class])
+
+@Database(version = 1, exportSchema = false, entities = [OfficeInventoryEntity::class,
+    OfficeInventoryAcceptedEntity::class,
+    OfficeInventorySentEntity::class,
+    WarehouseInventoryEntity::class,
+    DriverInventoryEntity::class])
 abstract class DasAppDatabase: RoomDatabase() {
 
     abstract fun officeInventoryDao(): OfficeInventoryDao
+
+    abstract fun officeInventoryAcceptedDao(): OfficeInventoryAcceptedDao
+
+    abstract fun officeInventorySentDao(): OfficeInventorySentDao
 
     abstract fun warehouseInventoryDao(): WarehouseInventoryDao
 

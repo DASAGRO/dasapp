@@ -1,49 +1,39 @@
-package kz.das.dasaccounting.ui.office.accept
+package kz.das.dasaccounting.ui.office.transfer
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
-import kz.das.dasaccounting.core.navigation.requireRouter
+import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
-import kz.das.dasaccounting.databinding.FragmentInventoryAcceptBinding
+import kz.das.dasaccounting.data.entities.office.toEntity
+import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
+import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
+import kz.das.dasaccounting.databinding.FragmentInventoryAcceptConfirmationBinding
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentInventoryAcceptBinding>() {
+class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGenerateBinding>() {
 
     companion object {
-
         private const val OFFICE_INVENTORY = "inventory"
 
-        fun getScreen(officeInventoryAccept: OfficeInventory) = DasAppScreen(AcceptInventoryInfoFragment())
-            .apply {
-                val args = Bundle()
-                args.putParcelable(OFFICE_INVENTORY, officeInventoryAccept)
-                this.setArgs(args)
-            }
+        fun getScreen(officeInventoryAccept: OfficeInventory) = DasAppScreen(TransferConfirmFragment()).apply {
+            val args = Bundle()
+            args.putParcelable(OFFICE_INVENTORY, officeInventoryAccept)
+            this.setArgs(args)
+        }
     }
 
-    override val mViewModel: AcceptInventoryInfoVM by viewModel()
+    override val mViewModel: TransferConfirmVM by viewModel()
 
-    override fun getViewBinding() = FragmentInventoryAcceptBinding.inflate(layoutInflater)
+    override fun getViewBinding() = FragmentBarcodeGenerateBinding.inflate(layoutInflater)
 
     override fun setupUI() {
         mViewModel.setOfficeInventory(getOfficeInventory())
-
         mViewBinding.apply {
-            toolbar.setNavigationOnClickListener {
-                requireRouter().exit()
-            }
+            btnReady.setOnClickListener {
 
-            btnCancel.setOnClickListener {
-                requireRouter().exit()
-            }
-
-            btnAccept.setOnClickListener {
-                getOfficeInventory()?.let {
-                    requireRouter().replaceScreen(AcceptConfirmationFragment.getScreen(it))
-                }
             }
         }
     }
@@ -59,12 +49,16 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
                     (getString(R.string.inventory_total_quantity) +
                             " " + it.quantity +
                             " " + it.type)
+                try {
+                    mViewBinding.ivQr.setImageBitmap(OfficeInventoryEntityTypeConvertor().officeInventoryToString(it.toEntity()).generateQR())
+                } catch (e: Exception) { }
             }
         })
     }
 
+
+
     private fun getOfficeInventory(): OfficeInventory? {
         return arguments?.getParcelable(OFFICE_INVENTORY)
     }
-
 }

@@ -3,6 +3,8 @@ package kz.das.dasaccounting.core.ui.extensions
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.text.Html
@@ -17,11 +19,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.common.BitMatrix
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile_history.view.*
 import kz.das.dasaccounting.R
-import ru.tinkoff.decoro.MaskImpl
-import ru.tinkoff.decoro.slots.PredefinedSlots
 
 
 fun View.setGone() {
@@ -273,4 +276,30 @@ fun ImageView.setImage(url: String?) {
 fun ImageView.setUriImage(uri: Uri?) {
     this.setImageURI(uri)
 }
+
+fun String.generateQR(): Bitmap? {
+    val str = this
+    val result: BitMatrix = try {
+        MultiFormatWriter().encode(
+            str,
+            BarcodeFormat.QR_CODE, 400, 400, null
+        )
+    } catch (iae: IllegalArgumentException) {
+        // Unsupported format
+        return null
+    }
+    val w = result.width
+    val h = result.height
+    val pixels = IntArray(w * h)
+    for (y in 0 until h) {
+        val offset = y * w
+        for (x in 0 until w) {
+            pixels[offset + x] = if (result[x, y]) Color.parseColor("000000") else Color.parseColor("ffffff")
+        }
+    }
+    val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+    bitmap.setPixels(pixels, 0, w, 0, 0, w, h)
+    return bitmap
+}
+
 

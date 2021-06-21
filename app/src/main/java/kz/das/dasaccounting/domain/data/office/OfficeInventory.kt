@@ -6,17 +6,17 @@ import kz.das.dasaccounting.domain.data.action.OperationAct
 
 @Parcelize
 data class OfficeInventory(
-    val id: Int = 0,
-    val date: Long = 0,
-    val humidity: Int? = null,
-    val latitude: Double? = null,
-    val longitude: Double? = null,
-    val materialUUID: String? = null,
-    val quantity: Int? = null,
-    val type: String? = null,
-    val acceptedAt: Long? = 0,
-    val sendAt: Long? = 0,
-    val syncRequire: Int = 0,
-    val isSend: Int = 0,
-    val isAccepted: Int = 0
+    var id: Int = 0,
+    var date: Long = 0,
+    var humidity: Int? = null,
+    var latitude: Double? = null,
+    var longitude: Double? = null,
+    var materialUUID: String? = null,
+    var quantity: Int? = null,
+    var type: String? = null,
+    var acceptedAt: Long? = 0,
+    var sendAt: Long? = 0,
+    var syncRequire: Int = 0,
+    var isSend: Int = 0,
+    var isAccepted: Int = 0
 ): OperationAct(), Parcelable

@@ -3,6 +3,7 @@ package kz.das.dasaccounting.ui.office
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.recyclerview.BaseViewHolder
@@ -12,8 +13,9 @@ import kz.das.dasaccounting.databinding.ItemSegmentBinding
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.action.OperationHead
 import kz.das.dasaccounting.domain.data.action.OperationInit
+import kz.das.dasaccounting.domain.data.office.OfficeInventory
 
-class OfficeOperationsAdapter(val context: Context, var operations: ArrayList<OperationAct>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OfficeOperationsAdapter(val context: Context, private var operations: ArrayList<OperationAct>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var officeOperationsAdapterEvent: OnOfficeOperationsAdapterEvent? = null
 
@@ -26,6 +28,7 @@ class OfficeOperationsAdapter(val context: Context, var operations: ArrayList<Op
     interface OnOfficeOperationsAdapterEvent {
         fun onOperationAct(operationAct: OperationAct)
         fun onOperationInit(operationAct: OperationAct)
+        fun onInventoryTransfer(officeInventory: OfficeInventory)
     }
 
     fun setOfficeOperationsAdapterEvent(officeOperationsAdapterEvent: OnOfficeOperationsAdapterEvent) {
@@ -37,8 +40,8 @@ class OfficeOperationsAdapter(val context: Context, var operations: ArrayList<Op
         return mapOf(
             HEAD to OperationHeadViewHolder(ItemSegmentBinding.inflate(layoutInflater, parent, false)),
             ACTION to OperationInitViewHolder(ItemOperationInitBinding.inflate(layoutInflater, parent, false)),
-            OPERATION to OperationActViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)))[viewType]
-            ?: OperationActViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false))
+            OPERATION to OperationOfficeInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)))[viewType]
+            ?: OperationOfficeInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -48,8 +51,8 @@ class OfficeOperationsAdapter(val context: Context, var operations: ArrayList<Op
                 holder.bind(item as OperationHead, position)
             is OperationInitViewHolder ->
                 holder.bind(item as OperationInit, position)
-            is OperationActViewHolder ->
-                holder.bind(item as OperationAct, position)
+            is OperationOfficeInventoryViewHolder ->
+                holder.bind(item as OfficeInventory, position)
         }
     }
 
@@ -89,12 +92,16 @@ class OfficeOperationsAdapter(val context: Context, var operations: ArrayList<Op
         }
     }
 
-    inner class OperationActViewHolder internal constructor(private val itemBinding: ItemOperationActionBinding) : BaseViewHolder<OperationAct>(itemBinding) {
-        override fun bind(item: OperationAct, position: Int) {
-//            this.itemBinding.run {
-//                this.actionName = item.type
-//                this.iconId = R.drawable.ic_add
-//            }
+    inner class OperationOfficeInventoryViewHolder internal constructor(private val itemBinding: ItemOperationActionBinding) : BaseViewHolder<OfficeInventory>(itemBinding) {
+        override fun bind(item: OfficeInventory, position: Int) {
+            this.itemBinding.run {
+                this.tvName.text = item.materialUUID
+                this.ivAction.setImageResource(R.drawable.ic_inventory)
+                this.ivStatePending.isVisible = item.syncRequire == 1
+                this.llAction.setOnClickListener {
+                    officeOperationsAdapterEvent?.onInventoryTransfer(item)
+                }
+            }
         }
     }
 

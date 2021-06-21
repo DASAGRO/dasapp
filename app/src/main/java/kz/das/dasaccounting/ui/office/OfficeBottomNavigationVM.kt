@@ -13,6 +13,7 @@ class OfficeBottomNavigationVM: BaseVM() {
     private val operationsLV = SingleLiveEvent<ArrayList<Any>>()
     fun getOperations(): LiveData<ArrayList<Any>> = operationsLV
 
+
     fun refresh() {
 
     }

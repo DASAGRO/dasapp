@@ -17,6 +17,9 @@ import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 
 class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
@@ -41,7 +44,11 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
             }
 
             override fun onFail(exception: Exception) {
-
+                if (exception is SocketTimeoutException
+                    || exception is UnknownHostException
+                    || exception is ConnectException) {
+                    dasAppDatabase.warehouseInventoryDao()
+                }
             } // No handle require
         })
     }

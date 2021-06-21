@@ -80,7 +80,7 @@
     <string name="text_support_info">Если у вас есть какие либо затруднения с приложением, либо вы хотите подсказать какие-то улучшения, мы обязательно выслушаем вас.</string>
     <string name="from_namespace">от %s</string>
     <string name="given_namespace">передан %s</string>
-    <string name="accept">Принят</string>
+    <string name="accept">Принять</string>
     <string name="given">Передан</string>
     <string name="error_not_exist">Такого юзера не существует в базе</string>
     <string name="confirm">Подтвердить</string>
@@ -90,6 +90,7 @@
     <string name="accept_inventory">Принять ТМЦ</string>
     <string name="available_operations">Доступные операции</string>
     <string name="camera_qr_scan_permission_required">Нужно дать разрешение камеры для QR-сканера!</string>
+    <string name="camera_qr_scan_permission_required_rationale">Для корректной работы нужно дать разрешение камеры для QR-сканера!</string>
     <string name="camera_access_title">Доступ к камере</string>
     <string name="make_transfer">Сформировать передачу</string>
     <string name="barcode_bottom_text">Внимание ! Если Передача была сделано без подключение интернета просим нажать на кнопку “Готова”</string>
@@ -102,11 +103,12 @@
     <string name="gather_wet">Влажность</string>
     <string name="transfer">Передать</string>
     <string name="naming">Наименование</string>
-    <string name="total_quantity">Всего:%sкг</string>
+    <string name="total_quantity">Всего:%s</string>
+    <string name="inventory_total_quantity">Количество:</string>
     <string name="transfer_inventory">Передать ТМЦ</string>
     <string name="gather_tranfer_title">Заполните данные по урожаю</string>
     <string name="transfer_confirm_title">Вы подтверждаете данную передачу?</string>
-    <string name="inventory_accept_confirmed_title">Вы успешно приняли ТС</string>
+    <string name="inventory_accept_confirmed_title">Подтвердите передачу</string>
     <string name="search">Искать</string>
     <string name="warehouse_title">Название Склада</string>
     <string name="action_list">Список ТС,ПО,ТМЦ</string>
@@ -128,6 +130,10 @@
     <string name="password_change">Изменение пароля</string>
     <string name="password_changed_successfully">Пароль успешно обновлен!</string>
     <string name="inventory_title">ТМЦ</string>
+    <string name="quantity_compare_error">Количество не должно превышать общего количество!</string>
+    <string name="confirm_with_finger">Подтвердите отпечатком</string>
+    <string name="error_not_valid_finger">Неверный отпечаток</string>
+    <string name="uploading_files">Отправка файлов…</string>
 
 
 </resources>

@@ -40,13 +40,11 @@ open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, Fr
 
     override fun setupUI() {
         changeStatusColor(R.color.teal_200)
-        mViewBinding.fabQr.setOnClickListener {
-            if (!CameraUtils.isPermissionGranted(requireContext())) {
-                requestCameraPermissionsLaunch.launch(Manifest.permission.CAMERA)
-            } else {
-                showQr()
-            }
+
+        if (!CameraUtils.isPermissionGranted(requireContext())) {
+            showCameraPermissionRationaleDialog()
         }
+
         mViewBinding.bslOperations.isVisible = mViewModel.isOnWork()
 
         mViewBinding.bottomNavigationView.background = null
@@ -129,7 +127,7 @@ open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, Fr
         }
     }
 
-    private val requestCameraPermissionsLaunch =
+    open val requestCameraPermissionsLaunch =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (!isGranted) {
                 val provideRationale =
@@ -144,7 +142,6 @@ open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, Fr
             }
         }
 
-
     private fun showCameraPermissionRequireDialog() {
         val notificationDialog = NotificationDialog.Builder()
                 .setDescription(getString(R.string.camera_qr_scan_permission_required))
@@ -153,16 +150,17 @@ open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, Fr
         notificationDialog.show(childFragmentManager, "CameraPermissionNotificationDialog")
     }
 
-    private fun showQr() {
-        val qrFragment = QrFragment.Builder()
-            .setCancelable(true)
-            .setOnScanCallback(object : QrFragment.OnScanCallback {
-                override fun onScan(qrScan: String) {
-                    showSuccess("Scan баркода", qrScan)
+    private fun showCameraPermissionRationaleDialog() {
+        val notificationDialog = NotificationDialog.Builder()
+            .setDescription(getString(R.string.camera_qr_scan_permission_required_rationale))
+            .setTitle(getString(R.string.camera_access_title))
+            .setOnConfirmCallback(object : NotificationDialog.OnConfirmCallback {
+                override fun onConfirmClicked() {
+                    requestCameraPermissionsLaunch.launch(Manifest.permission.CAMERA)
                 }
             })
-            .build()
-        qrFragment.show(childFragmentManager, "QrFragment")
+            .setCancelable(true).build()
+        notificationDialog.show(childFragmentManager, "CameraPermissionNotificationDialog")
     }
 
     private fun hideBottomOptions() {
