@@ -4,7 +4,10 @@ import android.Manifest
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kz.das.dasaccounting.R
+import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.data.entities.office.toDomain
@@ -103,7 +106,9 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
                     val acceptInventory: OfficeInventory? =
                         OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()
                     if (acceptInventory != null) {
-                        requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(acceptInventory))
+                        delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
+                            requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(acceptInventory))
+                        }
                     }
                 }
             })
