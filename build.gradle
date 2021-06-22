@@ -85,14 +85,15 @@ ext {
             "work_manager"               : "androidx.work:work-runtime-ktx:2.5.0",
 
             // ROOM DATABASE
-            "room_runtime"               : "androidx.room:room-runtime:2.2.6",
-            "room_compiler"              : "androidx.room:room-compiler:2.2.6",
+            "room_runtime"               : "androidx.room:room-runtime:2.3.0",
+            "room_compiler"              : "androidx.room:room-compiler:2.3.0",
 
             // optional - Kotlin Extensions and Coroutines support for Room
-            "room_ktx"                   : "androidx.room:room-ktx:2.2.6",
+            "room_ktx"                   : "androidx.room:room-ktx:2.3.0",
 
+            "room_persistence_arch"      : "android.arch.persistence.room:compiler:2.3.0",
             // optional - Test helpers
-            "room_testing"               : "androidx.room:room-testing:2.2.6",
+            "room_testing"               : "androidx.room:room-testing:2.3.0",
 
             // Picasso
             "image_picasso"              : "com.squareup.picasso:picasso:2.71828",
