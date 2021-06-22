@@ -83,7 +83,7 @@
         android:id="@+id/iv_qr"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:scaleType="centerInside"
+        android:scaleType="fitCenter"
         android:background="@drawable/default_shape_10dp"
         android:backgroundTint="@color/color_grey"
         app:layout_constraintBottom_toTopOf="@+id/btn_ready"
