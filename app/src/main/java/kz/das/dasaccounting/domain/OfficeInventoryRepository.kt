@@ -8,8 +8,6 @@ interface OfficeInventoryRepository {
 
     suspend fun getOfficeMaterials(): List<OfficeInventory>
 
-    suspend fun getOfficeMaterialsLocally(): LiveData<List<OfficeInventory>>
-
     suspend fun awaitAcceptInventory(officeInventory: OfficeInventory)
 
     suspend fun awaitSendInventory(officeInventory: OfficeInventory)
@@ -19,5 +17,11 @@ interface OfficeInventoryRepository {
     suspend fun sendInventory(officeInventory: OfficeInventory): ApiResponseMessage
 
     suspend fun syncInventoryMaterials()
+
+    fun getOfficeMaterialsLocally(): LiveData<List<OfficeInventory>>
+
+    fun getOfficeSentMaterialsLocally(): LiveData<List<OfficeInventory>>
+
+    fun getOfficeAcceptedMaterialsLocally(): LiveData<List<OfficeInventory>>
 
 }

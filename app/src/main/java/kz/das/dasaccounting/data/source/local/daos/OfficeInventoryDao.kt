@@ -39,5 +39,4 @@ interface OfficeInventoryDao {
         removeAll()
         insertAll(itemDaos)
     }
-
 }

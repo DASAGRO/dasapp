@@ -44,31 +44,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ll_naming"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.DAS"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_naming"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_height="48dp"
+            android:textStyle="bold"
+            android:textColor="@color/purple_700"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/loginTopGuidline">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_naming"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:hint="@string/naming"
-                android:enabled="false"
-                android:clickable="false"
-                android:focusable="false"
-                android:inputType="text"
-                android:padding="6dp"
-                android:textSize="14sp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginStart="16dp"
+            android:textSize="18sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ll_quantity"
@@ -89,6 +73,7 @@
                 android:hint="@string/naming"
                 android:imeOptions="actionDone"
                 android:inputType="number"
+                android:textColor="@color/purple_700"
                 android:padding="6dp"
                 android:textSize="14sp" />
 
@@ -107,12 +92,13 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_transfer"
-            style="@style/Widget.MaterialComponents.Button.DAS"
+            android:background="@drawable/selectable_default_button_background"
+            android:textAllCaps="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="32dp"
             android:gravity="start|center_vertical"
             android:text="@string/transfer"
             android:textColor="@color/white"

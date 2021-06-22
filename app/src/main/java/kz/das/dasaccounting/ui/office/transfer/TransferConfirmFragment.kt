@@ -9,7 +9,6 @@ import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.data.entities.office.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
-import kz.das.dasaccounting.databinding.FragmentInventoryAcceptConfirmationBinding
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -33,7 +32,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
         mViewModel.setOfficeInventory(getOfficeInventory())
         mViewBinding.apply {
             btnReady.setOnClickListener {
-
+                mViewModel.sendInventory()
             }
         }
     }
@@ -44,7 +43,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
         mViewModel.getOfficeInventory().observe(viewLifecycleOwner, Observer {
             it?.let {
                 mViewBinding.ivInventory.setImageResource(R.drawable.ic_inventory)
-                mViewBinding.tvInventoryTitle.text = it.materialUUID
+                mViewBinding.tvInventoryTitle.text = it.name
                 mViewBinding.tvInventoryDesc.text =
                     (getString(R.string.inventory_total_quantity) +
                             " " + it.quantity +
@@ -52,6 +51,12 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                 try {
                     mViewBinding.ivQr.setImageBitmap(OfficeInventoryEntityTypeConvertor().officeInventoryToString(it.toEntity()).generateQR())
                 } catch (e: Exception) { }
+            }
+        })
+
+        mViewModel.isOfficeInventorySent().observe(viewLifecycleOwner, Observer {
+            if (it) {
+                showSuccess(getString(R.string.common_banner_success), getString(R.string.office_inventory_transferred_successfully))
             }
         })
     }

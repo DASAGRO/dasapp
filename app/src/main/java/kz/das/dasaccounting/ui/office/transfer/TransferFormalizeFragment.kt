@@ -51,10 +51,9 @@ class TransferFormalizeFragment: BaseBottomSheetFragment<FragmentBottomSheetMake
     override fun observeLiveData() {
         super.observeLiveData()
         mViewModel.getOfficeInventory().observe(viewLifecycleOwner, Observer {
-            mViewBinding.btnMakeTransfer.isEnabled = it != null
             it?.let {
                 mViewBinding.ivInventory.setImageResource(R.drawable.ic_inventory)
-                mViewBinding.tvInventoryTitle.text = it.materialUUID
+                mViewBinding.tvInventoryTitle.text = it.name
                 mViewBinding.tvInventoryDesc.text =
                     (getString(R.string.inventory_total_quantity) +
                             " " + it.quantity +

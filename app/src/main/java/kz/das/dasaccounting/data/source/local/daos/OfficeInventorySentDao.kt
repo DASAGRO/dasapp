@@ -19,20 +19,20 @@ interface OfficeInventorySentDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertWithIgnore(item: OfficeInventoryEntity)
 
-    @get:Query("SELECT * FROM materials")
+    @get:Query("SELECT * FROM materials_sent")
     val allAsLiveData: LiveData<List<OfficeInventoryEntity>>
 
-    @get:Query("SELECT * FROM materials")
+    @get:Query("SELECT * FROM materials_sent")
     val all: List<OfficeInventoryEntity>
 
-    @Query("DELETE FROM materials")
+    @Query("DELETE FROM materials_sent")
     fun removeAll()
 
-    @Query("SELECT * FROM materials WHERE materialUUID = :materialUUID")
+    @Query("SELECT * FROM materials_sent WHERE materialUUID = :materialUUID")
     fun getItem(materialUUID: String): LiveData<OfficeInventoryEntity>
 
     @Delete
-    fun removeItem(warehouse: OfficeInventoryEntity)
+    fun removeItem(office: OfficeInventoryEntity)
 
     @Transaction
     fun reload(itemDaos: List<OfficeInventoryEntity>) {

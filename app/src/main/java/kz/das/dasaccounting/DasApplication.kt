@@ -40,8 +40,8 @@ class DasApplication: Application(), LifecycleObserver {
             androidLogger(Level.ERROR)
             androidContext(this@DasApplication)
             modules(
+                getDatabaseModule(this@DasApplication),
                 getModulePreferences(applicationContext),
-                getDatabaseModule(applicationContext),
                 getNetworkModule(),
                 getApiModule(),
                 getRepositoriesModule(),

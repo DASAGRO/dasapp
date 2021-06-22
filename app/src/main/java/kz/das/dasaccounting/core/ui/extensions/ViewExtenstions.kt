@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.text.Html
@@ -22,6 +21,7 @@ import androidx.databinding.BindingAdapter
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.common.BitMatrix
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile_history.view.*
 import kz.das.dasaccounting.R
@@ -279,6 +279,7 @@ fun ImageView.setUriImage(uri: Uri?) {
 
 fun String.generateQR(): Bitmap? {
     val str = this
+
     val result: BitMatrix = try {
         MultiFormatWriter().encode(
             str,
@@ -288,18 +289,8 @@ fun String.generateQR(): Bitmap? {
         // Unsupported format
         return null
     }
-    val w = result.width
-    val h = result.height
-    val pixels = IntArray(w * h)
-    for (y in 0 until h) {
-        val offset = y * w
-        for (x in 0 until w) {
-            pixels[offset + x] = if (result[x, y]) Color.parseColor("000000") else Color.parseColor("ffffff")
-        }
-    }
-    val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-    bitmap.setPixels(pixels, 0, w, 0, 0, w, h)
-    return bitmap
+    val barcodeEncoder = BarcodeEncoder()
+    return barcodeEncoder.createBitmap(result)
 }
 
 

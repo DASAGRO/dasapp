@@ -131,6 +131,87 @@ abstract class BaseBottomSheetFragment<VB : ViewBinding, VM : BaseVM> :
         (requireActivity() as BaseActivity<*, *>).hideLoading()
     }
 
+    override fun showUploading() {
+        (requireActivity() as BaseActivity<*, *>).showUploading()
+    }
+
+    override fun hideUploading() {
+        (requireActivity() as BaseActivity<*, *>).hideUploading()
+    }
+
+    override fun navigateBack() {
+        requireRouter().exit()
+    }
+}
+
+
+abstract class BaseBottomSheetDialog<VB : ViewBinding> : BottomSheetDialogFragment(),
+    ViewCallback {
+
+    //region vars
+    protected lateinit var mViewBinding: VB
+    //endregion
+
+    //region abstract methods
+    protected abstract fun getViewBinding(): VB
+    protected abstract fun setupUI()
+    //endregion
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setStyle(STYLE_NO_TITLE, R.style.AppBottomSheetDialogTheme)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+
+        mViewBinding = getViewBinding()
+        setupUI()
+        return mViewBinding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        observeLiveData()
+    }
+
+    override fun showSuccess(title: String?, message: String?) {
+        (requireActivity() as? BaseActivity<*, *>)?.showSuccess(title, message)
+    }
+
+    override fun showError(title: String?, message: String?) {
+        (requireActivity() as? BaseActivity<*, *>)?.showError(title, message)
+    }
+
+    override fun restartActivity() {
+        requireActivity().apply {
+            finish()
+            startActivity(intent)
+        }
+    }
+
+    override fun onLogout() {
+        (requireActivity() as BaseActivity<*, *>).onLogout()
+    }
+
+    override fun showLoading() {
+        (requireActivity() as BaseActivity<*, *>).showLoading()
+    }
+
+    override fun hideLoading() {
+        (requireActivity() as BaseActivity<*, *>).hideLoading()
+    }
+
+    override fun showUploading() {
+        (requireActivity() as BaseActivity<*, *>).showUploading()
+    }
+
+    override fun hideUploading() {
+        (requireActivity() as BaseActivity<*, *>).hideUploading()
+    }
+
     override fun navigateBack() {
         requireRouter().exit()
     }

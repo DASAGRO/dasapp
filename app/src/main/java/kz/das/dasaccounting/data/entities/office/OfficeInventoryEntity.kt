@@ -10,6 +10,7 @@ data class OfficeInventoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val date: Long = 0,
+    val name: String? = null,
     val humidity: Int? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
@@ -28,6 +29,7 @@ fun OfficeInventoryEntity.toDomain(): OfficeInventory {
     return OfficeInventory(
         id = this.id,
         date = this.date,
+        name = this.name,
         humidity = this.humidity,
         latitude = this.latitude,
         longitude = this.longitude,
@@ -46,6 +48,7 @@ fun OfficeInventory.toEntity(): OfficeInventoryEntity {
     return OfficeInventoryEntity(
         id = this.id,
         date = this.date,
+        name = this.name,
         humidity = this.humidity,
         latitude = this.latitude,
         longitude = this.longitude,

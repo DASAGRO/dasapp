@@ -1,6 +1,6 @@
 package kz.das.dasaccounting.data.source.network
 
-import kz.das.dasaccounting.core.extensions.ApiResponseMessage
+import kz.das.dasaccounting.data.entities.file.FileEntity
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Multipart
@@ -10,7 +10,7 @@ import retrofit2.http.Part
 interface FileApi {
 
     @Multipart
-    @POST("/api/system/upload")
-    suspend fun updateImage(@Part requestBody: MultipartBody.Part?): Response<ApiResponseMessage>
+    @POST("files/upload")
+    suspend fun uploadFile(@Part requestBody: MultipartBody.Part?): Response<FileEntity>
 
 }

@@ -10,7 +10,6 @@ import kz.das.dasaccounting.databinding.FragmentBottomSheetInventoryInputBinding
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.android.viewmodel.ext.android.viewModel
 
-
 class TransferFragment: BaseBottomSheetFragment<FragmentBottomSheetInventoryInputBinding, TransferVM>() {
 
     companion object {
@@ -24,8 +23,6 @@ class TransferFragment: BaseBottomSheetFragment<FragmentBottomSheetInventoryInpu
         }
 
     }
-
-    private val goldfinger = Goldfinger.Builder(requireContext()).build()
 
     private var listener: OnTransferCallback ?= null
 
@@ -44,6 +41,9 @@ class TransferFragment: BaseBottomSheetFragment<FragmentBottomSheetInventoryInpu
     override fun setupUI() {
         mViewModel.setOfficeInventory(getOfficeInventory())
         mViewBinding.apply {
+            this.ivClose.setOnClickListener {
+                dismiss()
+            }
             this.btnTransfer.setOnClickListener {
                 getOfficeInventory()?.let {
                     if (it.quantity ?: 0 >= mViewBinding.edtQuantity.text.toString().toInt()) {
@@ -60,9 +60,8 @@ class TransferFragment: BaseBottomSheetFragment<FragmentBottomSheetInventoryInpu
     override fun observeLiveData() {
         super.observeLiveData()
         mViewModel.getOfficeInventory().observe(viewLifecycleOwner, Observer {
-            mViewBinding.btnTransfer.isEnabled = it != null
             it?.let {
-                mViewBinding.edtNaming.setText(it.materialUUID)
+                mViewBinding.tvNaming.text = it.name
                 mViewBinding.tvQuantity.text =
                     (String.format(getString(R.string.total_quantity), it.quantity.toString()) + " " + it.type)
             }
@@ -70,6 +69,7 @@ class TransferFragment: BaseBottomSheetFragment<FragmentBottomSheetInventoryInpu
     }
 
     private fun checkConfirmation(officeInventory: OfficeInventory) {
+        val goldfinger = Goldfinger.Builder(requireContext()).build()
         if (goldfinger.canAuthenticate()) {
             val params = PromptParams.Builder(requireActivity())
                 .title(getString(R.string.confirm_with_finger))

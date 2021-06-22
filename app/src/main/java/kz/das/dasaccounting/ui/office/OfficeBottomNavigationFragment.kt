@@ -14,7 +14,9 @@ import kz.das.dasaccounting.domain.data.action.OperationHead
 import kz.das.dasaccounting.domain.data.action.OperationInit
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import kz.das.dasaccounting.ui.office.accept.AcceptInventoryInfoFragment
+import kz.das.dasaccounting.ui.office.transfer.TransferConfirmFragment
 import kz.das.dasaccounting.ui.office.transfer.TransferFormalizeFragment
+import kz.das.dasaccounting.ui.office.transfer.TransferFragment
 import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationFragment
 import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
 import kz.das.dasaccounting.ui.utils.CameraUtils
@@ -48,7 +50,6 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
         mViewBinding.rvOperations.run {
             adapter = operationsAdapter
         }
-        operationsAdapter?.putItems(getOperations())
         operationsAdapter?.setOfficeOperationsAdapterEvent(object : OfficeOperationsAdapter.OnOfficeOperationsAdapterEvent {
             override fun onOperationAct(operationAct: OperationAct) {
                 initAcceptOperation()
@@ -61,7 +62,7 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
                 val inventoryTransferDialog = TransferFormalizeFragment.newInstance(officeInventory)
                 inventoryTransferDialog.setOnTransferCallback(object : TransferFormalizeFragment.OnTransferCallback {
                     override fun onTransfer(officeInventory: OfficeInventory) {
-
+                        showTransferDialog(officeInventory)
                     }
                 })
                 inventoryTransferDialog.show(childFragmentManager, inventoryTransferDialog.tag)
@@ -84,6 +85,14 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
                 qrFragment.show(childFragmentManager, "QrShiftFragment")
             }
         })
+
+        officeBottomNavigationVM.getOperations().observe(viewLifecycleOwner, Observer {
+            operationsAdapter?.putItems(getOperations(it))
+        })
+
+//        officeBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
+//            operationsAdapter?.putItems(getOperations(it))
+//        })
     }
 
     private fun initAcceptOperation() {
@@ -103,16 +112,35 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
     }
 
     private fun showTransferDialog(officeInventory: OfficeInventory) {
-
+        val transferFragment = TransferFragment.newInstance(officeInventory)
+        transferFragment.setOnTransferCallback(object : TransferFragment.OnTransferCallback {
+            override fun onTransfer(officeInventory: OfficeInventory) {
+                requireRouter().navigateTo(TransferConfirmFragment.getScreen(officeInventory))
+            }
+        })
+        transferFragment.show(childFragmentManager, transferFragment.tag)
     }
 
-
-    private fun getOperations(): ArrayList<OperationAct> {
-        return arrayListOf(
+    private fun getOperations(inventories: ArrayList<OfficeInventory>): ArrayList<OperationAct> {
+        val operations: ArrayList<OperationAct> = arrayListOf()
+        operations.addAll(arrayListOf(
             OperationHead(getString(R.string.available_operations)),
             OperationInit("Принять ТМЦ", R.drawable.ic_add),
-            OperationHead(getString(R.string.inventory_title))
-        )
+            OperationHead(getString(R.string.inventory_title)),
+        ))
+        operations.addAll(inventories)
+        return operations
+    }
+
+    private fun getOperations(inventories: List<OfficeInventory>): ArrayList<OperationAct> {
+        val operations: ArrayList<OperationAct> = arrayListOf()
+        operations.addAll(arrayListOf(
+            OperationHead(getString(R.string.available_operations)),
+            OperationInit("Принять ТМЦ", R.drawable.ic_add),
+            OperationHead(getString(R.string.inventory_title)),
+        ))
+        operations.addAll(inventories)
+        return operations
     }
 
 }

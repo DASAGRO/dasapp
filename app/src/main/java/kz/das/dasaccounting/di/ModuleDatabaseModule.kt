@@ -8,6 +8,6 @@ internal fun getDatabaseModule(context: Context) = module {
     single { provideDatabase(context) }
 }
 
-fun provideDatabase(androidContext: Context) : DasAppDatabase? {
+fun provideDatabase(androidContext: Context): DasAppDatabase? {
     return DasAppDatabase.getInstance(androidContext)
 }

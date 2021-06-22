@@ -8,13 +8,14 @@ import kz.das.dasaccounting.data.entities.office.OfficeInventoryEntity
 import kz.das.dasaccounting.data.entities.office.OfficeInventorySentEntity
 import kz.das.dasaccounting.data.entities.warehouse.WarehouseInventoryEntity
 import kz.das.dasaccounting.data.source.local.daos.*
-
+import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 
 @Database(version = 1, exportSchema = false, entities = [OfficeInventoryEntity::class,
     OfficeInventoryAcceptedEntity::class,
     OfficeInventorySentEntity::class,
     WarehouseInventoryEntity::class,
     DriverInventoryEntity::class])
+@TypeConverters(OfficeInventoryEntityTypeConvertor::class)
 abstract class DasAppDatabase: RoomDatabase() {
 
     abstract fun officeInventoryDao(): OfficeInventoryDao
@@ -22,8 +23,6 @@ abstract class DasAppDatabase: RoomDatabase() {
     abstract fun officeInventoryAcceptedDao(): OfficeInventoryAcceptedDao
 
     abstract fun officeInventorySentDao(): OfficeInventorySentDao
-
-    abstract fun warehouseInventoryDao(): WarehouseInventoryDao
 
     abstract fun driverInventoryDao(): DriverInventoryDao
 
@@ -38,7 +37,7 @@ abstract class DasAppDatabase: RoomDatabase() {
                 synchronized(LOCK) {
                     if (sInstance == null) {
                         sInstance = Room.databaseBuilder(
-                            context.applicationContext, DasAppDatabase::class.java, DATABASE_NAME)
+                            context, DasAppDatabase::class.java, DATABASE_NAME)
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build()

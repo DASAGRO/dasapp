@@ -1,6 +1,8 @@
 package kz.das.dasaccounting.ui.office.accept
 
 import android.os.Bundle
+import androidx.lifecycle.Observer
+import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentInventoryAcceptConfirmationBinding
@@ -28,15 +30,21 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
 
         mViewBinding.apply {
             btnReady.setOnClickListener {
-
+                mViewModel.acceptInventory()
             }
         }
     }
 
     override fun observeLiveData() {
         super.observeLiveData()
-    }
 
+        mViewModel.isOfficeInventoryAccepted().observe(viewLifecycleOwner, Observer {
+            if (it) {
+                showSuccess(getString(R.string.common_banner_success),
+                    getString(R.string.office_inventory_accepted_successfully))
+            }
+        })
+    }
 
     private fun getOfficeInventory(): OfficeInventory? {
         return arguments?.getParcelable(OFFICE_INVENTORY)

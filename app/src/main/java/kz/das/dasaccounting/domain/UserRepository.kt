@@ -4,6 +4,7 @@ import android.net.Uri
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
+import kz.das.dasaccounting.domain.data.file.File
 
 interface UserRepository {
 
@@ -20,6 +21,10 @@ interface UserRepository {
     suspend fun checkPassword(password: String): Any?
 
     suspend fun updatePassword(password: String): Any?
+
+    suspend fun uploadFile(fileUri: Uri): File
+
+    suspend fun sendSupport(fileIds: ArrayList<Int>, comment: String): ApiResponseMessage
 
     fun getUserRole(): String?
 

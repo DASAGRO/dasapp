@@ -2,10 +2,7 @@ package kz.das.dasaccounting.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
-import kz.das.dasaccounting.core.extensions.NetworkSourceBound
 import kz.das.dasaccounting.core.extensions.OnResponseCallback
 import kz.das.dasaccounting.core.extensions.unwrap
 import kz.das.dasaccounting.data.entities.office.OfficeInventoryEntity
@@ -28,12 +25,13 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
     private val dasAppDatabase: DasAppDatabase by inject()
 
     override suspend fun getOfficeMaterials(): List<OfficeInventory> {
-        return officeOperationApi.getMaterials().unwrap( { list -> list.map { it.toDomain() }}, object : OnResponseCallback<List<OfficeInventoryEntity>> {
-            override fun onSuccess(entity: List<OfficeInventoryEntity>) {
-                dasAppDatabase.officeInventoryDao().insertAllWithIgnore(entity)
-            }
-            override fun onFail(exception: Exception) { } // No handle require
-        })
+        return officeOperationApi.getMaterials().unwrap { list -> list.map { it.toDomain() } }
+//            , object : OnResponseCallback<List<OfficeInventoryEntity>> {
+//                override fun onSuccess(entity: List<OfficeInventoryEntity>) {
+//                    dasAppDatabase?.officeInventoryDao().insertAllWithIgnore(entity)
+//                }
+//                override fun onFail(exception: Exception) { } // No handle require
+//            })
     }
 
     override suspend fun acceptInventory(officeInventory: OfficeInventory): ApiResponseMessage {
@@ -47,7 +45,6 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
                 if (exception is SocketTimeoutException
                     || exception is UnknownHostException
                     || exception is ConnectException) {
-                    dasAppDatabase.warehouseInventoryDao()
                 }
             } // No handle require
         })
@@ -65,7 +62,7 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
             })
     }
 
-    override suspend fun getOfficeMaterialsLocally(): LiveData<List<OfficeInventory>> {
+    override fun getOfficeMaterialsLocally(): LiveData<List<OfficeInventory>> {
         return dasAppDatabase.officeInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
     }
 
@@ -79,5 +76,13 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
 
     override suspend fun syncInventoryMaterials() {
 
+    }
+
+    override fun getOfficeSentMaterialsLocally(): LiveData<List<OfficeInventory>> {
+        return dasAppDatabase.officeInventorySentDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
+    }
+
+    override fun getOfficeAcceptedMaterialsLocally(): LiveData<List<OfficeInventory>> {
+        return dasAppDatabase.officeInventoryAcceptedDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
     }
 }

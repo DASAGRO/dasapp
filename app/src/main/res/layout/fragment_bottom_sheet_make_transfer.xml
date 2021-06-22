@@ -70,7 +70,7 @@
                     android:layout_toEndOf="@+id/iv_inventory"
                     android:gravity="start"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_inventory_transport"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_inventory"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/iv_inventory"
                     app:layout_constraintTop_toBottomOf="@+id/tv_inventory_title"
@@ -92,9 +92,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/cl_inventory_info"
                 tools:text="Время получение: 08:00 \nДата получение: 01.10.2021" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_make_transfer"
-                style="@style/Widget.MaterialComponents.Button.DAS"
+                android:background="@drawable/selectable_default_button_background"
+                android:textAllCaps="false"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"

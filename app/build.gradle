@@ -99,6 +99,7 @@ dependencies {
     // ROOM
     implementation rootProject.ext.dependencies["room_runtime"]
     annotationProcessor rootProject.ext.dependencies["room_compiler"]
+    annotationProcessor rootProject.ext.dependencies["room_persistence_arch"]
     implementation rootProject.ext.dependencies["room_ktx"]
     implementation rootProject.ext.dependencies["room_testing"]
 
@@ -106,6 +107,8 @@ dependencies {
     implementation 'io.github.florent37:shapeofview:1.4.7'
 
     implementation 'io.github.ParkSangGwon:tedimagepicker:1.2.2'
+
+    implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
 
     // MAPBOX
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.1'

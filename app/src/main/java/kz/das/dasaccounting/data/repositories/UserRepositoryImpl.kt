@@ -5,13 +5,16 @@ import android.net.Uri
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.core.extensions.unwrap
 import kz.das.dasaccounting.core.ui.utils.getFileMultipart
+import kz.das.dasaccounting.core.ui.utils.getImageFileMultipart
+import kz.das.dasaccounting.data.entities.file.toDomain
 import kz.das.dasaccounting.data.entities.toDomain
+import kz.das.dasaccounting.data.source.network.FileApi
 import kz.das.dasaccounting.data.source.network.UserApi
 import kz.das.dasaccounting.data.source.preferences.UserPreferences
-import kz.das.dasaccounting.domain.ShiftRepository
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
+import kz.das.dasaccounting.domain.data.file.File
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -19,9 +22,8 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
 
     private val context: Context by inject()
     private val userPreferences: UserPreferences by inject()
-    private val userRepository: UserRepository by inject()
-    private val shiftRepository: ShiftRepository by inject()
     private val userApi: UserApi by inject()
+    private val fileApi: FileApi by inject()
 
     override fun updateToken(token: String) {
         userPreferences.setUserAccessToken(token)
@@ -51,8 +53,19 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
         userPreferences.setUser(profile)
     }
 
+    override suspend fun uploadFile(fileUri: Uri): File {
+        return fileApi.uploadFile(getFileMultipart(context, fileUri)).unwrap { it.toDomain()}
+    }
+
+    override suspend fun sendSupport(fileIds: ArrayList<Int>, comment: String): ApiResponseMessage {
+        return userApi.sendSupport(
+            hashMapOf("fileIds" to fileIds.toArray(),
+                        "comment" to comment)
+        ).unwrap()
+    }
+
     override suspend fun updateProfileImage(imageUri: Uri): String {
-        val imageUrl = userApi.updateImage(getFileMultipart(context, imageUri)).body()?.message ?: ""
+        val imageUrl = userApi.updateImage(getImageFileMultipart(context, imageUri)).body()?.message ?: ""
         userPreferences.setImagePath(imageUrl)
         return imageUrl
     }

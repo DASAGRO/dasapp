@@ -8,6 +8,7 @@ import kz.das.dasaccounting.domain.data.action.OperationAct
 data class OfficeInventory(
     var id: Int = 0,
     var date: Long = 0,
+    var name: String? = null,
     var humidity: Int? = null,
     var latitude: Double? = null,
     var longitude: Double? = null,

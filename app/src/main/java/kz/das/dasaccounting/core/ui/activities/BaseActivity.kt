@@ -13,6 +13,7 @@ import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.banners.Banner
 import kz.das.dasaccounting.core.ui.dialogs.NotificationDialog
 import kz.das.dasaccounting.core.ui.dialogs.ProgressDialogFragment
+import kz.das.dasaccounting.core.ui.dialogs.UploadProgressDialog
 import kz.das.dasaccounting.core.ui.shared.NetworkConnectionVM
 import kz.das.dasaccounting.core.ui.utils.NetworkUtils
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -26,6 +27,8 @@ abstract class BaseActivity<VM: ViewModel, VB: ViewBinding>: AppCompatActivity()
     protected abstract val mViewModel: VM
 
     private var dialogLoading: ProgressDialogFragment? = null
+    private var dialogUploading: UploadProgressDialog? = null
+
     private var commonNotificationDialog: NotificationDialog? = null
     //endregion
 
@@ -33,6 +36,7 @@ abstract class BaseActivity<VM: ViewModel, VB: ViewBinding>: AppCompatActivity()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         dialogLoading = ProgressDialogFragment()
+        dialogUploading = UploadProgressDialog()
         mViewBinding = getViewBinding()
         super.onCreate(savedInstanceState)
 
@@ -100,6 +104,18 @@ abstract class BaseActivity<VM: ViewModel, VB: ViewBinding>: AppCompatActivity()
     }
 
     fun hideLoading() {
+        if (dialogLoading?.isAdded == true) {
+            dialogLoading?.dismiss()
+        }
+    }
+
+    fun showUploading() {
+        if (dialogLoading?.isAdded != true) {
+            dialogLoading?.show(supportFragmentManager, ProgressDialogFragment.TAG)
+        }
+    }
+
+    fun hideUploading() {
         if (dialogLoading?.isAdded == true) {
             dialogLoading?.dismiss()
         }

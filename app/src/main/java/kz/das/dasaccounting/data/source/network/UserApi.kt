@@ -23,4 +23,8 @@ interface UserApi {
     @Multipart
     @POST("/api/system/upload/image")
     suspend fun updateImage(@Part requestBody: MultipartBody.Part?): Response<ApiResponseMessage>
+
+    @POST("/api/support/send")
+    suspend fun sendSupport(@Body hashMap: HashMap<String, Any>): Response<ApiResponseMessage>
+
 }

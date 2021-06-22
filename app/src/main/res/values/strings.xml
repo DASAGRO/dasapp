@@ -134,6 +134,10 @@
     <string name="confirm_with_finger">Подтвердите отпечатком</string>
     <string name="error_not_valid_finger">Неверный отпечаток</string>
     <string name="uploading_files">Отправка файлов…</string>
+    <string name="choose_image">Выбрать фото</string>
+    <string name="choose_video">Выбрать видео</string>
+    <string name="office_inventory_accepted_successfully">ТМЦ успешно принят</string>
+    <string name="office_inventory_transferred_successfully">ТМЦ успешно передан</string>
 
 
 </resources>

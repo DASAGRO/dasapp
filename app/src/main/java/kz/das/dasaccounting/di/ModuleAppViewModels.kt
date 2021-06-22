@@ -15,6 +15,9 @@ import kz.das.dasaccounting.ui.guards.GuardBottomNavigationVM
 import kz.das.dasaccounting.ui.office.OfficeBottomNavigationVM
 import kz.das.dasaccounting.ui.office.accept.AcceptConfirmationVM
 import kz.das.dasaccounting.ui.office.accept.AcceptInventoryInfoVM
+import kz.das.dasaccounting.ui.office.transfer.TransferConfirmVM
+import kz.das.dasaccounting.ui.office.transfer.TransferFormalizeVM
+import kz.das.dasaccounting.ui.office.transfer.TransferVM
 import kz.das.dasaccounting.ui.parent_bottom.location.LocationVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.history.ProfileHistoryVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.ProfileInfoVM
@@ -49,6 +52,9 @@ internal fun getOfficeViewModels() = module {
     viewModel { OfficeBottomNavigationVM() }
     viewModel { AcceptInventoryInfoVM() }
     viewModel { AcceptConfirmationVM() }
+    viewModel { TransferVM() }
+    viewModel { TransferFormalizeVM() }
+    viewModel { TransferConfirmVM() }
 }
 
 internal fun getProfileViewModels() = module {

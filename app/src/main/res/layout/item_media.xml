@@ -47,7 +47,6 @@
             android:layout_alignParentEnd="true"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{() -> onSupportMediaEvents.onRemoveMedia(media)}"
             android:src="@drawable/ic_close_cross" />
 
     </RelativeLayout>
