@@ -34,23 +34,25 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
 //            })
     }
 
-    override suspend fun acceptInventory(officeInventory: OfficeInventory): ApiResponseMessage {
-        return officeOperationApi.acceptInventory(officeInventory.toEntity())
-            .unwrap( object : OnResponseCallback<ApiResponseMessage> {
-            override fun onSuccess(entity: ApiResponseMessage) {
+    override suspend fun acceptInventory(officeInventory: OfficeInventory, comment: String, fileIds: Array<Int>?): Any {
+        val officeInventoryEntity = officeInventory.toEntity()
+        officeInventoryEntity.comment = comment
+        return officeOperationApi.acceptInventory(officeInventoryEntity)
+            .unwrap(object : OnResponseCallback<ApiResponseMessage> {
+                override fun onSuccess(entity: ApiResponseMessage) {
 
-            }
-
-            override fun onFail(exception: Exception) {
-                if (exception is SocketTimeoutException
-                    || exception is UnknownHostException
-                    || exception is ConnectException) {
                 }
-            } // No handle require
-        })
+
+                override fun onFail(exception: Exception) {
+                    if (exception is SocketTimeoutException
+                        || exception is UnknownHostException
+                        || exception is ConnectException) {
+                    }
+                } // No handle require
+            })
     }
 
-    override suspend fun sendInventory(officeInventory: OfficeInventory): ApiResponseMessage {
+    override suspend fun sendInventory(officeInventory: OfficeInventory): Any {
         return officeOperationApi.sendInventory(officeInventory.toEntity())
             .unwrap( object : OnResponseCallback<ApiResponseMessage> {
                 override fun onSuccess(entity: ApiResponseMessage) {

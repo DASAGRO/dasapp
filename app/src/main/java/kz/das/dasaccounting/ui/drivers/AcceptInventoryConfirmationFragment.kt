@@ -7,7 +7,7 @@ import kz.das.dasaccounting.ui.office.accept.AcceptConfirmationFragment
 import kz.das.dasaccounting.ui.office.accept.AcceptConfirmationVM
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class AddInventoryConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentInventoryAcceptConfirmationBinding>() {
+class AcceptInventoryConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentInventoryAcceptConfirmationBinding>() {
 
     companion object {
         fun getScreen() = DasAppScreen(AcceptConfirmationFragment())

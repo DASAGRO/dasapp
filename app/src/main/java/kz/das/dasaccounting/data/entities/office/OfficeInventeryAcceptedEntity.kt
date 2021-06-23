@@ -15,11 +15,13 @@ data class OfficeInventoryAcceptedEntity(
     val latitude: Double? = null,
     val longitude: Double? = null,
     val materialUUID: String? = null,
+    val receiverUUID: String? = null,
     val quantity: Int? = null,
     val type: String? = null,
     val acceptedAt: Long? = 0,
     val sendAt: Long? = 0,
     val syncRequire: Int = 0,
+    val senderName: String? = null,
     val isSend: Int = 0,
     val isAccepted: Int = 0
 ): Serializable
@@ -34,11 +36,13 @@ fun OfficeInventoryAcceptedEntity.toDomain(): OfficeInventory {
         latitude = this.latitude,
         longitude = this.longitude,
         materialUUID = this.materialUUID,
+        receiverUUID = this.receiverUUID,
         quantity = this.quantity,
         type = this.type,
         acceptedAt = this.acceptedAt,
         sendAt = this.sendAt,
         syncRequire = this.syncRequire,
+        senderName = this.senderName,
         isSend = this.isSend,
         isAccepted = this.isAccepted
     )
@@ -53,11 +57,13 @@ fun OfficeInventory.toAcceptedEntity(): OfficeInventoryAcceptedEntity {
         latitude = this.latitude,
         longitude = this.longitude,
         materialUUID = this.materialUUID,
+        receiverUUID = this.receiverUUID,
         quantity = this.quantity,
         type = this.type,
         acceptedAt = this.acceptedAt,
         sendAt = this.sendAt,
         syncRequire = this.syncRequire,
+        senderName = this.senderName,
         isSend = this.isSend,
         isAccepted = this.isAccepted
     )

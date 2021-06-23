@@ -1,9 +1,11 @@
 package kz.das.dasaccounting.core.ui.extensions
 
+import android.R.attr.bitmap
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.text.Html
@@ -16,12 +18,11 @@ import android.view.animation.Animation
 import android.view.animation.Transformation
 import android.widget.ImageView
 import android.widget.TextView
+import androidmads.library.qrgenearator.QRGContents
+import androidmads.library.qrgenearator.QRGEncoder
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.MultiFormatWriter
-import com.google.zxing.common.BitMatrix
-import com.journeyapps.barcodescanner.BarcodeEncoder
+import com.google.zxing.WriterException
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile_history.view.*
 import kz.das.dasaccounting.R
@@ -278,19 +279,34 @@ fun ImageView.setUriImage(uri: Uri?) {
 }
 
 fun String.generateQR(): Bitmap? {
-    val str = this
 
-    val result: BitMatrix = try {
-        MultiFormatWriter().encode(
-            str,
-            BarcodeFormat.QR_CODE, 400, 400, null
-        )
-    } catch (iae: IllegalArgumentException) {
-        // Unsupported format
-        return null
+    val str = this
+    var bitmap: Bitmap? = null
+
+    val qrgEncoder = QRGEncoder(this, null, QRGContents.Type.TEXT, 300)
+    qrgEncoder.colorBlack = Color.BLACK
+    qrgEncoder.colorWhite = Color.WHITE
+    try {
+        // Getting QR-Code as Bitmap
+        bitmap = qrgEncoder.bitmap
+        // Setting Bitmap to ImageView
+    } catch (e: WriterException) {
+        e.printStackTrace()
     }
-    val barcodeEncoder = BarcodeEncoder()
-    return barcodeEncoder.createBitmap(result)
+
+    return bitmap
+
+//    val result: BitMatrix = try {
+//        MultiFormatWriter().encode(
+//            str,
+//            BarcodeFormat.QR_CODE, 400, 400, null
+//        )
+//    } catch (iae: IllegalArgumentException) {
+//        // Unsupported format
+//        return null
+//    }
+//    val barcodeEncoder = BarcodeEncoder()
+//    return barcodeEncoder.createBitmap(result)
 }
 
 

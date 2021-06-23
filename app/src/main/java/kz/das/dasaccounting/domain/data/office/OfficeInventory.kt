@@ -13,11 +13,13 @@ data class OfficeInventory(
     var latitude: Double? = null,
     var longitude: Double? = null,
     var materialUUID: String? = null,
+    var receiverUUID: String? = null,
     var quantity: Int? = null,
     var type: String? = null,
     var acceptedAt: Long? = 0,
     var sendAt: Long? = 0,
     var syncRequire: Int = 0,
     var isSend: Int = 0,
+    var senderName: String? = "",
     var isAccepted: Int = 0
 ): OperationAct(), Parcelable

@@ -63,7 +63,7 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
                     System.currentTimeMillis(), qrScan)
                 userRepository.startWork()
                 setControlOptionsState(isOnWork())
-                isWorkStoppedLV.postValue(true)
+                isWorkStartedLV.postValue(true)
             } catch (t: Throwable) {
                 throwableHandler.handle(t)
             } finally {
@@ -81,6 +81,7 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
                     System.currentTimeMillis())
                 userRepository.stopWork()
                 setControlOptionsState(isOnWork())
+                isWorkStoppedLV.postValue(true)
             } catch (t: Throwable) {
                 throwableHandler.handle(t)
             } finally {

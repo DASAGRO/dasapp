@@ -109,6 +109,7 @@ dependencies {
     implementation 'io.github.ParkSangGwon:tedimagepicker:1.2.2'
 
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
 
     // MAPBOX
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.1'

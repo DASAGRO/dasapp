@@ -54,11 +54,12 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
         mViewModel.getOfficeInventory().observe(viewLifecycleOwner, Observer {
             it?.let {
                 mViewBinding.ivInventory.setImageResource(R.drawable.ic_inventory)
-                mViewBinding.tvInventoryTitle.text = it.materialUUID
+                mViewBinding.tvInventoryTitle.text = it.name
                 mViewBinding.tvInventoryDesc.text =
                     (getString(R.string.inventory_total_quantity) +
                             " " + it.quantity +
-                            " " + it.type)
+                            " " + it.type + "\n" +
+                            String.format(getString(R.string.inventory_sender_name), it.senderName))
             }
         })
     }

@@ -83,7 +83,7 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
             }
         })
 
-        coreMainVM.isWorkStarted().observe(viewLifecycleOwner, Observer {
+        coreMainVM.isWorkStopped().observe(viewLifecycleOwner, Observer {
             if (it) {
                 coreMainVM.setControlOptionsState(false)
                 mViewBinding.btnStart.zoomAnimation(300L, true)

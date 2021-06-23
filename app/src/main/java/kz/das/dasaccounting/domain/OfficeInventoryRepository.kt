@@ -1,7 +1,6 @@
 package kz.das.dasaccounting.domain
 
 import androidx.lifecycle.LiveData
-import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 
 interface OfficeInventoryRepository {
@@ -12,9 +11,9 @@ interface OfficeInventoryRepository {
 
     suspend fun awaitSendInventory(officeInventory: OfficeInventory)
 
-    suspend fun acceptInventory(officeInventory: OfficeInventory): ApiResponseMessage
+    suspend fun acceptInventory(officeInventory: OfficeInventory, comment: String, fileIds: Array<Int>?): Any
 
-    suspend fun sendInventory(officeInventory: OfficeInventory): ApiResponseMessage
+    suspend fun sendInventory(officeInventory: OfficeInventory): Any
 
     suspend fun syncInventoryMaterials()
 

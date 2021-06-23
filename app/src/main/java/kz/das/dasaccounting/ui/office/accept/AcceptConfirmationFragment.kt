@@ -30,7 +30,7 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
 
         mViewBinding.apply {
             btnReady.setOnClickListener {
-                mViewModel.acceptInventory()
+                mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
             }
         }
     }
@@ -38,10 +38,28 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
     override fun observeLiveData() {
         super.observeLiveData()
 
+        mViewModel.getOfficeInventory().observe(viewLifecycleOwner, Observer {
+
+        })
+
         mViewModel.isOfficeInventoryAccepted().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showSuccess(getString(R.string.common_banner_success),
                     getString(R.string.office_inventory_accepted_successfully))
+            }
+        })
+    }
+
+    private fun initViews() {
+        mViewModel.getOfficeInventory().observe(viewLifecycleOwner, Observer {
+            it?.let {
+                mViewBinding.ivInventory.setImageResource(R.drawable.ic_inventory)
+                mViewBinding.tvInventoryTitle.text = it.name
+                mViewBinding.tvInventoryDesc.text =
+                    (getString(R.string.inventory_total_quantity) +
+                            " " + it.quantity +
+                            " " + it.type + "\n" +
+                            String.format(getString(R.string.inventory_sender_name), it.senderName))
             }
         })
     }

@@ -27,12 +27,12 @@ class AcceptConfirmationVM : BaseVM(), KoinComponent {
     private val officeInventoryAcceptedLV = SingleLiveEvent<Boolean>()
     fun isOfficeInventoryAccepted(): LiveData<Boolean> = officeInventoryAcceptedLV
 
-    fun acceptInventory() {
+    fun acceptInventory(comment: String) {
         viewModelScope.launch {
             showLoading()
             try {
                 officeInventory?.let {
-                    officeInventoryRepository.acceptInventory(it)
+                    officeInventoryRepository.acceptInventory(it, comment, null)
                 }
                 officeInventoryAcceptedLV.postValue(true)
             } catch (t: Throwable) {
