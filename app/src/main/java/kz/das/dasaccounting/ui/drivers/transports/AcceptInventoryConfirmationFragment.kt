@@ -1,16 +1,15 @@
-package kz.das.dasaccounting.ui.drivers
+package kz.das.dasaccounting.ui.drivers.transports
 
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentInventoryAcceptConfirmationBinding
-import kz.das.dasaccounting.ui.office.accept.AcceptConfirmationFragment
 import kz.das.dasaccounting.ui.office.accept.AcceptConfirmationVM
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AcceptInventoryConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentInventoryAcceptConfirmationBinding>() {
 
     companion object {
-        fun getScreen() = DasAppScreen(AcceptConfirmationFragment())
+        fun getScreen() = DasAppScreen(AcceptInventoryConfirmationFragment())
     }
 
     override val mViewModel: AcceptConfirmationVM by viewModel()

@@ -93,9 +93,9 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
             operationsAdapter?.putItems(getOperations(it))
         })
 
-//        officeBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
-//            operationsAdapter?.putItems(getOperations(it))
-//        })
+        officeBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
+            operationsAdapter?.putItems(getOperations(it))
+        })
     }
 
     private fun initAcceptOperation() {
@@ -103,11 +103,13 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
             .setCancelable(true)
             .setOnScanCallback(object : QrFragment.OnScanCallback {
                 override fun onScan(qrScan: String) {
-                    val acceptInventory: OfficeInventory? =
-                        OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()
-                    if (acceptInventory != null) {
-                        delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
-                            requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(acceptInventory))
+                    delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
+                        try {
+                            OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
+                                requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(it))
+                            }
+                        } catch (e: Exception) {
+                            showError(getString(R.string.common_error), getString(R.string.common_error_scan))
                         }
                     }
                 }

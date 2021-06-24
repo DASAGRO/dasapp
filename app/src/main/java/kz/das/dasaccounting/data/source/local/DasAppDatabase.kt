@@ -24,7 +24,7 @@ abstract class DasAppDatabase: RoomDatabase() {
 
     abstract fun officeInventorySentDao(): OfficeInventorySentDao
 
-    abstract fun driverInventoryDao(): DriverInventoryDao
+//    abstract fun driverInventoryDao(): DriverInventoryDao
 
     companion object {
         private val LOCK = Any()

@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity(tableName = "transports")
+@Entity(tableName = "driver_inventory")
 data class DriverInventoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
@@ -12,6 +12,8 @@ data class DriverInventoryEntity(
     val latitude: Double? = null,
     val longitude: Double? = null,
     val tcUUID: String? = null,
+    val name: String? = null,
+    val receiverUUID: String? = null,
     val type: String? = null,
     val acceptedAt: Long? = 0,
     val sendAt: Long? = 0,

@@ -11,7 +11,7 @@ interface DriverOperationApi {
 
 
     @GET("/api/transports/get")
-    suspend fun getMaterials(): Response<List<DriverInventoryEntity>>
+    suspend fun getTransports(): Response<List<DriverInventoryEntity>>
 
     @POST("/api/goods/get/fligel")
     suspend fun acceptInventoryFligel(@Body driverInventoryEntity: DriverInventoryEntity): Response<ApiResponseMessage>
@@ -24,13 +24,15 @@ interface DriverOperationApi {
 //
 //    @POST("/api/goods/get/ts")
 //    suspend fun sendInventoryFligel(@Body driverInventoryEntity: DriverInventoryEntity): Response<ApiResponseMessage>
-//
+
 
     @POST("/api/goods/send/po")
     suspend fun sendInventoryDriverAccessory(@Body driverInventoryEntity: DriverInventoryEntity): Response<ApiResponseMessage>
 
     @POST("/api/goods/send/ts")
     suspend fun sendInventoryDriverTransport(@Body driverInventoryEntity: DriverInventoryEntity): Response<ApiResponseMessage>
+
+
 
 
 }

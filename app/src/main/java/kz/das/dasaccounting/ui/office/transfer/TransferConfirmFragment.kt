@@ -62,7 +62,6 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
     }
 
 
-
     private fun getOfficeInventory(): OfficeInventory? {
         return arguments?.getParcelable(OFFICE_INVENTORY)
     }

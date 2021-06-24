@@ -5,6 +5,7 @@ import androidx.lifecycle.map
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.core.extensions.OnResponseCallback
 import kz.das.dasaccounting.core.extensions.unwrap
+import kz.das.dasaccounting.data.ModulesLayer
 import kz.das.dasaccounting.data.entities.office.OfficeInventoryEntity
 import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.entities.office.toEntity
@@ -12,26 +13,23 @@ import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.OfficeOperationApi
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
+class OfficeInventoryRepositoryImpl: OfficeInventoryRepository {
 
-class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
-
-    private val officeOperationApi: OfficeOperationApi by inject()
-    private val dasAppDatabase: DasAppDatabase by inject()
+    private val officeOperationApi: OfficeOperationApi by ModulesLayer.koin.inject()
+    private val dasAppDatabase: DasAppDatabase by ModulesLayer.koin.inject()
 
     override suspend fun getOfficeMaterials(): List<OfficeInventory> {
-        return officeOperationApi.getMaterials().unwrap { list -> list.map { it.toDomain() } }
-//            , object : OnResponseCallback<List<OfficeInventoryEntity>> {
-//                override fun onSuccess(entity: List<OfficeInventoryEntity>) {
-//                    dasAppDatabase?.officeInventoryDao().insertAllWithIgnore(entity)
-//                }
-//                override fun onFail(exception: Exception) { } // No handle require
-//            })
+        return officeOperationApi.getMaterials().unwrap ({ list -> list.map { it.toDomain() } },
+        object : OnResponseCallback<List<OfficeInventoryEntity>> {
+                override fun onSuccess(entity: List<OfficeInventoryEntity>) {
+                    dasAppDatabase.officeInventoryDao().insertAllWithIgnore(entity)
+                }
+                override fun onFail(exception: Exception) { } // No handle require
+            })
     }
 
     override suspend fun acceptInventory(officeInventory: OfficeInventory, comment: String, fileIds: Array<Int>?): Any {
@@ -77,7 +75,7 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
     }
 
     override suspend fun syncInventoryMaterials() {
-
+        // No procerue require
     }
 
     override fun getOfficeSentMaterialsLocally(): LiveData<List<OfficeInventory>> {

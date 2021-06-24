@@ -1,11 +1,7 @@
-plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-android-extensions'
-    id 'kotlin-kapt'
-//    id 'com.google.gms.google-services'
-//    id 'com.google.firebase.crashlytics'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 // Creates a variable called signingPropertiesFile and initializes it to the
 // signing.properties file. Used for singing application
@@ -98,7 +94,7 @@ dependencies {
 
     // ROOM
     implementation rootProject.ext.dependencies["room_runtime"]
-    annotationProcessor rootProject.ext.dependencies["room_compiler"]
+    kapt rootProject.ext.dependencies["room_compiler"]
     annotationProcessor rootProject.ext.dependencies["room_persistence_arch"]
     implementation rootProject.ext.dependencies["room_ktx"]
     implementation rootProject.ext.dependencies["room_testing"]

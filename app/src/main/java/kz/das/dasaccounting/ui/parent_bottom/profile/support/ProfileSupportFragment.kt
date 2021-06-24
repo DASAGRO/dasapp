@@ -78,6 +78,7 @@ class ProfileSupportFragment: BaseFragment<ProfileSupportVM, FragmentProfileSupp
             })
             dialogBottomMediaTypePick.show(childFragmentManager, dialogBottomMediaTypePick.tag)
         }
+
         mViewBinding.btnSend.setOnClickListener {
             if (mViewBinding.edtComment.text.isNullOrEmpty()) {
                 showError(getString(R.string.common_error), "Введите комментарий для отправки")

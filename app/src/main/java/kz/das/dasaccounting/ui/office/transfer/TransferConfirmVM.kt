@@ -39,6 +39,7 @@ class TransferConfirmVM: BaseVM() {
                 officeInventory?.let {
                     officeInventoryRepository.sendInventory(it)
                 }
+                officeInventoryRepository.getOfficeMaterials()
                 isOfficeInventorySentLV.postValue(true)
             } catch (t: Throwable) {
                 isOfficeInventorySentLV.postValue(false)
