@@ -47,9 +47,6 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
         )
 
         mViewBinding.apply {
-            edtComment.addTextChangedListener {
-                btnSend.isEnabled = !it.isNullOrEmpty()
-            }
 
             rvMedia.run {
                 adapter = profileSupportAttachedMediaAdapter
@@ -95,16 +92,12 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
                 dialogBottomMediaTypePick.show(childFragmentManager, dialogBottomMediaTypePick.tag)
             }
 
-            btnSend.setOnClickListener {
+            btnReady.setOnClickListener {
                 if (mViewBinding.edtComment.text.isNullOrEmpty()) {
                     showError(getString(R.string.common_error), "Введите комментарий для отправки")
                 } else {
-                    mViewModel.sendSupport(mViewBinding.edtComment.text.toString())
+                    mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
                 }
-            }
-
-            btnReady.setOnClickListener {
-                mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
             }
         }
     }

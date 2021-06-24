@@ -148,19 +148,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rv_media" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_send"
-        style="@style/Widget.MaterialComponents.Button.DAS.Red"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/send"
-        android:enabled="false"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="35dp"
-        app:layout_constraintEnd_toEndOf="@+id/edt_comment"
-        app:layout_constraintStart_toStartOf="@+id/edt_comment"
-        app:layout_constraintTop_toBottomOf="@+id/edt_comment" />
+
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btn_ready"
@@ -172,7 +160,7 @@
         android:paddingEnd="24dp"
         android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
         android:text="@string/ready"
         android:textColor="@color/red"

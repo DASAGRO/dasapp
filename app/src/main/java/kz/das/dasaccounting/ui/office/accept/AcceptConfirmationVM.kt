@@ -46,7 +46,7 @@ class AcceptConfirmationVM : BaseVM(), KoinComponent {
             showLoading()
             try {
                 officeInventory?.let {
-                    officeInventoryRepository.acceptInventory(it, comment, null)
+                    officeInventoryRepository.acceptInventory(it, comment, fileIds)
                 }
                 officeInventoryRepository.getOfficeMaterials()
                 officeInventoryAcceptedLV.postValue(true)
@@ -78,21 +78,6 @@ class AcceptConfirmationVM : BaseVM(), KoinComponent {
                 throwableHandler.handle(t)
             } finally {
                 isFilesUploadingLV.postValue(false)
-            }
-        }
-    }
-
-    fun sendSupport(comment: String?) {
-        viewModelScope.launch {
-            showLoading()
-            try {
-                isReportSentLV.postValue(true)
-                userRepository.sendSupport(fileIds, comment ?: "")
-            } catch (t: Throwable) {
-                isReportSentLV.postValue(false)
-                throwableHandler.handle(t)
-            } finally {
-                hideLoading()
             }
         }
     }

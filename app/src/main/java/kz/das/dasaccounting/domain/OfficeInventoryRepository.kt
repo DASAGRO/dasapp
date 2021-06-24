@@ -7,11 +7,11 @@ interface OfficeInventoryRepository {
 
     suspend fun getOfficeMaterials(): List<OfficeInventory>
 
-    suspend fun awaitAcceptInventory(officeInventory: OfficeInventory)
+    suspend fun initAwaitAcceptInventory()
 
-    suspend fun awaitSendInventory(officeInventory: OfficeInventory)
+    suspend fun initAwaitSendInventory()
 
-    suspend fun acceptInventory(officeInventory: OfficeInventory, comment: String, fileIds: Array<Int>?): Any
+    suspend fun acceptInventory(officeInventory: OfficeInventory, comment: String, fileIds: ArrayList<Int>): Any
 
     suspend fun sendInventory(officeInventory: OfficeInventory): Any
 
