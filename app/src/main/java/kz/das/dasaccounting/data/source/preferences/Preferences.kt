@@ -3,6 +3,7 @@ package kz.das.dasaccounting.data.source.preferences
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.orhanobut.hawk.Hawk
+import kz.das.dasaccounting.data.entities.common.ShiftRequest
 import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
 
@@ -11,6 +12,9 @@ private const val PREFERENCES_USER_PROFILE = "user_profile"
 private const val PREFERENCES_USER_ON_WORK = "user_on_work"
 
 private const val PREFERENCES_LAST_LOCATION = "last_location"
+private const val PREFERENCES_AWAIT_START_WORK = "await_start_work"
+private const val PREFERENCES_AWAIT_FINISH_WORK = "await_finish_work"
+
 
 class UserPreferences(private val preferences: SharedPreferences) {
 
@@ -35,6 +39,40 @@ class UserPreferences(private val preferences: SharedPreferences) {
         user?.imagePath = imagePath
         user?.let {
             setUser(it)
+        }
+    }
+
+    fun setAwaitStartWork(shiftRequest: ShiftRequest) {
+        preferences.edit().putString(PREFERENCES_AWAIT_START_WORK, Gson().toJson(shiftRequest)).apply()
+    }
+
+    fun setAwaitFinishWork(shiftRequest: ShiftRequest) {
+        preferences.edit().putString(PREFERENCES_AWAIT_FINISH_WORK, Gson().toJson(shiftRequest)).apply()
+    }
+
+    fun clearAwaitStartWork() {
+        preferences.edit().remove(PREFERENCES_AWAIT_START_WORK).apply()
+    }
+
+    fun clearAwaitFinishWork() {
+        preferences.edit().remove(PREFERENCES_AWAIT_FINISH_WORK).apply()
+    }
+
+    fun getAwaitStartWork(): ShiftRequest? {
+        return try {
+            val json = preferences.getString(PREFERENCES_AWAIT_START_WORK, null)
+            Gson().fromJson(json, ShiftRequest::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun getAwaitFinishWork(): ShiftRequest? {
+        return try {
+            val json = preferences.getString(PREFERENCES_AWAIT_FINISH_WORK, null)
+            Gson().fromJson(json, ShiftRequest::class.java)
+        } catch (e: Exception) {
+            null
         }
     }
 

@@ -40,7 +40,9 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository {
                     if (exception is SocketTimeoutException
                         || exception is UnknownHostException
                         || exception is ConnectException) {
-                        dasAppDatabase.officeInventoryAcceptedDao().insert(officeInventory.toAcceptedEntity())
+                        dasAppDatabase.officeInventoryAcceptedDao().insert(officeInventory.toAcceptedEntity().apply {
+                            this.syncRequire == 1
+                        })
                     }
                 }
             })
@@ -54,7 +56,9 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository {
                     if (exception is SocketTimeoutException
                         || exception is UnknownHostException
                         || exception is ConnectException) {
-                        dasAppDatabase.officeInventorySentDao().insert(officeInventory.toSentEntity())
+                        dasAppDatabase.officeInventorySentDao().insert(officeInventory.toSentEntity().apply {
+                            this.syncRequire == 1
+                        })
                     }
                 }
             })

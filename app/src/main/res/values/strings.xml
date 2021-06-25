@@ -89,6 +89,8 @@
     <string name="log_out_desc">Вы уверены что хотите выйти из приложения, все данные будут стерты и не будут доступны для восстановления!</string>
     <string name="accept_inventory">Принять ТМЦ</string>
     <string name="available_operations">Доступные операции</string>
+    <string name="await_sent_operations">В ожидании отправки</string>
+    <string name="await_accepted_operations">В ожидании принятии</string>
     <string name="camera_qr_scan_permission_required">Нужно дать разрешение камеры для QR-сканера!</string>
     <string name="camera_qr_scan_permission_required_rationale">Для корректной работы нужно дать разрешение камеры для QR-сканера!</string>
     <string name="camera_access_title">Доступ к камере</string>

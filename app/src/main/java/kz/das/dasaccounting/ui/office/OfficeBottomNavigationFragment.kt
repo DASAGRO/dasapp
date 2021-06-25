@@ -10,6 +10,7 @@ import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
+import kz.das.dasaccounting.core.ui.shared.NetworkConnectionVM
 import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.domain.data.action.OperationAct
@@ -23,11 +24,14 @@ import kz.das.dasaccounting.ui.office.transfer.TransferFragment
 import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationFragment
 import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
 import kz.das.dasaccounting.ui.utils.CameraUtils
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
 
     private val officeBottomNavigationVM: OfficeBottomNavigationVM by viewModel()
+    private val mNetworkConnectionVM: NetworkConnectionVM by sharedViewModel()
+
     private var operationsAdapter: OfficeOperationsAdapter? = null
 
     companion object {
@@ -75,6 +79,13 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
 
     override fun observeLiveData() {
         super.observeLiveData()
+
+        mNetworkConnectionVM.getResult().observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                officeBottomNavigationVM.initAwaitRequests()
+            }
+        })
+
         mViewModel.isStartWorkWithQrLV().observe(viewLifecycleOwner, Observer {
             if (it) {
                 val qrFragment = QrFragment.Builder()
@@ -96,6 +107,17 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
         officeBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.putItems(getOperations(it))
         })
+
+        officeBottomNavigationVM.getAwaitAcceptedOperationsLocally().observe(viewLifecycleOwner, Observer {
+            operationsAdapter?.clearItems(it)
+            operationsAdapter?.addItems(getAwaitAcceptedOperations(it))
+        })
+
+        officeBottomNavigationVM.getAwaitSentOperationsLocally().observe(viewLifecycleOwner, Observer {
+            operationsAdapter?.clearItems(it)
+            operationsAdapter?.addItems(getAwaitSentOperations(it))
+        })
+
     }
 
     private fun initAcceptOperation() {
@@ -148,6 +170,20 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
         ))
         operations.addAll(inventories)
         return operations
+    }
+
+    private fun getAwaitSentOperations(inventories: List<OfficeInventory>): ArrayList<OperationAct> {
+        val operations: ArrayList<OperationAct> = arrayListOf()
+        operations.add(OperationHead(getString(R.string.await_sent_operations)))
+        operations.addAll(inventories)
+        return if (inventories.isEmpty()) arrayListOf() else operations
+    }
+
+    private fun getAwaitAcceptedOperations(inventories: List<OfficeInventory>): ArrayList<OperationAct> {
+        val operations: ArrayList<OperationAct> = arrayListOf()
+        operations.add(OperationHead(getString(R.string.available_operations)))
+        operations.addAll(inventories)
+        return if (inventories.isEmpty()) arrayListOf() else operations
     }
 
 }

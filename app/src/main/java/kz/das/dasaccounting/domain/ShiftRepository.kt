@@ -13,4 +13,8 @@ interface ShiftRepository {
 
     suspend fun finishShift(lat: Double, long: Double, time: Long): ApiResponseMessage
 
+    suspend fun initAwaitShiftStarted()
+
+    suspend fun initAwaitShiftFinished()
+
 }

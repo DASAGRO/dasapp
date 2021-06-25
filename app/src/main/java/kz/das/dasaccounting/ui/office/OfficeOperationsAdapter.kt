@@ -64,6 +64,18 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
         notifyDataSetChanged()
     }
 
+    fun clearItems(items: List<OperationAct>) {
+        if (this.operations.containsAll(items)) {
+            this.operations.removeAll(items)
+        }
+        notifyDataSetChanged()
+    }
+
+    fun addItems(items: ArrayList<OperationAct>) {
+        this.operations.addAll(items)
+        notifyDataSetChanged()
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when (operations[position]) {
             is OperationHead -> HEAD
