@@ -4,7 +4,7 @@ data class GetTransportRequest(
     val acceptedAt: Long,
     val comment: String,
     val date: Int,
-    val fileIds: Array<Int>?,
+    val fileIds: ArrayList<Int>?,
     val id: Int,
     val isAccepted: Int,
     val isSend: Int,

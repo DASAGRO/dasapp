@@ -32,6 +32,22 @@ fun TransportInventoryEntity.toDomain(): TransportInventory {
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
-        this.uuid
+        uuid = this.uuid
+    )
+}
+
+fun TransportInventory.toEntity(): TransportInventoryEntity {
+    return TransportInventoryEntity(
+        comment = this.comment,
+        dateTime = this.comment,
+        id = this.id,
+        latitude = this.latitude,
+        longitude = this.longitude,
+        model = this.model,
+        molUuid = this.molUuid,
+        stateNumber = this.stateNumber,
+        tsType = this.tsType,
+        uuid = this.uuid,
+        senderName = this.senderName
     )
 }

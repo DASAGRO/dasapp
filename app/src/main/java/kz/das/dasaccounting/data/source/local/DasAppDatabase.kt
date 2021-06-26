@@ -30,6 +30,8 @@ abstract class DasAppDatabase: RoomDatabase() {
 
     abstract fun driverAcceptedInventoryDao(): DriverInventoryAcceptedDao
 
+    abstract fun driverFligelDataDao(): FligelDataDao
+
     companion object {
         private val LOCK = Any()
         @Volatile

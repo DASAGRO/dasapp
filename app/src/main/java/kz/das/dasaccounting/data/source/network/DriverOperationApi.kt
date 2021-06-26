@@ -16,7 +16,7 @@ interface DriverOperationApi {
     suspend fun getTransports(): Response<List<TransportInventoryEntity>>
 
     @POST("/api/goods/receive/fligel")
-    suspend fun receiveInventoryFligel(@Body receiveFligelDataRequest: ReceiveFligelDataRequest): Response<ApiResponseMessage>
+    suspend fun receiveInventoryFligel(@Body receiveFligelDataRequest: ReceiveFligelDataRequest): Response<Any>
 
     @POST("/api/goods/get/ts")
     suspend fun getInventoryDriverTransport(@Body getTransportRequest: GetTransportRequest): Response<Any>

@@ -13,6 +13,7 @@ import kz.das.dasaccounting.databinding.ItemSegmentBinding
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.action.OperationHead
 import kz.das.dasaccounting.domain.data.action.OperationInit
+import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 
 class DriverOperationsAdapter(val context: Context, private var operations: ArrayList<OperationAct>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -30,6 +31,7 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
         fun onOperationAct(operationAct: OperationAct)
         fun onOperationInit(operationAct: OperationAct)
         fun onInventoryTransfer(officeInventory: OfficeInventory)
+        fun onInventoryTransportTransfer(transportInventory: TransportInventory)
     }
 
     fun setOfficeOperationsAdapterEvent(officeOperationsAdapterEvent: OnOfficeOperationsAdapterEvent) {

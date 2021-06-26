@@ -74,7 +74,7 @@ fun TransportInventory.toSentRequest(): SendTransportRequest {
 }
 
 
-fun TransportInventory.toGetRequest(userId: String, comment: String, fileIds: Array<Int>?): GetTransportRequest {
+fun TransportInventory.toGetRequest(userId: String, comment: String, fileIds: ArrayList<Int>?): GetTransportRequest {
     return GetTransportRequest(
         date = 0,
         id =  this.id,

@@ -134,6 +134,7 @@
     <string name="password_changed_successfully">Пароль успешно обновлен!</string>
     <string name="inventory_title">ТМЦ</string>
     <string name="quantity_compare_error">Количество не должно превышать общего количество!</string>
+    <string name="common_fill_all_inputs">Введите все данные!</string>
     <string name="confirm_with_finger">Подтвердите отпечатком</string>
     <string name="error_not_valid_finger">Неверный отпечаток</string>
     <string name="uploading_files">Отправка файлов…</string>
@@ -141,7 +142,11 @@
     <string name="choose_video">Выбрать видео</string>
     <string name="office_inventory_accepted_successfully">ТМЦ успешно принят</string>
     <string name="office_inventory_transferred_successfully">ТМЦ успешно передан</string>
+    <string name="transport_inventory_accepted_successfully">ТЦ успешно принят</string>
+    <string name="transport_inventory_transferred_successfully">ТЦ успешно передан</string>
+
     <string name="common_error_scan">Ошибка считывания!</string>
+    <string name="gov_number">\"Гос номер: \"</string>
 
 
 </resources>

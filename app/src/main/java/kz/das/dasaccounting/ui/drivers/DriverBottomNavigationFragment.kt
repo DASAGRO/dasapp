@@ -16,8 +16,8 @@ import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEnti
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.action.OperationHead
 import kz.das.dasaccounting.domain.data.action.OperationInit
+import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
-import kz.das.dasaccounting.ui.office.OfficeOperationsAdapter
 import kz.das.dasaccounting.ui.office.accept.AcceptInventoryInfoFragment
 import kz.das.dasaccounting.ui.office.transfer.TransferConfirmFragment
 import kz.das.dasaccounting.ui.office.transfer.TransferFormalizeFragment
@@ -27,13 +27,15 @@ import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
 import kz.das.dasaccounting.ui.utils.CameraUtils
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
 
     private val officeBottomNavigationVM: DriverBottomNavigationVM by viewModel()
     private val mNetworkConnectionVM: NetworkConnectionVM by sharedViewModel()
 
-    private var operationsAdapter: OfficeOperationsAdapter? = null
+    private var operationsAdapter: DriverOperationsAdapter? = null
 
     companion object {
         fun getScreen() = DasAppScreen(DriverBottomNavigationFragment())
@@ -54,11 +56,11 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
         }
 
-        operationsAdapter = OfficeOperationsAdapter(requireContext(), arrayListOf())
+        operationsAdapter = DriverOperationsAdapter(requireContext(), arrayListOf())
         mViewBinding.rvOperations.run {
             adapter = operationsAdapter
         }
-        operationsAdapter?.setOfficeOperationsAdapterEvent(object : OfficeOperationsAdapter.OnOfficeOperationsAdapterEvent {
+        operationsAdapter?.setOfficeOperationsAdapterEvent(object : DriverOperationsAdapter.OnOfficeOperationsAdapterEvent {
             override fun onOperationAct(operationAct: OperationAct) {
                 initAcceptOperation()
             }
@@ -75,6 +77,21 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
                 })
                 inventoryTransferDialog.show(childFragmentManager, inventoryTransferDialog.tag)
             }
+
+            override fun onInventoryTransportTransfer(transportInventory: TransportInventory) {
+                val inventoryTransferDialog = kz.das.dasaccounting.ui.drivers.transfer.TransferFormalizeFragment.newInstance(transportInventory)
+                inventoryTransferDialog.setOnTransferCallback(object : kz.das.dasaccounting.ui.drivers.transfer.TransferFormalizeFragment.OnTransferCallback {
+                    override fun onTransfer(transportInventory: TransportInventory) {
+                        val isFligel = transportInventory.model.toUpperCase(Locale.getDefault()).contains("НАКОПИТЕЛЬ")
+                        if (isFligel) {
+                            showFligelTransportTransferDialog(transportInventory)
+                        } else {
+                            showTransportTransferDialog(transportInventory)
+                        }
+                    }
+                })
+                inventoryTransferDialog.show(childFragmentManager, inventoryTransferDialog.tag)
+            }
         })
     }
 
@@ -87,12 +104,18 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
         })
 
-        officeBottomNavigationVM.getOperations().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.putItems(getOperations(it))
-        })
+//        officeBottomNavigationVM.getOperations().observe(viewLifecycleOwner, Observer {
+//            operationsAdapter?.putItems(getOperations(it))
+//        })
 
         officeBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.putItems(getOperations(it))
+            operationsAdapter?.clearItems(arrayListOf(
+                OperationHead(getString(R.string.available_operations)),
+                OperationInit("Принять ТМЦ", R.drawable.ic_add),
+                OperationHead(getString(R.string.inventory_title)),
+            ))
+            operationsAdapter?.clearItems(it)
+            operationsAdapter?.addItems(getOperations(it))
         })
 
         officeBottomNavigationVM.getAwaitAcceptedOperationsLocally().observe(viewLifecycleOwner, Observer {
@@ -139,15 +162,18 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         transferFragment.show(childFragmentManager, transferFragment.tag)
     }
 
-    private fun getOperations(inventories: ArrayList<OfficeInventory>): ArrayList<OperationAct> {
-        val operations: ArrayList<OperationAct> = arrayListOf()
-        operations.addAll(arrayListOf(
-            OperationHead(getString(R.string.available_operations)),
-            OperationInit("Принять ТМЦ", R.drawable.ic_add),
-            OperationHead(getString(R.string.inventory_title)),
-        ))
-        operations.addAll(inventories)
-        return operations
+    private fun showTransportTransferDialog(transportInventory: TransportInventory) {
+        val transferFragment = kz.das.dasaccounting.ui.drivers.transfer.TransferFormalizeFragment.newInstance(transportInventory)
+        transferFragment.setOnTransferCallback(object : kz.das.dasaccounting.ui.drivers.transfer.TransferFormalizeFragment.OnTransferCallback {
+            override fun onTransfer(transportInventory: TransportInventory) {
+                requireRouter().navigateTo(kz.das.dasaccounting.ui.drivers.transfer.TransferConfirmFragment.getScreen(transportInventory))
+            }
+        })
+        transferFragment.show(childFragmentManager, transferFragment.tag)
+    }
+
+    private fun showFligelTransportTransferDialog(transportInventory: TransportInventory) {
+
     }
 
     private fun getOperations(inventories: List<OfficeInventory>): ArrayList<OperationAct> {
