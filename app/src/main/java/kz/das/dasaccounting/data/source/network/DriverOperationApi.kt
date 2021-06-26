@@ -1,6 +1,5 @@
 package kz.das.dasaccounting.data.source.network
 
-import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.data.entities.driver.TransportInventoryEntity
 import kz.das.dasaccounting.data.entities.requests.GetTransportRequest
 import kz.das.dasaccounting.data.entities.requests.ReceiveFligelDataRequest

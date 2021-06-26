@@ -89,8 +89,12 @@
     <string name="log_out_desc">Вы уверены что хотите выйти из приложения, все данные будут стерты и не будут доступны для восстановления!</string>
     <string name="accept_inventory">Принять ТМЦ</string>
     <string name="available_operations">Доступные операции</string>
-    <string name="await_sent_operations">В ожидании отправки</string>
-    <string name="await_accepted_operations">В ожидании принятии</string>
+    <string name="await_sent_operations">В ожидании отправки ТМЦ</string>
+    <string name="await_accepted_operations">В ожидании принятии ТМЦ</string>
+    <string name="await_sent_transports">В ожидании отправки ТC</string>
+    <string name="await_accepted_transports">В ожидании принятии ТC</string>
+    <string name="await_sent_operations_accessory">В ожидании отправки ПО</string>
+    <string name="await_accepted_operations_accessory">В ожидании принятии ПО</string>
     <string name="camera_qr_scan_permission_required">Нужно дать разрешение камеры для QR-сканера!</string>
     <string name="camera_qr_scan_permission_required_rationale">Для корректной работы нужно дать разрешение камеры для QR-сканера!</string>
     <string name="camera_access_title">Доступ к камере</string>
@@ -133,6 +137,8 @@
     <string name="password_change">Изменение пароля</string>
     <string name="password_changed_successfully">Пароль успешно обновлен!</string>
     <string name="inventory_title">ТМЦ</string>
+    <string name="transport_tracktor_title">ТС</string>
+    <string name="transport_trailer_title">ПО</string>
     <string name="quantity_compare_error">Количество не должно превышать общего количество!</string>
     <string name="common_fill_all_inputs">Введите все данные!</string>
     <string name="confirm_with_finger">Подтвердите отпечатком</string>

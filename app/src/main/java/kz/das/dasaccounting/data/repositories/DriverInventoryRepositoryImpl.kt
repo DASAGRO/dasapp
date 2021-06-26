@@ -5,7 +5,6 @@ import androidx.lifecycle.map
 import kz.das.dasaccounting.core.extensions.OnResponseCallback
 import kz.das.dasaccounting.core.extensions.unwrap
 import kz.das.dasaccounting.data.entities.driver.*
-import kz.das.dasaccounting.data.entities.requests.ReceiveFligelDataRequest
 import kz.das.dasaccounting.data.entities.requests.toReceiveFligelDataRequest
 import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.DriverOperationApi

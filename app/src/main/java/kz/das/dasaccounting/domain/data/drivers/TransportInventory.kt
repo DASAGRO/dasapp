@@ -2,6 +2,7 @@ package kz.das.dasaccounting.domain.data.drivers
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import kz.das.dasaccounting.domain.data.action.OperationAct
 
 @Parcelize
 data class TransportInventory(
@@ -16,4 +17,4 @@ data class TransportInventory(
     var tsType: String,
     var senderName: String?,
     var uuid: String
-): Parcelable
+): OperationAct(), Parcelable

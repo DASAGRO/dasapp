@@ -41,7 +41,7 @@ class TransferConfirmVM: BaseVM() {
                 transportInventory?.let {
                     transportInventoryRepository.sendInventory(it)
                 }
-                transportInventoryRepository.getTransportsLocally()
+                transportInventoryRepository.getDriverTransports()
                 isTransportInventorySentLV.postValue(true)
             } catch (t: Throwable) {
                 if (t is SocketTimeoutException

@@ -11,6 +11,7 @@ import kz.das.dasaccounting.ui.auth.onboarding.OnBoardingVM
 import kz.das.dasaccounting.ui.auth.password_reset.PassResetVM
 import kz.das.dasaccounting.ui.auth.password_reset.PhonePassResetVM
 import kz.das.dasaccounting.ui.drivers.DriverBottomNavigationVM
+import kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoFragment
 import kz.das.dasaccounting.ui.guards.GuardBottomNavigationVM
 import kz.das.dasaccounting.ui.office.OfficeBottomNavigationVM
 import kz.das.dasaccounting.ui.office.accept.AcceptConfirmationVM
@@ -55,6 +56,16 @@ internal fun getOfficeViewModels() = module {
     viewModel { TransferVM() }
     viewModel { TransferFormalizeVM() }
     viewModel { TransferConfirmVM() }
+}
+
+internal fun getDriverViewModels() = module {
+    viewModel { kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoVM() }
+    viewModel { kz.das.dasaccounting.ui.drivers.accept.AcceptTransportConfirmationVM() }
+    viewModel { kz.das.dasaccounting.ui.drivers.transfer.TransferConfirmVM() }
+    viewModel { kz.das.dasaccounting.ui.drivers.transfer.TransferFormalizeVM() }
+    viewModel { kz.das.dasaccounting.ui.drivers.fligel.TransferConfirmFligelDataVM() }
+    viewModel { kz.das.dasaccounting.ui.drivers.fligel.TransferFligelDataInputVM() }
+    viewModel { kz.das.dasaccounting.ui.drivers.fligel.TransferFligeDataFormalizeVM() }
 }
 
 internal fun getProfileViewModels() = module {

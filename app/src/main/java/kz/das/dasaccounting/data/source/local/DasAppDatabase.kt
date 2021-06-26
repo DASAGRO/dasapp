@@ -2,20 +2,27 @@ package kz.das.dasaccounting.data.source.local
 
 import android.content.Context
 import androidx.room.*
+import kz.das.dasaccounting.data.entities.driver.AcceptedTransportEntity
+import kz.das.dasaccounting.data.entities.driver.FligelProductEntity
+import kz.das.dasaccounting.data.entities.driver.SentTransportEntity
 import kz.das.dasaccounting.data.entities.driver.TransportInventoryEntity
 import kz.das.dasaccounting.data.entities.office.OfficeInventoryAcceptedEntity
 import kz.das.dasaccounting.data.entities.office.OfficeInventoryEntity
 import kz.das.dasaccounting.data.entities.office.OfficeInventorySentEntity
 import kz.das.dasaccounting.data.entities.warehouse.WarehouseInventoryEntity
 import kz.das.dasaccounting.data.source.local.daos.*
+import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
 import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 
-@Database(version = 2, exportSchema = false, entities = [OfficeInventoryEntity::class,
+@Database(version = 3, exportSchema = false, entities = [OfficeInventoryEntity::class,
     OfficeInventoryAcceptedEntity::class,
     OfficeInventorySentEntity::class,
     WarehouseInventoryEntity::class,
-    TransportInventoryEntity::class])
-@TypeConverters(OfficeInventoryEntityTypeConvertor::class)
+    TransportInventoryEntity::class,
+    SentTransportEntity::class,
+    AcceptedTransportEntity::class,
+    FligelProductEntity::class])
+@TypeConverters(OfficeInventoryEntityTypeConvertor::class, DriverInventoryTypeConvertor::class)
 abstract class DasAppDatabase: RoomDatabase() {
 
     abstract fun officeInventoryDao(): OfficeInventoryDao

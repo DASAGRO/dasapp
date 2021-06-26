@@ -25,6 +25,7 @@ class TransferFligelDataFormalizeFragment: BaseBottomSheetFragment<FragmentBotto
 
     interface OnTransferCallback {
         fun onTransfer(transportInventory: TransportInventory)
+        fun onAccept(transportInventory: TransportInventory)
     }
 
     fun setOnTransferCallback(listener: OnTransferCallback) {
@@ -39,6 +40,12 @@ class TransferFligelDataFormalizeFragment: BaseBottomSheetFragment<FragmentBotto
         mViewModel.setTransportInventory(getOfficeInventory())
         mViewBinding.apply {
             this.btnMakeTransfer.setOnClickListener {
+                getOfficeInventory()?.let {
+                    listener?.onTransfer(it)
+                    dismiss()
+                }
+            }
+            this.btnMakeTransferAccept.setOnClickListener {
                 getOfficeInventory()?.let {
                     listener?.onTransfer(it)
                     dismiss()

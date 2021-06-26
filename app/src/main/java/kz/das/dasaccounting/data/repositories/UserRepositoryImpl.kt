@@ -11,6 +11,8 @@ import kz.das.dasaccounting.data.entities.toDomain
 import kz.das.dasaccounting.data.source.network.FileApi
 import kz.das.dasaccounting.data.source.network.UserApi
 import kz.das.dasaccounting.data.source.preferences.UserPreferences
+import kz.das.dasaccounting.domain.DriverInventoryRepository
+import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
@@ -22,6 +24,8 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
 
     private val context: Context by inject()
     private val userPreferences: UserPreferences by inject()
+    private val driverInventoryRepository: DriverInventoryRepository by inject()
+    private val officeInventoryRepository: OfficeInventoryRepository by inject()
     private val userApi: UserApi by inject()
     private val fileApi: FileApi by inject()
 
@@ -76,6 +80,7 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
 
     override fun logOut() {
         userPreferences.clearUserAccessToken()
+
         userPreferences.clearUser()
     }
 
