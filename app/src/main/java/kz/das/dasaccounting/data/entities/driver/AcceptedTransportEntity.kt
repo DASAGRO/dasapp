@@ -2,9 +2,10 @@ package kz.das.dasaccounting.data.entities.driver
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
-@Entity(tableName = "transports")
-data class InventoryTransportEntity(
+@Entity(tableName = "accepted_transports")
+data class AcceptedTransportEntity (
     val comment: String,
     val dateTime: String,
     @PrimaryKey(autoGenerate = true)
@@ -16,5 +17,4 @@ data class InventoryTransportEntity(
     val stateNumber: String,
     val tsType: String,
     val uuid: String
-)
-
+): Serializable

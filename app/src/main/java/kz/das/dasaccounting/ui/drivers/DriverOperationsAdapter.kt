@@ -1,4 +1,4 @@
-package kz.das.dasaccounting.ui.office
+package kz.das.dasaccounting.ui.drivers
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import kz.das.dasaccounting.domain.data.action.OperationHead
 import kz.das.dasaccounting.domain.data.action.OperationInit
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 
-class OfficeOperationsAdapter(val context: Context, private var operations: ArrayList<OperationAct>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DriverOperationsAdapter(val context: Context, private var operations: ArrayList<OperationAct>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var officeOperationsAdapterEvent: OnOfficeOperationsAdapterEvent? = null
 
@@ -23,6 +23,7 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
         private const val HEAD = 0
         private const val ACTION = 1
         private const val OPERATION = 2
+        private const val OPERATION_DRIVER = 3
     }
 
     interface OnOfficeOperationsAdapterEvent {
@@ -40,7 +41,8 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
         return mapOf(
             HEAD to OperationHeadViewHolder(ItemSegmentBinding.inflate(layoutInflater, parent, false)),
             ACTION to OperationInitViewHolder(ItemOperationInitBinding.inflate(layoutInflater, parent, false)),
-            OPERATION to OperationOfficeInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)))[viewType]
+            OPERATION to OperationOfficeInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)),
+            OPERATION_DRIVER to OperationDriverInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)))[viewType]
             ?: OperationOfficeInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false))
     }
 
@@ -52,6 +54,8 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
             is OperationInitViewHolder ->
                 holder.bind(item as OperationInit, position)
             is OperationOfficeInventoryViewHolder ->
+                holder.bind(item as OfficeInventory, position)
+            is OperationDriverInventoryViewHolder ->
                 holder.bind(item as OfficeInventory, position)
         }
     }
@@ -85,7 +89,8 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
         return when (operations[position]) {
             is OperationHead -> HEAD
             is OperationInit -> ACTION
-            else -> OPERATION
+            is OfficeInventory -> OPERATION
+            else -> OPERATION_DRIVER
         }
     }
 
@@ -110,6 +115,21 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
     }
 
     inner class OperationOfficeInventoryViewHolder internal constructor(private val itemBinding: ItemOperationActionBinding) : BaseViewHolder<OfficeInventory>(itemBinding) {
+        override fun bind(item: OfficeInventory, position: Int) {
+            this.itemBinding.run {
+                this.tvName.text = item.name
+                this.ivAction.setImageResource(R.drawable.ic_inventory)
+                this.ivStatePending.isVisible = item.syncRequire == 1
+                this.llAction.setOnClickListener {
+                    if (item.syncRequire != 1) {
+                        officeOperationsAdapterEvent?.onInventoryTransfer(item)
+                    }
+                }
+            }
+        }
+    }
+
+    inner class OperationDriverInventoryViewHolder internal constructor(private val itemBinding: ItemOperationActionBinding) : BaseViewHolder<OfficeInventory>(itemBinding) {
         override fun bind(item: OfficeInventory, position: Int) {
             this.itemBinding.run {
                 this.tvName.text = item.name

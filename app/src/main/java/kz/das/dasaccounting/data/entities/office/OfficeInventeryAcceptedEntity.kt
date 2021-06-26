@@ -23,7 +23,8 @@ data class OfficeInventoryAcceptedEntity(
     val syncRequire: Int = 0,
     val senderName: String? = null,
     val isSend: Int = 0,
-    val isAccepted: Int = 0
+    val isAccepted: Int = 0,
+    var comment: String
 ): Serializable
 
 
@@ -65,6 +66,7 @@ fun OfficeInventory.toAcceptedEntity(): OfficeInventoryAcceptedEntity {
         syncRequire = this.syncRequire,
         senderName = this.senderName,
         isSend = this.isSend,
-        isAccepted = this.isAccepted
+        isAccepted = this.isAccepted,
+        comment = ""
     )
 }

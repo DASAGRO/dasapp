@@ -15,7 +15,9 @@ interface OfficeInventoryRepository {
 
     suspend fun sendInventory(officeInventory: OfficeInventory): Any
 
-    suspend fun syncInventoryMaterials()
+    suspend fun saveAwaitAcceptInventory(officeInventory: OfficeInventory, comment: String, fileIds: ArrayList<Int>)
+
+    suspend fun saveAwaitSentInventory(officeInventory: OfficeInventory)
 
     fun getOfficeMaterialsLocally(): LiveData<List<OfficeInventory>>
 

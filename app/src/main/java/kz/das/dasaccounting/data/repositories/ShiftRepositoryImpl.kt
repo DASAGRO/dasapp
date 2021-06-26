@@ -34,20 +34,7 @@ class ShiftRepositoryImpl : ShiftRepository, KoinComponent {
                 "time" to time,
                 "qr" to scannedQR
             )
-        ).unwrap(object : OnResponseCallback<ApiResponseMessage> {
-            override fun onSuccess(entity: ApiResponseMessage) {
-                userPreferences.clearAwaitStartWork()
-            }
-            override fun onFail(exception: Exception) {
-                if (exception is SocketTimeoutException
-                    || exception is UnknownHostException
-                    || exception is ConnectException
-                ) {
-                    userRepository.startWork()
-                    userPreferences.setAwaitFinishWork(ShiftRequest(lat, long, time, scannedQR))
-                }
-            }
-        })
+        ).unwrap()
     }
 
     override suspend fun finishShift(
@@ -61,20 +48,22 @@ class ShiftRepositoryImpl : ShiftRepository, KoinComponent {
                 "longitude" to long,
                 "time" to time
             )
-        ).unwrap(object : OnResponseCallback<ApiResponseMessage> {
-            override fun onSuccess(entity: ApiResponseMessage) {
-                userPreferences.clearAwaitFinishWork()
-            }
-            override fun onFail(exception: Exception) {
-                if (exception is SocketTimeoutException
-                    || exception is UnknownHostException
-                    || exception is ConnectException
-                ) {
-                    userRepository.stopWork()
-                    userPreferences.setAwaitFinishWork(ShiftRequest(lat, long, time))
-                }
-            }
-        })
+        ).unwrap()
+    }
+
+    override suspend fun saveAwaitStartShift(
+        lat: Double,
+        long: Double,
+        time: Long,
+        scannedQR: String?
+    ) {
+        userRepository.startWork()
+        userPreferences.setAwaitFinishWork(ShiftRequest(lat, long, time, scannedQR))
+    }
+
+    override suspend fun saveAwaitFinishShift(lat: Double, long: Double, time: Long) {
+        userRepository.stopWork()
+        userPreferences.setAwaitFinishWork(ShiftRequest(lat, long, time))
     }
 
     override suspend fun initAwaitShiftStarted() {

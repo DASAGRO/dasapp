@@ -9,6 +9,9 @@ import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.inject
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 class TransferConfirmVM: BaseVM() {
 
@@ -42,8 +45,17 @@ class TransferConfirmVM: BaseVM() {
                 officeInventoryRepository.getOfficeMaterials()
                 isOfficeInventorySentLV.postValue(true)
             } catch (t: Throwable) {
-                isOfficeInventorySentLV.postValue(false)
-                throwableHandler.handle(t)
+                if (t is SocketTimeoutException
+                    || t is UnknownHostException
+                    || t is ConnectException
+                ) {
+                    officeInventory?.let {
+                        officeInventoryRepository.saveAwaitSentInventory(it)
+                    }
+                } else {
+                    throwableHandler.handle(t)
+                    isOfficeInventorySentLV.postValue(false)
+                }
             } finally {
                 hideLoading()
             }

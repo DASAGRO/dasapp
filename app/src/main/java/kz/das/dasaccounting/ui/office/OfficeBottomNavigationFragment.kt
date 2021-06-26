@@ -110,11 +110,13 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
 
         officeBottomNavigationVM.getAwaitAcceptedOperationsLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.clearItems(it)
+            operationsAdapter?.removeItem(OperationHead(getString(R.string.await_accepted_operations)))
             operationsAdapter?.addItems(getAwaitAcceptedOperations(it))
         })
 
         officeBottomNavigationVM.getAwaitSentOperationsLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.clearItems(it)
+            operationsAdapter?.removeItem(OperationHead(getString(R.string.await_sent_operations)))
             operationsAdapter?.addItems(getAwaitSentOperations(it))
         })
 
@@ -181,7 +183,7 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
 
     private fun getAwaitAcceptedOperations(inventories: List<OfficeInventory>): ArrayList<OperationAct> {
         val operations: ArrayList<OperationAct> = arrayListOf()
-        operations.add(OperationHead(getString(R.string.available_operations)))
+        operations.add(OperationHead(getString(R.string.await_accepted_operations)))
         operations.addAll(inventories)
         return if (inventories.isEmpty()) arrayListOf() else operations
     }

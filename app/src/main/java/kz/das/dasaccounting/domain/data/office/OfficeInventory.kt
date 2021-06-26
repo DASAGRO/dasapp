@@ -21,5 +21,6 @@ data class OfficeInventory(
     var syncRequire: Int = 0,
     var isSend: Int = 0,
     var senderName: String? = "",
+    var comment: String? = "",
     var isAccepted: Int = 0
 ): OperationAct(), Parcelable

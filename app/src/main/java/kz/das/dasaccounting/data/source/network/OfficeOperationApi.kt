@@ -2,6 +2,7 @@ package kz.das.dasaccounting.data.source.network
 
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.data.entities.common.InventoryRequest
+import kz.das.dasaccounting.data.entities.common.InventorySendRequest
 import kz.das.dasaccounting.data.entities.office.OfficeInventoryEntity
 import retrofit2.Response
 import retrofit2.http.Body
@@ -17,6 +18,6 @@ interface OfficeOperationApi {
     suspend fun acceptInventory(@Body inventoryRequest: InventoryRequest): Response<ApiResponseMessage>
 
     @POST("/api/goods/send/tmc")
-    suspend fun sendInventory(@Body inventoryRequest: InventoryRequest): Response<ApiResponseMessage>
+    suspend fun sendInventory(@Body inventoryRequest: InventorySendRequest): Response<ApiResponseMessage>
 
 }

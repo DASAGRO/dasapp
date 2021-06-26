@@ -9,6 +9,9 @@ import kz.das.dasaccounting.domain.ShiftRepository
 import kz.das.dasaccounting.domain.UserRepository
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 class CoreBottomNavigationVM: BaseVM(), KoinComponent {
 
@@ -46,7 +49,18 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
                 setControlOptionsState(isOnWork())
                 isWorkStartedLV.postValue(true)
             } catch (t: Throwable) {
-                throwableHandler.handle(t)
+                if (t is SocketTimeoutException
+                    || t is UnknownHostException
+                    || t is ConnectException
+                ) {
+                    shiftRepository.saveAwaitStartShift(userRepository.getLastLocation().lat,
+                        userRepository.getLastLocation().long,
+                        System.currentTimeMillis())
+                    setControlOptionsState(isOnWork())
+                    isWorkStartedLV.postValue(true)
+                } else {
+                    throwableHandler.handle(t)
+                }
             } finally {
                 hideLoading()
             }
@@ -65,7 +79,18 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
                 setControlOptionsState(isOnWork())
                 isWorkStartedLV.postValue(true)
             } catch (t: Throwable) {
-                throwableHandler.handle(t)
+                if (t is SocketTimeoutException
+                    || t is UnknownHostException
+                    || t is ConnectException
+                ) {
+                    shiftRepository.saveAwaitStartShift(userRepository.getLastLocation().lat,
+                        userRepository.getLastLocation().long,
+                        System.currentTimeMillis(), qrScan)
+                    setControlOptionsState(isOnWork())
+                    isWorkStartedLV.postValue(true)
+                } else {
+                    throwableHandler.handle(t)
+                }
             } finally {
                 hideLoading()
             }
@@ -83,7 +108,18 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
                 setControlOptionsState(isOnWork())
                 isWorkStoppedLV.postValue(true)
             } catch (t: Throwable) {
-                throwableHandler.handle(t)
+                if (t is SocketTimeoutException
+                    || t is UnknownHostException
+                    || t is ConnectException
+                ) {
+                    shiftRepository.saveAwaitFinishShift(userRepository.getLastLocation().lat,
+                        userRepository.getLastLocation().long,
+                        System.currentTimeMillis())
+                    setControlOptionsState(isOnWork())
+                    isWorkStoppedLV.postValue(true)
+                } else {
+                    throwableHandler.handle(t)
+                }
             } finally {
                 hideLoading()
             }

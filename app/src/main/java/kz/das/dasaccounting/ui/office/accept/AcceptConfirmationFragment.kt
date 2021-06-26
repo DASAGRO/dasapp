@@ -1,7 +1,6 @@
 package kz.das.dasaccounting.ui.office.accept
 
 import android.os.Bundle
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
@@ -113,6 +112,7 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
             if (it) {
                 showSuccess(getString(R.string.common_banner_success),
                     getString(R.string.office_inventory_accepted_successfully))
+                requireRouter().exit()
             }
         })
 

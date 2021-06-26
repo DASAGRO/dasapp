@@ -10,7 +10,7 @@ import kz.das.dasaccounting.data.entities.warehouse.WarehouseInventoryEntity
 import kz.das.dasaccounting.data.source.local.daos.*
 import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 
-@Database(version = 1, exportSchema = false, entities = [OfficeInventoryEntity::class,
+@Database(version = 2, exportSchema = false, entities = [OfficeInventoryEntity::class,
     OfficeInventoryAcceptedEntity::class,
     OfficeInventorySentEntity::class,
     WarehouseInventoryEntity::class,
