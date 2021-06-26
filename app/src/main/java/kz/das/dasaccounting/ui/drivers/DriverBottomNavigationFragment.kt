@@ -1,6 +1,5 @@
 package kz.das.dasaccounting.ui.drivers
 
-
 import android.Manifest
 import android.os.Bundle
 import android.view.View
@@ -85,20 +84,6 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         mNetworkConnectionVM.getResult().observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 officeBottomNavigationVM.initAwaitRequests()
-            }
-        })
-
-        mViewModel.isStartWorkWithQrLV().observe(viewLifecycleOwner, Observer {
-            if (it) {
-                val qrFragment = QrFragment.Builder()
-                    .setCancelable(true)
-                    .setOnScanCallback(object : QrFragment.OnScanCallback {
-                        override fun onScan(qrScan: String) {
-                            mViewModel.startWork(qrScan)
-                        }
-                    })
-                    .build()
-                qrFragment.show(childFragmentManager, "QrShiftFragment")
             }
         })
 

@@ -1,13 +1,7 @@
 package kz.das.dasaccounting.di
 
-import kz.das.dasaccounting.data.repositories.AuthRepositoryImpl
-import kz.das.dasaccounting.data.repositories.OfficeInventoryRepositoryImpl
-import kz.das.dasaccounting.data.repositories.ShiftRepositoryImpl
-import kz.das.dasaccounting.data.repositories.UserRepositoryImpl
-import kz.das.dasaccounting.domain.AuthRepository
-import kz.das.dasaccounting.domain.OfficeInventoryRepository
-import kz.das.dasaccounting.domain.ShiftRepository
-import kz.das.dasaccounting.domain.UserRepository
+import kz.das.dasaccounting.data.repositories.*
+import kz.das.dasaccounting.domain.*
 import org.koin.dsl.module
 
 internal fun getRepositoriesModule() = module {
@@ -15,4 +9,5 @@ internal fun getRepositoriesModule() = module {
     single<UserRepository> { UserRepositoryImpl() }
     single<ShiftRepository> { ShiftRepositoryImpl() }
     single<OfficeInventoryRepository> { OfficeInventoryRepositoryImpl() }
+    single<DriverInventoryRepository> {DriverInventoryRepositoryImpl() }
 }

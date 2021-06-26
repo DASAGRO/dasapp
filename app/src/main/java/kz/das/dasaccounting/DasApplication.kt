@@ -1,15 +1,11 @@
 package kz.das.dasaccounting
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.provider.Settings
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.orhanobut.hawk.Hawk
-import kz.das.dasaccounting.data.ModulesLayer
-import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.di.*
 import kz.das.dasaccounting.di.getAuthViewModels
 import kz.das.dasaccounting.di.getConfigViewModels
@@ -44,6 +40,7 @@ class DasApplication: Application(), LifecycleObserver {
             androidLogger(Level.ERROR)
             androidContext(this@DasApplication)
             modules(
+                getDatabaseModule(applicationContext),
                 getModulePreferences(applicationContext),
                 getNetworkModule(),
                 getApiModule(),
@@ -56,7 +53,6 @@ class DasApplication: Application(), LifecycleObserver {
                 getLocationViewModels()
             )
         }
-        ModulesLayer.init(applicationContext)
     }
 
 }

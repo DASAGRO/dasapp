@@ -2,7 +2,7 @@ package kz.das.dasaccounting.data.source.local
 
 import android.content.Context
 import androidx.room.*
-import kz.das.dasaccounting.data.entities.driver.DriverInventoryEntity
+import kz.das.dasaccounting.data.entities.driver.TransportInventoryEntity
 import kz.das.dasaccounting.data.entities.office.OfficeInventoryAcceptedEntity
 import kz.das.dasaccounting.data.entities.office.OfficeInventoryEntity
 import kz.das.dasaccounting.data.entities.office.OfficeInventorySentEntity
@@ -14,7 +14,7 @@ import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEnti
     OfficeInventoryAcceptedEntity::class,
     OfficeInventorySentEntity::class,
     WarehouseInventoryEntity::class,
-    DriverInventoryEntity::class])
+    TransportInventoryEntity::class])
 @TypeConverters(OfficeInventoryEntityTypeConvertor::class)
 abstract class DasAppDatabase: RoomDatabase() {
 
@@ -24,7 +24,11 @@ abstract class DasAppDatabase: RoomDatabase() {
 
     abstract fun officeInventorySentDao(): OfficeInventorySentDao
 
-//    abstract fun driverInventoryDao(): DriverInventoryDao
+    abstract fun driverInventoryDao(): DriverInventoryDao
+
+    abstract fun driverSentInventoryDao(): DriverInventorySentDao
+
+    abstract fun driverAcceptedInventoryDao(): DriverInventoryAcceptedDao
 
     companion object {
         private val LOCK = Any()

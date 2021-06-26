@@ -2,40 +2,40 @@ package kz.das.dasaccounting.data.source.local.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import kz.das.dasaccounting.data.entities.driver.InventoryTransportEntity
+import kz.das.dasaccounting.data.entities.driver.TransportInventoryEntity
 
 @Dao
 interface DriverInventoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(itemDaos: List<InventoryTransportEntity>)
+    fun insertAll(itemDaos: List<TransportInventoryEntity>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAllWithIgnore(itemDaos: List<InventoryTransportEntity>)
+    fun insertAllWithIgnore(itemDaos: List<TransportInventoryEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: InventoryTransportEntity)
+    fun insert(item: TransportInventoryEntity)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertWithIgnore(item: InventoryTransportEntity)
+    fun insertWithIgnore(item: TransportInventoryEntity)
 
     @get:Query("SELECT * FROM transports")
-    val allAsLiveData: LiveData<List<InventoryTransportEntity>>
+    val allAsLiveData: LiveData<List<TransportInventoryEntity>>
 
     @get:Query("SELECT * FROM transports")
-    val all: List<InventoryTransportEntity>
+    val all: List<TransportInventoryEntity>
 
     @Query("DELETE FROM transports")
     fun removeAll()
 
     @Query("SELECT * FROM transports WHERE uuid = :uuid")
-    fun getItem(uuid: String): LiveData<InventoryTransportEntity>
+    fun getItem(uuid: String): LiveData<TransportInventoryEntity>
 
     @Delete
-    fun removeItem(warehouse: InventoryTransportEntity)
+    fun removeItem(warehouse: TransportInventoryEntity)
 
     @Transaction
-    fun reload(itemDaos: List<InventoryTransportEntity>) {
+    fun reload(itemDaos: List<TransportInventoryEntity>) {
         removeAll()
         insertAll(itemDaos)
     }

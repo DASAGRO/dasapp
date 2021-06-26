@@ -5,7 +5,6 @@ import androidx.lifecycle.map
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.core.extensions.OnResponseCallback
 import kz.das.dasaccounting.core.extensions.unwrap
-import kz.das.dasaccounting.data.ModulesLayer
 import kz.das.dasaccounting.data.entities.common.InventoryRequest
 import kz.das.dasaccounting.data.entities.common.InventorySendRequest
 import kz.das.dasaccounting.data.entities.office.*
@@ -13,19 +12,19 @@ import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.OfficeOperationApi
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class OfficeInventoryRepositoryImpl: OfficeInventoryRepository {
+class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
 
-    private val officeOperationApi: OfficeOperationApi by ModulesLayer.koin.inject()
-    private val dasAppDatabase: DasAppDatabase by ModulesLayer.koin.inject()
+    private val officeOperationApi: OfficeOperationApi by inject()
+    private val dasAppDatabase: DasAppDatabase by inject()
 
     override suspend fun getOfficeMaterials(): List<OfficeInventory> {
         return officeOperationApi.getMaterials().unwrap ({ list -> list.map { it.toDomain() } },
         object : OnResponseCallback<List<OfficeInventoryEntity>> {
                 override fun onSuccess(entity: List<OfficeInventoryEntity>) {
-                    dasAppDatabase.officeInventoryDao().insertAll(entity)
+                    dasAppDatabase.officeInventoryDao().reload(entity)
                 }
                 override fun onFail(exception: Exception) { } // No handle require
             })
