@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.DriverInventoryRepository
+import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import org.koin.core.inject
@@ -19,6 +20,8 @@ import java.net.UnknownHostException
 class TransferConfirmFligelDataVM: BaseVM() {
 
     private val driverInventoryRepository: DriverInventoryRepository by inject()
+    private val officeInventoryRepository: OfficeInventoryRepository by inject()
+
     private val userRepository: UserRepository by inject()
 
     private var fligelProduct: FligelProduct? = null
@@ -36,8 +39,8 @@ class TransferConfirmFligelDataVM: BaseVM() {
         fligelDataLV.postValue(officeInventory)
     }
 
-    private val driverInventoryAcceptedLV = SingleLiveEvent<Boolean>()
-    fun isTransportInventoryAccepted(): LiveData<Boolean> = driverInventoryAcceptedLV
+    private val driverInventoryDataLV = SingleLiveEvent<Boolean>()
+    fun isTransportDataAccepted(): LiveData<Boolean> = driverInventoryDataLV
 
     fun acceptInventory(comment: String) {
         viewModelScope.launch {
@@ -48,7 +51,8 @@ class TransferConfirmFligelDataVM: BaseVM() {
                     driverInventoryRepository.receiveFligelData(it, fileIds)
                 }
                 driverInventoryRepository.getDriverTransports()
-                driverInventoryAcceptedLV.postValue(true)
+                officeInventoryRepository.getOfficeMaterials()
+                driverInventoryDataLV.postValue(true)
             } catch (t: Throwable) {
                 if (t is SocketTimeoutException
                     || t is UnknownHostException
@@ -57,10 +61,10 @@ class TransferConfirmFligelDataVM: BaseVM() {
                     fligelProduct?.let {
                         driverInventoryRepository.saveAwaitReceiveFligelData(it)
                     }
-                    driverInventoryAcceptedLV.postValue(true)
+                    driverInventoryDataLV.postValue(true)
                 } else {
                     throwableHandler.handle(t)
-                    driverInventoryAcceptedLV.postValue(false)
+                    driverInventoryDataLV.postValue(false)
                 }
             } finally {
                 hideLoading()

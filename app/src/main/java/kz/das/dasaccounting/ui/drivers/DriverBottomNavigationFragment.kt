@@ -104,6 +104,36 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         operationsAdapter?.addItems(arrayListOf(
             OperationHead(getString(R.string.available_operations)),
             OperationInit("Принять ТЦ/ПО/ТМЦ", R.drawable.ic_add)))
+
+        operationsAdapter?.addItems(arrayListOf(
+            OperationHead(getString(R.string.transport_tracktor_title))))
+        operationsAdapter?.addItems(arrayListOf(
+            DriverInventoryTypeConvertor().stringToTransportInventory("  {\n" +
+                    "    \"comment\": \"\",\n" +
+                    "    \"dateTime\": \"\",\n" +
+                    "    \"id\": 0,\n" +
+                    "    \"latitude\": 0,\n" +
+                    "    \"longitude\": 0,\n" +
+                    "    \"model\": \"Накопитель есь же просто\",\n" +
+                    "    \"molUuid\": \"Пушка\",\n" +
+                    "    \"stateNumber\": \"Abz-07 123\",\n" +
+                    "    \"tsType\": \"ПО\",\n" +
+                    "    \"uuid\": \"alsjkdf-asdas-dasdas-gerw\"\n" +
+                    "  }")!!.toDomain(),
+            DriverInventoryTypeConvertor().stringToTransportInventory("{\n" +
+                       "  \"comment\": \"\",\n" +
+                       "  \"dateTime\": \"\",\n" +
+                       "  \"id\": 0,\n" +
+                       "  \"latitude\": 0,\n" +
+                       "  \"longitude\": 0,\n" +
+                       "  \"model\": \"Трактор есь же просто\",\n" +
+                       "  \"molUuid\": \"Пушка\",\n" +
+                       "  \"stateNumber\": \"Abz-07 123\",\n" +
+                       "  \"tsType\": \"ТС\",\n" +
+                       "  \"uuid\": \"alsjkdf-asdas-dasdas-gerw\"\n" +
+                       "}"
+            )!!.toDomain()
+        ))
     }
 
     override fun onResume() {
@@ -284,6 +314,9 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
     private fun getAwaitSentTransports(inventories: List<TransportInventory>): ArrayList<OperationAct> {
         val operations: ArrayList<OperationAct> = arrayListOf()
         operations.add(OperationHead(getString(R.string.await_sent_transports)))
+        inventories.forEach {
+            it.isPending
+        }
         operations.addAll(inventories)
         return if (inventories.isEmpty()) arrayListOf() else arrayListOf()
     }
@@ -291,6 +324,9 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
     private fun getAwaitAcceptedTransports(inventories: List<TransportInventory>): ArrayList<OperationAct> {
         val operations: ArrayList<OperationAct> = arrayListOf()
         operations.add(OperationHead(getString(R.string.await_accepted_transports)))
+        inventories.forEach {
+            it.isPending
+        }
         operations.addAll(inventories)
         return if (inventories.isEmpty()) arrayListOf() else arrayListOf()
     }

@@ -5,6 +5,7 @@ import androidx.lifecycle.map
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.core.extensions.OnResponseCallback
 import kz.das.dasaccounting.core.extensions.unwrap
+import kz.das.dasaccounting.data.entities.common.InventoryGetRequest
 import kz.das.dasaccounting.data.entities.common.InventoryRequest
 import kz.das.dasaccounting.data.entities.common.InventorySendRequest
 import kz.das.dasaccounting.data.entities.office.*
@@ -32,7 +33,7 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
 
     override suspend fun acceptInventory(officeInventory: OfficeInventory, comment: String, fileIds: ArrayList<Int>): Any {
         return officeOperationApi.acceptInventory(
-            InventoryRequest(
+            InventoryGetRequest(
                 id = officeInventory.id,
                 date = officeInventory.date,
                 name = officeInventory.name,
@@ -60,7 +61,6 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
                 latitude = officeInventory.latitude,
                 longitude = officeInventory.longitude,
                 materialUUID = officeInventory.materialUUID,
-                receiverUUID = officeInventory.receiverUUID,
                 quantity = officeInventory.quantity,
                 type = officeInventory.type,
                 senderName = officeInventory.senderName
@@ -90,7 +90,7 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
 
     override suspend fun initAwaitAcceptInventory() {
         dasAppDatabase.officeInventoryAcceptedDao().all.forEach {
-            officeOperationApi.acceptInventory(InventoryRequest(
+            officeOperationApi.acceptInventory(InventoryGetRequest(
                 id = it.id,
                 date = it.date,
                 name = it.name,
@@ -125,7 +125,6 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
                     latitude = it.latitude,
                     longitude = it.longitude,
                     materialUUID = it.materialUUID,
-                    receiverUUID = it.receiverUUID,
                     quantity = it.quantity,
                     type = it.type,
                     senderName = it.senderName

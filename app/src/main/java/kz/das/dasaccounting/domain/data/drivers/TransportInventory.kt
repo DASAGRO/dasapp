@@ -16,5 +16,6 @@ data class TransportInventory(
     var stateNumber: String,
     var tsType: String,
     var senderName: String?,
-    var uuid: String
+    var uuid: String,
+    var isPending: Boolean = false
 ): OperationAct(), Parcelable

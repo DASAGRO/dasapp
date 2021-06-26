@@ -47,7 +47,7 @@ class TransferFligelDataFormalizeFragment: BaseBottomSheetFragment<FragmentBotto
             }
             this.btnMakeTransferAccept.setOnClickListener {
                 getOfficeInventory()?.let {
-                    listener?.onTransfer(it)
+                    listener?.onAccept(it)
                     dismiss()
                 }
             }

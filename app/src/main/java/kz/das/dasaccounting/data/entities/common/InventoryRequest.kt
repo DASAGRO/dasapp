@@ -28,8 +28,24 @@ open class InventorySendRequest(
     val latitude: Double? = null,
     val longitude: Double? = null,
     val materialUUID: String? = null,
-    val receiverUUID: String? = null,
     val quantity: Int? = null,
     val type: String? = null,
     val senderName: String? = null
+) : Serializable
+
+
+open class InventoryGetRequest(
+    val id: Int = 0,
+    val date: Long = 0,
+    val name: String? = null,
+    val humidity: Int? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val materialUUID: String? = null,
+    val receiverUUID: String? = null,
+    val quantity: Int? = null,
+    val type: String? = null,
+    val senderName: String? = null,
+    var fileIds: Array<Any>?,
+    var comment: String?
 ) : Serializable

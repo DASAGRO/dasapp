@@ -62,6 +62,7 @@
                 android:layout_height="48dp"
                 android:hint="@string/transport_type"
                 android:imeOptions="actionNext"
+                android:textColor="@color/purple_700"
                 android:inputType="text"
                 android:padding="6dp"
                 android:textSize="14sp" />
@@ -86,6 +87,7 @@
                 android:layout_height="48dp"
                 android:hint="@string/field_number"
                 android:imeOptions="actionNext"
+                android:textColor="@color/purple_700"
                 android:inputType="number"
                 android:padding="6dp"
                 android:textSize="14sp" />
@@ -134,6 +136,7 @@
                 android:layout_height="48dp"
                 android:hint="@string/gather_weight"
                 android:imeOptions="actionNext"
+                android:textColor="@color/purple_700"
                 android:inputType="number"
                 android:padding="6dp"
                 android:textSize="14sp" />
@@ -158,6 +161,7 @@
                 android:layout_height="48dp"
                 android:hint="@string/gather_wet"
                 android:imeOptions="actionDone"
+                android:textColor="@color/purple_700"
                 android:inputType="number"
                 android:padding="6dp"
                 android:textSize="14sp" />

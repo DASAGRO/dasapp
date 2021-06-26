@@ -8,7 +8,7 @@ import kz.das.dasaccounting.databinding.FragmentBottomSheetMakeTransferBinding
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class TransferFormalizeFragment: BaseBottomSheetFragment<FragmentBottomSheetMakeTransferBinding, TransferFormalizeVM>() {
+class TransferFormalizeFragment: BaseBottomSheetFragment<FragmentBottomSheetMakeTransferBinding, kz.das.dasaccounting.ui.drivers.transfer.TransferFormalizeVM>() {
 
     companion object {
 
@@ -32,7 +32,7 @@ class TransferFormalizeFragment: BaseBottomSheetFragment<FragmentBottomSheetMake
         this.listener = listener
     }
 
-    override val mViewModel: TransferFormalizeVM by viewModel()
+    override val mViewModel: kz.das.dasaccounting.ui.drivers.transfer.TransferFormalizeVM by viewModel()
 
     override fun getViewBinding() = FragmentBottomSheetMakeTransferBinding.inflate(layoutInflater)
 

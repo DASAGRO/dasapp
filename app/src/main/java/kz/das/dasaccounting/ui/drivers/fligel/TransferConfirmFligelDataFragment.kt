@@ -108,10 +108,10 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
             initViews(it)
         })
 
-        mViewModel.isTransportInventoryAccepted().observe(viewLifecycleOwner, Observer {
+        mViewModel.isTransportDataAccepted().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showSuccess(getString(R.string.common_banner_success),
-                    getString(R.string.transport_inventory_accepted_successfully))
+                    getString(R.string.transport_fligel_data_accepted_successfully))
                 requireRouter().exit()
             }
         })
