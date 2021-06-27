@@ -25,4 +25,6 @@ interface OfficeInventoryRepository {
 
     fun getOfficeAcceptedMaterialsLocally(): LiveData<List<OfficeInventory>>
 
+    suspend fun initDeleteData()
+
 }

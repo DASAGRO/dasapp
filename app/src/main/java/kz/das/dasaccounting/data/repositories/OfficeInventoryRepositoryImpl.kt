@@ -145,4 +145,10 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
     override fun getOfficeAcceptedMaterialsLocally(): LiveData<List<OfficeInventory>> {
         return dasAppDatabase.officeInventoryAcceptedDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
     }
+
+    override suspend fun initDeleteData() {
+        dasAppDatabase.officeInventoryAcceptedDao().removeAll()
+        dasAppDatabase.officeInventorySentDao().removeAll()
+        dasAppDatabase.officeInventoryDao().removeAll()
+    }
 }

@@ -31,5 +31,6 @@ interface DriverInventoryRepository {
     fun getDriverSentMaterialsLocally(): LiveData<List<TransportInventory>>
 
     fun getDriverAcceptedMaterialsLocally(): LiveData<List<TransportInventory>>
-    
+
+    fun initDeleteData()
 }

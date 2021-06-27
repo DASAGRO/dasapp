@@ -44,4 +44,6 @@ interface UserRepository {
 
     fun getLastLocation(): Location
 
+    suspend fun deleteData()
+
 }

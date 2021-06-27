@@ -77,7 +77,12 @@ class UserPreferences(private val preferences: SharedPreferences) {
     }
 
     fun clearUser() {
+        preferences.edit().remove(PREFERENCES_USER_ACCESS_TOKEN).apply()
         preferences.edit().remove(PREFERENCES_USER_PROFILE).apply()
+        preferences.edit().remove(PREFERENCES_USER_ON_WORK).apply()
+        preferences.edit().remove(PREFERENCES_LAST_LOCATION).apply()
+        preferences.edit().remove(PREFERENCES_AWAIT_START_WORK).apply()
+        preferences.edit().remove(PREFERENCES_AWAIT_FINISH_WORK).apply()
     }
 
     fun isUserOnWork(): Boolean {

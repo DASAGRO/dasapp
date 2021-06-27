@@ -102,4 +102,9 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
 
     override fun getLastLocation(): Location = userPreferences.getLastLocation()
 
+    override suspend fun deleteData() {
+        userPreferences.clearUser()
+        driverInventoryRepository.initDeleteData()
+        officeInventoryRepository.initDeleteData()
+    }
 }
