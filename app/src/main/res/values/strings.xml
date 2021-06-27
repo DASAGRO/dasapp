@@ -89,11 +89,11 @@
     <string name="log_out_desc">Вы уверены что хотите выйти из приложения, все данные будут стерты и не будут доступны для восстановления!</string>
     <string name="accept_inventory">Принять ТМЦ</string>
     <string name="available_operations">Доступные операции</string>
-    <string name="await_sent_operations">В ожидании отправки ТМЦ</string>
+    <string name="await_sent_operations">В ожидании передачи ТМЦ</string>
     <string name="await_accepted_operations">В ожидании принятии ТМЦ</string>
-    <string name="await_sent_transports">В ожидании отправки ТC</string>
+    <string name="await_sent_transports">В ожидании передачи ТC</string>
     <string name="await_accepted_transports">В ожидании принятии ТC</string>
-    <string name="await_sent_operations_accessory">В ожидании отправки ПО</string>
+    <string name="await_sent_operations_accessory">В ожидании передачи ПО</string>
     <string name="await_accepted_operations_accessory">В ожидании принятии ПО</string>
     <string name="camera_qr_scan_permission_required">Нужно дать разрешение камеры для QR-сканера!</string>
     <string name="camera_qr_scan_permission_required_rationale">Для корректной работы нужно дать разрешение камеры для QR-сканера!</string>
@@ -153,7 +153,7 @@
     <string name="transport_inventory_transferred_successfully">ТЦ успешно передан</string>
 
     <string name="common_error_scan">Ошибка считывания!</string>
-    <string name="gov_number">\"Гос номер: \"</string>
+    <string name="gov_number">Гос номер: </string>
 
 
 </resources>

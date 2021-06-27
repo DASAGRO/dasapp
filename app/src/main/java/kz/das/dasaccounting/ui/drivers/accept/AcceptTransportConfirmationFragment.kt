@@ -10,6 +10,7 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentInventoryAcceptConfirmationBinding
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.DialogBottomMediaTypePick
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportAttachedMediaAdapter
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.data.Media
@@ -135,7 +136,7 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
 
     private fun initViews(officeInventory: TransportInventory?) {
         officeInventory?.let {
-            mViewBinding.ivInventory.setImageResource(R.drawable.ic_inventory)
+            mViewBinding.ivInventory.setTsTypeImage(officeInventory)
             mViewBinding.tvInventoryTitle.text = it.model
             mViewBinding.tvInventoryDesc.text =
                 (getString(R.string.gov_number) +

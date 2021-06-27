@@ -6,6 +6,7 @@ import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.dialogs.BaseBottomSheetFragment
 import kz.das.dasaccounting.databinding.FragmentBottomSheetGatherMakeTranferBinding
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class TransferFligelDataFormalizeFragment: BaseBottomSheetFragment<FragmentBottomSheetGatherMakeTranferBinding, TransferFligeDataFormalizeVM>() {
@@ -58,7 +59,7 @@ class TransferFligelDataFormalizeFragment: BaseBottomSheetFragment<FragmentBotto
         super.observeLiveData()
         mViewModel.getTransportInventory().observe(viewLifecycleOwner, Observer {
             it?.let {
-                mViewBinding.ivInventory.setImageResource(R.drawable.ic_inventory)
+                mViewBinding.ivInventory.setTsTypeImage(it)
                 mViewBinding.tvInventoryTitle.text = it.model
                 mViewBinding.tvInventoryDesc.text =
                     (getString(R.string.gov_number) +

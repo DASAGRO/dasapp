@@ -82,6 +82,17 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
         notifyDataSetChanged()
     }
 
+    fun removeHead(head: OperationHead) {
+        val operationHeads: ArrayList<OperationHead> = arrayListOf()
+        this.operations.forEach {
+            if (it is OperationHead && it.name == head.name) {
+                operationHeads.add(it)
+            }
+        }
+        this.operations.removeAll(operationHeads)
+        notifyDataSetChanged()
+    }
+
     fun addItems(items: ArrayList<OperationAct>) {
         this.operations.addAll(items)
         notifyDataSetChanged()

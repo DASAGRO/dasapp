@@ -7,9 +7,11 @@ import gun0912.tedimagepicker.builder.type.MediaType
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
+import kz.das.dasaccounting.core.ui.extensions.setImage
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentInventoryAcceptConfirmationBinding
 import kz.das.dasaccounting.domain.data.drivers.FligelProduct
+import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.DialogBottomMediaTypePick
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportAttachedMediaAdapter
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.data.Media
@@ -127,7 +129,7 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
 
     private fun initViews(fligel: FligelProduct?) {
         fligel?.let {
-            mViewBinding.ivInventory.setImageResource(R.drawable.ic_inventory)
+            mViewBinding.ivInventory.setImageResource(R.drawable.ic_trailer)
             mViewBinding.tvInventoryTitle.text = ""
             mViewBinding.tvInventoryDesc.text = (
                     "Номер комбайна: " + it.combinerNumber + "\n" +

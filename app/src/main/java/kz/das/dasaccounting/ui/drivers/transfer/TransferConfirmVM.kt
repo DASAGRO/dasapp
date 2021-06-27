@@ -51,6 +51,7 @@ class TransferConfirmVM: BaseVM() {
                     transportInventory?.let {
                         transportInventoryRepository.saveAwaitSentInventory(it)
                     }
+                    isTransportInventorySentLV.postValue(true)
                 } else {
                     throwableHandler.handle(t)
                     isTransportInventorySentLV.postValue(false)

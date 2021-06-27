@@ -11,6 +11,7 @@ import kz.das.dasaccounting.data.entities.driver.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGenerateBinding>() {
@@ -32,6 +33,9 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
     override fun setupUI() {
         mViewModel.setTransportInventory(getTransportInventory())
         mViewBinding.apply {
+            toolbar.setNavigationOnClickListener {
+                requireRouter().exit()
+            }
             btnReady.setOnClickListener {
                 mViewModel.sendInventory()
             }
@@ -43,7 +47,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
 
         mViewModel.getTransportInventory().observe(viewLifecycleOwner, Observer {
             it?.let {
-                mViewBinding.ivInventory.setImageResource(R.drawable.ic_inventory)
+                mViewBinding.ivInventory.setTsTypeImage(it)
                 mViewBinding.tvInventoryTitle.text = it.model
                 mViewBinding.tvInventoryDesc.text =
                     (getString(R.string.gov_number) +

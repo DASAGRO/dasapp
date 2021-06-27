@@ -29,7 +29,10 @@ interface DriverInventoryDao {
     fun removeAll()
 
     @Query("SELECT * FROM transports WHERE uuid = :uuid")
-    fun getItem(uuid: String): LiveData<TransportInventoryEntity>
+    fun getItemAsLiveData(uuid: String): LiveData<TransportInventoryEntity>
+
+    @Query("SELECT * FROM transports WHERE uuid = :uuid")
+    fun getItem(uuid: String): TransportInventoryEntity
 
     @Delete
     fun removeItem(warehouse: TransportInventoryEntity)

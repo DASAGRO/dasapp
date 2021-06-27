@@ -32,6 +32,9 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
     override fun setupUI() {
         mViewModel.setOfficeInventory(getOfficeInventory())
         mViewBinding.apply {
+            toolbar.setNavigationOnClickListener {
+                requireRouter().exit()
+            }
             btnReady.setOnClickListener {
                 mViewModel.sendInventory()
             }

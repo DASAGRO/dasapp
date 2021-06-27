@@ -96,10 +96,12 @@ class DriverInventoryRepositoryImpl: DriverInventoryRepository, KoinComponent {
         comment: String,
         fileIds: ArrayList<Int>
     ) {
+        dasAppDatabase.driverInventoryDao().removeItem(dasAppDatabase.driverInventoryDao().getItem(transportInventory.uuid))
         dasAppDatabase.driverAcceptedInventoryDao().insert(transportInventory.toAcceptedEntity())
     }
 
     override suspend fun saveAwaitSentInventory(transportInventory: TransportInventory) {
+        dasAppDatabase.driverInventoryDao().removeItem(dasAppDatabase.driverInventoryDao().getItem(transportInventory.uuid))
         dasAppDatabase.driverSentInventoryDao().insertWithIgnore(transportInventory.toSentEntity())
     }
 

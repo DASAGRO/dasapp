@@ -86,18 +86,11 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
 
             override fun onInventoryTransportTransfer(transportInventory: TransportInventory) {
-                val inventoryTransferDialog = kz.das.dasaccounting.ui.drivers.transfer.TransferFormalizeFragment.newInstance(transportInventory)
-                inventoryTransferDialog.setOnTransferCallback(object : kz.das.dasaccounting.ui.drivers.transfer.TransferFormalizeFragment.OnTransferCallback {
-                    override fun onTransfer(transportInventory: TransportInventory) {
-                        val isFligel = transportInventory.model.toUpperCase(Locale.getDefault()).contains("НАКОПИТЕЛЬ")
-                        if (isFligel) {
-                            showFligelTransportTransferDialog(transportInventory)
-                        } else {
-                            showTransportTransferDialog(transportInventory)
-                        }
-                    }
-                })
-                inventoryTransferDialog.show(childFragmentManager, inventoryTransferDialog.tag)
+                if (transportInventory.model.toUpperCase(Locale.getDefault()).contains("НАКОПИТЕЛЬ")) {
+                    showFligelTransportTransferDialog(transportInventory)
+                } else {
+                    showTransportTransferDialog(transportInventory)
+                }
             }
         })
 
@@ -152,18 +145,16 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
 
         driverBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
-                operationsAdapter?.removeItem(OperationHead(getString(R.string.inventory_title)))
+                operationsAdapter?.removeHead(OperationHead(getString(R.string.inventory_title)))
                 operationsAdapter?.clearItems(it)
                 operationsAdapter?.addItems(getOperations(it))
             }
         })
 
         driverBottomNavigationVM.getTransportsLocally().observe(viewLifecycleOwner, Observer {
+            operationsAdapter?.removeHead(OperationHead(getString(R.string.transport_tracktor_title)))
+            operationsAdapter?.removeHead(OperationHead(getString(R.string.transport_trailer_title)))
             if (it.isNotEmpty()) {
-                operationsAdapter?.clearItems(arrayListOf(
-                    OperationHead(getString(R.string.transport_tracktor_title)),
-                    OperationHead(getString(R.string.transport_trailer_title))
-                ))
                 operationsAdapter?.clearItems(it)
                 operationsAdapter?.addItems(getTransports(it))
             }
@@ -172,7 +163,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         driverBottomNavigationVM.getAwaitAcceptedOperationsLocally().observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 operationsAdapter?.clearItems(it)
-                operationsAdapter?.removeItem(OperationHead(getString(R.string.await_accepted_operations)))
+                operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_operations)))
                 operationsAdapter?.addItems(getAwaitAcceptedOperations(it))
             }
         })
@@ -180,7 +171,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         driverBottomNavigationVM.getAwaitSentOperationsLocally().observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 operationsAdapter?.clearItems(it)
-                operationsAdapter?.removeItem(OperationHead(getString(R.string.await_sent_operations)))
+                operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_operations)))
                 operationsAdapter?.addItems(getAwaitSentOperations(it))
             }
         })
@@ -188,7 +179,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         driverBottomNavigationVM.getAwaitAcceptedTransportsLocally().observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 operationsAdapter?.clearItems(it)
-                operationsAdapter?.removeItem(OperationHead(getString(R.string.await_accepted_transports)))
+                operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_transports)))
                 operationsAdapter?.addItems(getAwaitAcceptedTransports(it))
             }
         })
@@ -196,7 +187,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         driverBottomNavigationVM.getAwaitSentTransportsLocally().observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 operationsAdapter?.clearItems(it)
-                operationsAdapter?.removeItem(OperationHead(getString(R.string.await_sent_transports)))
+                operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_transports)))
                 operationsAdapter?.addItems(getAwaitSentTransports(it))
             }
         })
@@ -209,11 +200,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             .setOnScanCallback(object : QrFragment.OnScanCallback {
                 override fun onScan(qrScan: String) {
                     delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
-                        try {
-                            OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
-                                requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(it))
-                            }
-                        } catch (e: Exception) {
+                        if (qrScan.contains("model") || qrScan.contains("stateNumber")) {
                             try {
                                 DriverInventoryTypeConvertor().stringToTransportInventory(qrScan)?.toDomain()?.let {
                                     val isFligel = it.model.toUpperCase(Locale.getDefault()).contains("НАКОПИТЕЛЬ")
@@ -226,7 +213,14 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
                             } catch (e: Exception) {
                                 showError(getString(R.string.common_error), getString(R.string.common_error_scan))
                             }
-                            //showError(getString(R.string.common_error), getString(R.string.common_error_scan))
+                        } else {
+                            try {
+                                OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
+                                    requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(it))
+                                }
+                            } catch (e: Exception) {
+                                showError(getString(R.string.common_error), getString(R.string.common_error_scan))
+                            }
                         }
                     }
                 }
@@ -290,10 +284,14 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
 
     private fun getTransports(inventories: List<TransportInventory>): ArrayList<OperationAct> {
         val operations: ArrayList<OperationAct> = arrayListOf()
-        operations.add(OperationHead(getString(R.string.transport_tracktor_title)))
-        operations.addAll(inventories.filter { it.tsType == TransportType.TRANSPORT.type })
-        operations.add(OperationHead(getString(R.string.transport_trailer_title)))
-        operations.addAll(inventories.filter { it.tsType == TransportType.TRANSPORT.type })
+        if (inventories.filter {  it.tsType == TransportType.TRANSPORT.type }.isNotEmpty()) {
+            operations.add(OperationHead(getString(R.string.transport_tracktor_title)))
+            operations.addAll(inventories.filter { it.tsType == TransportType.TRANSPORT.type })
+        }
+        if (inventories.filter {  it.tsType == TransportType.TRAILED.type }.isNotEmpty()) {
+            operations.add(OperationHead(getString(R.string.transport_trailer_title)))
+            operations.addAll(inventories.filter { it.tsType == TransportType.TRAILED.type })
+        }
         return operations
     }
 
