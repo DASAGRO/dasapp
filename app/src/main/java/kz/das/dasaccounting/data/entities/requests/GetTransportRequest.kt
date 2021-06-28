@@ -3,7 +3,7 @@ package kz.das.dasaccounting.data.entities.requests
 data class GetTransportRequest(
     val acceptedAt: Long,
     val comment: String,
-    val date: Int,
+    val date: Long,
     val fileIds: ArrayList<Int>?,
     val id: Int,
     val isAccepted: Int,

@@ -76,7 +76,7 @@ fun TransportInventory.toSentRequest(): SendTransportRequest {
 
 fun TransportInventory.toGetRequest(userId: String, comment: String, fileIds: ArrayList<Int>?): GetTransportRequest {
     return GetTransportRequest(
-        date = 0,
+        date = System.currentTimeMillis(),
         id =  this.id,
         isAccepted = 0,
         isSend = 0 ,
