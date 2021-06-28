@@ -15,30 +15,34 @@ import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class DriverInventoryRepositoryImpl: DriverInventoryRepository, KoinComponent {
+class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
 
     private val driverInventoryApi: DriverOperationApi by inject()
     private val dasAppDatabase: DasAppDatabase by inject()
     private val userRepository: UserRepository by inject()
 
     override suspend fun getDriverTransports(): List<TransportInventory> {
-        return driverInventoryApi.getTransports().unwrap ({ list -> list.map { it.toDomain() } },
+        return driverInventoryApi.getTransports().unwrap({ list -> list.map { it.toDomain() } },
             object : OnResponseCallback<List<TransportInventoryEntity>> {
                 override fun onSuccess(entity: List<TransportInventoryEntity>) {
                     dasAppDatabase.driverInventoryDao().insertAll(entity)
                 }
-                override fun onFail(exception: Exception) { } // No handle require
+
+                override fun onFail(exception: Exception) {} // No handle require
             })
     }
 
     override suspend fun initAwaitAcceptInventory() {
         dasAppDatabase.driverAcceptedInventoryDao().all.forEach {
-            driverInventoryApi.getInventoryDriverTransport(it.toDomain().toGetRequest(userRepository.getUser()?.userId ?: "", "Повторная отправка", null))
-                .unwrap( object : OnResponseCallback<Any> {
+            driverInventoryApi.getInventoryDriverTransport(
+                it.toDomain().toGetRequest(it.molUuid, "Повторная отправка", null)
+            )
+                .unwrap(object : OnResponseCallback<Any> {
                     override fun onSuccess(entity: Any) {
                         dasAppDatabase.driverAcceptedInventoryDao().removeItem(it)
                     }
-                    override fun onFail(exception: Exception) { }
+
+                    override fun onFail(exception: Exception) {}
                 })
         }
     }
@@ -46,23 +50,27 @@ class DriverInventoryRepositoryImpl: DriverInventoryRepository, KoinComponent {
     override suspend fun initAwaitSendInventory() {
         dasAppDatabase.driverSentInventoryDao().all.forEach {
             driverInventoryApi.sendInventoryDriverTransport(it.toDomain().toSentRequest())
-                .unwrap( object : OnResponseCallback<Any> {
+                .unwrap(object : OnResponseCallback<Any> {
                     override fun onSuccess(entity: Any) {
                         dasAppDatabase.driverSentInventoryDao().removeItem(it)
                     }
-                    override fun onFail(exception: Exception) { }
+
+                    override fun onFail(exception: Exception) {}
                 })
         }
     }
 
     override suspend fun initAwaitReceiveFligerData() {
         dasAppDatabase.driverFligelDataDao().all.forEach {
-            driverInventoryApi.receiveInventoryFligel(it.toFligelProduct().toReceiveFligelDataRequest())
-                .unwrap( object : OnResponseCallback<Any> {
+            driverInventoryApi.receiveInventoryFligel(
+                it.toFligelProduct().toReceiveFligelDataRequest()
+            )
+                .unwrap(object : OnResponseCallback<Any> {
                     override fun onSuccess(entity: Any) {
                         dasAppDatabase.driverFligelDataDao().removeItem(it)
                     }
-                    override fun onFail(exception: Exception) { }
+
+                    override fun onFail(exception: Exception) {}
                 })
         }
     }
@@ -73,18 +81,30 @@ class DriverInventoryRepositoryImpl: DriverInventoryRepository, KoinComponent {
         comment: String,
         fileIds: ArrayList<Int>?
     ): Any {
-        return driverInventoryApi.getInventoryDriverTransport(transportInventory.toGetRequest(userRepository.getUser()?.userId ?: "", comment, fileIds)).unwrap()
+        return driverInventoryApi.getInventoryDriverTransport(
+            transportInventory.toGetRequest(
+                transportInventory.molUuid,
+                comment,
+                fileIds
+            )
+        ).unwrap()
     }
 
     override suspend fun sendInventory(transportInventory: TransportInventory): Any {
-        return driverInventoryApi.sendInventoryDriverTransport(transportInventory.toSentRequest()).unwrap()
+        return driverInventoryApi.sendInventoryDriverTransport(transportInventory.toSentRequest())
+            .unwrap()
     }
 
     override suspend fun receiveFligelData(
         fligelProduct: FligelProduct,
         fileIds: ArrayList<Int>?
     ): Any {
-        return driverInventoryApi.receiveInventoryFligel(fligelProduct.toReceiveFligelDataRequest(fileIds, "")).unwrap()
+        return driverInventoryApi.receiveInventoryFligel(
+            fligelProduct.toReceiveFligelDataRequest(
+                fileIds,
+                ""
+            )
+        ).unwrap()
     }
 
     override suspend fun saveAwaitReceiveFligelData(fligelProduct: FligelProduct) {
@@ -96,12 +116,14 @@ class DriverInventoryRepositoryImpl: DriverInventoryRepository, KoinComponent {
         comment: String,
         fileIds: ArrayList<Int>
     ) {
-        dasAppDatabase.driverInventoryDao().removeItem(dasAppDatabase.driverInventoryDao().getItem(transportInventory.uuid))
+        dasAppDatabase.driverInventoryDao()
+            .removeItem(dasAppDatabase.driverInventoryDao().getItem(transportInventory.uuid))
         dasAppDatabase.driverAcceptedInventoryDao().insert(transportInventory.toAcceptedEntity())
     }
 
     override suspend fun saveAwaitSentInventory(transportInventory: TransportInventory) {
-        dasAppDatabase.driverInventoryDao().removeItem(dasAppDatabase.driverInventoryDao().getItem(transportInventory.uuid))
+        dasAppDatabase.driverInventoryDao()
+            .removeItem(dasAppDatabase.driverInventoryDao().getItem(transportInventory.uuid))
         dasAppDatabase.driverSentInventoryDao().insertWithIgnore(transportInventory.toSentEntity())
     }
 

@@ -57,7 +57,7 @@ fun TransportInventory.toSentEntity(): SentTransportEntity {
 
 fun TransportInventory.toSentRequest(): SendTransportRequest {
     return SendTransportRequest(
-        date = 0,
+        date = System.currentTimeMillis(),
         id =  this.id,
         isAccepted = 0,
         isSend = 0 ,
@@ -90,7 +90,7 @@ fun TransportInventory.toGetRequest(userId: String, comment: String, fileIds: Ar
         type = this.tsType,
         acceptedAt = 0,
         comment = comment,
-        receiverUUID = userId,
+        senderUUID = userId,
         fileIds = fileIds
     )
 }

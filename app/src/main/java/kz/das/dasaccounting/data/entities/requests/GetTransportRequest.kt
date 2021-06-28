@@ -11,7 +11,7 @@ data class GetTransportRequest(
     val latitude: Int,
     val longitude: Int,
     val name: String,
-    val receiverUUID: String,
+    val senderUUID: String,
     val sendAt: Long,
     val senderName: String?,
     val syncRequire: Int,

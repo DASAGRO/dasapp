@@ -2,7 +2,7 @@ package kz.das.dasaccounting.data.entities.requests
 
 data class SendTransportRequest(
     val acceptedAt: Long?,
-    val date: Int?,
+    val date: Long?,
     val id: Int?,
     val isAccepted: Long?,
     val isSend: Int?,
