@@ -25,7 +25,7 @@ class TransferConfirmVM: BaseVM() {
 
     fun setOfficeInventory(officeInventory: OfficeInventory?) {
         this.officeInventory = officeInventory
-        this.officeInventory?.receiverUUID = userRepository.getUser()?.userId
+        this.officeInventory?.senderUUID = officeInventory?.senderUUID
         this.officeInventory?.senderName = userRepository.getUser()?.lastName +
                 userRepository.getUser()?.firstName?.toCharArray()?.let { it[0] } + "." +
                 userRepository.getUser()?.middleName?.toCharArray()?.let { it[0] }

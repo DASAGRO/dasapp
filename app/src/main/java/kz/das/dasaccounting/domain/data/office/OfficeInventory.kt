@@ -13,7 +13,7 @@ data class OfficeInventory(
     var latitude: Double? = null,
     var longitude: Double? = null,
     var materialUUID: String? = null,
-    var receiverUUID: String? = null,
+    var senderUUID: String? = null,
     var quantity: Int? = null,
     var type: String? = null,
     var acceptedAt: Long? = 0,

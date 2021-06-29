@@ -15,7 +15,7 @@ data class OfficeInventoryAcceptedEntity(
     val latitude: Double? = null,
     val longitude: Double? = null,
     val materialUUID: String? = null,
-    val receiverUUID: String? = null,
+    val senderUUID: String? = null,
     val quantity: Int? = null,
     val type: String? = null,
     val acceptedAt: Long? = 0,
@@ -25,7 +25,7 @@ data class OfficeInventoryAcceptedEntity(
     val isSend: Int = 0,
     val isAccepted: Int = 0,
     var comment: String
-): Serializable
+) : Serializable
 
 
 fun OfficeInventoryAcceptedEntity.toDomain(): OfficeInventory {
@@ -37,7 +37,7 @@ fun OfficeInventoryAcceptedEntity.toDomain(): OfficeInventory {
         latitude = this.latitude,
         longitude = this.longitude,
         materialUUID = this.materialUUID,
-        receiverUUID = this.receiverUUID,
+        senderUUID = this.senderUUID,
         quantity = this.quantity,
         type = this.type,
         acceptedAt = this.acceptedAt,
@@ -58,7 +58,7 @@ fun OfficeInventory.toAcceptedEntity(): OfficeInventoryAcceptedEntity {
         latitude = this.latitude,
         longitude = this.longitude,
         materialUUID = this.materialUUID,
-        receiverUUID = this.receiverUUID,
+        senderUUID = this.senderUUID,
         quantity = this.quantity,
         type = this.type,
         acceptedAt = this.acceptedAt,

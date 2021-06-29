@@ -23,7 +23,7 @@ data class TransportInventoryEntity(
 fun TransportInventoryEntity.toDomain(): TransportInventory {
     return TransportInventory(
         comment = this.comment,
-        dateTime = this.comment,
+        dateTime = this.dateTime,
         id = this.id,
         latitude = this.latitude,
         longitude = this.longitude,
@@ -39,7 +39,7 @@ fun TransportInventoryEntity.toDomain(): TransportInventory {
 fun TransportInventory.toEntity(): TransportInventoryEntity {
     return TransportInventoryEntity(
         comment = this.comment,
-        dateTime = this.comment,
+        dateTime = this.dateTime,
         id = this.id,
         latitude = this.latitude,
         longitude = this.longitude,
