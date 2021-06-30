@@ -16,22 +16,27 @@ import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
+class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
 
     private val officeOperationApi: OfficeOperationApi by inject()
     private val dasAppDatabase: DasAppDatabase by inject()
 
     override suspend fun getOfficeMaterials(): List<OfficeInventory> {
-        return officeOperationApi.getMaterials().unwrap ({ list -> list.map { it.toDomain() } },
-        object : OnResponseCallback<List<OfficeInventoryEntity>> {
+        return officeOperationApi.getMaterials().unwrap({ list -> list.map { it.toDomain() } },
+            object : OnResponseCallback<List<OfficeInventoryEntity>> {
                 override fun onSuccess(entity: List<OfficeInventoryEntity>) {
                     dasAppDatabase.officeInventoryDao().reload(entity)
                 }
-                override fun onFail(exception: Exception) { } // No handle require
+
+                override fun onFail(exception: Exception) {} // No handle require
             })
     }
 
-    override suspend fun acceptInventory(officeInventory: OfficeInventory, comment: String, fileIds: ArrayList<Int>): Any {
+    override suspend fun acceptInventory(
+        officeInventory: OfficeInventory,
+        comment: String,
+        fileIds: ArrayList<Int>
+    ): Any {
         return officeOperationApi.acceptInventory(
             InventoryGetRequest(
                 id = officeInventory.id,
@@ -73,9 +78,10 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
         comment: String,
         fileIds: ArrayList<Int>
     ) {
-        dasAppDatabase.officeInventoryAcceptedDao().insert(officeInventory.toAcceptedEntity().apply {
-            this.syncRequire == 1
-        })
+        dasAppDatabase.officeInventoryAcceptedDao()
+            .insert(officeInventory.toAcceptedEntity().apply {
+                this.syncRequire == 1
+            })
     }
 
     override suspend fun saveAwaitSentInventory(officeInventory: OfficeInventory) {
@@ -90,26 +96,29 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
 
     override suspend fun initAwaitAcceptInventory() {
         dasAppDatabase.officeInventoryAcceptedDao().all.forEach {
-            officeOperationApi.acceptInventory(InventoryGetRequest(
-                id = it.id,
-                date = it.date,
-                name = it.name,
-                humidity = it.humidity,
-                latitude = it.latitude,
-                longitude = it.longitude,
-                materialUUID = it.materialUUID,
-                senderUUID = it.senderUUID,
-                quantity = it.quantity,
-                type = it.type,
-                senderName = it.senderName,
-                fileIds = null,
-                comment = "Повторная отправка принятии"
-            ))
-                .unwrap( object : OnResponseCallback<ApiResponseMessage> {
+            officeOperationApi.acceptInventory(
+                InventoryGetRequest(
+                    id = it.id,
+                    date = System.currentTimeMillis(),
+                    name = it.name,
+                    humidity = it.humidity,
+                    latitude = it.latitude,
+                    longitude = it.longitude,
+                    materialUUID = it.materialUUID,
+                    senderUUID = it.senderUUID,
+                    quantity = it.quantity,
+                    type = it.type,
+                    senderName = it.senderName,
+                    fileIds = null,
+                    comment = "Повторная отправка принятии"
+                )
+            )
+                .unwrap(object : OnResponseCallback<ApiResponseMessage> {
                     override fun onSuccess(entity: ApiResponseMessage) {
                         dasAppDatabase.officeInventoryAcceptedDao().removeItem(it)
                     }
-                    override fun onFail(exception: Exception) { }
+
+                    override fun onFail(exception: Exception) {}
                 })
         }
     }
@@ -128,11 +137,13 @@ class OfficeInventoryRepositoryImpl: OfficeInventoryRepository, KoinComponent {
                     quantity = it.quantity,
                     type = it.type,
                     senderName = it.senderName
-                ))
-                .unwrap( object : OnResponseCallback<ApiResponseMessage> {
+                )
+            )
+                .unwrap(object : OnResponseCallback<ApiResponseMessage> {
                     override fun onSuccess(entity: ApiResponseMessage) {
                         dasAppDatabase.officeInventorySentDao().removeItem(it)
                     }
+
                     override fun onFail(exception: Exception) {}
                 })
         }

@@ -10,19 +10,23 @@ import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.data.entities.office.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
+import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGenerateBinding>() {
+class TransferConfirmFragment : BaseFragment<TransferConfirmVM, FragmentBarcodeGenerateBinding>() {
+    val userRepository: UserRepository by inject();
 
     companion object {
         private const val OFFICE_INVENTORY = "inventory"
 
-        fun getScreen(officeInventoryAccept: OfficeInventory) = DasAppScreen(TransferConfirmFragment()).apply {
-            val args = Bundle()
-            args.putParcelable(OFFICE_INVENTORY, officeInventoryAccept)
-            this.setArgs(args)
-        }
+        fun getScreen(officeInventoryAccept: OfficeInventory) =
+            DasAppScreen(TransferConfirmFragment()).apply {
+                val args = Bundle()
+                args.putParcelable(OFFICE_INVENTORY, officeInventoryAccept)
+                this.setArgs(args)
+            }
     }
 
     override val mViewModel: TransferConfirmVM by viewModel()
@@ -30,7 +34,9 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
     override fun getViewBinding() = FragmentBarcodeGenerateBinding.inflate(layoutInflater)
 
     override fun setupUI() {
-        mViewModel.setOfficeInventory(getOfficeInventory())
+        val el = getOfficeInventory()
+        el?.senderUUID = userRepository.getUser()?.userId;
+        mViewModel.setOfficeInventory(el)
         mViewBinding.apply {
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
@@ -53,14 +59,22 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                             " " + it.quantity +
                             " " + it.type)
                 try {
-                    mViewBinding.ivQr.setImageBitmap(OfficeInventoryEntityTypeConvertor().officeInventoryToString(it.toEntity()).generateQR())
-                } catch (e: Exception) { }
+                    mViewBinding.ivQr.setImageBitmap(
+                        OfficeInventoryEntityTypeConvertor().officeInventoryToString(
+                            it.toEntity()
+                        ).generateQR()
+                    )
+                } catch (e: Exception) {
+                }
             }
         })
 
         mViewModel.isOfficeInventorySent().observe(viewLifecycleOwner, Observer {
             if (it) {
-                showSuccess(getString(R.string.common_banner_success), getString(R.string.office_inventory_transferred_successfully))
+                showSuccess(
+                    getString(R.string.common_banner_success),
+                    getString(R.string.office_inventory_transferred_successfully)
+                )
                 requireRouter().exit()
             }
         })
