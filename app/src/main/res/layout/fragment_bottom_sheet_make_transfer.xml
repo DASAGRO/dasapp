@@ -53,9 +53,10 @@
                     android:gravity="start"
                     android:textSize="16sp"
                     android:textStyle="bold"
+                    android:layout_marginTop="32dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/iv_inventory"
-                    app:layout_constraintTop_toTopOf="@+id/iv_inventory"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:text="Флигель 143:32" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -70,7 +71,6 @@
                     android:layout_toEndOf="@+id/iv_inventory"
                     android:gravity="start"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_inventory"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/iv_inventory"
                     app:layout_constraintTop_toBottomOf="@+id/tv_inventory_title"

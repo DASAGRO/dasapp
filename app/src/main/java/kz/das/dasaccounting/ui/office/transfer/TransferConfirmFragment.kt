@@ -53,6 +53,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                             " " + it.quantity +
                             " " + it.type)
                 try {
+
                     mViewBinding.ivQr.setImageBitmap(OfficeInventoryEntityTypeConvertor().officeInventoryToString(it.toEntity()).generateQR())
                 } catch (e: Exception) { }
             }

@@ -6,7 +6,6 @@ import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.core.extensions.OnResponseCallback
 import kz.das.dasaccounting.core.extensions.unwrap
 import kz.das.dasaccounting.data.entities.common.InventoryGetRequest
-import kz.das.dasaccounting.data.entities.common.InventoryRequest
 import kz.das.dasaccounting.data.entities.common.InventorySendRequest
 import kz.das.dasaccounting.data.entities.office.*
 import kz.das.dasaccounting.data.source.local.DasAppDatabase
