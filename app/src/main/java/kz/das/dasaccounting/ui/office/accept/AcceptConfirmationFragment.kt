@@ -92,11 +92,7 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
             }
 
             btnReady.setOnClickListener {
-                if (mViewBinding.edtComment.text.isNullOrEmpty()) {
-                    showError(getString(R.string.common_error), "Введите комментарий для отправки")
-                } else {
-                    mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
-                }
+                mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
             }
         }
     }
@@ -129,6 +125,12 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
                 hideLoading()
                 showSuccess(getString(R.string.common_banner_success), "Отчет успешно отправлен!")
                 requireRouter().exit()
+            }
+        })
+
+        mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
+            if (it) {
+                showAwait(getString(R.string.common_banner_await), "Получение ТМЦ в ожидании!")
             }
         })
     }

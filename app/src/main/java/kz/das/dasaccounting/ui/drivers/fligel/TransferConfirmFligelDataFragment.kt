@@ -7,9 +7,11 @@ import gun0912.tedimagepicker.builder.type.MediaType
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
+import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
 import kz.das.dasaccounting.core.ui.extensions.setImage
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentInventoryAcceptConfirmationBinding
+import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.DialogBottomMediaTypePick
@@ -94,11 +96,8 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
             }
 
             btnReady.setOnClickListener {
-                if (mViewBinding.edtComment.text.isNullOrEmpty()) {
-                    showError(getString(R.string.common_error), "Введите комментарий для отправки")
-                } else {
-                    mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
-                }
+                showConfirmDialog()
+                //mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
             }
         }
     }
@@ -125,6 +124,12 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
                 hideUploading()
             }
         })
+
+        mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
+            if (it) {
+                showAwait(getString(R.string.common_banner_await), "Формирование ТМЦ в ожидании!")
+            }
+        })
     }
 
     private fun initViews(fligel: FligelProduct?) {
@@ -137,6 +142,22 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
                             "Вес урожая: " + it.harvestWeight + "\n" +
                             "Влажность: " + it.humidity)
         }
+    }
+
+    private fun showConfirmDialog() {
+        val actionDialog = ActionInventoryConfirmDialog.Builder()
+            .setCancelable(true)
+            .setTitle(mViewBinding.tvInventoryTitle.text)
+            .setDescription(mViewBinding.tvInventoryDesc.text)
+            .setImage(R.drawable.ic_trailer)
+            .setOnConfirmCallback(object : ActionInventoryConfirmDialog.OnConfirmCallback {
+                override fun onConfirmClicked() {
+                    mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
+                    //mViewModel.sendInventory()
+                }
+                override fun onCancelClicked() { }
+            }).build()
+        actionDialog.show(childFragmentManager, ActionInventoryConfirmDialog.TAG)
     }
 
     private fun getTransportInventory(): FligelProduct? {

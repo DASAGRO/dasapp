@@ -32,11 +32,13 @@ class AcceptTransportConfirmationVM : BaseVM(), KoinComponent {
     private val isFilesUploadingLV = SingleLiveEvent<Boolean>()
     fun isFilesUploading(): LiveData<Boolean> = isFilesUploadingLV
 
+    private val isOnAwaitLV = SingleLiveEvent<Boolean>()
+    fun isOnAwait(): LiveData<Boolean> = isOnAwaitLV
 
     private val transportInventoryLV = SingleLiveEvent<TransportInventory?>()
-    fun getOfficeInventory(): LiveData<TransportInventory?> = transportInventoryLV
+    fun getTransportInventory(): LiveData<TransportInventory?> = transportInventoryLV
 
-    fun setOfficeInventory(officeInventory: TransportInventory?) {
+    fun setTransportInventory(officeInventory: TransportInventory?) {
         this.transportInventory = officeInventory
         transportInventoryLV.postValue(officeInventory)
     }
@@ -61,7 +63,7 @@ class AcceptTransportConfirmationVM : BaseVM(), KoinComponent {
                     transportInventory?.let {
                         officeInventoryRepository.saveAwaitAcceptInventory(it, comment, fileIds)
                     }
-                    driverInventoryAcceptedLV.postValue(true)
+                    isOnAwaitLV.postValue(true)
                 } else {
                     throwableHandler.handle(t)
                     driverInventoryAcceptedLV.postValue(false)

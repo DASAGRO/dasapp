@@ -23,6 +23,9 @@ class TransferConfirmVM: BaseVM() {
     private val transportInventoryLV = SingleLiveEvent<TransportInventory?>()
     fun getTransportInventory(): LiveData<TransportInventory?> = transportInventoryLV
 
+    private val isOnAwaitLV = SingleLiveEvent<Boolean>()
+    fun isOnAwait(): LiveData<Boolean> = isOnAwaitLV
+
     fun setTransportInventory(transportInventory: TransportInventory?) {
         this.transportInventory = transportInventory
         this.transportInventory?.senderName = userRepository.getUser()?.lastName +
@@ -51,7 +54,7 @@ class TransferConfirmVM: BaseVM() {
                     transportInventory?.let {
                         transportInventoryRepository.saveAwaitSentInventory(it)
                     }
-                    isTransportInventorySentLV.postValue(true)
+                    isOnAwaitLV.postValue(true)
                 } else {
                     throwableHandler.handle(t)
                     isTransportInventorySentLV.postValue(false)

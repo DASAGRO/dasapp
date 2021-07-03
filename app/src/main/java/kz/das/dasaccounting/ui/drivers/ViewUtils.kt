@@ -19,3 +19,17 @@ fun AppCompatImageView.setTsTypeImage(transportInventory: TransportInventory) {
         }
     }
 }
+
+fun TransportInventory.getTsTypeImage(): Int {
+    return when (this.tsType) {
+        TransportType.TRAILED.type -> {
+            R.drawable.ic_trailer
+        }
+        TransportType.TRANSPORT.type -> {
+            R.drawable.ic_tractor
+        }
+        else -> {
+            R.drawable.ic_tractor
+        }
+    }
+}

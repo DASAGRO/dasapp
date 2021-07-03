@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.dialogs.BaseBottomSheetFragment
+import kz.das.dasaccounting.core.ui.extensions.verifyToInit
 import kz.das.dasaccounting.databinding.FragmentBottomSheetMakeTransferBinding
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
@@ -42,8 +43,7 @@ class TransferFormalizeFragment: BaseBottomSheetFragment<FragmentBottomSheetMake
         mViewBinding.apply {
             this.btnMakeTransfer.setOnClickListener {
                 getOfficeInventory()?.let {
-                    listener?.onTransfer(it)
-                    dismiss()
+                    checkConfirmation(it)
                 }
             }
         }
@@ -65,6 +65,17 @@ class TransferFormalizeFragment: BaseBottomSheetFragment<FragmentBottomSheetMake
     override fun showAwait(title: String?, message: String?) { }
 
     override fun onSaveRequire(title: String?, message: String?, data: Any?) { }
+
+    private fun checkConfirmation(transport: TransportInventory) {
+        this@TransferFormalizeFragment.verifyToInit(
+            {
+                listener?.onTransfer(transport)
+                dismiss()
+            },
+            { showError(getString(R.string.common_error), getString(R.string.error_not_valid_finger)) },
+            { showError(getString(R.string.common_error), getString(R.string.common_unexpected_error)) }
+        )
+    }
 
     private fun getOfficeInventory(): TransportInventory? {
         return arguments?.getParcelable(TRANSPORT_INVENTORY)

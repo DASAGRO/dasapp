@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
+import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
 import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.data.entities.office.toEntity
@@ -36,7 +37,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                 requireRouter().exit()
             }
             btnReady.setOnClickListener {
-                mViewModel.sendInventory()
+                showConfirmDialog()
             }
         }
     }
@@ -65,10 +66,31 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                 requireRouter().exit()
             }
         })
+
+        mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
+            if (it) {
+                showAwait(getString(R.string.common_banner_await), "Передача ТМЦ в ожидании!")
+            }
+        })
     }
 
+    private fun showConfirmDialog() {
+        val actionDialog = ActionInventoryConfirmDialog.Builder()
+            .setCancelable(true)
+            .setTitle(mViewBinding.tvInventoryTitle.text)
+            .setDescription(mViewBinding.tvInventoryDesc.text)
+            .setImage(R.drawable.ic_inventory)
+            .setOnConfirmCallback(object : ActionInventoryConfirmDialog.OnConfirmCallback {
+                override fun onConfirmClicked() {
+                    mViewModel.sendInventory()
+                }
+                override fun onCancelClicked() { }
+            }).build()
+        actionDialog.show(childFragmentManager, ActionInventoryConfirmDialog.TAG)
+    }
 
     private fun getOfficeInventory(): OfficeInventory? {
         return arguments?.getParcelable(OFFICE_INVENTORY)
     }
+
 }

@@ -23,6 +23,13 @@ class TransferConfirmVM: BaseVM() {
     private val officeInventoryLV = SingleLiveEvent<OfficeInventory?>()
     fun getOfficeInventory(): LiveData<OfficeInventory?> = officeInventoryLV
 
+    private val isOnAwaitLV = SingleLiveEvent<Boolean>()
+    fun isOnAwait(): LiveData<Boolean> = isOnAwaitLV
+
+    private val isOfficeInventorySentLV = SingleLiveEvent<Boolean>()
+    fun isOfficeInventorySent(): LiveData<Boolean> = isOfficeInventorySentLV
+
+
     fun setOfficeInventory(officeInventory: OfficeInventory?) {
         this.officeInventory = officeInventory
         this.officeInventory?.senderUUID = userRepository.getUser()?.userId
@@ -31,9 +38,6 @@ class TransferConfirmVM: BaseVM() {
                 userRepository.getUser()?.middleName?.toCharArray()?.let { it[0] }
         officeInventoryLV.postValue(officeInventory)
     }
-
-    private val isOfficeInventorySentLV = SingleLiveEvent<Boolean>()
-    fun isOfficeInventorySent(): LiveData<Boolean> = isOfficeInventorySentLV
 
     fun sendInventory() {
         viewModelScope.launch {
@@ -52,6 +56,7 @@ class TransferConfirmVM: BaseVM() {
                     officeInventory?.let {
                         officeInventoryRepository.saveAwaitSentInventory(it)
                     }
+                    isOfficeInventorySentLV.postValue(true)
                 } else {
                     throwableHandler.handle(t)
                     isOfficeInventorySentLV.postValue(false)

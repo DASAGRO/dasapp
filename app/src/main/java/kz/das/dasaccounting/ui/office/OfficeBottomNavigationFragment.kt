@@ -129,8 +129,10 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
                 override fun onScan(qrScan: String) {
                     delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
                         try {
-                            OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
-                                requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(it))
+                            if (!qrScan.contains("stateNumber") || !qrScan.contains("storeUUID") || !qrScan.contains("sealNumber") || !qrScan.contains("model")) {
+                                OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
+                                    requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(it))
+                                }
                             }
                         } catch (e: Exception) {
                             showError(getString(R.string.common_error), getString(R.string.common_error_scan))

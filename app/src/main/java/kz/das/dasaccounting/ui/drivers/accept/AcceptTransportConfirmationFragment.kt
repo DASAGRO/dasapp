@@ -9,6 +9,7 @@ import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentInventoryAcceptConfirmationBinding
+import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.DialogBottomMediaTypePick
@@ -35,7 +36,7 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
     override fun getViewBinding() = FragmentInventoryAcceptConfirmationBinding.inflate(layoutInflater)
 
     override fun setupUI() {
-        mViewModel.setOfficeInventory(getTransportInventory())
+        mViewModel.setTransportInventory(getTransportInventory())
 
         profileSupportAttachedMediaAdapter = ProfileSupportAttachedMediaAdapter(requireContext(),
             object : ProfileSupportAttachedMediaAdapter.ProfileSupportAttachedMediaAdapterEvents {
@@ -93,11 +94,7 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
             }
 
             btnReady.setOnClickListener {
-                if (mViewBinding.edtComment.text.isNullOrEmpty()) {
-                    showError(getString(R.string.common_error), "Введите комментарий для отправки")
-                } else {
-                    mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
-                }
+                mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
             }
         }
     }
@@ -105,14 +102,19 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
     override fun observeLiveData() {
         super.observeLiveData()
 
-        mViewModel.getOfficeInventory().observe(viewLifecycleOwner, Observer {
+        mViewModel.getTransportInventory().observe(viewLifecycleOwner, Observer {
             initViews(it)
         })
 
         mViewModel.isTransportInventoryAccepted().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showSuccess(getString(R.string.common_banner_success),
-                    getString(R.string.transport_inventory_accepted_successfully))
+                    if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
+                        getString(R.string.transport_accessory_inventory_accepted_successfully)
+                    } else {
+                        getString(R.string.transport_inventory_accepted_successfully)
+                    }
+                )
                 requireRouter().exit()
             }
         })
@@ -132,6 +134,19 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
                 requireRouter().exit()
             }
         })
+
+        mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
+            if (it) {
+                showAwait(getString(R.string.common_banner_await),
+                    if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
+                        "Получение ПО в ожидании!"
+                    } else {
+                        "Получение ТС в ожидании!"
+                    }
+                )
+            }
+        })
+
     }
 
     private fun initViews(officeInventory: TransportInventory?) {

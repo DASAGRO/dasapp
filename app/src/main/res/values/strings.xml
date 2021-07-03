@@ -148,12 +148,16 @@
     <string name="choose_video">Выбрать видео</string>
     <string name="office_inventory_accepted_successfully">ТМЦ успешно принят</string>
     <string name="office_inventory_transferred_successfully">ТМЦ успешно передан</string>
-    <string name="transport_inventory_accepted_successfully">ТЦ успешно принят</string>
+    <string name="transport_inventory_accepted_successfully">ТС успешно принят</string>
+    <string name="transport_accessory_inventory_accepted_successfully">ПО успешно принят</string>
     <string name="transport_fligel_data_accepted_successfully">Данные успешно приняты</string>
-    <string name="transport_inventory_transferred_successfully">ТЦ успешно передан</string>
+    <string name="transport_inventory_transferred_successfully">ТС успешно передан</string>
+    <string name="transport_accessory_inventory_transferred_successfully">ПО успешно передан</string>
+
 
     <string name="common_error_scan">Ошибка считывания!</string>
     <string name="gov_number">Гос номер: </string>
+    <string name="dialog_inventory_confirm_title">Вы уверены что партнер отсканировал QR код ?</string>
 
 
 </resources>

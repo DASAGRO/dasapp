@@ -34,6 +34,9 @@ class TransferConfirmFligelDataVM: BaseVM() {
     private val fligelDataLV = SingleLiveEvent<FligelProduct?>()
     fun getFligelData(): LiveData<FligelProduct?> = fligelDataLV
 
+    private val isOnAwaitLV = SingleLiveEvent<Boolean>()
+    fun isOnAwait(): LiveData<Boolean> = isOnAwaitLV
+
     fun setOfficeInventory(officeInventory: FligelProduct?) {
         this.fligelProduct = officeInventory
         fligelDataLV.postValue(officeInventory)
@@ -61,7 +64,7 @@ class TransferConfirmFligelDataVM: BaseVM() {
                     fligelProduct?.let {
                         driverInventoryRepository.saveAwaitReceiveFligelData(it)
                     }
-                    driverInventoryDataLV.postValue(true)
+                    isOnAwaitLV.postValue(true)
                 } else {
                     throwableHandler.handle(t)
                     driverInventoryDataLV.postValue(false)

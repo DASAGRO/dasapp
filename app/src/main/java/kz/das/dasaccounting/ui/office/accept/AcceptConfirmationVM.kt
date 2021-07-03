@@ -32,6 +32,11 @@ class AcceptConfirmationVM : BaseVM(), KoinComponent {
     private val isFilesUploadingLV = SingleLiveEvent<Boolean>()
     fun isFilesUploading(): LiveData<Boolean> = isFilesUploadingLV
 
+    private val isOnAwaitLV = SingleLiveEvent<Boolean>()
+    fun isOnAwait(): LiveData<Boolean> = isOnAwaitLV
+
+    private val officeInventoryAcceptedLV = SingleLiveEvent<Boolean>()
+    fun isOfficeInventoryAccepted(): LiveData<Boolean> = officeInventoryAcceptedLV
 
     private val officeInventoryLV = SingleLiveEvent<OfficeInventory?>()
     fun getOfficeInventory(): LiveData<OfficeInventory?> = officeInventoryLV
@@ -40,9 +45,6 @@ class AcceptConfirmationVM : BaseVM(), KoinComponent {
         this.officeInventory = officeInventory
         officeInventoryLV.postValue(officeInventory)
     }
-
-    private val officeInventoryAcceptedLV = SingleLiveEvent<Boolean>()
-    fun isOfficeInventoryAccepted(): LiveData<Boolean> = officeInventoryAcceptedLV
 
     fun acceptInventory(comment: String) {
         viewModelScope.launch {
@@ -61,7 +63,7 @@ class AcceptConfirmationVM : BaseVM(), KoinComponent {
                     officeInventory?.let {
                         officeInventoryRepository.saveAwaitAcceptInventory(it, comment, fileIds)
                     }
-                    officeInventoryAcceptedLV.postValue(true)
+                    isOnAwaitLV.postValue(true)
                 } else {
                     throwableHandler.handle(t)
                     officeInventoryAcceptedLV.postValue(false)
