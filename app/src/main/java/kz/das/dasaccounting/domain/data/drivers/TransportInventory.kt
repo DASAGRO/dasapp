@@ -18,4 +18,70 @@ data class TransportInventory(
     var senderName: String?,
     var uuid: String,
     var isPending: Boolean = false
-): OperationAct(), Parcelable
+) : OperationAct(), Parcelable
+
+fun TransportInventory.toSent(): TransportSentInventory {
+    return TransportSentInventory(
+        comment = this.comment,
+        dateTime = this.dateTime,
+        id = this.id,
+        latitude = this.latitude,
+        longitude = this.longitude,
+        model = this.model,
+        molUuid = this.molUuid,
+        stateNumber = this.stateNumber,
+        tsType = this.tsType,
+        senderName = this.senderName,
+        uuid = this.uuid,
+        isPending = this.isPending
+    )
+}
+
+fun TransportInventory.toAccepted(): TransportAcceptedInventory {
+    return TransportAcceptedInventory(
+        comment = this.comment,
+        dateTime = this.dateTime,
+        id = this.id,
+        latitude = this.latitude,
+        longitude = this.longitude,
+        model = this.model,
+        molUuid = this.molUuid,
+        stateNumber = this.stateNumber,
+        tsType = this.tsType,
+        senderName = this.senderName,
+        uuid = this.uuid,
+        isPending = this.isPending
+    )
+}
+
+@Parcelize
+data class TransportSentInventory(
+    var comment: String,
+    var dateTime: String,
+    var id: Int,
+    var latitude: Int,
+    var longitude: Int,
+    var model: String,
+    var molUuid: String,
+    var stateNumber: String,
+    var tsType: String,
+    var senderName: String?,
+    var uuid: String,
+    var isPending: Boolean = false
+) : OperationAct(), Parcelable
+
+@Parcelize
+data class TransportAcceptedInventory(
+    var comment: String,
+    var dateTime: String,
+    var id: Int,
+    var latitude: Int,
+    var longitude: Int,
+    var model: String,
+    var molUuid: String,
+    var stateNumber: String,
+    var tsType: String,
+    var senderName: String?,
+    var uuid: String,
+    var isPending: Boolean = false
+) : OperationAct(), Parcelable

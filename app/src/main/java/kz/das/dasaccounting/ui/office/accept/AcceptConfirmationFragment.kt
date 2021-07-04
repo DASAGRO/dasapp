@@ -131,6 +131,7 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
         mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showAwait(getString(R.string.common_banner_await), "Получение ТМЦ в ожидании!")
+                requireRouter().exit()
             }
         })
     }

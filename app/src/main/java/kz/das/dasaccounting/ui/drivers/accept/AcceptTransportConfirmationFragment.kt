@@ -144,6 +144,7 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
                         "Получение ТС в ожидании!"
                     }
                 )
+                requireRouter().exit()
             }
         })
 

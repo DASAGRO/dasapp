@@ -83,6 +83,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                         "Передача ТС в ожидании!"
                     }
                 )
+                requireRouter().exit()
             }
         })
     }

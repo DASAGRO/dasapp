@@ -13,7 +13,9 @@ import kz.das.dasaccounting.databinding.ItemSegmentBinding
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.action.OperationHead
 import kz.das.dasaccounting.domain.data.action.OperationInit
+import kz.das.dasaccounting.domain.data.office.OfficeAcceptedInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
+import kz.das.dasaccounting.domain.data.office.OfficeSentInventory
 
 class OfficeOperationsAdapter(val context: Context, private var operations: ArrayList<OperationAct>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -23,6 +25,8 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
         private const val HEAD = 0
         private const val ACTION = 1
         private const val OPERATION = 2
+        private const val OPERATION_SENT_AWAIT = 3
+        private const val OPERATION_ACCEPTED_AWAIT = 4
     }
 
     interface OnOfficeOperationsAdapterEvent {
@@ -40,6 +44,8 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
         return mapOf(
             HEAD to OperationHeadViewHolder(ItemSegmentBinding.inflate(layoutInflater, parent, false)),
             ACTION to OperationInitViewHolder(ItemOperationInitBinding.inflate(layoutInflater, parent, false)),
+            OPERATION_ACCEPTED_AWAIT to OperationOfficeAcceptAwaitInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)),
+            OPERATION_SENT_AWAIT to OperationOfficeSentAwaitInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)),
             OPERATION to OperationOfficeInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)))[viewType]
             ?: OperationOfficeInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false))
     }
@@ -53,6 +59,10 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
                 holder.bind(item as OperationInit, position)
             is OperationOfficeInventoryViewHolder ->
                 holder.bind(item as OfficeInventory, position)
+            is OperationOfficeAcceptAwaitInventoryViewHolder ->
+                holder.bind(item as OfficeAcceptedInventory, position)
+            is OperationOfficeSentAwaitInventoryViewHolder ->
+                holder.bind(item as OfficeSentInventory, position)
         }
     }
 
@@ -92,6 +102,8 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
         return when (operations[position]) {
             is OperationHead -> HEAD
             is OperationInit -> ACTION
+            is OfficeAcceptedInventory -> OPERATION_ACCEPTED_AWAIT
+            is OfficeSentInventory -> OPERATION_SENT_AWAIT
             else -> OPERATION
         }
     }
@@ -127,6 +139,26 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
                         officeOperationsAdapterEvent?.onInventoryTransfer(item)
                     }
                 }
+            }
+        }
+    }
+
+    inner class OperationOfficeAcceptAwaitInventoryViewHolder internal constructor(private val itemBinding: ItemOperationActionBinding) : BaseViewHolder<OfficeAcceptedInventory>(itemBinding) {
+        override fun bind(item: OfficeAcceptedInventory, position: Int) {
+            this.itemBinding.run {
+                this.tvName.text = item.name
+                this.ivAction.setImageResource(R.drawable.ic_inventory)
+                this.ivStatePending.isVisible = true
+            }
+        }
+    }
+
+    inner class OperationOfficeSentAwaitInventoryViewHolder internal constructor(private val itemBinding: ItemOperationActionBinding) : BaseViewHolder<OfficeSentInventory>(itemBinding) {
+        override fun bind(item: OfficeSentInventory, position: Int) {
+            this.itemBinding.run {
+                this.tvName.text = item.name
+                this.ivAction.setImageResource(R.drawable.ic_inventory)
+                this.ivStatePending.isVisible = true
             }
         }
     }

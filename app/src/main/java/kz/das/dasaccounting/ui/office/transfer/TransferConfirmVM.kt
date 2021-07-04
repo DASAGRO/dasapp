@@ -65,7 +65,7 @@ class TransferConfirmVM: BaseVM() {
                     officeInventory?.let {
                         officeInventoryRepository.saveAwaitSentInventory(it)
                     }
-                    isOfficeInventorySentLV.postValue(true)
+                    isOnAwaitLV.postValue(true)
                 } else {
                     throwableHandler.handle(t)
                     isOfficeInventorySentLV.postValue(false)

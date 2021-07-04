@@ -39,7 +39,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
         return officeOperationApi.acceptInventory(
             InventoryGetRequest(
                 id = officeInventory.id,
-                date = officeInventory.date,
+                date = System.currentTimeMillis(),
                 name = officeInventory.name,
                 humidity = officeInventory.humidity,
                 latitude = officeInventory.latitude,
@@ -59,7 +59,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
         return officeOperationApi.sendInventory(
             InventorySendRequest(
                 id = officeInventory.id,
-                date = officeInventory.date,
+                date = System.currentTimeMillis(),
                 name = officeInventory.name,
                 humidity = officeInventory.humidity,
                 latitude = officeInventory.latitude,
@@ -79,32 +79,32 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
     ) {
         val dataItem = dasAppDatabase.officeInventoryDao().getItem(officeInventory.materialUUID)
         if (dataItem != null) {
-            officeInventory.quantity?.let {
+            officeInventory.quantity?.let { cnt ->
                 dasAppDatabase.officeInventoryDao().removeItem(dataItem)
-                dataItem.quantity = dataItem.quantity ?: 0 + it
+                dataItem.quantity?.let { it + cnt }
                 dasAppDatabase.officeInventoryDao().insert(dataItem)
             }
         } else {
             dasAppDatabase.officeInventoryDao().insert(officeInventory.toEntity())
         }
         dasAppDatabase.officeInventoryAcceptedDao()
-            .insert(officeInventory.toAcceptedEntity().apply {
-                this.syncRequire == 1
-            })
+            .insert(officeInventory.toAcceptedEntity())
     }
 
     override suspend fun saveAwaitSentInventory(officeInventory: OfficeInventory) {
         val dataItem = dasAppDatabase.officeInventoryDao().getItem(officeInventory.materialUUID)
         dataItem?.let {
-            officeInventory.quantity?.let {
+            officeInventory.quantity?.let { cnt ->
                 dasAppDatabase.officeInventoryDao().removeItem(dataItem)
-                dataItem.quantity = dataItem.quantity ?: 0 - it
-                dasAppDatabase.officeInventoryDao().insert(dataItem)
+                dataItem.quantity = dataItem.quantity!! - cnt
+                if (dataItem.quantity == 0) {
+                    dasAppDatabase.officeInventoryDao().removeItem(dataItem)
+                } else {
+                    dasAppDatabase.officeInventoryDao().insert(dataItem)
+                }
             }
         }
-        dasAppDatabase.officeInventorySentDao().insert(officeInventory.toSentEntity().apply {
-            this.syncRequire == 1
-        })
+        dasAppDatabase.officeInventorySentDao().insert(officeInventory.toSentEntity())
     }
 
     override fun getOfficeMaterialsLocally(): LiveData<List<OfficeInventory>> {
@@ -145,7 +145,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
             officeOperationApi.sendInventory(
                 InventorySendRequest(
                     id = it.id,
-                    date = it.date,
+                    date = System.currentTimeMillis(),
                     name = it.name,
                     humidity = it.humidity,
                     latitude = it.latitude,

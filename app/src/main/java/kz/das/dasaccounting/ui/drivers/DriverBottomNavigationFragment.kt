@@ -21,7 +21,11 @@ import kz.das.dasaccounting.domain.data.action.OperationHead
 import kz.das.dasaccounting.domain.data.action.OperationInit
 import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.domain.data.drivers.toAccepted
+import kz.das.dasaccounting.domain.data.drivers.toSent
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
+import kz.das.dasaccounting.domain.data.office.toAccepted
+import kz.das.dasaccounting.domain.data.office.toSent
 import kz.das.dasaccounting.ui.drivers.fligel.TransferConfirmFligelDataFragment
 import kz.das.dasaccounting.ui.drivers.fligel.TransferFligelDataFormalizeFragment
 import kz.das.dasaccounting.ui.drivers.fligel.TransferFligelDataInputFragment
@@ -304,14 +308,14 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
     private fun getAwaitSentOperations(inventories: List<OfficeInventory>): ArrayList<OperationAct> {
         val operations: ArrayList<OperationAct> = arrayListOf()
         operations.add(OperationHead(getString(R.string.await_sent_operations)))
-        operations.addAll(inventories)
+        operations.addAll(inventories.map { it.toSent() })
         return if (inventories.isEmpty()) arrayListOf() else arrayListOf()
     }
 
     private fun getAwaitAcceptedOperations(inventories: List<OfficeInventory>): ArrayList<OperationAct> {
         val operations: ArrayList<OperationAct> = arrayListOf()
         operations.add(OperationHead(getString(R.string.await_accepted_operations)))
-        operations.addAll(inventories)
+        operations.addAll(inventories.map { it.toAccepted() })
         return if (inventories.isEmpty()) arrayListOf()else arrayListOf()
     }
 
@@ -321,7 +325,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         inventories.forEach {
             it.isPending
         }
-        operations.addAll(inventories)
+        operations.addAll(inventories.map { it.toSent() })
         return if (inventories.isEmpty()) arrayListOf() else arrayListOf()
     }
 
@@ -331,7 +335,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         inventories.forEach {
             it.isPending
         }
-        operations.addAll(inventories)
+        operations.addAll(inventories.map { it.toAccepted() })
         return if (inventories.isEmpty()) arrayListOf() else arrayListOf()
     }
 

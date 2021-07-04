@@ -25,6 +25,50 @@ data class OfficeInventory(
     var isAccepted: Int = 0
 ): OperationAct(), Parcelable
 
+fun OfficeInventory.toAccepted(): OfficeAcceptedInventory {
+    return OfficeAcceptedInventory(
+        id = this.id,
+        date = this.date,
+        name = this.name,
+        humidity = this.humidity,
+        latitude = this.latitude,
+        longitude = this.longitude,
+        materialUUID = this.materialUUID,
+        senderUUID = this.senderUUID,
+        quantity = this.quantity,
+        type = this.type,
+        acceptedAt = this.acceptedAt,
+        sendAt = this.sendAt,
+        syncRequire = this.syncRequire,
+        isSend = this.isSend,
+        senderName = this.senderName,
+        comment = this.comment,
+        isAccepted = this.isAccepted
+    )
+}
+
+fun OfficeInventory.toSent(): OfficeSentInventory {
+    return OfficeSentInventory(
+        id = this.id,
+        date = this.date,
+        name = this.name,
+        humidity = this.humidity,
+        latitude = this.latitude,
+        longitude = this.longitude,
+        materialUUID = this.materialUUID,
+        senderUUID = this.senderUUID,
+        quantity = this.quantity,
+        type = this.type,
+        acceptedAt = this.acceptedAt,
+        sendAt = this.sendAt,
+        syncRequire = this.syncRequire,
+        isSend = this.isSend,
+        senderName = this.senderName,
+        comment = this.comment,
+        isAccepted = this.isAccepted
+    )
+}
+
 @Parcelize
 data class OfficeAcceptedInventory(
     var id: Int = 0,

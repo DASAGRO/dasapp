@@ -128,6 +128,7 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
         mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showAwait(getString(R.string.common_banner_await), "Формирование ТМЦ в ожидании!")
+                requireRouter().exit()
             }
         })
     }

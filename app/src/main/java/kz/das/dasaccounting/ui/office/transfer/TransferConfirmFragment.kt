@@ -70,6 +70,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
         mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showAwait(getString(R.string.common_banner_await), "Передача ТМЦ в ожидании!")
+                requireRouter().exit()
             }
         })
     }
