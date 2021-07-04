@@ -12,14 +12,11 @@ import androidx.lifecycle.Observer
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.ui.dialogs.NotificationDialog
+import kz.das.dasaccounting.core.ui.extensions.*
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
-import kz.das.dasaccounting.core.ui.extensions.collapse
-import kz.das.dasaccounting.core.ui.extensions.expand
-import kz.das.dasaccounting.core.ui.extensions.zoomAnimation
 import kz.das.dasaccounting.databinding.FragmentNavBarParentBinding
 import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.container.ContainerFragment
-import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
 import kz.das.dasaccounting.ui.utils.CameraUtils
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
@@ -48,6 +45,13 @@ open class CoreBottomNavigationFragment: BaseFragment<CoreBottomNavigationVM, Fr
         mViewBinding.bslOperations.isVisible = mViewModel.isOnWork()
 
         mViewBinding.bottomNavigationView.background = null
+
+        mViewBinding.ivRefresh.setOnClickListener {
+            mViewBinding.ivRefresh.animateRepeatPulse()
+            mViewBinding.ivRefresh.rotateAnimation()
+            mViewModel.setRefresh(true)
+        }
+
         mViewBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home-> {

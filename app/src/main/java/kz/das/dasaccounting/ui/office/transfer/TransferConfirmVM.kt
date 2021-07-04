@@ -33,9 +33,18 @@ class TransferConfirmVM: BaseVM() {
     fun setOfficeInventory(officeInventory: OfficeInventory?) {
         this.officeInventory = officeInventory
         this.officeInventory?.senderUUID = userRepository.getUser()?.userId
-        this.officeInventory?.senderName = userRepository.getUser()?.lastName +
-                userRepository.getUser()?.firstName?.toCharArray()?.let { it[0] } + "." +
-                userRepository.getUser()?.middleName?.toCharArray()?.let { it[0] }
+        this.officeInventory?.senderName = userRepository.getUser()?.lastName + " " +
+                if (userRepository.getUser()?.firstName?.length ?: 0 > 0) {
+                    userRepository.getUser()?.firstName?.toCharArray()?.let { it[0] }?.plus(".")
+                } else {
+                    " "
+                }  +
+
+                if (userRepository.getUser()?.middleName?.length ?: 0 > 0) {
+                    userRepository.getUser()?.middleName?.toCharArray()?.let { it[0] }?.plus(".")
+                } else {
+                    " "
+                }
         officeInventoryLV.postValue(officeInventory)
     }
 

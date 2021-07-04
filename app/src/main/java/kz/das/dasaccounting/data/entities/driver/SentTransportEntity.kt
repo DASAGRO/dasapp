@@ -11,11 +11,11 @@ import java.io.Serializable
 data class SentTransportEntity(
     val comment: String,
     val dateTime: String,
-    @PrimaryKey(autoGenerate = true)
     val id: Int,
     val latitude: Int,
     val longitude: Int,
     val model: String,
+    @PrimaryKey
     val molUuid: String,
     val stateNumber: String,
     val tsType: String,

@@ -86,8 +86,14 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
         })
 
+        mViewModel.isRefresh().observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                officeBottomNavigationVM.refresh()
+            }
+        })
+
         mViewModel.isStartWorkWithQrLV().observe(viewLifecycleOwner, Observer {
-            if (it) {
+            if (it == true) {
                 val qrFragment = QrFragment.Builder()
                     .setCancelable(true)
                     .setOnScanCallback(object : QrFragment.OnScanCallback {
@@ -100,11 +106,12 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
         })
 
-        officeBottomNavigationVM.getOperations().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.putItems(getOperations(it))
-        })
+//        officeBottomNavigationVM.getOperations().observe(viewLifecycleOwner, Observer {
+//            operationsAdapter?.putItems(getOperations(it))
+//        })
 
         officeBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
+            operationsAdapter?.clearOperationItems(it)
             operationsAdapter?.putItems(getOperations(it))
         })
 

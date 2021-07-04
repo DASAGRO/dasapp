@@ -29,10 +29,19 @@ interface OfficeInventoryDao {
     fun removeAll()
 
     @Query("SELECT * FROM materials WHERE materialUUID = :materialUUID")
-    fun getItem(materialUUID: String): LiveData<OfficeInventoryEntity>
+    fun getItemAsLive(materialUUID: String): LiveData<OfficeInventoryEntity>
+
+    @Query("SELECT * FROM materials WHERE materialUUID = :materialUUID")
+    fun getItem(materialUUID: String): OfficeInventoryEntity?
 
     @Delete
-    fun removeItem(warehouse: OfficeInventoryEntity)
+    fun removeItem(officeInventoryEntity: OfficeInventoryEntity)
+
+    @Transaction
+    fun reloadItem(itemDao: OfficeInventoryEntity) {
+        removeItem(itemDao)
+        insert(itemDao)
+    }
 
     @Transaction
     fun reload(itemDaos: List<OfficeInventoryEntity>) {

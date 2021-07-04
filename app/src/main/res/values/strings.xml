@@ -111,7 +111,7 @@
     <string name="naming">Наименование</string>
     <string name="total_quantity">Всего:%s</string>
     <string name="inventory_total_quantity">Количество:</string>
-    <string name="inventory_sender_name">От кого:%s</string>
+    <string name="inventory_sender_name">От кого: %s</string>
     <string name="transfer_inventory">Передать ТМЦ</string>
     <string name="gather_tranfer_title">Заполните данные по урожаю</string>
     <string name="transfer_confirm_title">Вы подтверждаете данную передачу?</string>

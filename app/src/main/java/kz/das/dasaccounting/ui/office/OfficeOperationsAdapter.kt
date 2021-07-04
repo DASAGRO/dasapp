@@ -64,6 +64,13 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
         notifyDataSetChanged()
     }
 
+    fun clearOperationItems(items: List<OfficeInventory>) {
+        if (this.operations.containsAll(items)) {
+            this.operations.removeAll(items)
+        }
+        notifyDataSetChanged()
+    }
+
     fun clearItems(items: List<OperationAct>) {
         if (this.operations.containsAll(items)) {
             this.operations.removeAll(items)

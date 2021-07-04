@@ -144,10 +144,16 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         })
 
         driverBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
+            operationsAdapter?.removeHead(OperationHead(getString(R.string.inventory_title)))
             if (it.isNotEmpty()) {
-                operationsAdapter?.removeHead(OperationHead(getString(R.string.inventory_title)))
-                operationsAdapter?.clearItems(it)
+                operationsAdapter?.clearOperations(it)
                 operationsAdapter?.addItems(getOperations(it))
+            }
+        })
+
+        mViewModel.isRefresh().observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                driverBottomNavigationVM.refresh()
             }
         })
 
@@ -155,7 +161,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             operationsAdapter?.removeHead(OperationHead(getString(R.string.transport_tracktor_title)))
             operationsAdapter?.removeHead(OperationHead(getString(R.string.transport_trailer_title)))
             if (it.isNotEmpty()) {
-                operationsAdapter?.clearItems(it)
+                operationsAdapter?.clearTransports(it)
                 operationsAdapter?.addItems(getTransports(it))
             }
         })

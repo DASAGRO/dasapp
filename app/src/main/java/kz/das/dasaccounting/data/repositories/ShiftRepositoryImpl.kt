@@ -1,18 +1,16 @@
 package kz.das.dasaccounting.data.repositories
 
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
-import kz.das.dasaccounting.core.extensions.OnResponseCallback
 import kz.das.dasaccounting.core.extensions.unwrap
 import kz.das.dasaccounting.data.entities.common.ShiftRequest
+import kz.das.dasaccounting.data.entities.common.toDomain
 import kz.das.dasaccounting.data.source.network.ShiftApi
 import kz.das.dasaccounting.data.source.preferences.UserPreferences
 import kz.das.dasaccounting.domain.ShiftRepository
 import kz.das.dasaccounting.domain.UserRepository
+import kz.das.dasaccounting.domain.common.ShiftState
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 class ShiftRepositoryImpl : ShiftRepository, KoinComponent {
 
@@ -64,6 +62,10 @@ class ShiftRepositoryImpl : ShiftRepository, KoinComponent {
     override suspend fun saveAwaitFinishShift(lat: Double, long: Double, time: Long) {
         userRepository.stopWork()
         userPreferences.setAwaitFinishWork(ShiftRequest(lat, long, time))
+    }
+
+    override suspend fun isShiftState(): ShiftState {
+        return shiftApi.isOnSession().unwrap { it.toDomain() }
     }
 
     override suspend fun initAwaitShiftStarted() {

@@ -1,6 +1,7 @@
 package kz.das.dasaccounting.domain
 
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
+import kz.das.dasaccounting.domain.common.ShiftState
 
 interface ShiftRepository {
 
@@ -19,6 +20,8 @@ interface ShiftRepository {
                                      scannedQR: String? = null)
 
     suspend fun saveAwaitFinishShift(lat: Double, long: Double, time: Long)
+
+    suspend fun isShiftState(): ShiftState
 
     suspend fun initAwaitShiftStarted()
 

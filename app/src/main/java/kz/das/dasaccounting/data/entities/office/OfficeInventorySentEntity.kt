@@ -7,14 +7,14 @@ import java.io.Serializable
 
 @Entity(tableName = "materials_sent")
 data class OfficeInventorySentEntity(
-    @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val date: Long = 0,
     val name: String? = null,
     val humidity: Int? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val materialUUID: String? = null,
+    @PrimaryKey
+    val materialUUID: String,
     val senderUUID: String? = null,
     val quantity: Int? = null,
     val type: String? = null,

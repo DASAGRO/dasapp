@@ -77,6 +77,21 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
         notifyDataSetChanged()
     }
 
+    fun clearOperations(items: List<OfficeInventory>) {
+        if (!items.isNullOrEmpty() && this.operations.containsAll(items)) {
+                this.operations.removeAll(items)
+        }
+        notifyDataSetChanged()
+    }
+
+    fun clearTransports(items: List<TransportInventory>) {
+        if (!items.isNullOrEmpty() && this.operations.containsAll(items)) {
+            this.operations.removeAll(items)
+        }
+        notifyDataSetChanged()
+    }
+
+
     fun removeItem(item: OperationAct) {
         this.operations.remove(item)
         notifyDataSetChanged()

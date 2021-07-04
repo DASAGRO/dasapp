@@ -1,6 +1,5 @@
 package kz.das.dasaccounting.core.ui.extensions
 
-import android.R.attr.bitmap
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.content.Context
@@ -15,6 +14,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
 import android.view.animation.Transformation
 import android.widget.ImageView
 import android.widget.TextView
@@ -87,6 +87,33 @@ fun View.animateInfinitePulse(
         scaleDown.start()
     }
 }
+
+fun View.animateRepeatPulse(
+    scaleXRatio: Float = 0.6f,
+    scaleYRatio: Float = 0.6f,
+    pulseAnimDuration: Long = 400,
+    repeatCount: Int = 5
+) {
+    if (this.visibility == View.VISIBLE) {
+        val scaleDown: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
+            this, PropertyValuesHolder.ofFloat("scaleX", scaleXRatio),
+            PropertyValuesHolder.ofFloat("scaleY", scaleYRatio)
+        )
+        scaleDown.duration = pulseAnimDuration
+        scaleDown.repeatCount = repeatCount
+        scaleDown.repeatMode = ObjectAnimator.REVERSE
+        scaleDown.start()
+    }
+}
+
+fun View.rotateAnimation(
+    pulseAnimDuration: Long = 3000,
+    repeatCount: Int = 6) {
+    this@rotateAnimation.animate().rotationBy(360f).setDuration(pulseAnimDuration)
+        .setInterpolator(LinearInterpolator())
+        .start()
+}
+
 
 @BindingAdapter("app:animZoomDuration", "app:animZoomVisible")
 fun View.zoomAnimation(duration: Long, visible: Boolean) {

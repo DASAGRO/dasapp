@@ -77,6 +77,16 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
         comment: String,
         fileIds: ArrayList<Int>
     ) {
+        val dataItem = dasAppDatabase.officeInventoryDao().getItem(officeInventory.materialUUID)
+        if (dataItem != null) {
+            officeInventory.quantity?.let {
+                dasAppDatabase.officeInventoryDao().removeItem(dataItem)
+                dataItem.quantity = dataItem.quantity ?: 0 + it
+                dasAppDatabase.officeInventoryDao().insert(dataItem)
+            }
+        } else {
+            dasAppDatabase.officeInventoryDao().insert(officeInventory.toEntity())
+        }
         dasAppDatabase.officeInventoryAcceptedDao()
             .insert(officeInventory.toAcceptedEntity().apply {
                 this.syncRequire == 1
@@ -84,6 +94,14 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
     }
 
     override suspend fun saveAwaitSentInventory(officeInventory: OfficeInventory) {
+        val dataItem = dasAppDatabase.officeInventoryDao().getItem(officeInventory.materialUUID)
+        dataItem?.let {
+            officeInventory.quantity?.let {
+                dasAppDatabase.officeInventoryDao().removeItem(dataItem)
+                dataItem.quantity = dataItem.quantity ?: 0 - it
+                dasAppDatabase.officeInventoryDao().insert(dataItem)
+            }
+        }
         dasAppDatabase.officeInventorySentDao().insert(officeInventory.toSentEntity().apply {
             this.syncRequire == 1
         })

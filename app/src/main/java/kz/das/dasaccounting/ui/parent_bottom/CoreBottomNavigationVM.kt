@@ -32,11 +32,20 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
     private val isWorkStoppedLV = MutableLiveData<Boolean>()
     fun isWorkStopped(): LiveData<Boolean> = isWorkStoppedLV
 
+    private val isRefreshLV = MutableLiveData<Boolean>()
+    fun isRefresh(): LiveData<Boolean> = isRefreshLV
+
+    fun setRefresh(refresh: Boolean) = isRefreshLV.postValue(refresh)
+
     fun setControlOptionsState(isShow: Boolean) = isControlOptionsShowLV.postValue(isShow)
 
     fun getUserRole() = userRepository.getUserRole()
 
     fun isOnWork() = userRepository.userOnWork()
+
+    init {
+        checkShiftState()
+    }
 
     fun startWork() {
         viewModelScope.launch {
@@ -122,6 +131,19 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
                 }
             } finally {
                 hideLoading()
+            }
+        }
+    }
+
+    private fun checkShiftState() {
+        viewModelScope.launch {
+            try {
+                val state = shiftRepository.isShiftState().opened
+                if (state) userRepository.startWork() else userRepository.stopWork()
+                setControlOptionsState(state)
+                isWorkStartedLV.postValue(state)
+            } catch (t: Throwable) {
+
             }
         }
     }
