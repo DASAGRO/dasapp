@@ -98,7 +98,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
         })
 
-        operationsAdapter?.addItems(arrayListOf(
+        operationsAdapter?.putItems(arrayListOf(
             OperationHead(getString(R.string.available_operations)),
             OperationInit("Принять ТЦ/ПО/ТМЦ", R.drawable.ic_add)))
 
@@ -150,8 +150,8 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         driverBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.removeHead(OperationHead(getString(R.string.inventory_title)))
             if (it.isNotEmpty()) {
-                operationsAdapter?.clearOperations(it)
-                operationsAdapter?.addItems(getOperations(it))
+                operationsAdapter?.clearOperations()
+                operationsAdapter?.putItems(getOperations(it))
             }
         })
 
@@ -165,40 +165,48 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             operationsAdapter?.removeHead(OperationHead(getString(R.string.transport_tracktor_title)))
             operationsAdapter?.removeHead(OperationHead(getString(R.string.transport_trailer_title)))
             if (it.isNotEmpty()) {
-                operationsAdapter?.clearTransports(it)
-                operationsAdapter?.addItems(getTransports(it))
+                operationsAdapter?.clearTransports()
+                operationsAdapter?.putItems(getTransports(it))
             }
         })
 
         driverBottomNavigationVM.getAwaitAcceptedOperationsLocally().observe(viewLifecycleOwner, Observer {
+            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_operations)))
             if (it.isNotEmpty()) {
                 operationsAdapter?.clearItems(it)
-                operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_operations)))
-                operationsAdapter?.addItems(getAwaitAcceptedOperations(it))
+                operationsAdapter?.putItems(getAwaitAcceptedOperations(it))
+            } else {
+                operationsAdapter?.clearAwaitAcceptedOperations()
             }
         })
 
         driverBottomNavigationVM.getAwaitSentOperationsLocally().observe(viewLifecycleOwner, Observer {
+            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_operations)))
             if (it.isNotEmpty()) {
                 operationsAdapter?.clearItems(it)
-                operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_operations)))
-                operationsAdapter?.addItems(getAwaitSentOperations(it))
+                operationsAdapter?.putItems(getAwaitSentOperations(it))
+            } else {
+                operationsAdapter?.clearAwaitSentOperations()
             }
         })
 
         driverBottomNavigationVM.getAwaitAcceptedTransportsLocally().observe(viewLifecycleOwner, Observer {
+            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_transports)))
             if (it.isNotEmpty()) {
                 operationsAdapter?.clearItems(it)
-                operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_transports)))
-                operationsAdapter?.addItems(getAwaitAcceptedTransports(it))
+                operationsAdapter?.putItems(getAwaitAcceptedTransports(it))
+            } else {
+                operationsAdapter?.clearAwaitAcceptedTransports()
             }
         })
 
         driverBottomNavigationVM.getAwaitSentTransportsLocally().observe(viewLifecycleOwner, Observer {
+            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_transports)))
             if (it.isNotEmpty()) {
                 operationsAdapter?.clearItems(it)
-                operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_transports)))
-                operationsAdapter?.addItems(getAwaitSentTransports(it))
+                operationsAdapter?.putItems(getAwaitSentTransports(it))
+            } else {
+                operationsAdapter?.clearAwaitSentTransports()
             }
         })
 
@@ -309,14 +317,14 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         val operations: ArrayList<OperationAct> = arrayListOf()
         operations.add(OperationHead(getString(R.string.await_sent_operations)))
         operations.addAll(inventories.map { it.toSent() })
-        return if (inventories.isEmpty()) arrayListOf() else arrayListOf()
+        return if (inventories.isEmpty()) arrayListOf() else operations
     }
 
     private fun getAwaitAcceptedOperations(inventories: List<OfficeInventory>): ArrayList<OperationAct> {
         val operations: ArrayList<OperationAct> = arrayListOf()
         operations.add(OperationHead(getString(R.string.await_accepted_operations)))
         operations.addAll(inventories.map { it.toAccepted() })
-        return if (inventories.isEmpty()) arrayListOf()else arrayListOf()
+        return if (inventories.isEmpty()) arrayListOf() else operations
     }
 
     private fun getAwaitSentTransports(inventories: List<TransportInventory>): ArrayList<OperationAct> {
@@ -326,7 +334,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             it.isPending
         }
         operations.addAll(inventories.map { it.toSent() })
-        return if (inventories.isEmpty()) arrayListOf() else arrayListOf()
+        return if (inventories.isEmpty()) arrayListOf() else operations
     }
 
     private fun getAwaitAcceptedTransports(inventories: List<TransportInventory>): ArrayList<OperationAct> {
@@ -336,7 +344,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             it.isPending
         }
         operations.addAll(inventories.map { it.toAccepted() })
-        return if (inventories.isEmpty()) arrayListOf() else arrayListOf()
+        return if (inventories.isEmpty()) arrayListOf() else operations
     }
 
 }

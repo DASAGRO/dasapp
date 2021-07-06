@@ -13,7 +13,7 @@ import kz.das.dasaccounting.core.ui.extensions.returnSpanned
 import kz.das.dasaccounting.core.ui.extensions.zoomAnimation
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentOnboardingBinding
-import kz.das.dasaccounting.ui.office.OfficeBottomNavigationFragment
+import kz.das.dasaccounting.ui.Screens
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class OnBoardingFragment: BaseFragment<OnBoardingVM, FragmentOnboardingBinding>() {
@@ -57,7 +57,10 @@ class OnBoardingFragment: BaseFragment<OnBoardingVM, FragmentOnboardingBinding>(
             }
 
             btnStart.setOnClickListener {
-                requireRouter().newRootChain(OfficeBottomNavigationFragment.getScreen())
+                mViewModel.getUserRole()?.let { userRole ->
+                    Screens.getRoleScreens(userRole)?.let { screen -> requireRouter().newRootScreen(screen) }
+                }
+                //requireRouter().newRootChain(OfficeBottomNavigationFragment.getScreen())
             }
         }
 

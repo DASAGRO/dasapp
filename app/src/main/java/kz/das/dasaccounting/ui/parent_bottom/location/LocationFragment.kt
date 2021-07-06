@@ -170,7 +170,9 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
 
                 // Pass the new location to the Maps SDK's LocationComponent
                 if (fragment.mapboxMap != null && result.lastLocation != null) {
-                    fragment.mapboxMap?.locationComponent?.forceLocationUpdate(result.lastLocation)
+                    try {
+                        fragment.mapboxMap?.locationComponent?.forceLocationUpdate(result.lastLocation)
+                    } catch (e: Exception) { }
                 }
             }
         }

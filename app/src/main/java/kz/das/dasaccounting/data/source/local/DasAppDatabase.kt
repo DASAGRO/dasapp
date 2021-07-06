@@ -14,7 +14,7 @@ import kz.das.dasaccounting.data.source.local.daos.*
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
 import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 
-@Database(version = 3, exportSchema = false, entities = [OfficeInventoryEntity::class,
+@Database(version = 4, exportSchema = false, entities = [OfficeInventoryEntity::class,
     OfficeInventoryAcceptedEntity::class,
     OfficeInventorySentEntity::class,
     WarehouseInventoryEntity::class,

@@ -81,6 +81,10 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
         notifyDataSetChanged()
     }
 
+    fun clearOperationItems() {
+        this.operations.removeAll { it is OfficeInventory }
+    }
+
     fun clearItems(items: List<OperationAct>) {
         if (this.operations.containsAll(items)) {
             this.operations.removeAll(items)
@@ -96,6 +100,13 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
     fun addItems(items: ArrayList<OperationAct>) {
         this.operations.addAll(items)
         notifyDataSetChanged()
+    }
+
+    fun clearAwaitAcceptedOperations() {
+        this.operations.removeAll { it is OfficeAcceptedInventory }
+    }
+    fun clearAwaitSentOperations() {
+        this.operations.removeAll { it is OfficeSentInventory }
     }
 
     override fun getItemViewType(position: Int): Int {

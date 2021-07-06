@@ -75,16 +75,20 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
                 holder.bind(item as OfficeAcceptedInventory, position)
             is OperationOfficeSentAwaitInventoryViewHolder ->
                 holder.bind(item as OfficeSentInventory, position)
+            is OperationDriverSentInventoryViewHolder ->
+                holder.bind(item as TransportSentInventory, position)
+            is OperationDriverAcceptedInventoryViewHolder ->
+                holder.bind(item as TransportAcceptedInventory, position)
         }
     }
 
     override fun getItemCount() = operations.size
 
-    fun putItems(items: ArrayList<OperationAct>) {
-        this.operations.clear()
-        this.operations.addAll(items)
-        notifyDataSetChanged()
-    }
+//    fun putItems(items: ArrayList<OperationAct>) {
+//        this.operations.clear()
+//        this.operations.addAll(items)
+//        notifyDataSetChanged()
+//    }
 
     fun clearItems(items: List<OperationAct>) {
         if (this.operations.containsAll(items)) {
@@ -100,6 +104,11 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
         notifyDataSetChanged()
     }
 
+    fun clearOperations() {
+        this.operations.removeAll { it is OfficeInventory }
+        notifyDataSetChanged()
+    }
+
     fun clearTransports(items: List<TransportInventory>) {
         if (!items.isNullOrEmpty() && this.operations.containsAll(items)) {
             this.operations.removeAll(items)
@@ -107,6 +116,10 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
         notifyDataSetChanged()
     }
 
+    fun clearTransports() {
+        this.operations.removeAll { it is TransportInventory }
+        notifyDataSetChanged()
+    }
 
     fun removeItem(item: OperationAct) {
         this.operations.remove(item)
@@ -124,7 +137,30 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
         notifyDataSetChanged()
     }
 
-    fun addItems(items: ArrayList<OperationAct>) {
+    fun putItems(items: ArrayList<OperationAct>) {
+        this.operations.removeAll(items)
+        this.operations.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun clearAwaitAcceptedOperations() {
+        this.operations.removeAll { it is OfficeAcceptedInventory }
+    }
+    fun clearAwaitSentOperations() {
+        this.operations.removeAll { it is OfficeSentInventory }
+    }
+    fun clearAwaitAcceptedTransports() {
+        this.operations.removeAll { it is TransportAcceptedInventory }
+    }
+    fun clearAwaitSentTransports() {
+        this.operations.removeAll { it is TransportAcceptedInventory }
+    }
+
+    fun addOperations(items: ArrayList<OperationAct>) {
+        if (this.operations.containsAll(items)) {
+            this.operations.removeAll(items)
+            this.operations.removeAll { (it is OfficeInventory) }
+        }
         this.operations.addAll(items)
         notifyDataSetChanged()
     }

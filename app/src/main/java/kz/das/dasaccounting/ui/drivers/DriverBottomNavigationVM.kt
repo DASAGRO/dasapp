@@ -11,7 +11,6 @@ import org.koin.core.inject
 
 class DriverBottomNavigationVM: BaseVM() {
 
-    private val userRepository: UserRepository by inject()
     private val shiftRepository: ShiftRepository by inject()
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
     private val driverInventoryRepository: DriverInventoryRepository by inject()
@@ -24,6 +23,7 @@ class DriverBottomNavigationVM: BaseVM() {
     fun refresh() {
         retrieve()
         retrieveTransports()
+        initAwaitRequests()
     }
 
     fun initAwaitRequests() {
