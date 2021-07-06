@@ -89,6 +89,7 @@
     <string name="log_out_desc">Вы уверены что хотите выйти из приложения, все данные будут стерты и не будут доступны для восстановления!</string>
     <string name="accept_inventory">Принять ТМЦ</string>
     <string name="available_operations">Доступные операции</string>
+    <string name="await_fligel_data">В ожидании передачи данных Флигеля</string>
     <string name="await_sent_operations">В ожидании передачи ТМЦ</string>
     <string name="await_accepted_operations">В ожидании принятии ТМЦ</string>
     <string name="await_sent_transports">В ожидании передачи ТC</string>
@@ -116,6 +117,7 @@
     <string name="gather_tranfer_title">Заполните данные по урожаю</string>
     <string name="transfer_confirm_title">Вы подтверждаете данную передачу?</string>
     <string name="inventory_accept_confirmed_title">Подтвердите передачу</string>
+    <string name="inventory_fligel_data_correct_title">Вы уверены что данные верны?</string>
     <string name="search">Искать</string>
     <string name="warehouse_title">Название Склада</string>
     <string name="action_list">Список ТС,ПО,ТМЦ</string>

@@ -6,7 +6,6 @@ import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.DriverInventoryRepository
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.ShiftRepository
-import kz.das.dasaccounting.domain.UserRepository
 import org.koin.core.inject
 
 class DriverBottomNavigationVM: BaseVM() {
@@ -82,4 +81,6 @@ class DriverBottomNavigationVM: BaseVM() {
     fun getAwaitSentTransportsLocally() = driverInventoryRepository.getDriverSentMaterialsLocally()
 
     fun getAwaitAcceptedTransportsLocally() = driverInventoryRepository.getDriverAcceptedMaterialsLocally()
+
+    fun getAwaitFligelDataLocally() = driverInventoryRepository.getAwaitFligelDataLocally()
 }

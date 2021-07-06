@@ -139,9 +139,14 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
         viewModelScope.launch {
             try {
                 val state = shiftRepository.isShiftState().opened
-                if (state) userRepository.startWork() else userRepository.stopWork()
+                if (state) {
+                    isWorkStartedLV.postValue(true)
+                    userRepository.startWork()
+                } else {
+                    isWorkStoppedLV.postValue(true)
+                    userRepository.stopWork()
+                }
                 setControlOptionsState(state)
-                isWorkStartedLV.postValue(state)
             } catch (t: Throwable) {
 
             }

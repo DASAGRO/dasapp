@@ -136,6 +136,10 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
         return dasAppDatabase.driverAcceptedInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
     }
 
+    override fun getAwaitFligelDataLocally(): LiveData<List<FligelProduct>> {
+        return dasAppDatabase.driverFligelDataDao().allAsLiveData.map { it -> it.map { it.toFligelProduct() } }
+    }
+
     override fun initDeleteData() {
         dasAppDatabase.driverInventoryDao().removeAll()
         dasAppDatabase.driverFligelDataDao().removeAll()

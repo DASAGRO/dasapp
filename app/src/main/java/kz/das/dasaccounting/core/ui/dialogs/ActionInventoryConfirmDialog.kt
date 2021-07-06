@@ -5,6 +5,7 @@ import android.view.View
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.databinding.DialogInventoryConfirmActionBinding
 
+private const val MAIN_TITLE = "main_title"
 private const val TITLE = "title"
 private const val DESCRIPTION = "description"
 private const val IMAGE_RES_ID = "image"
@@ -45,6 +46,12 @@ class ActionInventoryConfirmDialog : BaseDialogFragment<DialogInventoryConfirmAc
             mListener?.onCancelClicked()
             dismiss()
         }
+
+        when (val mainTitle = arguments?.getCharSequence(MAIN_TITLE)) {
+            null -> mViewBinding.tvTitle.text = getString(R.string.dialog_inventory_confirm_title)
+            else -> mViewBinding.tvInventoryTitle.text = mainTitle
+        }
+
         when (val title = arguments?.getCharSequence(TITLE)) {
             null -> mViewBinding.tvInventoryTitle.visibility = View.GONE
             else -> mViewBinding.tvInventoryTitle.text = title
@@ -59,10 +66,16 @@ class ActionInventoryConfirmDialog : BaseDialogFragment<DialogInventoryConfirmAc
 
     class Builder {
         private var title: CharSequence? = null
+        private var mainTitle: CharSequence? = null
         private var description: CharSequence? = null
         private var clickListener: OnConfirmCallback? = null
         private var imageResId: Int? = null
         private var cancelable: Boolean = true
+
+        fun setMainTitle(mainTitle: CharSequence): Builder {
+            this.mainTitle = mainTitle
+            return this
+        }
 
         fun setTitle(title: CharSequence): Builder {
             this.title = title
@@ -93,6 +106,7 @@ class ActionInventoryConfirmDialog : BaseDialogFragment<DialogInventoryConfirmAc
             val dialog = ActionInventoryConfirmDialog()
             val args = Bundle()
             args.putCharSequence(TITLE, title)
+            args.putCharSequence(MAIN_TITLE, mainTitle)
             args.putCharSequence(DESCRIPTION, description)
             args.putBoolean(CANCELABLE, cancelable)
             args.putInt(IMAGE_RES_ID, imageResId ?: R.drawable.ic_inventory)

@@ -19,10 +19,7 @@ import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.action.OperationHead
 import kz.das.dasaccounting.domain.data.action.OperationInit
-import kz.das.dasaccounting.domain.data.drivers.FligelProduct
-import kz.das.dasaccounting.domain.data.drivers.TransportInventory
-import kz.das.dasaccounting.domain.data.drivers.toAccepted
-import kz.das.dasaccounting.domain.data.drivers.toSent
+import kz.das.dasaccounting.domain.data.drivers.*
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import kz.das.dasaccounting.domain.data.office.toAccepted
 import kz.das.dasaccounting.domain.data.office.toSent
@@ -210,6 +207,16 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
         })
 
+        driverBottomNavigationVM.getAwaitFligelDataLocally().observe(viewLifecycleOwner, Observer {
+            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_fligel_data)))
+            if (it.isNotEmpty()) {
+                operationsAdapter?.clearItems(it)
+                operationsAdapter?.putItems(getAwaitFligelData(it))
+            } else {
+                operationsAdapter?.clearAwaitFligelData()
+            }
+        })
+
     }
 
     private fun initAcceptOperation() {
@@ -344,6 +351,13 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             it.isPending
         }
         operations.addAll(inventories.map { it.toAccepted() })
+        return if (inventories.isEmpty()) arrayListOf() else operations
+    }
+
+    private fun getAwaitFligelData(inventories: List<FligelProduct>): ArrayList<OperationAct> {
+        val operations: ArrayList<OperationAct> = arrayListOf()
+        operations.add(OperationHead(getString(R.string.await_fligel_data)))
+        operations.addAll(inventories.map { it.toAwait() })
         return if (inventories.isEmpty()) arrayListOf() else operations
     }
 
