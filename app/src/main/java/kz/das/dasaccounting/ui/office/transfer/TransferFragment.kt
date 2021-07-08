@@ -2,8 +2,6 @@ package kz.das.dasaccounting.ui.office.transfer
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import co.infinum.goldfinger.Goldfinger
-import co.infinum.goldfinger.Goldfinger.PromptParams
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.dialogs.BaseBottomSheetFragment
 import kz.das.dasaccounting.core.ui.extensions.verifyToInit
