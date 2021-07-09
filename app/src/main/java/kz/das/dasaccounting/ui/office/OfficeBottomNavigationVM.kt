@@ -20,6 +20,7 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
     // TODO refresh add from ui
     fun refresh() {
         retrieve()
+        initAwaitRequests()
     }
 
     fun initAwaitRequests() {

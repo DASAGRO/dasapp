@@ -13,9 +13,7 @@ import kz.das.dasaccounting.databinding.ItemSegmentBinding
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.action.OperationHead
 import kz.das.dasaccounting.domain.data.action.OperationInit
-import kz.das.dasaccounting.domain.data.drivers.TransportAcceptedInventory
-import kz.das.dasaccounting.domain.data.drivers.TransportInventory
-import kz.das.dasaccounting.domain.data.drivers.TransportSentInventory
+import kz.das.dasaccounting.domain.data.drivers.*
 import kz.das.dasaccounting.domain.data.office.OfficeAcceptedInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import kz.das.dasaccounting.domain.data.office.OfficeSentInventory
@@ -33,6 +31,7 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
         private const val OPERATION_ACCEPTED_AWAIT = 5
         private const val OPERATION_DRIVER_SENT_AWAIT = 6
         private const val OPERATION_DRIVER_ACCEPTED_AWAIT = 7
+        private const val OPERATION_DRIVER_FLIGEL_DATA_AWAIT = 8
     }
 
     interface OnOfficeOperationsAdapterEvent {
@@ -56,6 +55,7 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
             OPERATION_SENT_AWAIT to OperationOfficeSentAwaitInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)),
             OPERATION_DRIVER_SENT_AWAIT to OperationDriverSentInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)),
             OPERATION_DRIVER_ACCEPTED_AWAIT to OperationDriverAcceptedInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)),
+            OPERATION_DRIVER_FLIGEL_DATA_AWAIT to OperationDriverFligelDataAwaitInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)),
             OPERATION_DRIVER to OperationDriverInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)))[viewType]
             ?: OperationOfficeInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false))
     }
@@ -75,16 +75,22 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
                 holder.bind(item as OfficeAcceptedInventory, position)
             is OperationOfficeSentAwaitInventoryViewHolder ->
                 holder.bind(item as OfficeSentInventory, position)
+            is OperationDriverSentInventoryViewHolder ->
+                holder.bind(item as TransportSentInventory, position)
+            is OperationDriverAcceptedInventoryViewHolder ->
+                holder.bind(item as TransportAcceptedInventory, position)
+            is OperationDriverFligelDataAwaitInventoryViewHolder ->
+                holder.bind(item as FligelAwaitProduct, position)
         }
     }
 
     override fun getItemCount() = operations.size
 
-    fun putItems(items: ArrayList<OperationAct>) {
-        this.operations.clear()
-        this.operations.addAll(items)
-        notifyDataSetChanged()
-    }
+//    fun putItems(items: ArrayList<OperationAct>) {
+//        this.operations.clear()
+//        this.operations.addAll(items)
+//        notifyDataSetChanged()
+//    }
 
     fun clearItems(items: List<OperationAct>) {
         if (this.operations.containsAll(items)) {
@@ -100,6 +106,11 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
         notifyDataSetChanged()
     }
 
+    fun clearOperations() {
+        this.operations.removeAll { it is OfficeInventory }
+        notifyDataSetChanged()
+    }
+
     fun clearTransports(items: List<TransportInventory>) {
         if (!items.isNullOrEmpty() && this.operations.containsAll(items)) {
             this.operations.removeAll(items)
@@ -107,6 +118,10 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
         notifyDataSetChanged()
     }
 
+    fun clearTransports() {
+        this.operations.removeAll { it is TransportInventory }
+        notifyDataSetChanged()
+    }
 
     fun removeItem(item: OperationAct) {
         this.operations.remove(item)
@@ -124,7 +139,37 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
         notifyDataSetChanged()
     }
 
-    fun addItems(items: ArrayList<OperationAct>) {
+    fun putItems(items: ArrayList<OperationAct>) {
+        this.operations.removeAll(items)
+        this.operations.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun clearAwaitAcceptedOperations() {
+        this.operations.removeAll { it is OfficeAcceptedInventory }
+    }
+
+    fun clearAwaitSentOperations() {
+        this.operations.removeAll { it is OfficeSentInventory }
+    }
+
+    fun clearAwaitAcceptedTransports() {
+        this.operations.removeAll { it is TransportAcceptedInventory }
+    }
+
+    fun clearAwaitSentTransports() {
+        this.operations.removeAll { it is TransportAcceptedInventory }
+    }
+
+    fun clearAwaitFligelData() {
+        this.operations.removeAll { it is FligelAwaitProduct }
+    }
+
+    fun addOperations(items: ArrayList<OperationAct>) {
+        if (this.operations.containsAll(items)) {
+            this.operations.removeAll(items)
+            this.operations.removeAll { (it is OfficeInventory) }
+        }
         this.operations.addAll(items)
         notifyDataSetChanged()
     }
@@ -138,10 +183,10 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
             is OfficeSentInventory -> OPERATION_SENT_AWAIT
             is TransportAcceptedInventory -> OPERATION_DRIVER_ACCEPTED_AWAIT
             is TransportSentInventory -> OPERATION_DRIVER_SENT_AWAIT
+            is FligelAwaitProduct -> OPERATION_DRIVER_FLIGEL_DATA_AWAIT
             else -> OPERATION_DRIVER
         }
     }
-
 
     inner class OperationHeadViewHolder internal constructor(private val itemBinding: ItemSegmentBinding) : BaseViewHolder<OperationHead>(itemBinding) {
         override fun bind(item: OperationHead, position: Int) {
@@ -232,4 +277,15 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
             }
         }
     }
+
+    inner class OperationDriverFligelDataAwaitInventoryViewHolder internal constructor(private val itemBinding: ItemOperationActionBinding) : BaseViewHolder<FligelAwaitProduct>(itemBinding) {
+        override fun bind(item: FligelAwaitProduct, position: Int) {
+            this.itemBinding.run {
+                this.tvName.text = item.name
+                this.ivAction.setImageResource(R.drawable.ic_inventory)
+                this.ivStatePending.isVisible = true
+            }
+        }
+    }
+
 }

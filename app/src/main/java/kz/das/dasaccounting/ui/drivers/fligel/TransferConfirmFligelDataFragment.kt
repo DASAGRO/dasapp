@@ -148,6 +148,7 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
     private fun showConfirmDialog() {
         val actionDialog = ActionInventoryConfirmDialog.Builder()
             .setCancelable(true)
+            .setMainTitle(getString(R.string.inventory_fligel_data_correct_title))
             .setTitle(mViewBinding.tvInventoryTitle.text)
             .setDescription(mViewBinding.tvInventoryDesc.text)
             .setImage(R.drawable.ic_trailer)

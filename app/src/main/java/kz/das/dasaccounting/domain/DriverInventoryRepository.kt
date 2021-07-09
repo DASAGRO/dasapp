@@ -32,5 +32,7 @@ interface DriverInventoryRepository {
 
     fun getDriverAcceptedMaterialsLocally(): LiveData<List<TransportInventory>>
 
+    fun getAwaitFligelDataLocally(): LiveData<List<FligelProduct>>
+
     fun initDeleteData()
 }

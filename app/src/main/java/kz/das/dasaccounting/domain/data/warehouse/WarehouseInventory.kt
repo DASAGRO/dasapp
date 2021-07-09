@@ -1,11 +1,6 @@
-package kz.das.dasaccounting.data.entities.warehouse
+package kz.das.dasaccounting.domain.data.warehouse
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import java.io.Serializable
-
-@Entity(tableName = "warehouses")
-data class WarehouseInventoryEntity(
+data class WarehouseInventory(
     val id: Int = 0,
     val date: Long = 0,
     var name: String? = null,
@@ -13,7 +8,6 @@ data class WarehouseInventoryEntity(
     val longitude: Double? = null,
     val senderUUID: String? = null,
     val sealNumber: String? = null,
-    @PrimaryKey
     val storeUUID: String? = null,
     val type: String? = null
-): Serializable
+)

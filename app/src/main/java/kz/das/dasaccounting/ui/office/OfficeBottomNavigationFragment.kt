@@ -113,20 +113,28 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
 //        })
 
         officeBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.clearOperationItems(it)
+            operationsAdapter?.clearOperationItems()
             operationsAdapter?.putItems(getOperations(it))
         })
 
         officeBottomNavigationVM.getAwaitAcceptedOperationsLocally().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.clearItems(it)
             operationsAdapter?.removeItem(OperationHead(getString(R.string.await_accepted_operations)))
-            operationsAdapter?.addItems(getAwaitAcceptedOperations(it))
+            if (it.isNotEmpty()) {
+                operationsAdapter?.clearItems(it)
+                operationsAdapter?.addItems(getAwaitAcceptedOperations(it))
+            } else {
+                operationsAdapter?.clearAwaitAcceptedOperations()
+            }
         })
 
         officeBottomNavigationVM.getAwaitSentOperationsLocally().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.clearItems(it)
             operationsAdapter?.removeItem(OperationHead(getString(R.string.await_sent_operations)))
-            operationsAdapter?.addItems(getAwaitSentOperations(it))
+            if (it.isNotEmpty()) {
+                operationsAdapter?.clearItems(it)
+                operationsAdapter?.addItems(getAwaitSentOperations(it))
+            } else {
+                operationsAdapter?.clearAwaitSentOperations()
+            }
         })
 
     }
