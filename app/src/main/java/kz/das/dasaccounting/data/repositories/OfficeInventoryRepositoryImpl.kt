@@ -82,7 +82,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
         if (dataItem != null) {
             officeInventory.quantity?.let { cnt ->
                 dasAppDatabase.officeInventoryDao().removeItem(dataItem)
-                dataItem.quantity?.let { it + cnt }
+                dataItem.quantity = dataItem.quantity!! + cnt
                 dasAppDatabase.officeInventoryDao().insert(dataItem)
             }
         } else {

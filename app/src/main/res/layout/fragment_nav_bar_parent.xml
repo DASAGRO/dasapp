@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:clipToPadding="false"
-            android:nestedScrollingEnabled="false"
+            android:nestedScrollingEnabled="true"
             android:orientation="vertical"
             android:paddingStart="12dp"
             android:paddingTop="12dp"
