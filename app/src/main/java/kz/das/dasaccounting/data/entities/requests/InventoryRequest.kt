@@ -1,24 +1,6 @@
-package kz.das.dasaccounting.data.entities.common
+package kz.das.dasaccounting.data.entities.requests
 
 import java.io.Serializable
-
-open class InventoryRequest(
-    val id: Int = 0,
-    val date: Long = 0,
-    val name: String? = null,
-    val humidity: Int? = null,
-    val latitude: Double? = null,
-    val longitude: Double? = null,
-    val materialUUID: String? = null,
-    val senderUUID: String? = null,
-    val quantity: Int? = null,
-    val type: String? = null,
-    val senderName: String? = null,
-    var fileIds: Array<Any>?,
-    var comment: String?
-) : Serializable
-
-
 
 open class InventorySendRequest(
     val id: Int = 0,
@@ -28,6 +10,7 @@ open class InventorySendRequest(
     val latitude: Double? = null,
     val longitude: Double? = null,
     val materialUUID: String? = null,
+    var requestId: String? = null,
     val quantity: Int? = null,
     val type: String? = null,
     val senderName: String? = null
@@ -43,6 +26,7 @@ open class InventoryGetRequest(
     val longitude: Double? = null,
     val materialUUID: String? = null,
     val senderUUID: String? = null,
+    var requestId: String? = null,
     val quantity: Int? = null,
     val type: String? = null,
     val senderName: String? = null,

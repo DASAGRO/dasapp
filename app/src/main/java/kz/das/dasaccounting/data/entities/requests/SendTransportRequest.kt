@@ -11,6 +11,7 @@ data class SendTransportRequest(
     val name: String?,
     val sendAt: Long?,
     val senderName: String?,
+    var requestId: String? = null,
     val syncRequire: Int?,
     val tcUUID: String?,
     val type: String?

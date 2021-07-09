@@ -5,8 +5,8 @@ import androidx.lifecycle.map
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.core.extensions.OnResponseCallback
 import kz.das.dasaccounting.core.extensions.unwrap
-import kz.das.dasaccounting.data.entities.common.InventoryGetRequest
-import kz.das.dasaccounting.data.entities.common.InventorySendRequest
+import kz.das.dasaccounting.data.entities.requests.InventoryGetRequest
+import kz.das.dasaccounting.data.entities.requests.InventorySendRequest
 import kz.das.dasaccounting.data.entities.office.*
 import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.OfficeOperationApi
@@ -26,8 +26,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                 override fun onSuccess(entity: List<OfficeInventoryEntity>) {
                     dasAppDatabase.officeInventoryDao().reload(entity)
                 }
-
-                override fun onFail(exception: Exception) {} // No handle require
+                override fun onFail(exception: Exception) { } // No handle require
             })
     }
 
@@ -46,6 +45,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                 longitude = officeInventory.longitude,
                 materialUUID = officeInventory.materialUUID,
                 senderUUID = officeInventory.senderUUID,
+                requestId = officeInventory.requestId,
                 quantity = officeInventory.quantity,
                 type = officeInventory.type,
                 senderName = officeInventory.senderName,
@@ -65,6 +65,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                 latitude = officeInventory.latitude,
                 longitude = officeInventory.longitude,
                 materialUUID = officeInventory.materialUUID,
+                requestId = officeInventory.requestId,
                 quantity = officeInventory.quantity,
                 type = officeInventory.type,
                 senderName = officeInventory.senderName
@@ -123,6 +124,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                     longitude = it.longitude,
                     materialUUID = it.materialUUID,
                     senderUUID = it.senderUUID,
+                    requestId = it.requestId,
                     quantity = it.quantity,
                     type = it.type,
                     senderName = it.senderName,
@@ -151,6 +153,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                     latitude = it.latitude,
                     longitude = it.longitude,
                     materialUUID = it.materialUUID,
+                    requestId = it.requestId,
                     quantity = it.quantity,
                     type = it.type,
                     senderName = it.senderName

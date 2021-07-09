@@ -1,8 +1,8 @@
 package kz.das.dasaccounting.data.source.network
 
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
-import kz.das.dasaccounting.data.entities.common.InventoryGetRequest
-import kz.das.dasaccounting.data.entities.common.InventorySendRequest
+import kz.das.dasaccounting.data.entities.requests.InventoryGetRequest
+import kz.das.dasaccounting.data.entities.requests.InventorySendRequest
 import kz.das.dasaccounting.data.entities.office.OfficeInventoryEntity
 import retrofit2.Response
 import retrofit2.http.Body

@@ -15,6 +15,7 @@ data class AcceptedTransportEntity (
     val model: String,
     @PrimaryKey
     val molUuid: String,
+    var requestId: String? = null,
     val stateNumber: String,
     val tsType: String,
     val uuid: String,
@@ -30,6 +31,7 @@ fun AcceptedTransportEntity.toDomain(): TransportInventory {
         longitude = this.longitude,
         model = this.model,
         molUuid = this.molUuid,
+        requestId = this.requestId,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         uuid = this.uuid,
@@ -46,6 +48,7 @@ fun TransportInventory.toAcceptedEntity(): AcceptedTransportEntity {
         longitude = this.longitude,
         model = this.model,
         molUuid = this.molUuid,
+        requestId = this.requestId,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         uuid = this.uuid,

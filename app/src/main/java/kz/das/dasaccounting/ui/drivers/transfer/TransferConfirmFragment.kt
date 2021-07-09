@@ -9,6 +9,7 @@ import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
 import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.data.entities.driver.toEntity
+import kz.das.dasaccounting.data.entities.office.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.common.TransportType
@@ -16,6 +17,7 @@ import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.ui.drivers.getTsTypeImage
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
 
 class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGenerateBinding>() {
 
@@ -56,7 +58,9 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                     (getString(R.string.gov_number) +
                             " " + it.stateNumber)
                 try {
-                    mViewBinding.ivQr.setImageBitmap(DriverInventoryTypeConvertor().transportTransportToString(it.toEntity()).generateQR())
+                    val inventory = it.toEntity()
+                    inventory.requestId = UUID.randomUUID().toString()
+                    mViewBinding.ivQr.setImageBitmap(DriverInventoryTypeConvertor().transportTransportToString(inventory).generateQR())
                 } catch (e: Exception) { }
             }
         })

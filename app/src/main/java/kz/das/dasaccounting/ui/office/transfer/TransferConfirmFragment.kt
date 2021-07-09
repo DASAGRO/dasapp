@@ -13,6 +13,7 @@ import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEnti
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
 
 class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGenerateBinding>() {
 
@@ -54,8 +55,9 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                             " " + it.quantity +
                             " " + it.type)
                 try {
-
-                    mViewBinding.ivQr.setImageBitmap(OfficeInventoryEntityTypeConvertor().officeInventoryToString(it.toEntity()).generateQR())
+                    val inventory = it.toEntity()
+                    inventory.requestId = UUID.randomUUID().toString()
+                    mViewBinding.ivQr.setImageBitmap(OfficeInventoryEntityTypeConvertor().officeInventoryToString(inventory).generateQR())
                 } catch (e: Exception) { }
             }
         })

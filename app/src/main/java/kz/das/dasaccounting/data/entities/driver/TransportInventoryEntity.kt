@@ -14,6 +14,7 @@ data class TransportInventoryEntity(
     val model: String,
     @PrimaryKey
     val molUuid: String,
+    var requestId: String? = null,
     val stateNumber: String,
     val tsType: String,
     val senderName: String?,

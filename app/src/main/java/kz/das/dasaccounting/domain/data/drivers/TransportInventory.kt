@@ -2,6 +2,7 @@ package kz.das.dasaccounting.domain.data.drivers
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.domain.data.action.OperationAct
 
 @Parcelize
@@ -13,6 +14,7 @@ data class TransportInventory(
     var longitude: Int,
     var model: String,
     var molUuid: String,
+    var requestId: String? = null,
     var stateNumber: String,
     var tsType: String,
     var senderName: String?,
@@ -29,6 +31,7 @@ fun TransportInventory.toSent(): TransportSentInventory {
         longitude = this.longitude,
         model = this.model,
         molUuid = this.molUuid,
+        requestId = this.requestId,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
@@ -46,6 +49,7 @@ fun TransportInventory.toAccepted(): TransportAcceptedInventory {
         longitude = this.longitude,
         model = this.model,
         molUuid = this.molUuid,
+        requestId = this.requestId,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
@@ -63,6 +67,7 @@ data class TransportSentInventory(
     var longitude: Int,
     var model: String,
     var molUuid: String,
+    var requestId: String? = null,
     var stateNumber: String,
     var tsType: String,
     var senderName: String?,
@@ -79,6 +84,7 @@ data class TransportAcceptedInventory(
     var longitude: Int,
     var model: String,
     var molUuid: String,
+    var requestId: String? = null,
     var stateNumber: String,
     var tsType: String,
     var senderName: String?,

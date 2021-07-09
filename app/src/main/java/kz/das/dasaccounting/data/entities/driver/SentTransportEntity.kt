@@ -2,6 +2,7 @@ package kz.das.dasaccounting.data.entities.driver
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.entities.requests.GetTransportRequest
 import kz.das.dasaccounting.data.entities.requests.SendTransportRequest
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
@@ -17,6 +18,7 @@ data class SentTransportEntity(
     val model: String,
     @PrimaryKey
     val molUuid: String,
+    var requestId: String? = null,
     val stateNumber: String,
     val tsType: String,
     val uuid: String,
@@ -32,6 +34,7 @@ fun SentTransportEntity.toDomain(): TransportInventory {
         longitude = this.longitude,
         model = this.model,
         molUuid = this.molUuid,
+        requestId = this.requestId,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
@@ -48,6 +51,7 @@ fun TransportInventory.toSentEntity(): SentTransportEntity {
         longitude = this.longitude,
         model = this.model,
         molUuid = this.molUuid,
+        requestId = this.requestId,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
