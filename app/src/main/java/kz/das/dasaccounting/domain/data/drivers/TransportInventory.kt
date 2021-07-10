@@ -2,7 +2,6 @@ package kz.das.dasaccounting.domain.data.drivers
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.domain.data.action.OperationAct
 
 @Parcelize

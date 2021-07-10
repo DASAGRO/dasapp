@@ -10,7 +10,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
-interface WarehouseOperationApi {
+interface OperationHistoryApi {
 
     @GET("/api/storages")
     suspend fun getWarehouses(): Response<List<WarehouseInventoryEntity>>
