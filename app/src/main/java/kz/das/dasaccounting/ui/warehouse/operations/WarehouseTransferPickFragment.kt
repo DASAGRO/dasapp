@@ -11,7 +11,7 @@ class WarehouseTransferPickFragment: BaseFragment<WarehouseTransferPickVM, Fragm
 
     companion object {
         private const val WAREHOUSE_INVENTORY = "WAREHOUSE"
-        fun getScreen(warehouseInventory: WarehouseInventory) = DasAppScreen(WarehouseTransferPickFragment()).apply {
+        fun getScreen(warehouseInventory: WarehouseInventory?) = DasAppScreen(WarehouseTransferPickFragment()).apply {
             val args = Bundle()
             args.putParcelable(WAREHOUSE_INVENTORY, warehouseInventory)
             this.setArgs(args)

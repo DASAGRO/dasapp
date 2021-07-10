@@ -2,6 +2,7 @@ package kz.das.dasaccounting.ui.warehouse.operations
 
 import android.os.Bundle
 import kz.das.dasaccounting.core.navigation.DasAppScreen
+import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentWarehouseActionsBinding
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
@@ -11,7 +12,7 @@ class WarehouseDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouse
 
     companion object {
         private const val WAREHOUSE_INVENTORY = "WAREHOUSE"
-        fun getScreen(warehouseInventory: WarehouseInventory) = DasAppScreen(WarehouseDetailFragment()).apply {
+        fun getScreen(warehouseInventory: WarehouseInventory?) = DasAppScreen(WarehouseDetailFragment()).apply {
             val args = Bundle()
             args.putParcelable(WAREHOUSE_INVENTORY, warehouseInventory)
             this.setArgs(args)
@@ -27,13 +28,13 @@ class WarehouseDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouse
         mViewBinding.apply {
             tvWarehouseActionsTitle.text = mViewModel.getWarehouseInventory()?.name
             llActionList.setOnClickListener {
-
-            }
-            llActionSwap.setOnClickListener {
-
+                requireRouter().navigateTo(WarehouseOperationsFragment.getScreen(mViewModel.getWarehouseInventory()))
             }
             llActionAdd.setOnClickListener {
                 showQrDialog()
+            }
+            llActionSwap.setOnClickListener {
+                requireRouter().navigateTo(WarehouseOptionsFragment.getScreen(getWarehouse()))
             }
         }
     }

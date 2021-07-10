@@ -11,7 +11,7 @@ class WarehouseOperationsFragment: BaseFragment<WarehouseOperationsVM, FragmentS
 
     companion object {
         private const val WAREHOUSE_INVENTORY = "WAREHOUSE"
-        fun getScreen(warehouseInventory: WarehouseInventory) = DasAppScreen(WarehouseOperationsFragment()).apply {
+        fun getScreen(warehouseInventory: WarehouseInventory?) = DasAppScreen(WarehouseOperationsFragment()).apply {
             val args = Bundle()
             args.putParcelable(WAREHOUSE_INVENTORY, warehouseInventory)
             this.setArgs(args)
