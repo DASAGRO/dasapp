@@ -44,8 +44,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title">
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_warehouse_naming"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="@string/warehouse_naming"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:padding="6dp"
+            android:textSize="14sp" />
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ll_warehouse_naming"
+            android:id="@+id/ll_seal_number"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.DAS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,31 +67,7 @@
             app:layout_constraintTop_toTopOf="@+id/loginTopGuidline">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_warehouse_naming"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:hint="@string/warehouse_naming"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:padding="6dp"
-                android:textSize="14sp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ll_quantity"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.DAS"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/loginTopGuidline">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_quantity"
+                android:id="@+id/edt_seal_number"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint="@string/enter_seal_number"

@@ -2,6 +2,7 @@ package kz.das.dasaccounting.ui.warehouse.operations
 
 import android.os.Bundle
 import kz.das.dasaccounting.core.navigation.DasAppScreen
+import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentWarehouseTranferActionBinding
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
@@ -23,6 +24,17 @@ class WarehouseOptionsFragment: BaseFragment<WarehouseOptionsVM, FragmentWarehou
     override fun getViewBinding() = FragmentWarehouseTranferActionBinding.inflate(layoutInflater)
 
     override fun setupUI() {
+        mViewModel.setWarehouseInventory(getWarehouse())
+
+        mViewBinding.apply {
+            tvWarehouseActionsTitle.text = getWarehouse()?.name
+            llTransferWarehouse.setOnClickListener {
+                requireRouter().navigateTo(WarehouseTransferPickFragment.getScreen(getWarehouse()))
+            }
+            llTransferInventory.setOnClickListener {
+                requireRouter().navigateTo(WarehouseOperationsFragment.getScreen(getWarehouse()))
+            }
+        }
 
     }
 

@@ -11,7 +11,8 @@ data class WarehouseInventory(
     val latitude: Double? = null,
     val longitude: Double? = null,
     val senderUUID: String? = null,
-    val sealNumber: String? = null,
+    var sealNumber: String? = null,
+    var senderName: String? = null,
     val storeUUID: String,
     val type: String? = null
 ): Parcelable
