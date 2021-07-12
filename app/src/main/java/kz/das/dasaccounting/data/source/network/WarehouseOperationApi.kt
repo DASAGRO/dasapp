@@ -9,6 +9,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface WarehouseOperationApi {
 
@@ -16,13 +17,13 @@ interface WarehouseOperationApi {
     suspend fun getWarehouses(): Response<List<WarehouseInventoryEntity>>
 
     @GET("/api/storages/tmc")
-    suspend fun getWarehousesOfficeInventories(): Response<List<OfficeInventoryEntity>>
+    suspend fun getWarehousesOfficeInventories(@Query("storageUUID") storageUUID: String): Response<List<OfficeInventoryEntity>>
 
     @GET("/api/storages/ts")
-    suspend fun getWarehousesTransportInventories(): Response<List<TransportInventoryEntity>>
+    suspend fun getWarehousesTransportInventories(@Query("storageUUID") storageUUID: String): Response<List<TransportInventoryEntity>>
 
     @GET("/api/storages/po")
-    suspend fun getWarehousesTransportAccessoriesInventories(): Response<List<TransportInventoryEntity>>
+    suspend fun getWarehousesTransportAccessoriesInventories(@Query("storageUUID") storageUUID: String): Response<List<TransportInventoryEntity>>
 
 
 

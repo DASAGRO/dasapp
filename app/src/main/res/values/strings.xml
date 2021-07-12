@@ -139,6 +139,7 @@
     <string name="password_change">Изменение пароля</string>
     <string name="password_changed_successfully">Пароль успешно обновлен!</string>
     <string name="inventory_title">ТМЦ</string>
+    <string name="warehouse_title_head">Склад</string>
     <string name="transport_tracktor_title">ТС</string>
     <string name="transport_trailer_title">ПО</string>
     <string name="quantity_compare_error">Количество не должно превышать общего количество!</string>

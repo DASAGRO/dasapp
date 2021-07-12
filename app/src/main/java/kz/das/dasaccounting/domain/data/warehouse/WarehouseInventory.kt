@@ -2,6 +2,7 @@ package kz.das.dasaccounting.domain.data.warehouse
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import kz.das.dasaccounting.domain.data.action.OperationAct
 
 @Parcelize
 data class WarehouseInventory(
@@ -15,4 +16,4 @@ data class WarehouseInventory(
     var senderName: String? = null,
     val storeUUID: String,
     val type: String? = null
-): Parcelable
+): OperationAct(), Parcelable
