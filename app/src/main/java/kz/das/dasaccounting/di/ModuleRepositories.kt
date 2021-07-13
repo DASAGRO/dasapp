@@ -9,5 +9,6 @@ internal fun getRepositoriesModule() = module {
     single<UserRepository> { UserRepositoryImpl() }
     single<ShiftRepository> { ShiftRepositoryImpl() }
     single<OfficeInventoryRepository> { OfficeInventoryRepositoryImpl() }
-    single<DriverInventoryRepository> {DriverInventoryRepositoryImpl() }
+    single<DriverInventoryRepository> { DriverInventoryRepositoryImpl() }
+    single<WarehouseInventoryRepository> { WarehouseInventoryRepositoryImpl() }
 }

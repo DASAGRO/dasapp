@@ -46,6 +46,7 @@ class DasApplication: Application(), LifecycleObserver {
                 getApiModule(),
                 getRepositoriesModule(),
                 getConfigViewModels(),
+                getWarehouseViewModels(),
                 getAuthViewModels(),
                 getMainViewModels(),
                 getOfficeViewModels(),

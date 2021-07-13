@@ -25,6 +25,7 @@ import kz.das.dasaccounting.ui.office.accept.AcceptInventoryInfoFragment
 import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationFragment
 import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
 import kz.das.dasaccounting.ui.utils.CameraUtils
+import kz.das.dasaccounting.ui.warehouse.operations.WarehouseDetailFragment
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import kotlin.collections.ArrayList
@@ -46,7 +47,6 @@ class WarehouseBottomNavigationFragment: CoreBottomNavigationFragment() {
     }
 
     private fun initView() {
-
         mViewBinding.fabQr.setOnClickListener {
             if (!CameraUtils.isPermissionGranted(requireContext())) {
                 requestCameraPermissionsLaunch.launch(Manifest.permission.CAMERA)
@@ -66,7 +66,7 @@ class WarehouseBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
 
             override fun onInventoryTransfer(warehouseInventory: WarehouseInventory) {
-                requireRouter().navigateTo(kz.das.dasaccounting.ui.warehouse.accept.AcceptInventoryInfoFragment.getScreen(warehouseInventory))
+                requireRouter().navigateTo(WarehouseDetailFragment.getScreen(warehouseInventory))
             }
 
         })
@@ -75,11 +75,6 @@ class WarehouseBottomNavigationFragment: CoreBottomNavigationFragment() {
             OperationHead(getString(R.string.available_operations)),
             OperationInit("Принять склад", R.drawable.ic_add)))
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        warehouseBottomNavigationVM.refresh()
     }
 
     override fun observeLiveData() {
@@ -92,7 +87,7 @@ class WarehouseBottomNavigationFragment: CoreBottomNavigationFragment() {
         })
 
         warehouseBottomNavigationVM.getWarehouses().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.removeHead(OperationHead(getString(R.string.inventory_title)))
+            operationsAdapter?.removeHead(OperationHead(getString(R.string.warehouse_title_head)))
             if (it.isNotEmpty()) {
                 operationsAdapter?.clearOperations()
                 operationsAdapter?.putItems(getOperations(it))
@@ -104,8 +99,6 @@ class WarehouseBottomNavigationFragment: CoreBottomNavigationFragment() {
                 warehouseBottomNavigationVM.refresh()
             }
         })
-
-
     }
 
     private fun initAcceptOperation() {

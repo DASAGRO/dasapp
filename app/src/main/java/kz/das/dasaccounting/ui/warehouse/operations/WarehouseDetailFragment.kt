@@ -1,11 +1,23 @@
 package kz.das.dasaccounting.ui.warehouse.operations
 
 import android.os.Bundle
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kz.das.dasaccounting.R
+import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
+import kz.das.dasaccounting.data.entities.driver.toDomain
+import kz.das.dasaccounting.data.entities.office.toDomain
+import kz.das.dasaccounting.data.entities.warehouse.toDomain
+import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
+import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
+import kz.das.dasaccounting.data.source.local.typeconvertors.WarehouseInventoryTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentWarehouseActionsBinding
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
+import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
+import kz.das.dasaccounting.ui.warehouse.accept.AcceptInventoryInfoFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class WarehouseDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouseActionsBinding>() {
@@ -26,6 +38,7 @@ class WarehouseDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouse
     override fun setupUI() {
         mViewModel.setWarehouseInventory(getWarehouse())
         mViewBinding.apply {
+            toolbar.setNavigationOnClickListener { requireRouter().exit() }
             tvWarehouseActionsTitle.text = mViewModel.getWarehouseInventory()?.name
             llActionList.setOnClickListener {
                 requireRouter().navigateTo(WarehouseOperationsFragment.getScreen(mViewModel.getWarehouseInventory()))
@@ -40,11 +53,41 @@ class WarehouseDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouse
     }
 
     private fun showQrDialog() {
-
-    }
-
-    private fun handleResult() {
-
+        val qrFragment = QrFragment.Builder()
+            .setCancelable(true)
+            .setOnScanCallback(object : QrFragment.OnScanCallback {
+                override fun onScan(qrScan: String) {
+                    delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
+                        if (qrScan.contains("sealNumber") || qrScan.contains("storeUUID")) {
+                            try {
+                                WarehouseInventoryTypeConvertor().stringToWarehouseInventory(qrScan)?.toDomain()?.let {
+                                    requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(it))
+                                }
+                            } catch (e: Exception) {
+                                showError(getString(R.string.common_error), getString(R.string.common_error_scan))
+                            }
+                        } else if (qrScan.contains("model") || qrScan.contains("stateNumber")) {
+                            try {
+                                DriverInventoryTypeConvertor().stringToTransportInventory(qrScan)?.toDomain()?.let {
+                                    requireRouter().navigateTo(kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoFragment.getScreen(it))
+                                }
+                            } catch (e: Exception) {
+                                showError(getString(R.string.common_error), getString(R.string.common_error_scan))
+                            }
+                        } else {
+                            try {
+                                OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
+                                    requireRouter().navigateTo(kz.das.dasaccounting.ui.office.accept.AcceptInventoryInfoFragment.getScreen(it))
+                                }
+                            } catch (e: Exception) {
+                                showError(getString(R.string.common_error), getString(R.string.common_error_scan))
+                            }
+                        }
+                    }
+                }
+            })
+            .build()
+        qrFragment.show(childFragmentManager, "QrAcceptFragment")
     }
 
     private fun getWarehouse(): WarehouseInventory? {

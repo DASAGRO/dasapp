@@ -11,4 +11,5 @@ internal fun getApiModule() = module {
     single { get<Retrofit>().create(FileApi::class.java) }
     single { get<Retrofit>().create(OfficeOperationApi::class.java) }
     single { get<Retrofit>().create(DriverOperationApi::class.java) }
+    single { get<Retrofit>().create(WarehouseOperationApi::class.java) }
 }

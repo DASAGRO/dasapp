@@ -1,6 +1,8 @@
 package kz.das.dasaccounting.data.repositories
 
 import kz.das.dasaccounting.core.extensions.unwrap
+import kz.das.dasaccounting.data.entities.driver.toDomain
+import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.entities.requests.GetStoreRequest
 import kz.das.dasaccounting.data.entities.requests.SendStoreRequest
 import kz.das.dasaccounting.data.entities.warehouse.toDomain
@@ -19,19 +21,19 @@ class WarehouseInventoryRepositoryImpl: WarehouseInventoryRepository, KoinCompon
     private val userRepository: UserRepository by inject()
 
     override suspend fun getWarehouseInventories(): List<WarehouseInventory> {
-        return warehouseOperationApi.getWarehouses().unwrap { it -> it.map { it.toDomain() } }
+        return warehouseOperationApi.getWarehouses().unwrap { list -> list.map { it.toDomain() } }
     }
 
     override suspend fun getWarehouseOfficeInventories(uuid: String): List<OfficeInventory> {
-        TODO("Not yet implemented")
+        return warehouseOperationApi.getWarehousesOfficeInventories(uuid).unwrap { list -> list.map { it.toDomain() } }
     }
 
     override suspend fun getWarehouseTransportInventories(uuid: String): List<TransportInventory> {
-        TODO("Not yet implemented")
+        return warehouseOperationApi.getWarehousesTransportInventories(uuid).unwrap { list -> list.map { it.toDomain() } }
     }
 
     override suspend fun getWarehouseTransportAccessoryInventories(uuid: String): List<TransportInventory> {
-        TODO("Not yet implemented")
+        return warehouseOperationApi.getWarehousesTransportAccessoriesInventories(uuid).unwrap { list -> list.map { it.toDomain() } }
     }
 
     override suspend fun acceptInventory(

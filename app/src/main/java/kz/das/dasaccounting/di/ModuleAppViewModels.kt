@@ -11,7 +11,6 @@ import kz.das.dasaccounting.ui.auth.onboarding.OnBoardingVM
 import kz.das.dasaccounting.ui.auth.password_reset.PassResetVM
 import kz.das.dasaccounting.ui.auth.password_reset.PhonePassResetVM
 import kz.das.dasaccounting.ui.drivers.DriverBottomNavigationVM
-import kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoFragment
 import kz.das.dasaccounting.ui.guards.GuardBottomNavigationVM
 import kz.das.dasaccounting.ui.office.OfficeBottomNavigationVM
 import kz.das.dasaccounting.ui.office.accept.AcceptConfirmationVM
@@ -27,6 +26,11 @@ import kz.das.dasaccounting.ui.parent_bottom.profile.ProfileVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset.ProfilePassResetConfirmVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset.ProfilePassResetVM
 import kz.das.dasaccounting.ui.warehouse.WarehouseBottomNavigationVM
+import kz.das.dasaccounting.ui.warehouse.operations.WarehouseDetailVM
+import kz.das.dasaccounting.ui.warehouse.operations.WarehouseOperationsVM
+import kz.das.dasaccounting.ui.warehouse.operations.WarehouseOptionsVM
+import kz.das.dasaccounting.ui.warehouse.operations.WarehouseTransferPickVM
+import kz.das.dasaccounting.ui.warehouse.transfer.TransferAdditionalVM
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -66,6 +70,18 @@ internal fun getDriverViewModels() = module {
     viewModel { kz.das.dasaccounting.ui.drivers.fligel.TransferConfirmFligelDataVM() }
     viewModel { kz.das.dasaccounting.ui.drivers.fligel.TransferFligelDataInputVM() }
     viewModel { kz.das.dasaccounting.ui.drivers.fligel.TransferFligeDataFormalizeVM() }
+}
+
+internal fun getWarehouseViewModels() = module {
+    viewModel { kz.das.dasaccounting.ui.warehouse.accept.AcceptConfirmationVM() }
+    viewModel { kz.das.dasaccounting.ui.warehouse.accept.AcceptInventoryInfoVM() }
+    viewModel { WarehouseDetailVM() }
+    viewModel { WarehouseOperationsVM() }
+    viewModel { WarehouseOptionsVM() }
+    viewModel { WarehouseTransferPickVM() }
+    viewModel { TransferAdditionalVM() }
+    viewModel { kz.das.dasaccounting.ui.warehouse.transfer.TransferConfirmVM() }
+    viewModel { kz.das.dasaccounting.ui.warehouse.transfer.TransferFormalizeVM() }
 }
 
 internal fun getProfileViewModels() = module {

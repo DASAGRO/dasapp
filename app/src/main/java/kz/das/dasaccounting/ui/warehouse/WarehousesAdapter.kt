@@ -3,6 +3,7 @@ package kz.das.dasaccounting.ui.warehouse
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.recyclerview.BaseViewHolder
@@ -122,6 +123,7 @@ class WarehousesAdapter(val context: Context, private var operations: ArrayList<
             this.itemBinding.run {
                 this.tvName.text = item.name
                 this.ivAction.setImageResource(R.drawable.ic_warehouse)
+                this.ivStatePending.isVisible = false
                 this.llAction.setOnClickListener {
                     warehouseOperationsAdapterEvent?.onInventoryTransfer(item)
                 }
