@@ -13,11 +13,11 @@ data class AcceptedTransportEntity (
     val latitude: Int,
     val longitude: Int,
     val model: String,
-    @PrimaryKey
-    val molUuid: String,
+    val molUuid: String?,
     var requestId: String? = null,
     val stateNumber: String,
     val tsType: String,
+    @PrimaryKey
     val uuid: String,
     val senderName: String?
     ): Serializable
