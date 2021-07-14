@@ -29,9 +29,6 @@ class AcceptConfirmationVM : BaseVM(), KoinComponent {
     private val isFilesUploadingLV = SingleLiveEvent<Boolean>()
     fun isFilesUploading(): LiveData<Boolean> = isFilesUploadingLV
 
-    private val isOnAwaitLV = SingleLiveEvent<Boolean>()
-    fun isOnAwait(): LiveData<Boolean> = isOnAwaitLV
-
     private val warehouseInventoryLV = SingleLiveEvent<WarehouseInventory?>()
     fun getWarehouseInventory(): LiveData<WarehouseInventory?> = warehouseInventoryLV
 

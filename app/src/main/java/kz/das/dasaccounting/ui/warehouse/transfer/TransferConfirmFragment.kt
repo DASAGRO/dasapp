@@ -12,6 +12,7 @@ import kz.das.dasaccounting.data.entities.warehouse.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.WarehouseInventoryTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
+import kz.das.dasaccounting.ui.warehouse.WarehouseBottomNavigationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.collections.ArrayList
@@ -59,7 +60,9 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                     (getString(R.string.seal_number) +
                             " " + it.sealNumber)
                 try {
-                    val inventory = it.toEntity(UUID.randomUUID().toString())
+                    val inventory = it.toEntity()
+                    inventory.requestId = UUID.randomUUID().toString()
+                    inventory.senderUUID = mViewModel.getUser()?.userId
                     mViewBinding.ivQr.setImageBitmap(WarehouseInventoryTypeConvertor().warehouseToString(inventory).generateQR())
                 } catch (e: Exception) { }
             }
@@ -68,7 +71,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
         mViewModel.isWarehouseInventorySent().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showSuccess(getString(R.string.common_banner_success), "Склад успешно передан")
-                requireRouter().exit()
+                requireRouter().newRootScreen(WarehouseBottomNavigationFragment.getScreen())
             }
         })
 

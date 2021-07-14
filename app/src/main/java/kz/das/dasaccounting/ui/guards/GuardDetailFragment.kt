@@ -57,6 +57,7 @@ class GuardDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouseActi
                 )
             }
         })
+        showTransferDialog.show(childFragmentManager, "TransferFormalizeFragment")
     }
 
     private fun getWarehouse(): WarehouseInventory? {

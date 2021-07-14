@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
+import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.WarehouseInventoryRepository
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
 import org.koin.core.inject
@@ -13,6 +14,7 @@ import org.koin.core.inject
 class TransferConfirmVM: BaseVM() {
 
     private val warehouseInventoryRepository: WarehouseInventoryRepository by inject()
+    private val userRepository: UserRepository by inject()
 
     private var warehouseInventory: WarehouseInventory? = null
     private var fileIds: ArrayList<Int>? = null
@@ -22,6 +24,8 @@ class TransferConfirmVM: BaseVM() {
     }
 
     fun getFileIds(): ArrayList<Int>? = this.fileIds
+
+    fun getUser() = userRepository.getUser()
 
     private val warehouseInventoryLV = SingleLiveEvent<WarehouseInventory?>()
     fun getWarehouseInventory(): LiveData<WarehouseInventory?> = warehouseInventoryLV

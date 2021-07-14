@@ -12,11 +12,11 @@ data class WarehouseInventoryEntity(
     var name: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val senderUUID: String? = null,
+    var senderUUID: String? = null,
     val sealNumber: String? = null,
     @PrimaryKey
     val storeUUID: String,
-    var requestUUID: String,
+    var requestId: String?,
     val type: String? = null
 ) : Serializable
 
@@ -30,12 +30,13 @@ fun WarehouseInventoryEntity.toDomain(): WarehouseInventory {
         longitude = this.longitude,
         senderUUID = this.senderUUID,
         sealNumber = this.sealNumber,
+        requestId = this.requestId,
         storeUUID = this.storeUUID,
         type = this.type
     )
 }
 
-fun WarehouseInventory.toEntity(requestUUID: String): WarehouseInventoryEntity {
+fun WarehouseInventory.toEntity(): WarehouseInventoryEntity {
     return WarehouseInventoryEntity(
         id = this.id,
         date = this.date,
@@ -44,7 +45,7 @@ fun WarehouseInventory.toEntity(requestUUID: String): WarehouseInventoryEntity {
         longitude = this.longitude,
         senderUUID = this.senderUUID,
         sealNumber = this.sealNumber,
-        requestUUID = requestUUID,
+        requestId = this.requestId,
         storeUUID = this.storeUUID,
         type = this.type
     )
