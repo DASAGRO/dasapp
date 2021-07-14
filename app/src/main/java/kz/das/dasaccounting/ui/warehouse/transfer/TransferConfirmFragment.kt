@@ -6,10 +6,15 @@ import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
+import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
+import kz.das.dasaccounting.data.entities.warehouse.toEntity
+import kz.das.dasaccounting.data.source.local.typeconvertors.WarehouseInventoryTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGenerateBinding>() {
@@ -53,6 +58,10 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                 mViewBinding.tvInventoryDesc.text =
                     (getString(R.string.seal_number) +
                             " " + it.sealNumber)
+                try {
+                    val inventory = it.toEntity(UUID.randomUUID().toString())
+                    mViewBinding.ivQr.setImageBitmap(WarehouseInventoryTypeConvertor().warehouseToString(inventory).generateQR())
+                } catch (e: Exception) { }
             }
         })
 

@@ -13,7 +13,6 @@ import kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset.ProfilePassReset
 import kz.das.dasaccounting.ui.parent_bottom.showBottomNavMenu
 import org.koin.android.viewmodel.ext.android.viewModel
 
-
 class ProfileInfoFragment: BaseFragment<ProfileInfoVM, FragmentProfileInfoBinding>() {
 
     companion object {

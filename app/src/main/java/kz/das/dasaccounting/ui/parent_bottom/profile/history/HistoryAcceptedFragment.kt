@@ -7,6 +7,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class HistoryAcceptedFragment: BaseFragment<HistoryAcceptedVM, FragmentProfileHistoryAcceptedBinding>() {
 
 
+
     override val mViewModel: HistoryAcceptedVM by viewModel()
 
     override fun getViewBinding() = FragmentProfileHistoryAcceptedBinding.inflate(layoutInflater)

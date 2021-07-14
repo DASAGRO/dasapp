@@ -31,6 +31,8 @@ class WarehouseTransferPickFragment: BaseFragment<WarehouseTransferPickVM, Fragm
     override fun setupUI() {
         mViewModel.setWarehouseInventory(getWarehouse())
 
+        mViewBinding.toolbar.setNavigationOnClickListener { requireRouter().exit() }
+
         mViewBinding.btnSecurity.setOnClickListener {
             showSecurityTransferDialog()
         }
@@ -52,6 +54,7 @@ class WarehouseTransferPickFragment: BaseFragment<WarehouseTransferPickVM, Fragm
                 )
             }
         })
+        showSecurityTransferDialog.show(childFragmentManager, "TransferAdditionalFragment")
     }
 
     private fun showWarehouseTransferDialog() {
@@ -67,6 +70,7 @@ class WarehouseTransferPickFragment: BaseFragment<WarehouseTransferPickVM, Fragm
                 )
             }
         })
+        showTransferDialog.show(childFragmentManager, "TransferFormalizeFragment")
     }
 
 

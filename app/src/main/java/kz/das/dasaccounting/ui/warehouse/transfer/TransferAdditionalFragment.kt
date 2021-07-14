@@ -1,6 +1,7 @@
 package kz.das.dasaccounting.ui.warehouse.transfer
 
 import android.os.Bundle
+import androidx.core.widget.addTextChangedListener
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
 import kz.das.dasaccounting.R
@@ -51,8 +52,19 @@ class TransferAdditionalFragment: BaseBottomSheetFragment<FragmentBottomSheetWar
         )
 
         mViewBinding.apply {
+
+            rvMedia.adapter = profileSupportAttachedMediaAdapter
+
+            ivClose.setOnClickListener {
+                dismiss()
+            }
+            edtSealNumber.addTextChangedListener {
+                btnTransfer.isEnabled = !it.isNullOrEmpty()
+            }
+            tvWarehouseNaming.text = getWarehouse()?.name
+
             btnUploadVideo.setOnClickListener {
-                TedImagePicker.with(requireActivity())
+                TedImagePicker.with(requireContext())
                     .backButton(R.drawable.ic_arrow_back)
                     .title("Выбрать видео")
                     .mediaType(MediaType.VIDEO)
@@ -68,7 +80,7 @@ class TransferAdditionalFragment: BaseBottomSheetFragment<FragmentBottomSheetWar
                     }
             }
             btnTransfer.setOnClickListener {
-                if (edtSealNumber.text.toString().length < 4 || edtSealNumber.text.isNullOrEmpty()) {
+                if (edtSealNumber.text.isNullOrEmpty()) {
                     showError(getString(R.string.common_error), "Введите номер пломбы!")
                 } else {
                     val warehouseInventory = mViewModel.getWarehouseInventory()

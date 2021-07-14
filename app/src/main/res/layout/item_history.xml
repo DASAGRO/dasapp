@@ -58,7 +58,7 @@
         android:layout_centerVertical="true"
         android:layout_margin="16dp"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_banner_reject_oval" />
+        android:src="@drawable/ic_banner_success_oval" />
 
     <View
         android:layout_width="match_parent"

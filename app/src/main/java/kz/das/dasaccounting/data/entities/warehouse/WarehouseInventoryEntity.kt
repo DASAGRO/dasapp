@@ -16,6 +16,7 @@ data class WarehouseInventoryEntity(
     val sealNumber: String? = null,
     @PrimaryKey
     val storeUUID: String,
+    var requestUUID: String,
     val type: String? = null
 ) : Serializable
 
@@ -29,6 +30,21 @@ fun WarehouseInventoryEntity.toDomain(): WarehouseInventory {
         longitude = this.longitude,
         senderUUID = this.senderUUID,
         sealNumber = this.sealNumber,
+        storeUUID = this.storeUUID,
+        type = this.type
+    )
+}
+
+fun WarehouseInventory.toEntity(requestUUID: String): WarehouseInventoryEntity {
+    return WarehouseInventoryEntity(
+        id = this.id,
+        date = this.date,
+        name = this.name,
+        latitude = this.latitude,
+        longitude = this.longitude,
+        senderUUID = this.senderUUID,
+        sealNumber = this.sealNumber,
+        requestUUID = requestUUID,
         storeUUID = this.storeUUID,
         type = this.type
     )

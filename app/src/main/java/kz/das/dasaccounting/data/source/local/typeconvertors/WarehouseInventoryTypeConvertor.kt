@@ -15,7 +15,7 @@ class WarehouseInventoryTypeConvertor {
     }
 
     @TypeConverter
-    fun officeWarehouseToString(entity: WarehouseInventoryEntity?): String {
+    fun warehouseToString(entity: WarehouseInventoryEntity?): String {
         return gson.toJson(entity)
     }
 }
