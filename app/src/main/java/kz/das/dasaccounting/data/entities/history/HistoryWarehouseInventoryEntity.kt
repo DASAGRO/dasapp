@@ -3,13 +3,14 @@ package kz.das.dasaccounting.data.entities.history
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kz.das.dasaccounting.domain.data.history.HistoryWarehouseInventory
+import java.io.Serializable
 
 @Entity(tableName = "history_warehouse_inventory")
 class HistoryWarehouseInventoryEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long? = null,
+    val id: Long = 0,
     val dateTime: String? = null,
-    val uuid: String? = null,
+    val uuid: String,
     val name: String? = null,
     val longitude: String? = null,
     val latitude: String? = null,
@@ -17,7 +18,7 @@ class HistoryWarehouseInventoryEntity(
     val fullName: String? = null,
     val molUUID: String? = null,
     val status: String? = null
-)
+): Serializable
 
 fun HistoryWarehouseInventoryEntity.toDomain(): HistoryWarehouseInventory {
     return HistoryWarehouseInventory(

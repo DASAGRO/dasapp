@@ -123,6 +123,9 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
         userPreferences.clearUser()
         driverInventoryRepository.initDeleteData()
         officeInventoryRepository.initDeleteData()
+        dasAppDatabase.historyOfficeInventoryDao().removeAll()
+        dasAppDatabase.historyTransportInventoryDao().removeAll()
+        dasAppDatabase.historyWarehouseInventoryDao().removeAll()
     }
 
 

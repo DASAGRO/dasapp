@@ -5,7 +5,11 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentProfileHistoryGivenBinding
 import kz.das.dasaccounting.domain.data.action.OperationAct
+import kz.das.dasaccounting.domain.data.drivers.toAccepted
+import kz.das.dasaccounting.domain.data.drivers.toSent
 import kz.das.dasaccounting.domain.data.history.HistoryEnum
+import kz.das.dasaccounting.domain.data.office.toAccepted
+import kz.das.dasaccounting.domain.data.office.toSent
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryGivenBinding>() {
@@ -62,6 +66,8 @@ class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryG
         mViewModel.sentTransportInventoryLocally().observe(viewLifecycleOwner, Observer {
             it?.let { list ->
                 val acceptedList: ArrayList<OperationAct> = arrayListOf()
+                val newList = list.map { officeInventory -> officeInventory.toSent() }
+                acceptedList.addAll(newList)
                 historyAdapter?.clearAwaitAcceptedOperations()
                 historyAdapter?.addAll(acceptedList)
             }
@@ -70,6 +76,8 @@ class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryG
         mViewModel.sentOfficeInventoryLocally().observe(viewLifecycleOwner, Observer {
             it?.let { list ->
                 val acceptedList: ArrayList<OperationAct> = arrayListOf()
+                val newList = list.map { transportInventory -> transportInventory.toSent() }
+                acceptedList.addAll(newList)
                 historyAdapter?.clearAwaitAcceptedTransports()
                 historyAdapter?.addAll(acceptedList)
             }

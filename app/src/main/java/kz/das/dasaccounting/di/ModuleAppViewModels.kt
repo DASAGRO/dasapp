@@ -23,6 +23,9 @@ import kz.das.dasaccounting.ui.parent_bottom.profile.history.ProfileHistoryVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.ProfileInfoVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.ProfileVM
+import kz.das.dasaccounting.ui.parent_bottom.profile.history.HistoryAcceptedVM
+import kz.das.dasaccounting.ui.parent_bottom.profile.history.HistoryDetailVM
+import kz.das.dasaccounting.ui.parent_bottom.profile.history.HistoryGivenVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset.ProfilePassResetConfirmVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset.ProfilePassResetVM
 import kz.das.dasaccounting.ui.warehouse.WarehouseBottomNavigationVM
@@ -87,6 +90,9 @@ internal fun getWarehouseViewModels() = module {
 internal fun getProfileViewModels() = module {
     viewModel { ProfileSupportVM() }
     viewModel { ProfileHistoryVM() }
+    viewModel { HistoryDetailVM() }
+    viewModel { HistoryAcceptedVM() }
+    viewModel { HistoryGivenVM() }
     viewModel { ProfilePassResetVM() }
     viewModel { ProfilePassResetConfirmVM() }
 }

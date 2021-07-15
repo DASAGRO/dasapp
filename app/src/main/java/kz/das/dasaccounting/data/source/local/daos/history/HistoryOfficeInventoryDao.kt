@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import kz.das.dasaccounting.data.entities.history.HistoryOfficeInventoryEntity
 
+@Dao
 interface HistoryOfficeInventoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -27,7 +28,7 @@ interface HistoryOfficeInventoryDao {
     @Query("DELETE FROM history_office_inventory")
     fun removeAll()
 
-    @Query("SELECT * FROM history_office_inventory WHERE uuid = :uuid")
+    @Query("SELECT * FROM history_office_inventory WHERE materialUUID = :uuid")
     fun getItem(uuid: String): LiveData<HistoryOfficeInventoryEntity>
 
     @Delete

@@ -32,8 +32,7 @@ import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEnti
     HistoryTransportInventoryEntity::class,
     HistoryWarehouseInventoryEntity::class
 ])
-@TypeConverters(OfficeInventoryEntityTypeConvertor::class, DriverInventoryTypeConvertor::class,
-    HistoryWarehouseInventoryDao::class, HistoryTransportInventoryDao::class, HistoryOfficeInventoryDao::class)
+@TypeConverters(OfficeInventoryEntityTypeConvertor::class, DriverInventoryTypeConvertor::class)
 abstract class DasAppDatabase: RoomDatabase() {
 
     abstract fun officeInventoryDao(): OfficeInventoryDao

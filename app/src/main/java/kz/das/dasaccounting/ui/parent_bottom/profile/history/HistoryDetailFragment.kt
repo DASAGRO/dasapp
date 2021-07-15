@@ -3,6 +3,7 @@ package kz.das.dasaccounting.ui.parent_bottom.profile.history
 import android.os.Bundle
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
+import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentProfileHistoryDetailBinding
 import kz.das.dasaccounting.domain.data.history.HistoryEnum
@@ -34,7 +35,7 @@ class HistoryDetailFragment: BaseFragment<HistoryDetailVM, FragmentProfileHistor
 
     override fun setupUI() {
         mViewBinding.apply {
-            toolbar.setNavigationOnClickListener {  }
+            toolbar.setNavigationOnClickListener { requireRouter().exit() }
             if (getStatus() == HistoryEnum.AWAIT.status) {
                 ivHistoryState.setImageResource(R.drawable.ic_banner_await)
             }

@@ -1,6 +1,5 @@
 package kz.das.dasaccounting.ui.parent_bottom.profile.history
 
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
@@ -35,14 +34,10 @@ class ProfileHistoryFragment: BaseFragment<ProfileHistoryVM, FragmentProfileHist
                     tab.text = if (position == 0) getString(R.string.accept_title) else getString(R.string.give_title)
                 }.attach()
             }
-
-
     }
 
-
-    override fun onDestroyView() {
+    override fun onDestroy() {
         showBottomNavMenu()
-        super.onDestroyView()
+        super.onDestroy()
     }
-
 }

@@ -8,6 +8,7 @@ data class HistoryTransportInventory(
     val uuid: String? = null,
     val name: String? = null,
     val stateNumber: String? = null,
+    val tsType: String? = null,
     val longitude: String? = null,
     val latitude: String? = null,
     val quantity: String? = null,

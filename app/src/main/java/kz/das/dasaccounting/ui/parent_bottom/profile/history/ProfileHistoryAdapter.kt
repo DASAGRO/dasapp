@@ -2,11 +2,13 @@ package kz.das.dasaccounting.ui.parent_bottom.profile.history
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.recyclerview.BaseViewHolder
 import kz.das.dasaccounting.databinding.ItemHistoryBinding
+import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.drivers.TransportAcceptedInventory
 import kz.das.dasaccounting.domain.data.drivers.TransportSentInventory
@@ -130,22 +132,27 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
 
     fun addAll(operations: ArrayList<OperationAct>) {
         this.operations.addAll(operations)
+        notifyDataSetChanged()
     }
 
     fun clearAwaitAcceptedOperations() {
         this.operations.removeAll { it is OfficeAcceptedInventory }
+        notifyDataSetChanged()
     }
 
     fun clearAwaitSentOperations() {
         this.operations.removeAll { it is OfficeSentInventory }
+        notifyDataSetChanged()
     }
 
     fun clearAwaitAcceptedTransports() {
         this.operations.removeAll { it is TransportAcceptedInventory }
+        notifyDataSetChanged()
     }
 
     fun clearAwaitSentTransports() {
         this.operations.removeAll { it is TransportAcceptedInventory }
+        notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -167,10 +174,11 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
             this.itemBinding.run {
                 this.tvInventoryTitle.text = item.name
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.fullName)
+                this.tvInventoryDate.text = item.dateTime
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.name,
                         (context.getString(R.string.gov_number) +
-                                " " + item.stateNumber), OperationType.DRIVER.status, item.status
+                                " " + item.stateNumber), if (item.tsType == TransportType.TRAILED.type) OperationType.DRIVER_ACCESSORY.status else OperationType.DRIVER.status, item.status
                     )
                 }
             }
@@ -183,6 +191,7 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
             this.itemBinding.run {
                 this.tvInventoryTitle.text = item.name
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.fullName)
+                this.tvInventoryDate.text = item.dateTime
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.name,
                         (context.getString(R.string.seal_number) +
@@ -198,6 +207,7 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
             this.itemBinding.run {
                 this.tvInventoryTitle.text = item.name
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.fullName)
+                this.tvInventoryDate.text = item.dateTime
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.name,
                         (context.getString(R.string.inventory_total_quantity) +
@@ -218,10 +228,11 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
                 this.tvInventoryTitle.text = item.model
                 this.ivStatus.setImageResource(R.drawable.ic_banner_waiting_oval)
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.senderName)
+                this.tvInventoryDate.visibility = View.GONE
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.model,
                         (context.getString(R.string.gov_number) +
-                                " " + item.stateNumber), OperationType.DRIVER.status, HistoryEnum.AWAIT.status
+                                " " + item.stateNumber), if (item.tsType == TransportType.TRAILED.type) OperationType.DRIVER_ACCESSORY.status else OperationType.DRIVER.status, HistoryEnum.AWAIT.status
                     )
                 }
             }
@@ -235,10 +246,11 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
                 this.tvInventoryTitle.text = item.model
                 this.ivStatus.setImageResource(R.drawable.ic_banner_waiting_oval)
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.senderName)
+                this.tvInventoryDate.visibility = View.GONE
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.model,
                         (context.getString(R.string.gov_number) +
-                                " " + item.stateNumber), OperationType.DRIVER.status, HistoryEnum.AWAIT.status
+                                " " + item.stateNumber), if (item.tsType == TransportType.TRAILED.type) OperationType.DRIVER_ACCESSORY.status else OperationType.DRIVER.status, HistoryEnum.AWAIT.status
                     )
                 }
             }
@@ -251,16 +263,15 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
                 this.tvInventoryTitle.text = item.name
                 this.ivStatus.setImageResource(R.drawable.ic_banner_waiting_oval)
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.senderName)
+                this.tvInventoryDate.visibility = View.GONE
                 this.rootHistory.setOnClickListener {
-                    this.rootHistory.setOnClickListener {
-                        historyOperationsAdapterEvent?.onClick(item.name,
-                            (context.getString(R.string.inventory_total_quantity) +
-                                    " " + item.quantity +
-                                    " " + item.type + "\n" +
-                                    String.format(context.getString(R.string.inventory_sender_name), item.senderName)),
-                            OperationType.OFFICE.status, HistoryEnum.AWAIT.status
-                        )
-                    }
+                    historyOperationsAdapterEvent?.onClick(item.name,
+                        (context.getString(R.string.inventory_total_quantity) +
+                                " " + item.quantity +
+                                " " + item.type + "\n" +
+                                String.format(context.getString(R.string.inventory_sender_name), item.senderName)),
+                        OperationType.OFFICE.status, HistoryEnum.AWAIT.status
+                    )
                 }
             }
         }
@@ -272,16 +283,15 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
                 this.tvInventoryTitle.text = item.name
                 this.ivStatus.setImageResource(R.drawable.ic_banner_waiting_oval)
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.senderName)
+                this.tvInventoryDate.visibility = View.GONE
                 this.rootHistory.setOnClickListener {
-                    this.rootHistory.setOnClickListener {
-                        historyOperationsAdapterEvent?.onClick(item.name,
-                            (context.getString(R.string.inventory_total_quantity) +
-                                    " " + item.quantity +
-                                    " " + item.type + "\n" +
-                                    String.format(context.getString(R.string.inventory_sender_name), item.senderName)),
-                            OperationType.OFFICE.status, HistoryEnum.AWAIT.status
-                        )
-                    }
+                    historyOperationsAdapterEvent?.onClick(item.name,
+                        (context.getString(R.string.inventory_total_quantity) +
+                                " " + item.quantity +
+                                " " + item.type + "\n" +
+                                String.format(context.getString(R.string.inventory_sender_name), item.senderName)),
+                        OperationType.OFFICE.status, HistoryEnum.AWAIT.status
+                    )
                 }
             }
         }

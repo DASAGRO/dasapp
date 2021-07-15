@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import kz.das.dasaccounting.data.entities.history.HistoryWarehouseInventoryEntity
 
+@Dao
 interface HistoryWarehouseInventoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

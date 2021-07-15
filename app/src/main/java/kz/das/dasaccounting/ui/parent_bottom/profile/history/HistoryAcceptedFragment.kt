@@ -5,7 +5,9 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentProfileHistoryAcceptedBinding
 import kz.das.dasaccounting.domain.data.action.OperationAct
+import kz.das.dasaccounting.domain.data.drivers.toAccepted
 import kz.das.dasaccounting.domain.data.history.HistoryEnum
+import kz.das.dasaccounting.domain.data.office.toAccepted
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HistoryAcceptedFragment: BaseFragment<HistoryAcceptedVM, FragmentProfileHistoryAcceptedBinding>() {
@@ -42,6 +44,7 @@ class HistoryAcceptedFragment: BaseFragment<HistoryAcceptedVM, FragmentProfileHi
                 historyAdapter?.addAll(acceptedList)
             }
         })
+
         mViewModel.getHistoryTransportInventoriesLocally().observe(viewLifecycleOwner, Observer {
             it?.let { list ->
                 val acceptedList: ArrayList<OperationAct> = arrayListOf()
@@ -50,6 +53,7 @@ class HistoryAcceptedFragment: BaseFragment<HistoryAcceptedVM, FragmentProfileHi
                 historyAdapter?.addAll(acceptedList)
             }
         })
+
         mViewModel.getHistoryWarehouseInventoriesLocally().observe(viewLifecycleOwner, Observer {
             it?.let { list ->
                 val acceptedList: ArrayList<OperationAct> = arrayListOf()
@@ -61,7 +65,9 @@ class HistoryAcceptedFragment: BaseFragment<HistoryAcceptedVM, FragmentProfileHi
 
         mViewModel.acceptedOfficeInventoryLocally().observe(viewLifecycleOwner, Observer {
             it?.let { list ->
+                val newList = list.map { officeInventory -> officeInventory.toAccepted() }
                 val acceptedList: ArrayList<OperationAct> = arrayListOf()
+                acceptedList.addAll(newList)
                 historyAdapter?.clearAwaitAcceptedOperations()
                 historyAdapter?.addAll(acceptedList)
             }
@@ -69,7 +75,9 @@ class HistoryAcceptedFragment: BaseFragment<HistoryAcceptedVM, FragmentProfileHi
 
         mViewModel.acceptedTransportInventoryLocally().observe(viewLifecycleOwner, Observer {
             it?.let { list ->
+                val newList = list.map { transportInventory -> transportInventory.toAccepted() }
                 val acceptedList: ArrayList<OperationAct> = arrayListOf()
+                acceptedList.addAll(newList)
                 historyAdapter?.clearAwaitAcceptedTransports()
                 historyAdapter?.addAll(acceptedList)
             }
