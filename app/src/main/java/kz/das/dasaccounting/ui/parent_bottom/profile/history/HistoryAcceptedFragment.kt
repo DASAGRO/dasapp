@@ -26,7 +26,9 @@ class HistoryAcceptedFragment: BaseFragment<HistoryAcceptedVM, FragmentProfileHi
 
             }
         })
-
+        mViewBinding.rvAccepted.apply {
+            this.adapter = historyAdapter
+        }
     }
 
     override fun observeLiveData() {
@@ -59,7 +61,7 @@ class HistoryAcceptedFragment: BaseFragment<HistoryAcceptedVM, FragmentProfileHi
         mViewModel.acceptedOfficeInventoryLocally().observe(viewLifecycleOwner, Observer {
             it?.let { list ->
                 val acceptedList: ArrayList<OperationAct> = arrayListOf()
-                historyAdapter?.clearAwaitAcceptedTransports()
+                historyAdapter?.clearAwaitAcceptedOperations()
                 historyAdapter?.addAll(acceptedList)
             }
         })

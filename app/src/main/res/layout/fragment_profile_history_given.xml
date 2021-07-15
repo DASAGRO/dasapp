@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_accepted"
+        android:id="@+id/rv_given"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
