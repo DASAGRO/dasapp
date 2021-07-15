@@ -1,5 +1,7 @@
 package kz.das.dasaccounting.domain.data.history
 
+import kz.das.dasaccounting.domain.data.action.OperationAct
+
 data class HistoryTransportInventory(
     val id: Long? = null,
     val dateTime: String? = null,
@@ -12,4 +14,4 @@ data class HistoryTransportInventory(
     val fullName: String? = null,
     val molUUID: String? = null,
     val status: String? = null
-)
+): OperationAct()

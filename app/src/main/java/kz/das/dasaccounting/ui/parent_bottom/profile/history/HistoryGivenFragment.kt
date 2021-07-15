@@ -6,6 +6,10 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryGivenBinding>() {
 
+    companion object {
+        fun newInstance() = HistoryGivenFragment()
+    }
+
     override val mViewModel: HistoryGivenVM by viewModel()
 
     override fun getViewBinding() = FragmentProfileHistoryGivenBinding.inflate(layoutInflater)

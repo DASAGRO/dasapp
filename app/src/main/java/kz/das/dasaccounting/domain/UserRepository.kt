@@ -1,10 +1,14 @@
 package kz.das.dasaccounting.domain
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
 import kz.das.dasaccounting.domain.data.file.File
+import kz.das.dasaccounting.domain.data.history.HistoryOfficeInventory
+import kz.das.dasaccounting.domain.data.history.HistoryTransportInventory
+import kz.das.dasaccounting.domain.data.history.HistoryWarehouseInventory
 
 interface UserRepository {
 
@@ -45,5 +49,17 @@ interface UserRepository {
     fun getLastLocation(): Location
 
     suspend fun deleteData()
+
+    suspend fun getHistoryWarehouseInventories(): List<HistoryWarehouseInventory>
+
+    suspend fun getHistoryOfficeInventories(): List<HistoryOfficeInventory>
+
+    suspend fun getHistoryTransportInventories(): List<HistoryTransportInventory>
+
+    fun getHistoryWarehouseInventoriesLocally(): LiveData<List<HistoryWarehouseInventory>>
+
+    fun getHistoryOfficeInventoriesLocally(): LiveData<List<HistoryOfficeInventory>>
+
+    fun getHistoryTransportInventoriesLocally(): LiveData<List<HistoryTransportInventory>>
 
 }

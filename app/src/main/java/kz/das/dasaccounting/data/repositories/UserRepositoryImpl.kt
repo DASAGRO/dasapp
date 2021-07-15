@@ -2,13 +2,24 @@ package kz.das.dasaccounting.data.repositories
 
 import android.content.Context
 import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
+import kz.das.dasaccounting.core.extensions.OnResponseCallback
 import kz.das.dasaccounting.core.extensions.unwrap
 import kz.das.dasaccounting.core.ui.utils.getFileMultipart
 import kz.das.dasaccounting.core.ui.utils.getImageFileMultipart
+import kz.das.dasaccounting.data.entities.driver.TransportInventoryEntity
+import kz.das.dasaccounting.data.entities.driver.toDomain
 import kz.das.dasaccounting.data.entities.file.toDomain
+import kz.das.dasaccounting.data.entities.history.HistoryOfficeInventoryEntity
+import kz.das.dasaccounting.data.entities.history.HistoryTransportInventoryEntity
+import kz.das.dasaccounting.data.entities.history.HistoryWarehouseInventoryEntity
+import kz.das.dasaccounting.data.entities.history.toDomain
 import kz.das.dasaccounting.data.entities.toDomain
+import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.FileApi
+import kz.das.dasaccounting.data.source.network.OperationHistoryApi
 import kz.das.dasaccounting.data.source.network.UserApi
 import kz.das.dasaccounting.data.source.preferences.UserPreferences
 import kz.das.dasaccounting.domain.DriverInventoryRepository
@@ -17,6 +28,9 @@ import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
 import kz.das.dasaccounting.domain.data.file.File
+import kz.das.dasaccounting.domain.data.history.HistoryOfficeInventory
+import kz.das.dasaccounting.domain.data.history.HistoryTransportInventory
+import kz.das.dasaccounting.domain.data.history.HistoryWarehouseInventory
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -26,6 +40,9 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
     private val userPreferences: UserPreferences by inject()
     private val driverInventoryRepository: DriverInventoryRepository by inject()
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
+    private val operationHistoryApi: OperationHistoryApi by inject()
+    private val dasAppDatabase: DasAppDatabase by inject()
+    
     private val userApi: UserApi by inject()
     private val fileApi: FileApi by inject()
 
@@ -106,5 +123,49 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
         userPreferences.clearUser()
         driverInventoryRepository.initDeleteData()
         officeInventoryRepository.initDeleteData()
+    }
+
+
+    override suspend fun getHistoryWarehouseInventories(): List<HistoryWarehouseInventory> {
+        return operationHistoryApi.getHistoryWarehouses().unwrap({ list -> list.map { it.toDomain() } },
+            object : OnResponseCallback<List<HistoryWarehouseInventoryEntity>> {
+                override fun onSuccess(entity: List<HistoryWarehouseInventoryEntity>) {
+                    dasAppDatabase.historyWarehouseInventoryDao().reload(entity)
+                }
+
+                override fun onFail(exception: Exception) {} // No handle require
+            })
+    }
+
+    override suspend fun getHistoryOfficeInventories(): List<HistoryOfficeInventory> {
+        return operationHistoryApi.getHistoryOfficeInventories().unwrap({ list -> list.map { it.toDomain() } },
+            object : OnResponseCallback<List<HistoryOfficeInventoryEntity>> {
+                override fun onSuccess(entity: List<HistoryOfficeInventoryEntity>) {
+                    dasAppDatabase.historyOfficeInventoryDao().reload(entity)
+                }
+                override fun onFail(exception: Exception) {} // No handle require
+            })
+    }
+
+    override suspend fun getHistoryTransportInventories(): List<HistoryTransportInventory> {
+        return operationHistoryApi.getHistoryTransports().unwrap({ list -> list.map { it.toDomain() } },
+            object : OnResponseCallback<List<HistoryTransportInventoryEntity>> {
+                override fun onSuccess(entity: List<HistoryTransportInventoryEntity>) {
+                    dasAppDatabase.historyTransportInventoryDao().reload(entity)
+                }
+                override fun onFail(exception: Exception) {} // No handle require
+            })
+    }
+
+    override fun getHistoryWarehouseInventoriesLocally(): LiveData<List<HistoryWarehouseInventory>>{
+        return dasAppDatabase.historyWarehouseInventoryDao().allAsLiveData.map { list -> list.map { it.toDomain() }}
+    }
+
+    override fun getHistoryOfficeInventoriesLocally(): LiveData<List<HistoryOfficeInventory>> {
+        return dasAppDatabase.historyOfficeInventoryDao().allAsLiveData.map { list -> list.map { it.toDomain() }}
+    }
+
+    override fun getHistoryTransportInventoriesLocally(): LiveData<List<HistoryTransportInventory>> {
+        return dasAppDatabase.historyTransportInventoryDao().allAsLiveData.map { list -> list.map { it.toDomain() }}
     }
 }

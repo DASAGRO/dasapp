@@ -1,36 +1,23 @@
 package kz.das.dasaccounting.data.source.network
 
-import kz.das.dasaccounting.data.entities.driver.TransportInventoryEntity
-import kz.das.dasaccounting.data.entities.office.OfficeInventoryEntity
-import kz.das.dasaccounting.data.entities.requests.GetStoreRequest
-import kz.das.dasaccounting.data.entities.requests.SendStoreRequest
-import kz.das.dasaccounting.data.entities.warehouse.WarehouseInventoryEntity
+import kz.das.dasaccounting.data.entities.history.HistoryOfficeInventoryEntity
+import kz.das.dasaccounting.data.entities.history.HistoryTransportInventoryEntity
+import kz.das.dasaccounting.data.entities.history.HistoryWarehouseInventoryEntity
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 
 interface OperationHistoryApi {
 
-    @GET("/api/storages")
-    suspend fun getWarehouses(): Response<List<WarehouseInventoryEntity>>
+    @GET("/api/materials/history/get/po")
+    suspend fun getHistoryTransportAccessories(): Response<List<HistoryTransportInventoryEntity>>
 
-    @GET("/api/storages/tmc")
-    suspend fun getWarehousesOfficeInventories(): Response<List<OfficeInventoryEntity>>
+    @GET("/api/materials/history/get/ts")
+    suspend fun getHistoryTransports(): Response<List<HistoryTransportInventoryEntity>>
 
-    @GET("/api/storages/ts")
-    suspend fun getWarehousesTransportInventories(): Response<List<TransportInventoryEntity>>
+    @GET("/api/materials/history/get/tmc")
+    suspend fun getHistoryOfficeInventories(): Response<List<HistoryOfficeInventoryEntity >>
 
-    @GET("/api/storages/po")
-    suspend fun getWarehousesTransportAccessoriesInventories(): Response<List<TransportInventoryEntity>>
-
-
-
-    @POST("/api/goods/get/ts")
-    suspend fun getWarehouse(@Body getStoreRequest: GetStoreRequest): Response<Any>
-
-    @POST("/api/goods/send/ts")
-    suspend fun sendWarehouse(@Body sendStoreRequest: SendStoreRequest): Response<Any>
-
+    @GET("/api/materials/history/get/storage")
+    suspend fun getHistoryWarehouses(): Response<List<HistoryWarehouseInventoryEntity>>
 
 }

@@ -6,23 +6,34 @@ import kz.das.dasaccounting.data.entities.driver.AcceptedTransportEntity
 import kz.das.dasaccounting.data.entities.driver.FligelProductEntity
 import kz.das.dasaccounting.data.entities.driver.SentTransportEntity
 import kz.das.dasaccounting.data.entities.driver.TransportInventoryEntity
+import kz.das.dasaccounting.data.entities.history.HistoryOfficeInventoryEntity
+import kz.das.dasaccounting.data.entities.history.HistoryTransportInventoryEntity
+import kz.das.dasaccounting.data.entities.history.HistoryWarehouseInventoryEntity
 import kz.das.dasaccounting.data.entities.office.OfficeInventoryAcceptedEntity
 import kz.das.dasaccounting.data.entities.office.OfficeInventoryEntity
 import kz.das.dasaccounting.data.entities.office.OfficeInventorySentEntity
 import kz.das.dasaccounting.data.entities.warehouse.WarehouseInventoryEntity
 import kz.das.dasaccounting.data.source.local.daos.*
+import kz.das.dasaccounting.data.source.local.daos.history.HistoryOfficeInventoryDao
+import kz.das.dasaccounting.data.source.local.daos.history.HistoryTransportInventoryDao
+import kz.das.dasaccounting.data.source.local.daos.history.HistoryWarehouseInventoryDao
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
 import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 
-@Database(version = 6, exportSchema = false, entities = [OfficeInventoryEntity::class,
+@Database(version = 7, exportSchema = false, entities = [OfficeInventoryEntity::class,
     OfficeInventoryAcceptedEntity::class,
     OfficeInventorySentEntity::class,
     WarehouseInventoryEntity::class,
     TransportInventoryEntity::class,
     SentTransportEntity::class,
     AcceptedTransportEntity::class,
-    FligelProductEntity::class])
-@TypeConverters(OfficeInventoryEntityTypeConvertor::class, DriverInventoryTypeConvertor::class)
+    FligelProductEntity::class,
+    HistoryOfficeInventoryEntity::class,
+    HistoryTransportInventoryEntity::class,
+    HistoryWarehouseInventoryEntity::class
+])
+@TypeConverters(OfficeInventoryEntityTypeConvertor::class, DriverInventoryTypeConvertor::class,
+    HistoryWarehouseInventoryDao::class, HistoryTransportInventoryDao::class, HistoryOfficeInventoryDao::class)
 abstract class DasAppDatabase: RoomDatabase() {
 
     abstract fun officeInventoryDao(): OfficeInventoryDao
@@ -38,6 +49,12 @@ abstract class DasAppDatabase: RoomDatabase() {
     abstract fun driverAcceptedInventoryDao(): DriverInventoryAcceptedDao
 
     abstract fun driverFligelDataDao(): FligelDataDao
+
+    abstract fun historyWarehouseInventoryDao(): HistoryWarehouseInventoryDao
+
+    abstract fun historyOfficeInventoryDao(): HistoryOfficeInventoryDao
+
+    abstract fun historyTransportInventoryDao(): HistoryTransportInventoryDao
 
     companion object {
         private val LOCK = Any()

@@ -1,8 +1,10 @@
 package kz.das.dasaccounting.data.entities.history
 
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kz.das.dasaccounting.domain.data.history.HistoryTransportInventory
 
+@Entity(tableName = "history_transport_inventory")
 data class HistoryTransportInventoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,

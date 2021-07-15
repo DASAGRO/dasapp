@@ -81,7 +81,9 @@
     <string name="from_namespace">от %s</string>
     <string name="given_namespace">передан %s</string>
     <string name="accept">Принять</string>
+    <string name="accept_title">Принят</string>
     <string name="given">Передан</string>
+    <string name="give_title">Передан</string>
     <string name="error_not_exist">Такого юзера не существует в базе</string>
     <string name="confirm">Подтвердить</string>
     <string name="cancel">Отмена</string>
