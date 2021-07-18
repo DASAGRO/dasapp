@@ -30,6 +30,12 @@ class TransferConfirmVM: BaseVM() {
 
     fun getUser() = userRepository.getUser()
 
+    fun setLocalInventory(transportInventory: TransportInventory) {
+        this.transportInventory = transportInventory
+    }
+
+    fun getLocalInventory() = transportInventory
+
     fun setTransportInventory(transportInventory: TransportInventory?) {
         this.transportInventory = transportInventory
         this.transportInventory?.senderName = userRepository.getUser()?.lastName + " "

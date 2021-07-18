@@ -165,6 +165,12 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
         this.operations.removeAll { it is FligelAwaitProduct }
     }
 
+    fun addItems(items: ArrayList<OperationAct>) {
+        this.operations.addAll(items)
+        notifyDataSetChanged()
+    }
+
+
     fun addOperations(items: ArrayList<OperationAct>) {
         if (this.operations.containsAll(items)) {
             this.operations.removeAll(items)

@@ -146,9 +146,9 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
 
         driverBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.removeHead(OperationHead(getString(R.string.inventory_title)))
+            operationsAdapter?.clearOperations()
             if (it.isNotEmpty()) {
-                operationsAdapter?.clearOperations()
-                operationsAdapter?.putItems(getOperations(it))
+                operationsAdapter?.addItems(getOperations(it))
             }
         })
 
@@ -161,59 +161,49 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         driverBottomNavigationVM.getTransportsLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.removeHead(OperationHead(getString(R.string.transport_tracktor_title)))
             operationsAdapter?.removeHead(OperationHead(getString(R.string.transport_trailer_title)))
+            operationsAdapter?.clearTransports()
             if (it.isNotEmpty()) {
-                operationsAdapter?.clearTransports()
-                operationsAdapter?.putItems(getTransports(it))
+                operationsAdapter?.addItems(getTransports(it))
             }
         })
 
         driverBottomNavigationVM.getAwaitAcceptedOperationsLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_operations)))
+            operationsAdapter?.clearAwaitAcceptedOperations()
             if (it.isNotEmpty()) {
-                operationsAdapter?.clearItems(it)
-                operationsAdapter?.putItems(getAwaitAcceptedOperations(it))
-            } else {
-                operationsAdapter?.clearAwaitAcceptedOperations()
+                operationsAdapter?.addItems(getAwaitAcceptedOperations(it))
             }
         })
 
         driverBottomNavigationVM.getAwaitSentOperationsLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_operations)))
+            operationsAdapter?.clearAwaitSentOperations()
             if (it.isNotEmpty()) {
-                operationsAdapter?.clearItems(it)
-                operationsAdapter?.putItems(getAwaitSentOperations(it))
-            } else {
-                operationsAdapter?.clearAwaitSentOperations()
+                operationsAdapter?.addItems(getAwaitSentOperations(it))
             }
         })
 
         driverBottomNavigationVM.getAwaitAcceptedTransportsLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_transports)))
+            operationsAdapter?.clearAwaitAcceptedTransports()
             if (it.isNotEmpty()) {
-                operationsAdapter?.clearItems(it)
-                operationsAdapter?.putItems(getAwaitAcceptedTransports(it))
-            } else {
-                operationsAdapter?.clearAwaitAcceptedTransports()
+                operationsAdapter?.addItems(getAwaitAcceptedTransports(it))
             }
         })
 
         driverBottomNavigationVM.getAwaitSentTransportsLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_transports)))
+            operationsAdapter?.clearAwaitSentTransports()
             if (it.isNotEmpty()) {
-                operationsAdapter?.clearItems(it)
-                operationsAdapter?.putItems(getAwaitSentTransports(it))
-            } else {
-                operationsAdapter?.clearAwaitSentTransports()
+                operationsAdapter?.addItems(getAwaitSentTransports(it))
             }
         })
 
         driverBottomNavigationVM.getAwaitFligelDataLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.removeHead(OperationHead(getString(R.string.await_fligel_data)))
+            operationsAdapter?.clearAwaitFligelData()
             if (it.isNotEmpty()) {
-                operationsAdapter?.clearItems(it)
-                operationsAdapter?.putItems(getAwaitFligelData(it))
-            } else {
-                operationsAdapter?.clearAwaitFligelData()
+                operationsAdapter?.addItems(getAwaitFligelData(it))
             }
         })
 
@@ -228,12 +218,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
                         if (qrScan.contains("model") || qrScan.contains("stateNumber")) {
                             try {
                                 DriverInventoryTypeConvertor().stringToTransportInventory(qrScan)?.toDomain()?.let {
-                                    val isFligel = it.model.toUpperCase(Locale.getDefault()).contains("НАКОПИТЕЛЬ")
-                                    if (isFligel) {
-                                        showFligelTransportTransferDialog(it)
-                                    } else {
-                                        requireRouter().navigateTo(kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoFragment.getScreen(it))
-                                    }
+                                    requireRouter().navigateTo(kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoFragment.getScreen(it))
                                 }
                             } catch (e: Exception) {
                                 showError(getString(R.string.common_error), getString(R.string.common_error_scan))

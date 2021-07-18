@@ -8,6 +8,7 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
 import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
+import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.entities.office.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
@@ -56,9 +57,10 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                             " " + it.quantity +
                             " " + it.type)
                 try {
-                    val inventory = it.toEntity()
-                    inventory.requestId = UUID.randomUUID().toString()
+                    val inventory = mViewModel.getLocalInventory()?.toEntity()
+                    inventory?.requestId = UUID.randomUUID().toString()
                     mViewBinding.ivQr.setImageBitmap(OfficeInventoryEntityTypeConvertor().officeInventoryToString(inventory).generateQR())
+                    inventory?.let { inventoryOffice -> mViewModel.setLocalInventory(inventoryOffice.toDomain()) }
                 } catch (e: Exception) { }
             }
         })

@@ -8,6 +8,7 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
 import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
+import kz.das.dasaccounting.data.entities.driver.toDomain
 import kz.das.dasaccounting.data.entities.driver.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
@@ -58,9 +59,10 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                     (getString(R.string.gov_number) +
                             " " + it.stateNumber)
                 try {
-                    val inventory = it.toEntity()
-                    inventory.requestId = UUID.randomUUID().toString()
+                    val inventory = mViewModel.getLocalInventory()?.toEntity()
+                    inventory?.requestId = UUID.randomUUID().toString()
                     mViewBinding.ivQr.setImageBitmap(DriverInventoryTypeConvertor().transportTransportToString(inventory).generateQR())
+                    inventory?.let { inventoryTransport -> mViewModel.setLocalInventory(inventoryTransport.toDomain()) }
                 } catch (e: Exception) { }
             }
         })
