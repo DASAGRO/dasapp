@@ -63,13 +63,13 @@ class WarehouseOperationsAdapter(val context: Context, private var operations: A
     }
 
     fun putItems(items: ArrayList<OperationAct>) {
-        this.operations.removeAll(items)
+        this.operations.clear()
         this.operations.addAll(items)
         notifyDataSetChanged()
     }
 
     fun putItems(items: List<OperationAct>) {
-        this.operations.removeAll(items)
+        this.operations.clear()
         this.operations.addAll(items)
         notifyDataSetChanged()
     }

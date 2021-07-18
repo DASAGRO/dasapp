@@ -71,8 +71,8 @@ class WarehouseOperationsFragment: BaseFragment<WarehouseOperationsVM, FragmentS
                 warehouseOperationsAdapter?.putItems(mViewModel.getInventoryList())
             } else {
                 warehouseOperationsAdapter?.putItems(mViewModel.getInventoryList().filter { operationAct ->
-                    (operationAct is OfficeInventory && operationAct.name == searchName.toString().trim()) ||
-                            (operationAct is TransportInventory && operationAct.model == searchName.toString().trim())
+                    (operationAct is OfficeInventory && operationAct.name?.contains(searchName.toString().trim(), ignoreCase = true) == true) ||
+                            (operationAct is TransportInventory && operationAct.model.contains(searchName.toString().trim(), ignoreCase = true))
                 })
             }
         }
