@@ -35,7 +35,7 @@ class ProfilePassResetFragment: BaseFragment<ProfilePassResetVM, FragmentProfile
         super.observeLiveData()
         mViewModel.isValidPassword().observe(viewLifecycleOwner, Observer {
             if (it) {
-                requireRouter().navigateTo(ProfilePassResetConfirmFragment.getScreen())
+                requireRouter().replaceScreen(ProfilePassResetConfirmFragment.getScreen())
             }
         })
     }

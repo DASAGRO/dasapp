@@ -13,6 +13,7 @@ class DriverBottomNavigationVM: BaseVM() {
     private val shiftRepository: ShiftRepository by inject()
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
     private val driverInventoryRepository: DriverInventoryRepository by inject()
+    private var isSend: Boolean = false
 
     init {
         refresh()
@@ -27,19 +28,22 @@ class DriverBottomNavigationVM: BaseVM() {
 
     fun initAwaitRequests() {
         viewModelScope.launch {
-            showLoading()
             try {
-                shiftRepository.initAwaitShiftStarted()
-                shiftRepository.initAwaitShiftFinished()
-                officeInventoryRepository.initAwaitAcceptInventory()
-                officeInventoryRepository.initAwaitSendInventory()
-                driverInventoryRepository.initAwaitAcceptInventory()
-                driverInventoryRepository.initAwaitSendInventory()
-                driverInventoryRepository.initAwaitReceiveFligerData()
+                if (!isSend) {
+                    isSend = true
+                    shiftRepository.initAwaitShiftStarted()
+                    shiftRepository.initAwaitShiftFinished()
+                    officeInventoryRepository.initAwaitAcceptInventory()
+                    officeInventoryRepository.initAwaitSendInventory()
+                    driverInventoryRepository.initAwaitAcceptInventory()
+                    driverInventoryRepository.initAwaitSendInventory()
+                    driverInventoryRepository.initAwaitReceiveFligerData()
+                }
             } catch (t: Throwable) {
+                isSend = false
                 throwableHandler.handle(t)
             } finally {
-                hideLoading()
+                isSend = false
             }
         }
     }

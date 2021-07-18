@@ -12,6 +12,7 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
 
     private val shiftRepository: ShiftRepository by inject()
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
+    private var isSend: Boolean = false
 
     init {
         refresh()
@@ -25,16 +26,19 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
 
     fun initAwaitRequests() {
         viewModelScope.launch {
-            showLoading()
             try {
-                shiftRepository.initAwaitShiftStarted()
-                shiftRepository.initAwaitShiftFinished()
-                officeInventoryRepository.initAwaitAcceptInventory()
-                officeInventoryRepository.initAwaitSendInventory()
+                if (!isSend) {
+                    isSend = true
+                    shiftRepository.initAwaitShiftStarted()
+                    shiftRepository.initAwaitShiftFinished()
+                    officeInventoryRepository.initAwaitAcceptInventory()
+                    officeInventoryRepository.initAwaitSendInventory()
+                }
             } catch (t: Throwable) {
+                isSend = false
                 throwableHandler.handle(t)
             } finally {
-                hideLoading()
+                isSend = false
             }
         }
     }

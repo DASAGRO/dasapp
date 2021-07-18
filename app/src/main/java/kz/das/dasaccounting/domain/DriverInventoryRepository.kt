@@ -5,14 +5,14 @@ import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 
 interface DriverInventoryRepository {
-    
-    suspend fun getDriverTransports(): List<TransportInventory>
 
     suspend fun initAwaitAcceptInventory()
 
     suspend fun initAwaitSendInventory()
 
     suspend fun initAwaitReceiveFligerData()
+
+    suspend fun getDriverTransports(): List<TransportInventory>
 
     suspend fun acceptInventory(transportInventory: TransportInventory, comment: String, fileIds: ArrayList<Int>?): Any
 
@@ -35,4 +35,5 @@ interface DriverInventoryRepository {
     fun getAwaitFligelDataLocally(): LiveData<List<FligelProduct>>
 
     fun initDeleteData()
+
 }
