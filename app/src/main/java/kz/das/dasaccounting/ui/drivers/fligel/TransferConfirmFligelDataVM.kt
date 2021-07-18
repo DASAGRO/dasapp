@@ -45,6 +45,8 @@ class TransferConfirmFligelDataVM: BaseVM() {
     private val driverInventoryDataLV = SingleLiveEvent<Boolean>()
     fun isTransportDataAccepted(): LiveData<Boolean> = driverInventoryDataLV
 
+    fun getUserRole() = userRepository.getUserRole()
+
     fun acceptInventory(comment: String) {
         viewModelScope.launch {
             showLoading()

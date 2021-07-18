@@ -13,6 +13,7 @@ import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryType
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.drivers.getTsTypeImage
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -73,7 +74,9 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                         getString(R.string.transport_inventory_transferred_successfully)
                     }
                 )
-                requireRouter().exit()
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
             }
         })
 
@@ -86,7 +89,9 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                         "Передача ТС в ожидании!"
                     }
                 )
-                requireRouter().exit()
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
             }
         })
     }

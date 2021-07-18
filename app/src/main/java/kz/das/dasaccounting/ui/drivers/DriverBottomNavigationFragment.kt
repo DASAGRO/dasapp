@@ -278,13 +278,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
         val transferFragment = TransferFligelDataFormalizeFragment.newInstance(transportInventory)
         transferFragment.setOnTransferCallback(object : TransferFligelDataFormalizeFragment.OnTransferCallback {
             override fun onTransfer(transportInventory: TransportInventory) {
-                val transferDialog = kz.das.dasaccounting.ui.drivers.transfer.TransferFormalizeFragment.newInstance(transportInventory)
-                transferDialog.setOnTransferCallback(object : kz.das.dasaccounting.ui.drivers.transfer.TransferFormalizeFragment.OnTransferCallback {
-                    override fun onTransfer(transportInventory: TransportInventory) {
-                        requireRouter().navigateTo(kz.das.dasaccounting.ui.drivers.transfer.TransferConfirmFragment.getScreen(transportInventory))
-                    }
-                })
-                transferDialog.show(childFragmentManager, transferFragment.tag)
+                showTransportTransferDialog(transportInventory)
             }
 
             override fun onAccept(transportInventory: TransportInventory) {

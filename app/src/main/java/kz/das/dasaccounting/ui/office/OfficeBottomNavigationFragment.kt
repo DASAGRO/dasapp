@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.core.navigation.DasAppScreen
+import kz.das.dasaccounting.core.navigation.requireFlowRouter
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.shared.NetworkConnectionVM
 import kz.das.dasaccounting.data.entities.office.toDomain
@@ -93,24 +94,6 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
                 officeBottomNavigationVM.refresh()
             }
         })
-
-        mViewModel.isStartWorkWithQrLV().observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                val qrFragment = QrFragment.Builder()
-                    .setCancelable(true)
-                    .setOnScanCallback(object : QrFragment.OnScanCallback {
-                        override fun onScan(qrScan: String) {
-                            mViewModel.startWork(qrScan)
-                        }
-                    })
-                    .build()
-                qrFragment.show(childFragmentManager, "QrShiftFragment")
-            }
-        })
-
-//        officeBottomNavigationVM.getOperations().observe(viewLifecycleOwner, Observer {
-//            operationsAdapter?.putItems(getOperations(it))
-//        })
 
         officeBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.clearOperationItems()

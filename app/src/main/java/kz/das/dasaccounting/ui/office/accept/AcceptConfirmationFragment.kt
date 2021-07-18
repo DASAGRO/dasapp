@@ -10,6 +10,8 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentInventoryAcceptConfirmationBinding
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
+import kz.das.dasaccounting.ui.Screens
+import kz.das.dasaccounting.ui.office.OfficeBottomNavigationFragment
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.DialogBottomMediaTypePick
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportAttachedMediaAdapter
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.data.Media
@@ -108,7 +110,9 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
             if (it) {
                 showSuccess(getString(R.string.common_banner_success),
                     getString(R.string.office_inventory_accepted_successfully))
-                requireRouter().exit()
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
             }
         })
 
@@ -120,18 +124,12 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
             }
         })
 
-        mViewModel.isReportSent().observe(viewLifecycleOwner, Observer {
-            if (it) {
-                hideLoading()
-                showSuccess(getString(R.string.common_banner_success), "Отчет успешно отправлен!")
-                requireRouter().exit()
-            }
-        })
-
         mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showAwait(getString(R.string.common_banner_await), "Получение ТМЦ в ожидании!")
-                requireRouter().exit()
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
             }
         })
     }

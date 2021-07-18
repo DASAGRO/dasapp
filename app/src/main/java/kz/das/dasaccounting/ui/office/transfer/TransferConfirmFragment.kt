@@ -12,6 +12,7 @@ import kz.das.dasaccounting.data.entities.office.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
+import kz.das.dasaccounting.ui.Screens
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -65,14 +66,18 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
         mViewModel.isOfficeInventorySent().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showSuccess(getString(R.string.common_banner_success), getString(R.string.office_inventory_transferred_successfully))
-                requireRouter().exit()
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
             }
         })
 
         mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showAwait(getString(R.string.common_banner_await), "Передача ТМЦ в ожидании!")
-                requireRouter().exit()
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
             }
         })
     }

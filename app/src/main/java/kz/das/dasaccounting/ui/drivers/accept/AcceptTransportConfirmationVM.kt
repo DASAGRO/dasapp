@@ -38,6 +38,8 @@ class AcceptTransportConfirmationVM : BaseVM(), KoinComponent {
     private val transportInventoryLV = SingleLiveEvent<TransportInventory?>()
     fun getTransportInventory(): LiveData<TransportInventory?> = transportInventoryLV
 
+    fun getUserRole() = userRepository.getUserRole()
+
     fun setTransportInventory(officeInventory: TransportInventory?) {
         this.transportInventory = officeInventory
         transportInventoryLV.postValue(officeInventory)

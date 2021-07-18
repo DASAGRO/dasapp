@@ -26,6 +26,7 @@ import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentLocationBinding
 import kz.das.dasaccounting.domain.common.UserRole
 import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationVM
+import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.lang.ref.WeakReference
@@ -52,13 +53,23 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
     override fun setupUI() {
         Mapbox.getInstance(requireContext(), getString(R.string.mapbox_access_token))
         mViewBinding.apply {
-            btnStart.isVisible = !coreMainVM.isOnWork()
-            btnStop.isVisible = coreMainVM.isOnWork()
+            btnStart.isVisible = coreMainVM.isOnWork() == false
+            btnStop.isVisible = coreMainVM.isOnWork() == true
             coreMainVM.setControlOptionsState(coreMainVM.isOnWork())
 
             btnStart.setOnClickListener {
                 if (coreMainVM.getUserRole() == UserRole.OFFICE.role) {
-                    coreMainVM.setStartWorkWithQrLV()
+                    val qrFragment = QrFragment.Builder()
+                        .setCancelable(true)
+                        .setOnScanCallback(object : QrFragment.OnScanCallback {
+                            override fun onScan(qrScan: String) {
+                                run {
+                                    coreMainVM.startWork(qrScan)
+                                }
+                            }
+                        })
+                        .build()
+                    qrFragment.show(childFragmentManager, "QrShiftFragment")
                 } else {
                     coreMainVM.startWork()
                 }
@@ -76,7 +87,7 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
     override fun observeLiveData() {
         super.observeLiveData()
         coreMainVM.isWorkStarted().observe(viewLifecycleOwner, Observer {
-            if (it) {
+            if (it == true) {
                 coreMainVM.setControlOptionsState(true)
                 mViewBinding.btnStart.zoomAnimation(300L, false)
                 mViewBinding.btnStop.zoomAnimation(300L, true)
@@ -84,7 +95,7 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
         })
 
         coreMainVM.isWorkStopped().observe(viewLifecycleOwner, Observer {
-            if (it) {
+            if (it == true) {
                 coreMainVM.setControlOptionsState(false)
                 mViewBinding.btnStart.zoomAnimation(300L, true)
                 mViewBinding.btnStop.zoomAnimation(300L, false)

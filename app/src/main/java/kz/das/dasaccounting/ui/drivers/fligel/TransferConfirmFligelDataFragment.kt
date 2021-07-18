@@ -8,12 +8,10 @@ import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
-import kz.das.dasaccounting.core.ui.extensions.setImage
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentInventoryAcceptConfirmationBinding
-import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.drivers.FligelProduct
-import kz.das.dasaccounting.ui.drivers.setTsTypeImage
+import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.DialogBottomMediaTypePick
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportAttachedMediaAdapter
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.data.Media
@@ -113,7 +111,9 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
             if (it) {
                 showSuccess(getString(R.string.common_banner_success),
                     getString(R.string.transport_fligel_data_accepted_successfully))
-                requireRouter().exit()
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
             }
         })
 
@@ -128,7 +128,9 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
         mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showAwait(getString(R.string.common_banner_await), "Формирование ТМЦ в ожидании!")
-                requireRouter().exit()
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
             }
         })
     }

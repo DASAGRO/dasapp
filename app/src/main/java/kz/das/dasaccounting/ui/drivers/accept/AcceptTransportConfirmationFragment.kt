@@ -11,6 +11,7 @@ import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentInventoryAcceptConfirmationBinding
 import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.DialogBottomMediaTypePick
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportAttachedMediaAdapter
@@ -115,7 +116,9 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
                         getString(R.string.transport_inventory_accepted_successfully)
                     }
                 )
-                requireRouter().exit()
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
             }
         })
 
@@ -131,7 +134,9 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
             if (it) {
                 hideLoading()
                 showSuccess(getString(R.string.common_banner_success), "Отчет успешно отправлен!")
-                requireRouter().exit()
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
             }
         })
 
@@ -144,7 +149,9 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
                         "Получение ТС в ожидании!"
                     }
                 )
-                requireRouter().exit()
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
             }
         })
 

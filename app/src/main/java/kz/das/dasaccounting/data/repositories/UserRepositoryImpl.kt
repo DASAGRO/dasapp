@@ -102,7 +102,7 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
     }
 
     override fun userOnWork(): Boolean {
-        return userPreferences.isUserOnWork() ?: false
+        return userPreferences.isUserOnWork()
     }
 
     override fun startWork() {

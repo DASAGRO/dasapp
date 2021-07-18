@@ -26,6 +26,8 @@ class TransferConfirmVM: BaseVM() {
     private val isOnAwaitLV = SingleLiveEvent<Boolean>()
     fun isOnAwait(): LiveData<Boolean> = isOnAwaitLV
 
+    fun getUserRole() = userRepository.getUserRole()
+
     fun setTransportInventory(transportInventory: TransportInventory?) {
         this.transportInventory = transportInventory
         this.transportInventory?.senderName = userRepository.getUser()?.lastName + " "

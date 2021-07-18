@@ -86,7 +86,7 @@ class UserPreferences(private val preferences: SharedPreferences) {
     }
 
     fun isUserOnWork(): Boolean {
-        return preferences.getBoolean(PREFERENCES_USER_ON_WORK, false)
+        return preferences.getBoolean(PREFERENCES_USER_ON_WORK, true)
     }
 
     fun startWork() {

@@ -29,6 +29,7 @@ class TransferConfirmVM: BaseVM() {
     private val isOfficeInventorySentLV = SingleLiveEvent<Boolean>()
     fun isOfficeInventorySent(): LiveData<Boolean> = isOfficeInventorySentLV
 
+    fun getUserRole() = userRepository.getUserRole()
 
     fun setOfficeInventory(officeInventory: OfficeInventory?) {
         this.officeInventory = officeInventory

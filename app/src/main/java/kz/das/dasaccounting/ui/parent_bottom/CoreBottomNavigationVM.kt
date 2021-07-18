@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.ShiftRepository
 import kz.das.dasaccounting.domain.UserRepository
@@ -21,15 +22,10 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
     private val isControlOptionsShowLV = MutableLiveData<Boolean>()
     fun isControlOptionsShow(): LiveData<Boolean> = isControlOptionsShowLV
 
-    private val isStartWorkWithQrLV = MutableLiveData<Boolean>()
-    fun isStartWorkWithQrLV(): LiveData<Boolean> = isStartWorkWithQrLV
-
-    fun setStartWorkWithQrLV() { isStartWorkWithQrLV.postValue(true) }
-
-    private val isWorkStartedLV = MutableLiveData<Boolean>()
+    private val isWorkStartedLV = SingleLiveEvent<Boolean>()
     fun isWorkStarted(): LiveData<Boolean> = isWorkStartedLV
 
-    private val isWorkStoppedLV = MutableLiveData<Boolean>()
+    private val isWorkStoppedLV = SingleLiveEvent<Boolean>()
     fun isWorkStopped(): LiveData<Boolean> = isWorkStoppedLV
 
     private val isRefreshLV = MutableLiveData<Boolean>()
@@ -76,7 +72,6 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
         }
     }
 
-    // TODO add request params from userRepository in shiftRepository
     fun startWork(qrScan: String) {
         viewModelScope.launch {
             showLoading()

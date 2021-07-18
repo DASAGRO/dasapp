@@ -41,6 +41,8 @@ class AcceptConfirmationVM : BaseVM(), KoinComponent {
     private val officeInventoryLV = SingleLiveEvent<OfficeInventory?>()
     fun getOfficeInventory(): LiveData<OfficeInventory?> = officeInventoryLV
 
+    fun getUserRole() = userRepository.getUserRole()
+
     fun setOfficeInventory(officeInventory: OfficeInventory?) {
         this.officeInventory = officeInventory
         officeInventoryLV.postValue(officeInventory)
