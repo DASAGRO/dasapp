@@ -59,14 +59,14 @@ fun TransportInventory.toSentEntity(): SentTransportEntity {
     )
 }
 
-fun TransportInventory.toSentRequest(): SendTransportRequest {
+fun TransportInventory.toSentRequest(lat: Double = 0.0, long: Double = 0.0): SendTransportRequest {
     return SendTransportRequest(
         date = System.currentTimeMillis(),
         id =  this.id,
         isAccepted = 0,
         isSend = 0 ,
-        latitude = this.latitude,
-        longitude = this.longitude,
+        latitude = lat,
+        longitude = long,
         name = this.model,
         sendAt = 0,
         senderName = this.senderName,
@@ -78,14 +78,14 @@ fun TransportInventory.toSentRequest(): SendTransportRequest {
 }
 
 
-fun TransportInventory.toGetRequest(userId: String, comment: String, fileIds: ArrayList<Int>?): GetTransportRequest {
+fun TransportInventory.toGetRequest(userId: String, comment: String, fileIds: ArrayList<Int>?, lat: Double = 0.0, long: Double = 0.0): GetTransportRequest {
     return GetTransportRequest(
         date = System.currentTimeMillis(),
         id =  this.id,
         isAccepted = 0,
         isSend = 0 ,
-        latitude = this.latitude,
-        longitude = this.longitude,
+        latitude = lat,
+        longitude = long,
         name = this.model,
         sendAt = 0,
         senderName = this.senderName,

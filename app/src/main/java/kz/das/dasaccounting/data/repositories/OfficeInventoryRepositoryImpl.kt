@@ -11,6 +11,7 @@ import kz.das.dasaccounting.data.entities.office.*
 import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.OfficeOperationApi
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
+import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -19,6 +20,8 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
 
     private val officeOperationApi: OfficeOperationApi by inject()
     private val dasAppDatabase: DasAppDatabase by inject()
+
+    private val userRepository: UserRepository by inject()
 
     override suspend fun getOfficeMaterials(): List<OfficeInventory> {
         return officeOperationApi.getMaterials().unwrap({ list -> list.map { it.toDomain() } },
@@ -41,8 +44,8 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                 date = System.currentTimeMillis(),
                 name = officeInventory.name,
                 humidity = officeInventory.humidity,
-                latitude = officeInventory.latitude,
-                longitude = officeInventory.longitude,
+                latitude = userRepository.getLastLocation().lat,
+                longitude = userRepository.getLastLocation().long,
                 materialUUID = officeInventory.materialUUID,
                 senderUUID = officeInventory.senderUUID,
                 requestId = officeInventory.requestId,
@@ -62,8 +65,8 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                 date = System.currentTimeMillis(),
                 name = officeInventory.name,
                 humidity = officeInventory.humidity,
-                latitude = officeInventory.latitude,
-                longitude = officeInventory.longitude,
+                latitude = userRepository.getLastLocation().lat,
+                longitude = userRepository.getLastLocation().long,
                 materialUUID = officeInventory.materialUUID,
                 requestId = officeInventory.requestId,
                 quantity = officeInventory.quantity,
@@ -120,8 +123,8 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                     date = System.currentTimeMillis(),
                     name = it.name,
                     humidity = it.humidity,
-                    latitude = it.latitude,
-                    longitude = it.longitude,
+                    latitude = userRepository.getLastLocation().lat,
+                    longitude = userRepository.getLastLocation().long,
                     materialUUID = it.materialUUID,
                     senderUUID = it.senderUUID,
                     requestId = it.requestId,
@@ -150,8 +153,8 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                     date = System.currentTimeMillis(),
                     name = it.name,
                     humidity = it.humidity,
-                    latitude = it.latitude,
-                    longitude = it.longitude,
+                    latitude = userRepository.getLastLocation().lat,
+                    longitude = userRepository.getLastLocation().long,
                     materialUUID = it.materialUUID,
                     requestId = it.requestId,
                     quantity = it.quantity,

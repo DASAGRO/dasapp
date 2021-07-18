@@ -9,7 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.core.navigation.DasAppScreen
-import kz.das.dasaccounting.core.navigation.requireFlowRouter
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.shared.NetworkConnectionVM
 import kz.das.dasaccounting.data.entities.office.toDomain
@@ -78,6 +77,8 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
                 inventoryTransferDialog.show(childFragmentManager, inventoryTransferDialog.tag)
             }
         })
+
+        operationsAdapter?.addItems(getInitOperations())
     }
 
     override fun observeLiveData() {
@@ -96,27 +97,26 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
         })
 
         officeBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
+            operationsAdapter?.removeHead(OperationHead(getString(R.string.inventory_title)))
             operationsAdapter?.clearOperationItems()
-            operationsAdapter?.putItems(getOperations(it))
+            if (!it.isNullOrEmpty()) {
+                operationsAdapter?.addItems(getOperations(it))
+            }
         })
 
         officeBottomNavigationVM.getAwaitAcceptedOperationsLocally().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.removeItem(OperationHead(getString(R.string.await_accepted_operations)))
-            if (it.isNotEmpty()) {
-                operationsAdapter?.clearItems(it)
+            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_operations)))
+            operationsAdapter?.clearAwaitAcceptedOperations()
+            if (!it.isNullOrEmpty()) {
                 operationsAdapter?.addItems(getAwaitAcceptedOperations(it))
-            } else {
-                operationsAdapter?.clearAwaitAcceptedOperations()
             }
         })
 
         officeBottomNavigationVM.getAwaitSentOperationsLocally().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.removeItem(OperationHead(getString(R.string.await_sent_operations)))
-            if (it.isNotEmpty()) {
-                operationsAdapter?.clearItems(it)
+            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_operations)))
+            operationsAdapter?.clearAwaitSentOperations()
+            if (!it.isNullOrEmpty()) {
                 operationsAdapter?.addItems(getAwaitSentOperations(it))
-            } else {
-                operationsAdapter?.clearAwaitSentOperations()
             }
         })
 
@@ -127,7 +127,7 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
             .setCancelable(true)
             .setOnScanCallback(object : QrFragment.OnScanCallback {
                 override fun onScan(qrScan: String) {
-                    delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
+                    run {
                         try {
                             if (!qrScan.contains("stateNumber") || !qrScan.contains("storeUUID") || !qrScan.contains("sealNumber") || !qrScan.contains("model")) {
                                 OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
@@ -154,26 +154,20 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
         transferFragment.show(childFragmentManager, transferFragment.tag)
     }
 
-    private fun getOperations(inventories: ArrayList<OfficeInventory>): ArrayList<OperationAct> {
+    private fun getInitOperations(): ArrayList<OperationAct>  {
         val operations: ArrayList<OperationAct> = arrayListOf()
         operations.addAll(arrayListOf(
             OperationHead(getString(R.string.available_operations)),
-            OperationInit("Принять ТМЦ", R.drawable.ic_add),
-            OperationHead(getString(R.string.inventory_title)),
+            OperationInit("Принять ТМЦ", R.drawable.ic_add)
         ))
-        operations.addAll(inventories)
         return operations
     }
 
     private fun getOperations(inventories: List<OfficeInventory>): ArrayList<OperationAct> {
         val operations: ArrayList<OperationAct> = arrayListOf()
-        operations.addAll(arrayListOf(
-            OperationHead(getString(R.string.available_operations)),
-            OperationInit("Принять ТМЦ", R.drawable.ic_add),
-            OperationHead(getString(R.string.inventory_title)),
-        ))
+        operations.add(OperationHead(getString(R.string.inventory_title)))
         operations.addAll(inventories)
-        return operations
+        return if (inventories.isEmpty()) arrayListOf() else operations
     }
 
     private fun getAwaitSentOperations(inventories: List<OfficeInventory>): ArrayList<OperationAct> {

@@ -9,6 +9,7 @@ import kz.das.dasaccounting.data.entities.requests.toReceiveFligelDataRequest
 import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.DriverOperationApi
 import kz.das.dasaccounting.domain.DriverInventoryRepository
+import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import org.koin.core.KoinComponent
@@ -18,6 +19,7 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
 
     private val driverInventoryApi: DriverOperationApi by inject()
     private val dasAppDatabase: DasAppDatabase by inject()
+    private val userRepository: UserRepository by inject()
 
     override suspend fun getDriverTransports(): List<TransportInventory> {
         return driverInventoryApi.getTransports().unwrap({ list -> list.map { it.toDomain() } },
@@ -33,7 +35,7 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
     override suspend fun initAwaitAcceptInventory() {
         dasAppDatabase.driverAcceptedInventoryDao().all.forEach {
             driverInventoryApi.getInventoryDriverTransport(
-                it.toDomain().toGetRequest(it.molUuid ?: "", "Повторная отправка", null)
+                it.toDomain().toGetRequest(it.molUuid ?: "", "Повторная отправка", null, userRepository.getLastLocation().lat, userRepository.getLastLocation().long)
             )
                 .unwrap(object : OnResponseCallback<Any> {
                     override fun onSuccess(entity: Any) {
@@ -47,7 +49,7 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
 
     override suspend fun initAwaitSendInventory() {
         dasAppDatabase.driverSentInventoryDao().all.forEach {
-            driverInventoryApi.sendInventoryDriverTransport(it.toDomain().toSentRequest())
+            driverInventoryApi.sendInventoryDriverTransport(it.toDomain().toSentRequest(userRepository.getLastLocation().lat, userRepository.getLastLocation().long))
                 .unwrap(object : OnResponseCallback<Any> {
                     override fun onSuccess(entity: Any) {
                         dasAppDatabase.driverSentInventoryDao().removeItem(it)
@@ -83,13 +85,15 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
             transportInventory.toGetRequest(
                 transportInventory.molUuid ?: "",
                 comment,
-                fileIds
+                fileIds,
+                userRepository.getLastLocation().lat,
+                userRepository.getLastLocation().long
             )
         ).unwrap()
     }
 
     override suspend fun sendInventory(transportInventory: TransportInventory): Any {
-        return driverInventoryApi.sendInventoryDriverTransport(transportInventory.toSentRequest())
+        return driverInventoryApi.sendInventoryDriverTransport(transportInventory.toSentRequest(userRepository.getLastLocation().lat, userRepository.getLastLocation().long))
             .unwrap()
     }
 

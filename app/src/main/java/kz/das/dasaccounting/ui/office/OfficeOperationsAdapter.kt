@@ -97,6 +97,11 @@ class OfficeOperationsAdapter(val context: Context, private var operations: Arra
         notifyDataSetChanged()
     }
 
+    fun removeHead(item: OperationHead) {
+        this.operations.removeAll { (it is OperationHead && it.name == item.name) }
+        notifyDataSetChanged()
+    }
+
     fun addItems(items: ArrayList<OperationAct>) {
         this.operations.addAll(items)
         notifyDataSetChanged()
