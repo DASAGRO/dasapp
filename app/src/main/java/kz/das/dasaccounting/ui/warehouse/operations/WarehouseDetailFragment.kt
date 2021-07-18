@@ -58,30 +58,24 @@ class WarehouseDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouse
             .setOnScanCallback(object : QrFragment.OnScanCallback {
                 override fun onScan(qrScan: String) {
                     delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
-                        if (qrScan.contains("sealNumber") || qrScan.contains("storeUUID")) {
-                            try {
+                        try {
+                            if (qrScan.contains("sealNumber") || qrScan.contains("storeUUID")) {
                                 WarehouseInventoryTypeConvertor().stringToWarehouseInventory(qrScan)?.toDomain()?.let {
                                     requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(it))
                                 }
-                            } catch (e: Exception) {
-                                showError(getString(R.string.common_error), getString(R.string.common_error_scan))
-                            }
-                        } else if (qrScan.contains("model") || qrScan.contains("stateNumber")) {
-                            try {
+                            } else if (qrScan.contains("model") || qrScan.contains("stateNumber")) {
                                 DriverInventoryTypeConvertor().stringToTransportInventory(qrScan)?.toDomain()?.let {
                                     requireRouter().navigateTo(kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoFragment.getScreen(it))
                                 }
-                            } catch (e: Exception) {
-                                showError(getString(R.string.common_error), getString(R.string.common_error_scan))
-                            }
-                        } else {
-                            try {
+                            } else if (qrScan.contains("name") && (!qrScan.contains("stateNumber") || !qrScan.contains("storeUUID") || !qrScan.contains("sealNumber") || !qrScan.contains("model"))) {
                                 OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
                                     requireRouter().navigateTo(kz.das.dasaccounting.ui.office.accept.AcceptInventoryInfoFragment.getScreen(it))
                                 }
-                            } catch (e: Exception) {
+                            } else {
                                 showError(getString(R.string.common_error), getString(R.string.common_error_scan))
                             }
+                        } catch (e: Exception) {
+                            showError(getString(R.string.common_error), getString(R.string.common_error_scan))
                         }
                     }
                 }

@@ -9,8 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="3dp">
 
@@ -38,8 +38,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:gravity="start"
                 android:textColor="@color/purple_700"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="15dp"
-                android:src="@drawable/ic_arrow_next_mini"
+                android:src="@drawable/ic_arrow_next_mini_purple"
                 android:tint="@color/purple_700" />
 
         </LinearLayout>

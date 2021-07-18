@@ -28,6 +28,8 @@ class TransferConfirmVM: BaseVM() {
 
     fun getUserRole() = userRepository.getUserRole()
 
+    fun getUser() = userRepository.getUser()
+
     fun setTransportInventory(transportInventory: TransportInventory?) {
         this.transportInventory = transportInventory
         this.transportInventory?.senderName = userRepository.getUser()?.lastName + " "

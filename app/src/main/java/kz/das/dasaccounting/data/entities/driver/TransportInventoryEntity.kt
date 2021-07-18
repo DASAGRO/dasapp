@@ -16,7 +16,7 @@ data class TransportInventoryEntity(
     var requestId: String? = null,
     val stateNumber: String,
     val tsType: String,
-    val senderName: String?,
+    var senderName: String?,
     @PrimaryKey
     val uuid: String
 )
@@ -30,6 +30,7 @@ fun TransportInventoryEntity.toDomain(): TransportInventory {
         longitude = this.longitude,
         model = this.model,
         molUuid = this.molUuid,
+        requestId = this.requestId,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
@@ -46,6 +47,7 @@ fun TransportInventory.toEntity(): TransportInventoryEntity {
         longitude = this.longitude,
         model = this.model,
         molUuid = this.molUuid,
+        requestId = this.requestId,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         uuid = this.uuid,

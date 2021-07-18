@@ -38,6 +38,7 @@ class GuardDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouseActi
             tvWarehouseActionsTitle.text = mViewModel.getWarehouseInventory()?.name
             llActionList.isVisible = false
             llActionAdd.isVisible = false
+            tvNameSwap.text = "Передать склад"
             llActionSwap.setOnClickListener {
                 showTransferDialog()
             }

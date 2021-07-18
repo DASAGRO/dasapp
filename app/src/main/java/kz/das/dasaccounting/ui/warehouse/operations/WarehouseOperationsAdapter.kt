@@ -2,12 +2,11 @@ package kz.das.dasaccounting.ui.warehouse.operations
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.recyclerview.BaseViewHolder
-import kz.das.dasaccounting.databinding.ItemOperationActionBinding
+import kz.das.dasaccounting.databinding.ItemSearchActionBinding
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
@@ -34,10 +33,10 @@ class WarehouseOperationsAdapter(val context: Context, private var operations: A
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<out OperationAct> {
         val layoutInflater = LayoutInflater.from(context)
         return mapOf(
-            ACTION to OperationOfficeInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false)),
-            OPERATION to OperationTransportInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false))
+            ACTION to OperationOfficeInventoryViewHolder(ItemSearchActionBinding.inflate(layoutInflater, parent, false)),
+            OPERATION to OperationTransportInventoryViewHolder(ItemSearchActionBinding.inflate(layoutInflater, parent, false))
         )[viewType]
-            ?: OperationTransportInventoryViewHolder(ItemOperationActionBinding.inflate(layoutInflater, parent, false))
+            ?: OperationTransportInventoryViewHolder(ItemSearchActionBinding.inflate(layoutInflater, parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -82,28 +81,24 @@ class WarehouseOperationsAdapter(val context: Context, private var operations: A
         }
     }
 
-    inner class OperationTransportInventoryViewHolder internal constructor(private val itemBinding: ItemOperationActionBinding) : BaseViewHolder<TransportInventory>(itemBinding) {
+    inner class OperationTransportInventoryViewHolder internal constructor(private val itemBinding: ItemSearchActionBinding) : BaseViewHolder<TransportInventory>(itemBinding) {
         override fun bind(item: TransportInventory, position: Int) {
             this.itemBinding.run {
-                this.tvName.text = item.model
-                this.ivAction.setTsTypeImage(item)
-                this.ivStatePending.setImageResource(R.drawable.ic_arrow_next_mini)
-                this.ivStatePending.visibility = View.VISIBLE
-                this.llAction.setOnClickListener {
+                this.tvSearchTitle.text = item.model
+                this.ivItemSearch.setTsTypeImage(item)
+                this.llSearchItem.setOnClickListener {
                     warehouseOperationsAdapterEvent?.onTransportInventory(item)
                 }
             }
         }
     }
 
-    inner class OperationOfficeInventoryViewHolder internal constructor(private val itemBinding: ItemOperationActionBinding) : BaseViewHolder<OfficeInventory>(itemBinding) {
+    inner class OperationOfficeInventoryViewHolder internal constructor(private val itemBinding: ItemSearchActionBinding) : BaseViewHolder<OfficeInventory>(itemBinding) {
         override fun bind(item: OfficeInventory, position: Int) {
             this.itemBinding.run {
-                this.tvName.text = item.name
-                this.ivAction.setImageResource(R.drawable.ic_inventory)
-                this.ivStatePending.setImageResource(R.drawable.ic_arrow_next_mini)
-                this.ivStatePending.visibility = View.VISIBLE
-                this.llAction.setOnClickListener {
+                this.tvSearchTitle.text = item.name
+                this.ivItemSearch.setImageResource(R.drawable.ic_inventory)
+                this.llSearchItem.setOnClickListener {
                     warehouseOperationsAdapterEvent?.onOfficeInventory(item)
                 }
             }

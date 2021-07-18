@@ -18,7 +18,10 @@ import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kz.das.dasaccounting.R
+import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.ui.dialogs.NotificationDialog
 import kz.das.dasaccounting.core.ui.extensions.zoomAnimation
@@ -63,7 +66,7 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
                         .setCancelable(true)
                         .setOnScanCallback(object : QrFragment.OnScanCallback {
                             override fun onScan(qrScan: String) {
-                                run {
+                                delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
                                     coreMainVM.startWork(qrScan)
                                 }
                             }

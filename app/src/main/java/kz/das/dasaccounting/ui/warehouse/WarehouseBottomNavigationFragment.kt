@@ -21,7 +21,6 @@ import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.action.OperationHead
 import kz.das.dasaccounting.domain.data.action.OperationInit
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
-import kz.das.dasaccounting.ui.office.accept.AcceptInventoryInfoFragment
 import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationFragment
 import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
 import kz.das.dasaccounting.ui.utils.CameraUtils
@@ -107,30 +106,16 @@ class WarehouseBottomNavigationFragment: CoreBottomNavigationFragment() {
             .setOnScanCallback(object : QrFragment.OnScanCallback {
                 override fun onScan(qrScan: String) {
                     delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
-                        if (qrScan.contains("sealNumber") || qrScan.contains("storeUUID")) {
-                            try {
+                        try {
+                            if (qrScan.contains("sealNumber") || qrScan.contains("storeUUID")) {
                                 WarehouseInventoryTypeConvertor().stringToWarehouseInventory(qrScan)?.toDomain()?.let {
                                     requireRouter().navigateTo(kz.das.dasaccounting.ui.warehouse.accept.AcceptInventoryInfoFragment.getScreen(it))
                                 }
-                            } catch (e: Exception) {
+                            } else {
                                 showError(getString(R.string.common_error), getString(R.string.common_error_scan))
                             }
-                        } else if (qrScan.contains("model") || qrScan.contains("stateNumber")) {
-                            try {
-                                DriverInventoryTypeConvertor().stringToTransportInventory(qrScan)?.toDomain()?.let {
-                                    requireRouter().navigateTo(kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoFragment.getScreen(it))
-                                }
-                            } catch (e: Exception) {
-                                showError(getString(R.string.common_error), getString(R.string.common_error_scan))
-                            }
-                        } else {
-                            try {
-                                OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
-                                    requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(it))
-                                }
-                            } catch (e: Exception) {
-                                showError(getString(R.string.common_error), getString(R.string.common_error_scan))
-                            }
+                        } catch (e: Exception) {
+                            showError(getString(R.string.common_error), getString(R.string.common_error_scan))
                         }
                     }
                 }

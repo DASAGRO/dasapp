@@ -127,7 +127,7 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
             .setCancelable(true)
             .setOnScanCallback(object : QrFragment.OnScanCallback {
                 override fun onScan(qrScan: String) {
-                    run {
+                    delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
                         try {
                             if (!qrScan.contains("stateNumber") || !qrScan.contains("storeUUID") || !qrScan.contains("sealNumber") || !qrScan.contains("model")) {
                                 OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
