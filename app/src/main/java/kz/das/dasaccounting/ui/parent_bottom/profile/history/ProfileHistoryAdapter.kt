@@ -17,7 +17,7 @@ import kz.das.dasaccounting.domain.data.office.OfficeAcceptedInventory
 import kz.das.dasaccounting.domain.data.office.OfficeSentInventory
 
 
-class ProfileHistoryAdapter(val context: Context, private var operations: ArrayList<OperationAct>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ProfileHistoryAdapter(val context: Context, private var operations: ArrayList<OperationAct>, val userName: String): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var historyOperationsAdapterEvent: OnHistoryOperationsAdapterEvent? = null
 
@@ -227,7 +227,7 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
             this.itemBinding.run {
                 this.tvInventoryTitle.text = item.model
                 this.ivStatus.setImageResource(R.drawable.ic_banner_waiting_oval)
-                this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.senderName)
+                this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), userName)
                 this.tvInventoryDate.visibility = View.GONE
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.model,
@@ -282,7 +282,7 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
             this.itemBinding.run {
                 this.tvInventoryTitle.text = item.name
                 this.ivStatus.setImageResource(R.drawable.ic_banner_waiting_oval)
-                this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.senderName)
+                this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), userName)
                 this.tvInventoryDate.visibility = View.GONE
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.name,
