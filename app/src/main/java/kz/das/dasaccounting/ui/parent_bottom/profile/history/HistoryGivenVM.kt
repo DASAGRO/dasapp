@@ -30,6 +30,8 @@ class HistoryGivenVM: BaseVM() {
         }
     }
 
+    fun getUser() = userRepository.getUser()
+
     fun getHistoryWarehouseInventoriesLocally() = userRepository.getHistoryWarehouseInventoriesLocally()
 
     fun getHistoryTransportInventoriesLocally() = userRepository.getHistoryTransportInventoriesLocally()

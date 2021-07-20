@@ -23,7 +23,7 @@ class HistoryAcceptedFragment: BaseFragment<HistoryAcceptedVM, FragmentProfileHi
     override fun getViewBinding() = FragmentProfileHistoryAcceptedBinding.inflate(layoutInflater)
 
     override fun setupUI() {
-        historyAdapter = ProfileHistoryAdapter(requireContext(), arrayListOf())
+        historyAdapter = ProfileHistoryAdapter(requireContext(), arrayListOf(), mViewModel.getUser()?.firstName + mViewModel.getUser()?.lastName)
         historyAdapter?.setHistoryOperationsAdapterEvent(object : ProfileHistoryAdapter.OnHistoryOperationsAdapterEvent {
             override fun onClick(title: String?, descr: String?, type: String?, status: String?) {
                 requireRouter().navigateTo(HistoryDetailFragment.getScreen(title, descr, type, status))
