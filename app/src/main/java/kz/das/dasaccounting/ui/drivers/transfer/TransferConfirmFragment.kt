@@ -61,6 +61,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                 try {
                     val inventory = mViewModel.getLocalInventory()?.toEntity()
                     inventory?.requestId = UUID.randomUUID().toString()
+                    inventory?.senderUUID = mViewModel.getUser()?.userId
                     mViewBinding.ivQr.setImageBitmap(DriverInventoryTypeConvertor().transportTransportToString(inventory).generateQR())
                     inventory?.let { inventoryTransport -> mViewModel.setLocalInventory(inventoryTransport.toDomain()) }
                 } catch (e: Exception) { }

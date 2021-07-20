@@ -35,7 +35,7 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
     override suspend fun initAwaitAcceptInventory() {
         dasAppDatabase.driverAcceptedInventoryDao().all.forEach {
             driverInventoryApi.getInventoryDriverTransport(
-                it.toDomain().toGetRequest(it.molUuid ?: "", "Повторная отправка", null, userRepository.getLastLocation().lat, userRepository.getLastLocation().long)
+                it.toDomain().toGetRequest("Повторная отправка", null, userRepository.getLastLocation().lat, userRepository.getLastLocation().long)
             )
                 .unwrap(object : OnResponseCallback<Any> {
                     override fun onSuccess(entity: Any) {
@@ -83,7 +83,6 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
     ): Any {
         return driverInventoryApi.getInventoryDriverTransport(
             transportInventory.toGetRequest(
-                transportInventory.molUuid ?: "",
                 comment,
                 fileIds,
                 userRepository.getLastLocation().lat,

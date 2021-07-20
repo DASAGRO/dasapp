@@ -82,7 +82,7 @@ fun TransportInventory.toSentRequest(lat: Double = 0.0, long: Double = 0.0): Sen
 }
 
 
-fun TransportInventory.toGetRequest(userId: String, comment: String, fileIds: ArrayList<Int>?, lat: Double = 0.0, long: Double = 0.0): GetTransportRequest {
+fun TransportInventory.toGetRequest(comment: String, fileIds: ArrayList<Int>?, lat: Double = 0.0, long: Double = 0.0): GetTransportRequest {
     return GetTransportRequest(
         date = System.currentTimeMillis(),
         id =  this.id,
@@ -100,7 +100,7 @@ fun TransportInventory.toGetRequest(userId: String, comment: String, fileIds: Ar
         type = this.tsType,
         acceptedAt = 0,
         comment = comment,
-        senderUUID = userId,
+        senderUUID = this.senderUUID,
         fileIds = fileIds
     )
 }

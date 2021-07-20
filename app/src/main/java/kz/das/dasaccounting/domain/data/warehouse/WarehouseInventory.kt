@@ -15,6 +15,6 @@ data class WarehouseInventory(
     var sealNumber: String? = null,
     var senderName: String? = null,
     var requestId: String? = null,
-    val storeUUID: String,
+    var storeUUID: String,
     val type: String? = null
 ): OperationAct(), Parcelable

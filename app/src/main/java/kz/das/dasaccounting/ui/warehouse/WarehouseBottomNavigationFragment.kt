@@ -11,11 +11,7 @@ import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.shared.NetworkConnectionVM
-import kz.das.dasaccounting.data.entities.driver.toDomain
-import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.entities.warehouse.toDomain
-import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
-import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.data.source.local.typeconvertors.WarehouseInventoryTypeConvertor
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.action.OperationHead
@@ -107,12 +103,12 @@ class WarehouseBottomNavigationFragment: CoreBottomNavigationFragment() {
                 override fun onScan(qrScan: String) {
                     delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
                         try {
-                            if (qrScan.contains("sealNumber") || qrScan.contains("storeUUID")) {
+                            if (qrScan.contains("sealNumber") && qrScan.contains("storeUUID") && !qrScan.contains("model") && !qrScan.contains("stateNumber")) {
                                 WarehouseInventoryTypeConvertor().stringToWarehouseInventory(qrScan)?.toDomain()?.let {
                                     requireRouter().navigateTo(kz.das.dasaccounting.ui.warehouse.accept.AcceptInventoryInfoFragment.getScreen(it))
                                 }
                             } else {
-                                showError(getString(R.string.common_error), getString(R.string.common_error_scan))
+                                showError(getString(R.string.common_error), "Принимается только склад!")
                             }
                         } catch (e: Exception) {
                             showError(getString(R.string.common_error), getString(R.string.common_error_scan))
