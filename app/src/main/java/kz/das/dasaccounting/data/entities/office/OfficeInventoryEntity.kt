@@ -2,6 +2,7 @@ package kz.das.dasaccounting.data.entities.office
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kz.das.dasaccounting.domain.data.drivers.toAccepted
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import java.io.Serializable
 
@@ -17,6 +18,7 @@ data class OfficeInventoryEntity(
     val materialUUID: String,
     val senderUUID: String? = null,
     var requestId: String? = null,
+    var storeUUID: String? = null,
     var quantity: Int? = null,
     val type: String? = null,
     val acceptedAt: Long? = 0,
@@ -40,6 +42,7 @@ fun OfficeInventoryEntity.toDomain(): OfficeInventory {
         materialUUID = this.materialUUID,
         senderUUID = this.senderUUID,
         requestId = this.requestId,
+        storeUUID = this.storeUUID,
         quantity = this.quantity,
         type = this.type,
         acceptedAt = this.acceptedAt,
@@ -62,6 +65,7 @@ fun OfficeInventory.toEntity(): OfficeInventoryEntity {
         materialUUID = this.materialUUID,
         senderUUID = this.senderUUID,
         requestId = this.requestId,
+        storeUUID = this.storeUUID,
         quantity = this.quantity,
         type = this.type,
         acceptedAt = this.acceptedAt,

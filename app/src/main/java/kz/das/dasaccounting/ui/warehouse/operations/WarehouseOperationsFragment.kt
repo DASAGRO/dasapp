@@ -35,10 +35,12 @@ class WarehouseOperationsFragment: BaseFragment<WarehouseOperationsVM, FragmentS
         warehouseOperationsAdapter = WarehouseOperationsAdapter(requireContext(), arrayListOf())
         warehouseOperationsAdapter?.setWarehouseOperationsAdapterEvent(object : WarehouseOperationsAdapter.OnWarehouseOperationsAdapterEvent {
             override fun onOfficeInventory(officeInventory: OfficeInventory) {
+                officeInventory.storeUUID = mViewModel.getWarehouseInventory()?.storeUUID
                 showTransferDialog(officeInventory)
             }
 
             override fun onTransportInventory(transportInventory: TransportInventory) {
+                transportInventory.storeUUID = mViewModel.getWarehouseInventory()?.storeUUID
                 showTransportTransferDialog(transportInventory)
             }
         })

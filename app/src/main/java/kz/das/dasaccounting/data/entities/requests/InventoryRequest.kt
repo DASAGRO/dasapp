@@ -11,6 +11,7 @@ open class InventorySendRequest(
     val longitude: Double? = null,
     val materialUUID: String? = null,
     var requestId: String? = null,
+    var storeUUID: String? = null,
     val quantity: Int? = null,
     val type: String? = null,
     val senderName: String? = null
@@ -27,6 +28,7 @@ open class InventoryGetRequest(
     val materialUUID: String? = null,
     val senderUUID: String? = null,
     var requestId: String? = null,
+    var storeUUID: String? = null,
     val quantity: Int? = null,
     val type: String? = null,
     val senderName: String? = null,

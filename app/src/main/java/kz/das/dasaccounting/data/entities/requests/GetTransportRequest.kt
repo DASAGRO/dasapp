@@ -17,5 +17,6 @@ data class GetTransportRequest(
     val senderName: String?,
     val syncRequire: Int,
     val tcUUID: String,
+    var storeUUID: String? = null,
     val type: String
 )

@@ -2,7 +2,6 @@ package kz.das.dasaccounting.data.entities.driver
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.entities.requests.GetTransportRequest
 import kz.das.dasaccounting.data.entities.requests.SendTransportRequest
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
@@ -18,6 +17,7 @@ data class SentTransportEntity(
     val model: String,
     val molUuid: String?,
     var requestId: String? = null,
+    var storeUUID: String? = null,
     val stateNumber: String,
     val tsType: String,
     @PrimaryKey
@@ -35,6 +35,7 @@ fun SentTransportEntity.toDomain(): TransportInventory {
         model = this.model,
         molUuid = this.molUuid,
         requestId = this.requestId,
+        storeUUID = this.storeUUID,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
@@ -52,6 +53,7 @@ fun TransportInventory.toSentEntity(): SentTransportEntity {
         model = this.model,
         molUuid = this.molUuid,
         requestId = this.requestId,
+        storeUUID = this.storeUUID,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
@@ -73,6 +75,7 @@ fun TransportInventory.toSentRequest(lat: Double = 0.0, long: Double = 0.0): Sen
         requestId = this.requestId,
         syncRequire = 0,
         tcUUID = this.uuid,
+        storeUUID = this.storeUUID,
         type = this.tsType,
         acceptedAt = 0
     )
@@ -93,6 +96,7 @@ fun TransportInventory.toGetRequest(userId: String, comment: String, fileIds: Ar
         requestId = this.requestId,
         syncRequire = 0,
         tcUUID = this.uuid,
+        storeUUID = this.storeUUID,
         type = this.tsType,
         acceptedAt = 0,
         comment = comment,

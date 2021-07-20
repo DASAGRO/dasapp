@@ -65,10 +65,12 @@ class WarehouseDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouse
                                 }
                             } else if (qrScan.contains("model") || qrScan.contains("stateNumber")) {
                                 DriverInventoryTypeConvertor().stringToTransportInventory(qrScan)?.toDomain()?.let {
+                                    it.storeUUID = mViewModel.getWarehouseInventory()?.storeUUID
                                     requireRouter().navigateTo(kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoFragment.getScreen(it))
                                 }
                             } else if (qrScan.contains("name") && (!qrScan.contains("stateNumber") || !qrScan.contains("storeUUID") || !qrScan.contains("sealNumber") || !qrScan.contains("model"))) {
                                 OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
+                                    it.storeUUID = mViewModel.getWarehouseInventory()?.storeUUID
                                     requireRouter().navigateTo(kz.das.dasaccounting.ui.office.accept.AcceptInventoryInfoFragment.getScreen(it))
                                 }
                             } else {

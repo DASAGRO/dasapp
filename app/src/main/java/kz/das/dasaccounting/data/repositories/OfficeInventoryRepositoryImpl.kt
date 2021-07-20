@@ -5,6 +5,7 @@ import androidx.lifecycle.map
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.core.extensions.OnResponseCallback
 import kz.das.dasaccounting.core.extensions.unwrap
+import kz.das.dasaccounting.data.entities.driver.toGetRequest
 import kz.das.dasaccounting.data.entities.requests.InventoryGetRequest
 import kz.das.dasaccounting.data.entities.requests.InventorySendRequest
 import kz.das.dasaccounting.data.entities.office.*
@@ -49,6 +50,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                 materialUUID = officeInventory.materialUUID,
                 senderUUID = officeInventory.senderUUID,
                 requestId = officeInventory.requestId,
+                storeUUID = officeInventory.storeUUID,
                 quantity = officeInventory.quantity,
                 type = officeInventory.type,
                 senderName = officeInventory.senderName,
@@ -69,6 +71,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                 longitude = userRepository.getLastLocation().long,
                 materialUUID = officeInventory.materialUUID,
                 requestId = officeInventory.requestId,
+                storeUUID = officeInventory.storeUUID,
                 quantity = officeInventory.quantity,
                 type = officeInventory.type,
                 senderName = officeInventory.senderName
@@ -128,6 +131,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                     materialUUID = it.materialUUID,
                     senderUUID = it.senderUUID,
                     requestId = it.requestId,
+                    storeUUID = it.storeUUID,
                     quantity = it.quantity,
                     type = it.type,
                     senderName = it.senderName,
@@ -157,6 +161,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                     longitude = userRepository.getLastLocation().long,
                     materialUUID = it.materialUUID,
                     requestId = it.requestId,
+                    storeUUID = it.storeUUID,
                     quantity = it.quantity,
                     type = it.type,
                     senderName = it.senderName
