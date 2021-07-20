@@ -51,27 +51,7 @@ class WarehouseInventoryRepositoryImpl: WarehouseInventoryRepository, KoinCompon
                 longitude = userRepository.getLastLocation().long,
                 name = warehouseInventory.name,
                 requestId = warehouseInventory.requestId,
-                receiverUUID = warehouseInventory.senderUUID,
-                sealNumber = warehouseInventory.sealNumber,
-                senderName = warehouseInventory.senderName,
-                storeUUID = warehouseInventory.storeUUID,
-                type = warehouseInventory.type
-            )
-        ).unwrap()
-    }
-
-    override suspend fun sendInventory(warehouseInventory: WarehouseInventory): Any {
-        return warehouseOperationApi.sendWarehouse(
-            SendStoreRequest(
-                comment = "",
-                date = System.currentTimeMillis(),
-                fileIds = arrayListOf(),
-                id = warehouseInventory.id,
-                latitude = userRepository.getLastLocation().lat,
-                longitude = userRepository.getLastLocation().long,
-                name = warehouseInventory.name,
-                requestId = warehouseInventory.requestId,
-                receiverUUID = warehouseInventory.senderUUID,
+                senderUUID = warehouseInventory.senderUUID,
                 sealNumber = warehouseInventory.sealNumber,
                 senderName = warehouseInventory.senderName,
                 storeUUID = warehouseInventory.storeUUID,
@@ -94,7 +74,6 @@ class WarehouseInventoryRepositoryImpl: WarehouseInventoryRepository, KoinCompon
                 longitude = userRepository.getLastLocation().long,
                 name = warehouseInventory.name,
                 requestId = warehouseInventory.requestId,
-                receiverUUID = userRepository.getUser()?.userId,
                 sealNumber = warehouseInventory.sealNumber,
                 senderName = warehouseInventory.senderName,
                 storeUUID = warehouseInventory.storeUUID,

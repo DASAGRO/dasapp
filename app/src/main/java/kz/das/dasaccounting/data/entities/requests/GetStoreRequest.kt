@@ -9,7 +9,7 @@ data class GetStoreRequest(
     val longitude: Double,
     val name: String?,
     val requestId: String?,
-    val receiverUUID: String?,
+    val senderUUID: String?,
     val sealNumber: String?,
     val senderName: String?,
     val storeUUID: String?,

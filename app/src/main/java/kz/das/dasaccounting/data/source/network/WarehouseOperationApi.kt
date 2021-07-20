@@ -27,10 +27,10 @@ interface WarehouseOperationApi {
 
 
 
-    @POST("/api/goods/get/ts")
+    @POST("/api/goods/get/store")
     suspend fun getWarehouse(@Body getStoreRequest: GetStoreRequest): Response<Any>
 
-    @POST("/api/goods/send/ts")
+    @POST("/api/goods/send/store")
     suspend fun sendWarehouse(@Body sendStoreRequest: SendStoreRequest): Response<Any>
 
 

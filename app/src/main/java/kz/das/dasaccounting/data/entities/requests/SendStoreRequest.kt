@@ -9,7 +9,6 @@ data class SendStoreRequest(
     val longitude: Double?,
     val name: String?,
     val requestId: String?,
-    val receiverUUID: String?,
     val sealNumber: String?,
     val senderName: String?,
     val storeUUID: String?,
