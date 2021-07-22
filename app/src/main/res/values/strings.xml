@@ -1,7 +1,7 @@
 <resources>
     <string name="mapbox_access_token" translatable="false">sk.eyJ1IjoiZGFzYWdybyIsImEiOiJja291YnZkcWQwNTg5MnFxajlpZW1iendxIn0.pavabtbp9TwjeGC6GUfSow</string>
 
-    <string name="app_name">DAS Accounting</string>
+    <string name="app_name">DAS Mobile</string>
     <string name="action_settings">Настройки</string>
 
     <string name="common_next">Следующий</string>
@@ -81,9 +81,9 @@
     <string name="from_namespace">от %s</string>
     <string name="given_namespace">передан %s</string>
     <string name="accept">Принять</string>
-    <string name="accept_title">Принят</string>
+    <string name="accept_title">Принято</string>
     <string name="given">Передан</string>
-    <string name="give_title">Передан</string>
+    <string name="give_title">Передано</string>
     <string name="error_not_exist">Такого юзера не существует в базе</string>
     <string name="confirm">Подтвердить</string>
     <string name="cancel">Отмена</string>
@@ -164,6 +164,7 @@
     <string name="gov_number">Гос номер: </string>
     <string name="seal_number">Номер пломбы: </string>
     <string name="dialog_inventory_confirm_title">Вы уверены что партнер отсканировал QR код ?</string>
+    <string name="quantity">Количество</string>
 
 
 </resources>

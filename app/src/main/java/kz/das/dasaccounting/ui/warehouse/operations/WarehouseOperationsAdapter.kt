@@ -84,7 +84,7 @@ class WarehouseOperationsAdapter(val context: Context, private var operations: A
     inner class OperationTransportInventoryViewHolder internal constructor(private val itemBinding: ItemSearchActionBinding) : BaseViewHolder<TransportInventory>(itemBinding) {
         override fun bind(item: TransportInventory, position: Int) {
             this.itemBinding.run {
-                this.tvSearchTitle.text = item.model
+                this.tvSearchTitle.text = (item.model + " " + item.stateNumber)
                 this.ivItemSearch.setTsTypeImage(item)
                 this.llSearchItem.setOnClickListener {
                     warehouseOperationsAdapterEvent?.onTransportInventory(item)

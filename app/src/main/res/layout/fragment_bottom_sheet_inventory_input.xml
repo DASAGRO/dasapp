@@ -70,7 +70,7 @@
                 android:id="@+id/edt_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="@string/naming"
+                android:hint="@string/quantity"
                 android:imeOptions="actionDone"
                 android:inputType="number"
                 android:textColor="@color/purple_700"

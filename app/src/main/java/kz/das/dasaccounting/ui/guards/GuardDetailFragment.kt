@@ -1,7 +1,7 @@
 package kz.das.dasaccounting.ui.guards
 
 import android.os.Bundle
-import androidx.core.view.isVisible
+import android.view.View
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
@@ -9,7 +9,6 @@ import kz.das.dasaccounting.core.ui.extensions.verifyToInit
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentWarehouseActionsBinding
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
-import kz.das.dasaccounting.ui.warehouse.operations.WarehouseDetailFragment
 import kz.das.dasaccounting.ui.warehouse.operations.WarehouseDetailVM
 import kz.das.dasaccounting.ui.warehouse.transfer.TransferConfirmFragment
 import kz.das.dasaccounting.ui.warehouse.transfer.TransferFormalizeFragment
@@ -20,7 +19,7 @@ class GuardDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouseActi
     companion object {
         private const val WAREHOUSE_INVENTORY = "WAREHOUSE"
         fun getScreen(warehouseInventory: WarehouseInventory?) = DasAppScreen(
-            WarehouseDetailFragment()
+            GuardDetailFragment()
         ).apply {
             val args = Bundle()
             args.putParcelable(WAREHOUSE_INVENTORY, warehouseInventory)
@@ -36,8 +35,8 @@ class GuardDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouseActi
         mViewModel.setWarehouseInventory(getWarehouse())
         mViewBinding.apply {
             tvWarehouseActionsTitle.text = mViewModel.getWarehouseInventory()?.name
-            llActionList.isVisible = false
-            llActionAdd.isVisible = false
+            this.llActionList.visibility = View.GONE
+            this.llActionAdd.visibility = View.GONE
             tvNameSwap.text = "Передать склад"
             llActionSwap.setOnClickListener {
                 showTransferDialog()

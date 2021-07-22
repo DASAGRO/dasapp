@@ -151,7 +151,7 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
     }
 
     fun clearAwaitSentTransports() {
-        this.operations.removeAll { it is TransportAcceptedInventory }
+        this.operations.removeAll { it is TransportSentInventory }
         notifyDataSetChanged()
     }
 
@@ -175,6 +175,7 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
                 this.tvInventoryTitle.text = item.name
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.fullName)
                 this.tvInventoryDate.text = item.dateTime
+                this.tvInventoryQuantity.visibility = View.GONE
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.name,
                         (context.getString(R.string.gov_number) +
@@ -192,6 +193,7 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
                 this.tvInventoryTitle.text = item.name
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.fullName)
                 this.tvInventoryDate.text = item.dateTime
+                this.tvInventoryQuantity.visibility = View.GONE
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.name,
                         (context.getString(R.string.seal_number) +
@@ -208,6 +210,7 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
                 this.tvInventoryTitle.text = item.name
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.fullName)
                 this.tvInventoryDate.text = item.dateTime
+                this.tvInventoryQuantity.text = String.format(context.getString(R.string.total_quantity), item.quantity)
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.name,
                         (context.getString(R.string.inventory_total_quantity) +
@@ -229,6 +232,7 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
                 this.ivStatus.setImageResource(R.drawable.ic_banner_waiting_oval)
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), userName)
                 this.tvInventoryDate.visibility = View.GONE
+                this.tvInventoryQuantity.visibility = View.GONE
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.model,
                         (context.getString(R.string.gov_number) +
@@ -247,6 +251,7 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
                 this.ivStatus.setImageResource(R.drawable.ic_banner_waiting_oval)
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.senderName)
                 this.tvInventoryDate.visibility = View.GONE
+                this.tvInventoryQuantity.visibility = View.GONE
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.model,
                         (context.getString(R.string.gov_number) +
@@ -264,6 +269,7 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
                 this.ivStatus.setImageResource(R.drawable.ic_banner_waiting_oval)
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), item.senderName)
                 this.tvInventoryDate.visibility = View.GONE
+                this.tvInventoryQuantity.text = String.format(context.getString(R.string.total_quantity), item.quantity)
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.name,
                         (context.getString(R.string.inventory_total_quantity) +
@@ -284,6 +290,7 @@ class ProfileHistoryAdapter(val context: Context, private var operations: ArrayL
                 this.ivStatus.setImageResource(R.drawable.ic_banner_waiting_oval)
                 this.tvInventedUser.text = String.format(context.getString(R.string.inventory_sender_name), userName)
                 this.tvInventoryDate.visibility = View.GONE
+                this.tvInventoryQuantity.text = String.format(context.getString(R.string.total_quantity), item.quantity)
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.name,
                         (context.getString(R.string.inventory_total_quantity) +

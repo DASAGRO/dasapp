@@ -38,6 +38,15 @@
             tools:text="6 Октября 2020 года в 18:31" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_inventory_quantity"
+            style="@style/Widget.MaterialComponents.TextView.DAS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/color_grey_text"
+            tools:text="Количество:" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_invented_user"
             style="@style/Widget.MaterialComponents.TextView.DAS"
             android:layout_width="match_parent"

@@ -68,7 +68,7 @@ class GuardBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
 
             override fun onInventoryTransfer(warehouseInventory: WarehouseInventory) {
-                requireRouter().navigateTo(kz.das.dasaccounting.ui.warehouse.accept.AcceptInventoryInfoFragment.getScreen(warehouseInventory))
+                requireRouter().navigateTo(GuardDetailFragment.getScreen(warehouseInventory))
             }
 
         })
