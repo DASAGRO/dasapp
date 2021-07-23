@@ -18,7 +18,7 @@ data class OfficeInventoryEntity(
     val senderUUID: String? = null,
     var requestId: String? = null,
     var storeUUID: String? = null,
-    var quantity: Int? = null,
+    var quantity: Double? = null,
     val type: String? = null,
     val acceptedAt: Long? = 0,
     val sendAt: Long? = 0,

@@ -1,5 +1,6 @@
 package kz.das.dasaccounting
 
+import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -34,6 +35,7 @@ class MainActivity: BaseActivity<MainVM, ActivityMainBinding>(), RouterProvider 
         cicerone.navigatorHolder.removeNavigator()
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token))
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -51,10 +53,6 @@ class MainActivity: BaseActivity<MainVM, ActivityMainBinding>(), RouterProvider 
         })
     }
 
-    override fun restartActivity() {
-        super.restartActivity()
-    }
-
     override fun onLogout() {
         super.onLogout()
         mViewModel.logOut()
@@ -67,5 +65,21 @@ class MainActivity: BaseActivity<MainVM, ActivityMainBinding>(), RouterProvider 
     }
 
     override fun getRouter() = cicerone.router
+
+//    override fun showLoading() {
+//        mViewBinding.progressBar.isVisible = true
+//    }
+//
+//    override fun hideLoading() {
+//        mViewBinding.progressBar.isVisible = false
+//    }
+//
+//    override fun showUploading() {
+//        mViewBinding.progressBar.isVisible = true
+//    }
+//
+//    override fun hideUploading() {
+//        mViewBinding.progressBar.isVisible = false
+//    }
 
 }

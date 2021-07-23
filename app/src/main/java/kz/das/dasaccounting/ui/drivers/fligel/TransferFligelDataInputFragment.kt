@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.drivers.fligel
 
+import androidx.lifecycle.Observer
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.dialogs.BaseBottomSheetFragment
 import kz.das.dasaccounting.core.ui.extensions.verifyToInit
@@ -39,13 +40,19 @@ class TransferFligelDataInputFragment: BaseBottomSheetFragment<FragmentBottomShe
                 if (!edtFieldNumber.text.isNullOrEmpty() &&
                     !edtGatherWet.text.isNullOrEmpty() &&
                     !edtGatherWeight.text.isNullOrEmpty() &&
+                    !edtTransportType.text.isNullOrEmpty() &&
+                    mViewModel.getNomenclatures().filter { it.fieldNumber == edtFieldNumber.text.toString() }.isNullOrEmpty()) {
+                    showError(getString(R.string.common_error), "Не удалось найти урожай по номеру поля")
+                } else if (!edtFieldNumber.text.isNullOrEmpty() &&
+                    !edtGatherWet.text.isNullOrEmpty() &&
+                    !edtGatherWeight.text.isNullOrEmpty() &&
                     !edtTransportType.text.isNullOrEmpty()) {
                     checkConfirmation(FligelProduct(
                         (0 until 10000).random(),
                         edtTransportType.text.toString(),
                         "Отправка урожая",
                         edtFieldNumber.text.toString().toInt(),
-                        edtGatherWeight.text.toString().toInt(),
+                        edtGatherWeight.text.toString().toDouble(),
                         edtGatherWet.text.toString().toInt(),
                         "Название урожая"
                     ))
@@ -58,6 +65,9 @@ class TransferFligelDataInputFragment: BaseBottomSheetFragment<FragmentBottomShe
 
     override fun observeLiveData() {
         super.observeLiveData()
+        mViewModel.getNomenclaturesLocally().observe(viewLifecycleOwner, Observer {
+            mViewModel.setNomenclatures(it)
+        })
     }
 
     private fun checkConfirmation(fligelProduct: FligelProduct) {

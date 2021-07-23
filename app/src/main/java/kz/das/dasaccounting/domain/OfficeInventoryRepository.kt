@@ -1,6 +1,7 @@
 package kz.das.dasaccounting.domain
 
 import androidx.lifecycle.LiveData
+import kz.das.dasaccounting.domain.data.office.NomenclatureOfficeInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 
 interface OfficeInventoryRepository {
@@ -18,6 +19,12 @@ interface OfficeInventoryRepository {
     suspend fun saveAwaitAcceptInventory(officeInventory: OfficeInventory, comment: String, fileIds: ArrayList<Int>)
 
     suspend fun saveAwaitSentInventory(officeInventory: OfficeInventory)
+
+    suspend fun getNomenclatures(): List<NomenclatureOfficeInventory>
+
+    suspend fun saveOfficeInventory(officeInventory: OfficeInventory)
+
+    fun getNomenclaturesLocally(): LiveData<List<NomenclatureOfficeInventory>>
 
     fun getOfficeMaterialsLocally(): LiveData<List<OfficeInventory>>
 

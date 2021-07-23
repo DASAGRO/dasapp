@@ -12,7 +12,7 @@ open class InventorySendRequest(
     val materialUUID: String? = null,
     var requestId: String? = null,
     var storeUUID: String? = null,
-    val quantity: Int? = null,
+    val quantity: Double? = null,
     val type: String? = null,
     val senderName: String? = null
 ) : Serializable
@@ -29,7 +29,7 @@ open class InventoryGetRequest(
     val senderUUID: String? = null,
     var requestId: String? = null,
     var storeUUID: String? = null,
-    val quantity: Int? = null,
+    val quantity: Double? = null,
     val type: String? = null,
     val senderName: String? = null,
     var fileIds: Array<Any>?,

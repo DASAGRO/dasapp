@@ -72,7 +72,7 @@
                 android:layout_height="48dp"
                 android:hint="@string/quantity"
                 android:imeOptions="actionDone"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:textColor="@color/purple_700"
                 android:padding="6dp"
                 android:textSize="14sp" />

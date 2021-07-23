@@ -10,7 +10,7 @@ data class FligelProduct(
     var combinerNumber: String?,
     var comment: String?,
     var fieldNumber: Int?,
-    var harvestWeight: Int?,
+    var harvestWeight: Double?,
     var humidity: Int?,
     var name: String
 ): Parcelable, OperationAct()
@@ -34,7 +34,7 @@ data class FligelAwaitProduct(
     var combinerNumber: String?,
     var comment: String?,
     var fieldNumber: Int?,
-    var harvestWeight: Int?,
+    var harvestWeight: Double?,
     var humidity: Int?,
     var name: String
 ): Parcelable, OperationAct()

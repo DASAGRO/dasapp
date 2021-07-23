@@ -19,7 +19,7 @@ data class OfficeInventoryAcceptedEntity(
     val senderUUID: String? = null,
     var requestId: String? = null,
     var storeUUID: String? = null,
-    val quantity: Int? = null,
+    val quantity: Double? = null,
     val type: String? = null,
     val acceptedAt: Long? = 0,
     val sendAt: Long? = 0,

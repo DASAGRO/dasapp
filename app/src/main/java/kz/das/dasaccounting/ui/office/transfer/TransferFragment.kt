@@ -45,8 +45,8 @@ class TransferFragment: BaseBottomSheetFragment<FragmentBottomSheetInventoryInpu
             }
             this.btnTransfer.setOnClickListener {
                 getOfficeInventory()?.let {
-                    if (it.quantity ?: 0 >= mViewBinding.edtQuantity.text.toString().toInt()) {
-                        it.quantity = mViewBinding.edtQuantity.text.toString().toInt()
+                    if (it.quantity ?: 0.0 >= mViewBinding.edtQuantity.text.toString().toDouble()) {
+                        it.quantity = mViewBinding.edtQuantity.text.toString().toDouble()
                         checkConfirmation(it)
                     } else {
                         showError(getString(R.string.common_error), getString(R.string.quantity_compare_error))

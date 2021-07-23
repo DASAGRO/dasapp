@@ -107,6 +107,10 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
             initViews(it)
         })
 
+        mViewModel.getNomenclaturesLocally().observe(viewLifecycleOwner, Observer {
+            mViewModel.setNomenclatures(it)
+        })
+
         mViewModel.isTransportDataAccepted().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showSuccess(getString(R.string.common_banner_success),

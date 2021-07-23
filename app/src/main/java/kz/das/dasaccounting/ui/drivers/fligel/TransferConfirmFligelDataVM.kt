@@ -12,10 +12,14 @@ import kz.das.dasaccounting.domain.DriverInventoryRepository
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.drivers.FligelProduct
+import kz.das.dasaccounting.domain.data.office.NomenclatureOfficeInventory
+import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.inject
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TransferConfirmFligelDataVM: BaseVM() {
 
@@ -26,6 +30,7 @@ class TransferConfirmFligelDataVM: BaseVM() {
 
     private var fligelProduct: FligelProduct? = null
 
+    private val nomenclatures: ArrayList<NomenclatureOfficeInventory> = arrayListOf()
     private val fileIds: ArrayList<Int> = arrayListOf()
 
     private val isFilesUploadingLV = SingleLiveEvent<Boolean>()
@@ -40,6 +45,11 @@ class TransferConfirmFligelDataVM: BaseVM() {
     fun setOfficeInventory(officeInventory: FligelProduct?) {
         this.fligelProduct = officeInventory
         fligelDataLV.postValue(officeInventory)
+    }
+
+    fun setNomenclatures(nomenclatures: List<NomenclatureOfficeInventory>) {
+        this.nomenclatures.clear()
+        this.nomenclatures.addAll(nomenclatures)
     }
 
     private val driverInventoryDataLV = SingleLiveEvent<Boolean>()
@@ -66,6 +76,28 @@ class TransferConfirmFligelDataVM: BaseVM() {
                     fligelProduct?.let {
                         driverInventoryRepository.saveAwaitReceiveFligelData(it)
                     }
+                    val nomenclatureOfficeInventory = nomenclatures.find { it.fieldNumber == fligelProduct?.fieldNumber.toString() }
+                    val constructOfficeInventory = OfficeInventory(
+                        id = 1,
+                        date = System.currentTimeMillis(),
+                        name = nomenclatureOfficeInventory?.name ?: "",
+                        humidity = fligelProduct?.humidity,
+                        latitude = userRepository.getLastLocation().lat,
+                        longitude = userRepository.getLastLocation().long,
+                        materialUUID = nomenclatureOfficeInventory?.materialUUID ?: "Not found UUID",
+                        senderUUID = userRepository.getUser()?.userId,
+                        requestId = UUID.randomUUID().toString(),
+                        storeUUID = null,
+                        quantity = fligelProduct?.harvestWeight,
+                        type = nomenclatureOfficeInventory?.measurement,
+                        acceptedAt = null,
+                        sendAt = null,
+                        syncRequire = 0,
+                        isSend = 0,
+                        senderName = userRepository.getUser()?.firstName + " " + userRepository.getUser()?.lastName,
+                        comment = ""
+                    )
+                    officeInventoryRepository.saveOfficeInventory(constructOfficeInventory)
                     isOnAwaitLV.postValue(true)
                 } else {
                     throwableHandler.handle(t)
@@ -100,5 +132,6 @@ class TransferConfirmFligelDataVM: BaseVM() {
         }
     }
 
+    fun getNomenclaturesLocally() = officeInventoryRepository.getNomenclaturesLocally()
 
 }

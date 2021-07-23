@@ -5,7 +5,6 @@ import androidx.lifecycle.map
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.core.extensions.OnResponseCallback
 import kz.das.dasaccounting.core.extensions.unwrap
-import kz.das.dasaccounting.data.entities.driver.toGetRequest
 import kz.das.dasaccounting.data.entities.requests.InventoryGetRequest
 import kz.das.dasaccounting.data.entities.requests.InventorySendRequest
 import kz.das.dasaccounting.data.entities.office.*
@@ -13,6 +12,7 @@ import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.OfficeOperationApi
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
+import kz.das.dasaccounting.domain.data.office.NomenclatureOfficeInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -104,7 +104,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
             officeInventory.quantity?.let { cnt ->
                 dasAppDatabase.officeInventoryDao().removeItem(dataItem)
                 dataItem.quantity = dataItem.quantity!! - cnt
-                if (dataItem.quantity == 0) {
+                if (dataItem.quantity == 0.0) {
                     dasAppDatabase.officeInventoryDao().removeItem(dataItem)
                 } else {
                     dasAppDatabase.officeInventoryDao().insert(dataItem)
@@ -113,6 +113,34 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
         }
         dasAppDatabase.officeInventorySentDao().insert(officeInventory.toSentEntity())
     }
+
+    override suspend fun getNomenclatures(): List<NomenclatureOfficeInventory> {
+        return officeOperationApi.getNomenclatures().unwrap({ list -> list.map { it.toDomain() } },
+            object : OnResponseCallback<List<NomenclatureOfficeInventoryEntity>> {
+                override fun onSuccess(entity: List<NomenclatureOfficeInventoryEntity>) {
+                    dasAppDatabase.nomenclaturesDao().reload(entity)
+                }
+                override fun onFail(exception: Exception) { } // No handle require
+            })
+    }
+
+    override fun getNomenclaturesLocally(): LiveData<List<NomenclatureOfficeInventory>> {
+        return dasAppDatabase.nomenclaturesDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
+    }
+
+    override suspend fun saveOfficeInventory(officeInventory: OfficeInventory) {
+        val dataItem = dasAppDatabase.officeInventoryDao().getItem(officeInventory.materialUUID)
+        if (dataItem != null) {
+            officeInventory.quantity?.let { cnt ->
+                dasAppDatabase.officeInventoryDao().removeItem(dataItem)
+                dataItem.quantity = dataItem.quantity!! + cnt
+                dasAppDatabase.officeInventoryDao().insert(dataItem)
+            }
+        } else {
+            dasAppDatabase.officeInventoryDao().insert(officeInventory.toEntity())
+        }
+    }
+
 
     override fun getOfficeMaterialsLocally(): LiveData<List<OfficeInventory>> {
         return dasAppDatabase.officeInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain() } }

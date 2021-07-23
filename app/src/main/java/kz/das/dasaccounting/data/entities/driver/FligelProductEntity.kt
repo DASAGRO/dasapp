@@ -12,7 +12,7 @@ data class FligelProductEntity(
     var combinerNumber: String?,
     var comment: String?,
     var fieldNumber: Int?,
-    var harvestWeight: Int?,
+    var harvestWeight: Double?,
     var humidity: Int?,
     var name: String
 )

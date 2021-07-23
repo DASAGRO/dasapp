@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
+import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.ShiftRepository
 import kz.das.dasaccounting.domain.UserRepository
 import org.koin.core.KoinComponent
@@ -18,6 +19,7 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
 
     private val userRepository: UserRepository by inject()
     private val shiftRepository: ShiftRepository by inject()
+    private val officeInventoryRepository: OfficeInventoryRepository by inject()
 
     private val isControlOptionsShowLV = MutableLiveData<Boolean>()
     fun isControlOptionsShow(): LiveData<Boolean> = isControlOptionsShowLV
@@ -41,6 +43,7 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
 
     init {
         checkShiftState()
+        retrieveNomenclatures()
     }
 
     fun startWork() {
@@ -126,6 +129,16 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
                 }
             } finally {
                 hideLoading()
+            }
+        }
+    }
+
+    private fun retrieveNomenclatures() {
+        viewModelScope.launch {
+            try {
+                officeInventoryRepository.getNomenclatures()
+            } catch (t: Throwable) {
+                throwableHandler.handle(t)
             }
         }
     }

@@ -10,7 +10,7 @@ data class ReceiveFligelDataRequest(
     val date: Long?,
     val fieldNumber: Int?,
     val fileIds: ArrayList<Int>?,
-    val harvestWeight: Int?,
+    val harvestWeight: Double?,
     val humidity: Int?,
     val id: Int?,
     val isAccepted: Int?,
