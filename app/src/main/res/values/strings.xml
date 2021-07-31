@@ -119,7 +119,7 @@
     <string name="gather_tranfer_title">Заполните данные по урожаю</string>
     <string name="transfer_confirm_title">Вы подтверждаете данную передачу?</string>
     <string name="inventory_accept_confirmed_title">Подтвердите передачу</string>
-    <string name="inventory_fligel_data_correct_title">Вы уверены что данные верны?</string>
+    <string name="inventory_fligel_data_correct_title">Вы принимаете товар с поля??</string>
     <string name="search">Искать</string>
     <string name="warehouse_title">Название Склада</string>
     <string name="action_list">Список ТС,ПО,ТМЦ</string>

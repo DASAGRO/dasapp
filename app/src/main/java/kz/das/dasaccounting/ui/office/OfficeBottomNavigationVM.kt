@@ -7,12 +7,16 @@ import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.ShiftRepository
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.util.*
 
 class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
 
     private val shiftRepository: ShiftRepository by inject()
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
     private var isSend: Boolean = false
+
+    private val DELAY_TIME = 900 * 1000
+    private var lastRefreshTime: Long = 0L
 
     init {
         refresh()
@@ -27,18 +31,17 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
     fun initAwaitRequests() {
         viewModelScope.launch {
             try {
-                if (!isSend) {
-                    isSend = true
+                val currentTime = Date().time
+                if (currentTime - lastRefreshTime > DELAY_TIME) {
+                    lastRefreshTime = currentTime
                     shiftRepository.initAwaitShiftStarted()
                     shiftRepository.initAwaitShiftFinished()
                     officeInventoryRepository.initAwaitAcceptInventory()
                     officeInventoryRepository.initAwaitSendInventory()
                 }
             } catch (t: Throwable) {
-                isSend = false
                 throwableHandler.handle(t)
             } finally {
-                isSend = false
             }
         }
     }

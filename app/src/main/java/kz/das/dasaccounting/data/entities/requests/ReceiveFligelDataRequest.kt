@@ -59,7 +59,7 @@ fun FligelProduct.toReceiveFligelDataRequest(): ReceiveFligelDataRequest {
         acceptedAt = 0,
         combinerNumber = this.combinerNumber,
         comment = this.comment,
-        date = 0,
+        date = System.currentTimeMillis(),
         fieldNumber = this.fieldNumber,
         fileIds = null,
         harvestWeight = this.harvestWeight,

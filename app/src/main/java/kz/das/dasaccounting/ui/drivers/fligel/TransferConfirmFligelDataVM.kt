@@ -103,6 +103,7 @@ class TransferConfirmFligelDataVM: BaseVM() {
                     throwableHandler.handle(t)
                     driverInventoryDataLV.postValue(false)
                 }
+                hideLoading()
             } finally {
                 hideLoading()
             }
