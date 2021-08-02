@@ -2,7 +2,6 @@ package kz.das.dasaccounting.data.entities.office
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kz.das.dasaccounting.domain.data.drivers.toAccepted
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import java.io.Serializable
 
