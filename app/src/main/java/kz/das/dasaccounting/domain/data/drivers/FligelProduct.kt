@@ -12,6 +12,7 @@ data class FligelProduct(
     var fieldNumber: Int?,
     var harvestWeight: Double?,
     var humidity: Int?,
+    var requestUUID: String?,
     var name: String
 ): Parcelable, OperationAct()
 
@@ -23,6 +24,7 @@ fun FligelProduct.toAwait(): FligelAwaitProduct {
         comment = this.comment,
         fieldNumber = this.fieldNumber,
         harvestWeight = this.harvestWeight,
+        requestUUID = this.requestUUID,
         humidity = this.humidity,
         name = this.name
     )
@@ -35,6 +37,7 @@ data class FligelAwaitProduct(
     var comment: String?,
     var fieldNumber: Int?,
     var harvestWeight: Double?,
+    var requestUUID: String?,
     var humidity: Int?,
     var name: String
 ): Parcelable, OperationAct()

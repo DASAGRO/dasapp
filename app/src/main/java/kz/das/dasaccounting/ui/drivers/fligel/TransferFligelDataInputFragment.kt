@@ -54,6 +54,7 @@ class TransferFligelDataInputFragment: BaseBottomSheetFragment<FragmentBottomShe
                         edtFieldNumber.text.toString().toInt(),
                         edtGatherWeight.text.toString().toDouble(),
                         edtGatherWet.text.toString().toInt(),
+                        null,
                         mViewModel.getNomenclatures().filter { it.fieldNumber == edtFieldNumber.text.toString() }[0].name ?: "Неизвестный урожай"
                     ))
                 } else {

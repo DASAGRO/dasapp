@@ -13,6 +13,7 @@ data class FligelProductEntity(
     var comment: String?,
     var fieldNumber: Int?,
     var harvestWeight: Double?,
+    var requestUUID: String?,
     var humidity: Int?,
     var name: String
 )
@@ -24,6 +25,7 @@ fun FligelProductEntity.toFligelProduct(): FligelProduct {
         fieldNumber = this.fieldNumber,
         harvestWeight = this.harvestWeight,
         humidity = this.humidity,
+        requestUUID = this.requestUUID,
         id = this.id,
         name = this.name
     )
@@ -36,6 +38,7 @@ fun FligelProduct.toFligelProductEntity(): FligelProductEntity {
         fieldNumber = this.fieldNumber,
         harvestWeight = this.harvestWeight,
         humidity = this.humidity,
+        requestUUID = this.requestUUID,
         id = this.id ?: 0,
         name = this.name
     )
