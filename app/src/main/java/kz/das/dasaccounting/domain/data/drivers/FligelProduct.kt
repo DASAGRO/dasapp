@@ -7,6 +7,9 @@ import kz.das.dasaccounting.domain.data.action.OperationAct
 @Parcelize
 data class FligelProduct(
     var id: Int?,
+    var date: Long?,
+    var longitude: Double?,
+    var latitude: Double?,
     var combinerNumber: String?,
     var comment: String?,
     var fieldNumber: Int?,

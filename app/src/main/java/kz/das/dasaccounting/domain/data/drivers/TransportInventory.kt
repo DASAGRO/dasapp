@@ -7,7 +7,7 @@ import kz.das.dasaccounting.domain.data.action.OperationAct
 @Parcelize
 data class TransportInventory(
     var comment: String,
-    var dateTime: String?,
+    var dateTime: Long?,
     var id: Int,
     var latitude: Double,
     var longitude: Double,
@@ -66,7 +66,7 @@ fun TransportInventory.toAccepted(): TransportAcceptedInventory {
 @Parcelize
 data class TransportSentInventory(
     var comment: String,
-    var dateTime: String?,
+    var dateTime: Long?,
     var id: Int,
     var latitude: Double,
     var longitude: Double,
@@ -85,7 +85,7 @@ data class TransportSentInventory(
 @Parcelize
 data class TransportAcceptedInventory(
     var comment: String,
-    var dateTime: String?,
+    var dateTime: Long?,
     var id: Int,
     var latitude: Double,
     var longitude: Double,

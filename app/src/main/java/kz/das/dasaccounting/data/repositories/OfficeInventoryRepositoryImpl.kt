@@ -43,11 +43,11 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
         return officeOperationApi.acceptInventory(
             InventoryGetRequest(
                 id = officeInventory.id,
-                date = System.currentTimeMillis(),
+                date = officeInventory.date,
                 name = officeInventory.name,
                 humidity = officeInventory.humidity,
-                latitude = userRepository.getLastLocation().lat,
-                longitude = userRepository.getLastLocation().long,
+                latitude = officeInventory.latitude,
+                longitude = officeInventory.longitude,
                 materialUUID = officeInventory.materialUUID,
                 senderUUID = officeInventory.senderUUID,
                 requestId = officeInventory.requestId,
@@ -65,11 +65,11 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
         return officeOperationApi.sendInventory(
             InventorySendRequest(
                 id = officeInventory.id,
-                date = System.currentTimeMillis(),
+                date = officeInventory.date,
                 name = officeInventory.name,
                 humidity = officeInventory.humidity,
-                latitude = userRepository.getLastLocation().lat,
-                longitude = userRepository.getLastLocation().long,
+                latitude = officeInventory.latitude,
+                longitude = officeInventory.longitude,
                 materialUUID = officeInventory.materialUUID,
                 requestId = officeInventory.requestId,
                 storeUUID = officeInventory.storeUUID,
@@ -153,11 +153,11 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
             officeOperationApi.acceptInventory(
                 InventoryGetRequest(
                     id = it.id,
-                    date = System.currentTimeMillis(),
+                    date = it.date,
                     name = it.name,
                     humidity = it.humidity,
-                    latitude = userRepository.getLastLocation().lat,
-                    longitude = userRepository.getLastLocation().long,
+                    latitude = it.latitude,
+                    longitude = it.longitude,
                     materialUUID = it.materialUUID,
                     senderUUID = it.senderUUID,
                     requestId = it.requestId,
@@ -184,7 +184,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
             officeOperationApi.sendInventory(
                 InventorySendRequest(
                     id = it.id,
-                    date = System.currentTimeMillis(),
+                    date = it.date,
                     name = it.name,
                     humidity = it.humidity,
                     latitude = userRepository.getLastLocation().lat,

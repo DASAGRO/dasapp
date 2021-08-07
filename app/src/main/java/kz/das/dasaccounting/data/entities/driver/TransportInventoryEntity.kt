@@ -7,7 +7,7 @@ import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 @Entity(tableName = "transports")
 data class TransportInventoryEntity(
     val comment: String,
-    val dateTime: String?,
+    val dateTime: Long?,
     val id: Int,
     val latitude: Double,
     val longitude: Double,

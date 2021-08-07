@@ -50,6 +50,9 @@ class TransferFligelDataInputFragment: BaseBottomSheetFragment<FragmentBottomShe
                     !edtTransportType.text.isNullOrEmpty()) {
                     checkConfirmation(FligelProduct(
                         (0 until 10000).random(),
+                        System.currentTimeMillis(),
+                        mViewModel.getLocation().long,
+                        mViewModel.getLocation().lat,
                         edtTransportType.text.toString(),
                         "Отправка урожая",
                         edtFieldNumber.text.toString().toInt(),

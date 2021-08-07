@@ -42,6 +42,9 @@ class TransferFligelDataFormalizeFragment: BaseBottomSheetFragment<FragmentBotto
         mViewBinding.apply {
             this.btnMakeTransfer.setOnClickListener {
                 getOfficeInventory()?.let {
+                    it.dateTime = System.currentTimeMillis()
+                    it.longitude = mViewModel.getLocation().long
+                    it.latitude = mViewModel.getLocation().lat
                     listener?.onTransfer(it)
                     dismiss()
                 }

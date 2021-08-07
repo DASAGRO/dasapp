@@ -10,6 +10,7 @@ import kz.das.dasaccounting.databinding.FragmentInventoryAcceptBinding
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.get
 
 class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentInventoryAcceptBinding>() {
 
@@ -43,6 +44,9 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
 
             btnAccept.setOnClickListener {
                 getOfficeInventory()?.let {
+                    it.dateTime = System.currentTimeMillis()
+                    it.latitude = mViewModel.getLocation().lat
+                    it.longitude = mViewModel.getLocation().long
                     requireRouter().replaceScreen(AcceptTransportConfirmationFragment.getScreen(it))
                 }
             }

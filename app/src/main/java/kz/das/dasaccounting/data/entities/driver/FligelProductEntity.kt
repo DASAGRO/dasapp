@@ -9,6 +9,9 @@ import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 data class FligelProductEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
+    var date: Long,
+    var latitude: Double,
+    var longitude: Double,
     var combinerNumber: String?,
     var comment: String?,
     var fieldNumber: Int?,
@@ -27,6 +30,9 @@ fun FligelProductEntity.toFligelProduct(): FligelProduct {
         humidity = this.humidity,
         requestUUID = this.requestUUID,
         id = this.id,
+        date = this.date,
+        latitude = this.latitude,
+        longitude = this.longitude,
         name = this.name
     )
 }
@@ -40,6 +46,9 @@ fun FligelProduct.toFligelProductEntity(): FligelProductEntity {
         humidity = this.humidity,
         requestUUID = this.requestUUID,
         id = this.id ?: 0,
+        date = this.date ?: System.currentTimeMillis(),
+        latitude = this.latitude ?: 0.0,
+        longitude = this.longitude ?: 0.0,
         name = this.name
     )
 }

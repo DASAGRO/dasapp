@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.data.entities.driver
 
+import androidx.annotation.Nullable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kz.das.dasaccounting.data.entities.requests.GetTransportRequest
@@ -10,7 +11,8 @@ import java.io.Serializable
 @Entity(tableName = "sent_transports")
 data class SentTransportEntity(
     val comment: String,
-    val dateTime: String,
+    @Nullable
+    val dateTime: Long?,
     val id: Int,
     val latitude: Double,
     val longitude: Double,
@@ -28,7 +30,7 @@ data class SentTransportEntity(
 fun SentTransportEntity.toDomain(): TransportInventory {
     return TransportInventory(
         comment = this.comment,
-        dateTime = this.comment,
+        dateTime = this.dateTime,
         id = this.id,
         latitude = this.latitude,
         longitude = this.longitude,
@@ -46,7 +48,7 @@ fun SentTransportEntity.toDomain(): TransportInventory {
 fun TransportInventory.toSentEntity(): SentTransportEntity {
     return SentTransportEntity(
         comment = this.comment,
-        dateTime = this.comment,
+        dateTime = this.dateTime ?: System.currentTimeMillis(),
         id = this.id,
         latitude = this.latitude,
         longitude = this.longitude,
@@ -61,14 +63,14 @@ fun TransportInventory.toSentEntity(): SentTransportEntity {
     )
 }
 
-fun TransportInventory.toSentRequest(lat: Double = 0.0, long: Double = 0.0): SendTransportRequest {
+fun TransportInventory.toSentRequest(): SendTransportRequest {
     return SendTransportRequest(
-        date = System.currentTimeMillis(),
+        date = this.dateTime,
         id =  this.id,
         isAccepted = 0,
         isSend = 0 ,
-        latitude = lat,
-        longitude = long,
+        latitude = this.latitude,
+        longitude = this.longitude,
         name = this.model,
         sendAt = 0,
         senderName = this.senderName,
@@ -82,14 +84,14 @@ fun TransportInventory.toSentRequest(lat: Double = 0.0, long: Double = 0.0): Sen
 }
 
 
-fun TransportInventory.toGetRequest(comment: String, fileIds: ArrayList<Int>?, lat: Double = 0.0, long: Double = 0.0): GetTransportRequest {
+fun TransportInventory.toGetRequest(comment: String, fileIds: ArrayList<Int>?): GetTransportRequest {
     return GetTransportRequest(
-        date = System.currentTimeMillis(),
+        date = this.dateTime ?: System.currentTimeMillis(),
         id =  this.id,
         isAccepted = 0,
         isSend = 0 ,
-        latitude = lat,
-        longitude = long,
+        latitude = this.latitude,
+        longitude = this.longitude,
         name = this.model,
         sendAt = 0,
         senderName = this.senderName,
