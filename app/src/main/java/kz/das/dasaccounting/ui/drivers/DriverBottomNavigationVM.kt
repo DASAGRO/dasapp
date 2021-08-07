@@ -18,10 +18,10 @@ class DriverBottomNavigationVM: BaseVM() {
         refresh()
     }
 
-    // TODO refresh add from ui
     fun refresh() {
         retrieve()
         retrieveTransports()
+        initAwaitRequests()
     }
 
     fun initAwaitRequests() {

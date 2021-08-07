@@ -36,4 +36,6 @@ interface DriverInventoryRepository {
 
     fun initDeleteData()
 
+    fun containsAwaitRequests(): Boolean
+
 }

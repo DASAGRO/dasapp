@@ -17,7 +17,7 @@ data class ReceiveFligelDataRequest(
     val isSend: Int?,
     val name: String?,
     val sendAt: Int?,
-    val requestUUID: String?,
+    val requestId: String?,
     val senderName: String?,
     val syncRequire: Int?
 )
@@ -29,7 +29,7 @@ fun ReceiveFligelDataRequest.toFligelProductEntity(): FligelProductEntity {
         fieldNumber = this.fieldNumber,
         harvestWeight = this.harvestWeight,
         humidity = this.humidity,
-        requestUUID = this.requestUUID,
+        requestUUID = this.requestId,
         id = this.id ?: 0,
         name = this.name ?: "Без названия"
     )
@@ -45,7 +45,7 @@ fun FligelProduct.toReceiveFligelDataRequest(fileIds: ArrayList<Int>?, senderNam
         fileIds = fileIds,
         harvestWeight = this.harvestWeight,
         humidity = this.humidity,
-        requestUUID = this.requestUUID,
+        requestId = this.requestUUID,
         isAccepted = 0,
         isSend = 0,
         name = "Тут должно быть название урожая",
@@ -67,7 +67,7 @@ fun FligelProduct.toReceiveFligelDataRequest(): ReceiveFligelDataRequest {
         fileIds = null,
         harvestWeight = this.harvestWeight,
         humidity = this.humidity,
-        requestUUID = this.requestUUID,
+        requestId = this.requestUUID,
         id = 0,
         isAccepted = 0,
         isSend = 0,

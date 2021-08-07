@@ -44,7 +44,6 @@ class TransferConfirmFligelDataVM: BaseVM() {
 
     fun setOfficeInventory(officeInventory: FligelProduct?) {
         this.fligelProduct = officeInventory
-        this.fligelProduct?.requestUUID = UUID.randomUUID().toString()
         fligelDataLV.postValue(officeInventory)
     }
 

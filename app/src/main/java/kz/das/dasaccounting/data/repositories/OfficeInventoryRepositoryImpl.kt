@@ -30,7 +30,8 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                 override fun onSuccess(entity: List<OfficeInventoryEntity>) {
                     dasAppDatabase.officeInventoryDao().reload(entity)
                 }
-                override fun onFail(exception: Exception) { } // No handle require
+
+                override fun onFail(exception: Exception) {} // No handle require
             })
     }
 
@@ -120,7 +121,8 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
                 override fun onSuccess(entity: List<NomenclatureOfficeInventoryEntity>) {
                     dasAppDatabase.nomenclaturesDao().reload(entity)
                 }
-                override fun onFail(exception: Exception) { } // No handle require
+
+                override fun onFail(exception: Exception) {} // No handle require
             })
     }
 
@@ -217,5 +219,10 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
         dasAppDatabase.officeInventoryAcceptedDao().removeAll()
         dasAppDatabase.officeInventorySentDao().removeAll()
         dasAppDatabase.officeInventoryDao().removeAll()
+    }
+
+    override fun containsAwaitRequests(): Boolean {
+        return dasAppDatabase.officeInventoryAcceptedDao().all.isNotEmpty() ||
+                dasAppDatabase.officeInventorySentDao().all.isNotEmpty()
     }
 }

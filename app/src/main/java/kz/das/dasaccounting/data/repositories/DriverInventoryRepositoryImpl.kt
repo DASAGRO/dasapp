@@ -149,4 +149,9 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
         dasAppDatabase.driverSentInventoryDao().removeAll()
         dasAppDatabase.driverAcceptedInventoryDao().removeAll()
     }
+
+    override fun containsAwaitRequests(): Boolean {
+        return dasAppDatabase.driverSentInventoryDao().all.isNotEmpty() ||
+                    dasAppDatabase.driverAcceptedInventoryDao().all.isNotEmpty()
+    }
 }

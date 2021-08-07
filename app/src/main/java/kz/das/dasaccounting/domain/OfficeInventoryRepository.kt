@@ -34,4 +34,6 @@ interface OfficeInventoryRepository {
 
     suspend fun initDeleteData()
 
+    fun containsAwaitRequests(): Boolean
+
 }

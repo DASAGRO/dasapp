@@ -104,21 +104,21 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
         })
 
-        officeBottomNavigationVM.getAwaitAcceptedOperationsLocally().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_operations)))
-            operationsAdapter?.clearAwaitAcceptedOperations()
-            if (!it.isNullOrEmpty()) {
-                operationsAdapter?.addItems(getAwaitAcceptedOperations(it))
-            }
-        })
-
-        officeBottomNavigationVM.getAwaitSentOperationsLocally().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_operations)))
-            operationsAdapter?.clearAwaitSentOperations()
-            if (!it.isNullOrEmpty()) {
-                operationsAdapter?.addItems(getAwaitSentOperations(it))
-            }
-        })
+//        officeBottomNavigationVM.getAwaitAcceptedOperationsLocally().observe(viewLifecycleOwner, Observer {
+//            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_operations)))
+//            operationsAdapter?.clearAwaitAcceptedOperations()
+//            if (!it.isNullOrEmpty()) {
+//                operationsAdapter?.addItems(getAwaitAcceptedOperations(it))
+//            }
+//        })
+//
+//        officeBottomNavigationVM.getAwaitSentOperationsLocally().observe(viewLifecycleOwner, Observer {
+//            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_operations)))
+//            operationsAdapter?.clearAwaitSentOperations()
+//            if (!it.isNullOrEmpty()) {
+//                operationsAdapter?.addItems(getAwaitSentOperations(it))
+//            }
+//        })
 
     }
 

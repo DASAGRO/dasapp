@@ -7,6 +7,7 @@ import kz.das.dasaccounting.core.ui.extensions.verifyToInit
 import kz.das.dasaccounting.databinding.FragmentBottomSheetGatherInputBinding
 import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
 
 class TransferFligelDataInputFragment: BaseBottomSheetFragment<FragmentBottomSheetGatherInputBinding, TransferFligelDataInputVM>() {
 
@@ -54,7 +55,7 @@ class TransferFligelDataInputFragment: BaseBottomSheetFragment<FragmentBottomShe
                         edtFieldNumber.text.toString().toInt(),
                         edtGatherWeight.text.toString().toDouble(),
                         edtGatherWet.text.toString().toInt(),
-                        null,
+                        UUID.randomUUID().toString(),
                         mViewModel.getNomenclatures().filter { it.fieldNumber == edtFieldNumber.text.toString() }[0].name ?: "Неизвестный урожай"
                     ))
                 } else {

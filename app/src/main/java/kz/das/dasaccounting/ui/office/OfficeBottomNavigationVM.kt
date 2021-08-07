@@ -18,6 +18,7 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
     }
 
     fun refresh() {
+        initAwaitRequests()
         retrieve()
     }
 

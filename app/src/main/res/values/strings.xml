@@ -1,7 +1,7 @@
 <resources>
     <string name="mapbox_access_token" translatable="false">sk.eyJ1IjoiZGFzYWdybyIsImEiOiJja291YnZkcWQwNTg5MnFxajlpZW1iendxIn0.pavabtbp9TwjeGC6GUfSow</string>
 
-    <string name="app_name">DAS Mobile 1</string>
+    <string name="app_name">DAS Mobile 5</string>
     <string name="action_settings">Настройки</string>
 
     <string name="common_next">Следующий</string>

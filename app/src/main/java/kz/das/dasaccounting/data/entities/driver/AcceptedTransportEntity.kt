@@ -3,7 +3,6 @@ package kz.das.dasaccounting.data.entities.driver
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
-import kz.das.dasaccounting.domain.data.drivers.toAccepted
 import java.io.Serializable
 
 @Entity(tableName = "accepted_transports")

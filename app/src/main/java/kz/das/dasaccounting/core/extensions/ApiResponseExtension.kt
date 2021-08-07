@@ -4,11 +4,14 @@ import retrofit2.Response
 import kz.das.dasaccounting.core.ui.utils.exceptions.BackendResponseException
 import kz.das.dasaccounting.core.ui.utils.exceptions.NetworkResponseException
 import kz.das.dasaccounting.core.ui.utils.exceptions.NullResponseException
+import java.net.SocketTimeoutException
 
 
 fun <T1, T2> Response<T1>.unwrap(converter: (T1) -> T2): T2 {
     if (!isSuccessful) {
         throw NetworkResponseException(this.errorBody()?.string()?.toStringListApiError()?.descr ?: "Ошибка", code())
+    } else if (code() == 502) {
+        throw SocketTimeoutException()
     } else if (code() != 200 && code() < 500) {
         throw BackendResponseException(code(), if (code() < 500) message() ?: "" else "")
     } else if (body() == null) {
@@ -22,6 +25,9 @@ fun <T1, T2> Response<T1>.unwrap(converter: (T1) -> T2, onRequestCallback: OnRes
     if (!isSuccessful) {
         onRequestCallback.onFail(NetworkResponseException(message(), code()))
         throw NetworkResponseException(this.errorBody()?.string()?.toStringListApiError()?.descr ?: "Ошибка", code())
+    } else if (code() == 502) {
+        onRequestCallback.onFail( BackendResponseException(code(), "Ошибка сервера"))
+        throw SocketTimeoutException()
     } else if (code() != 200 && code() < 500) {
         onRequestCallback.onFail( BackendResponseException(code(), if (code() < 500) message() ?: "" else ""))
         throw BackendResponseException(code(), if (code() < 500) message() ?: "" else "")
@@ -37,6 +43,8 @@ fun <T1, T2> Response<T1>.unwrap(converter: (T1) -> T2, onRequestCallback: OnRes
 fun <T> Response<T>.unwrap(): T {
     if (!isSuccessful) {
         throw NetworkResponseException(this.errorBody()?.string()?.toStringListApiError()?.descr ?: "Ошибка", code())
+    } else if (code() == 502) {
+        throw SocketTimeoutException()
     } else if (code() != 200 && code() < 500) {
         throw BackendResponseException(code(), if (code() < 500) message() ?: "" else "")
     } else if (body() == null) {
@@ -50,6 +58,9 @@ fun <T> Response<T>.unwrap(onRequestCallback: OnResponseCallback<T>): T {
     if (!isSuccessful) {
         onRequestCallback.onFail(NetworkResponseException(message(), code()))
         throw NetworkResponseException(this.errorBody()?.string()?.toStringListApiError()?.descr ?: "Ошибка", code())
+    } else if (code() == 502) {
+        onRequestCallback.onFail( BackendResponseException(code(), "Ошибка сервера"))
+        throw SocketTimeoutException()
     } else if (code() != 200 && code() < 500) {
         onRequestCallback.onFail(BackendResponseException(code(), if (code() < 500) message() ?: "" else ""))
         throw BackendResponseException(code(), if (code() < 500) message() ?: "" else "")

@@ -216,7 +216,7 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
     inner class OperationOfficeInventoryViewHolder internal constructor(private val itemBinding: ItemOperationActionBinding) : BaseViewHolder<OfficeInventory>(itemBinding) {
         override fun bind(item: OfficeInventory, position: Int) {
             this.itemBinding.run {
-                this.tvName.text = item.name
+                this.tvName.text = (item.name + "\n" + context.getString(R.string.total_quantity) + item.quantity)
                 this.ivAction.setImageResource(R.drawable.ic_inventory)
                 this.ivStatePending.isVisible = item.syncRequire == 1
                 this.llAction.setOnClickListener {
@@ -231,7 +231,7 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
     inner class OperationDriverInventoryViewHolder internal constructor(private val itemBinding: ItemOperationActionBinding) : BaseViewHolder<TransportInventory>(itemBinding) {
         override fun bind(item: TransportInventory, position: Int) {
             this.itemBinding.run {
-                this.tvName.text = item.model
+                this.tvName.text = (item.model + "\n" + context.getString(R.string.gov_number) + item.stateNumber)
                 this.ivAction.setTsTypeImage(item)
                 this.ivStatePending.isVisible = item.isPending
                 this.llAction.setOnClickListener {

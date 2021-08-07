@@ -97,37 +97,7 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
 
         operationsAdapter?.putItems(arrayListOf(
             OperationHead(getString(R.string.available_operations)),
-            OperationInit("Принять ТЦ/ПО/ТМЦ", R.drawable.ic_add)))
-
-//        operationsAdapter?.addItems(arrayListOf(
-//            OperationHead(getString(R.string.transport_tracktor_title))))
-//        operationsAdapter?.addItems(arrayListOf(
-//            DriverInventoryTypeConvertor().stringToTransportInventory("  {\n" +
-//                    "    \"comment\": \"\",\n" +
-//                    "    \"dateTime\": \"\",\n" +
-//                    "    \"id\": 0,\n" +
-//                    "    \"latitude\": 0,\n" +
-//                    "    \"longitude\": 0,\n" +
-//                    "    \"model\": \"Накопитель есь же просто\",\n" +
-//                    "    \"molUuid\": \"Пушка\",\n" +
-//                    "    \"stateNumber\": \"Abz-07 123\",\n" +
-//                    "    \"tsType\": \"ПО\",\n" +
-//                    "    \"uuid\": \"alsjkdf-asdas-dasdas-gerw\"\n" +
-//                    "  }")!!.toDomain(),
-//            DriverInventoryTypeConvertor().stringToTransportInventory("{\n" +
-//                       "  \"comment\": \"\",\n" +
-//                       "  \"dateTime\": \"\",\n" +
-//                       "  \"id\": 0,\n" +
-//                       "  \"latitude\": 0,\n" +
-//                       "  \"longitude\": 0,\n" +
-//                       "  \"model\": \"Трактор есь же просто\",\n" +
-//                       "  \"molUuid\": \"Пушка\",\n" +
-//                       "  \"stateNumber\": \"Abz-07 123\",\n" +
-//                       "  \"tsType\": \"ТС\",\n" +
-//                       "  \"uuid\": \"alsjkdf-asdas-dasdas-gerw\"\n" +
-//                       "}"
-//            )!!.toDomain()
-//        ))
+            OperationInit("Принять ТС/ПО/ТМЦ", R.drawable.ic_add)))
     }
 
     override fun onResume() {
@@ -167,45 +137,45 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
         })
 
-        driverBottomNavigationVM.getAwaitAcceptedOperationsLocally().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_operations)))
-            operationsAdapter?.clearAwaitAcceptedOperations()
-            if (it.isNotEmpty()) {
-                operationsAdapter?.addItems(getAwaitAcceptedOperations(it))
-            }
-        })
-
-        driverBottomNavigationVM.getAwaitSentOperationsLocally().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_operations)))
-            operationsAdapter?.clearAwaitSentOperations()
-            if (it.isNotEmpty()) {
-                operationsAdapter?.addItems(getAwaitSentOperations(it))
-            }
-        })
-
-        driverBottomNavigationVM.getAwaitAcceptedTransportsLocally().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_transports)))
-            operationsAdapter?.clearAwaitAcceptedTransports()
-            if (it.isNotEmpty()) {
-                operationsAdapter?.addItems(getAwaitAcceptedTransports(it))
-            }
-        })
-
-        driverBottomNavigationVM.getAwaitSentTransportsLocally().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_transports)))
-            operationsAdapter?.clearAwaitSentTransports()
-            if (it.isNotEmpty()) {
-                operationsAdapter?.addItems(getAwaitSentTransports(it))
-            }
-        })
-
-        driverBottomNavigationVM.getAwaitFligelDataLocally().observe(viewLifecycleOwner, Observer {
-            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_fligel_data)))
-            operationsAdapter?.clearAwaitFligelData()
-            if (it.isNotEmpty()) {
-                operationsAdapter?.addItems(getAwaitFligelData(it))
-            }
-        })
+//        driverBottomNavigationVM.getAwaitAcceptedOperationsLocally().observe(viewLifecycleOwner, Observer {
+//            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_operations)))
+//            operationsAdapter?.clearAwaitAcceptedOperations()
+//            if (it.isNotEmpty()) {
+//                operationsAdapter?.addItems(getAwaitAcceptedOperations(it))
+//            }
+//        })
+//
+//        driverBottomNavigationVM.getAwaitSentOperationsLocally().observe(viewLifecycleOwner, Observer {
+//            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_operations)))
+//            operationsAdapter?.clearAwaitSentOperations()
+//            if (it.isNotEmpty()) {
+//                operationsAdapter?.addItems(getAwaitSentOperations(it))
+//            }
+//        })
+//
+//        driverBottomNavigationVM.getAwaitAcceptedTransportsLocally().observe(viewLifecycleOwner, Observer {
+//            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_transports)))
+//            operationsAdapter?.clearAwaitAcceptedTransports()
+//            if (it.isNotEmpty()) {
+//                operationsAdapter?.addItems(getAwaitAcceptedTransports(it))
+//            }
+//        })
+//
+//        driverBottomNavigationVM.getAwaitSentTransportsLocally().observe(viewLifecycleOwner, Observer {
+//            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_transports)))
+//            operationsAdapter?.clearAwaitSentTransports()
+//            if (it.isNotEmpty()) {
+//                operationsAdapter?.addItems(getAwaitSentTransports(it))
+//            }
+//        })
+//
+//        driverBottomNavigationVM.getAwaitFligelDataLocally().observe(viewLifecycleOwner, Observer {
+//            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_fligel_data)))
+//            operationsAdapter?.clearAwaitFligelData()
+//            if (it.isNotEmpty()) {
+//                operationsAdapter?.addItems(getAwaitFligelData(it))
+//            }
+//        })
 
     }
 
