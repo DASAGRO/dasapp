@@ -86,12 +86,6 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
 
     override fun getItemCount() = operations.size
 
-//    fun putItems(items: ArrayList<OperationAct>) {
-//        this.operations.clear()
-//        this.operations.addAll(items)
-//        notifyDataSetChanged()
-//    }
-
     fun clearItems(items: List<OperationAct>) {
         if (this.operations.containsAll(items)) {
             this.operations.removeAll(items)
@@ -216,7 +210,7 @@ class DriverOperationsAdapter(val context: Context, private var operations: Arra
     inner class OperationOfficeInventoryViewHolder internal constructor(private val itemBinding: ItemOperationActionBinding) : BaseViewHolder<OfficeInventory>(itemBinding) {
         override fun bind(item: OfficeInventory, position: Int) {
             this.itemBinding.run {
-                this.tvName.text = (item.name + "\n" + String.format(context.getString(R.string.total_quantity), item.quantity))
+                this.tvName.text = (item.name + "\n" + String.format(context.getString(R.string.total_quantity), (item.quantity.toString() + " " + item.type)))
                 this.ivAction.setImageResource(R.drawable.ic_inventory)
                 this.ivStatePending.isVisible = item.syncRequire == 1
                 this.llAction.setOnClickListener {

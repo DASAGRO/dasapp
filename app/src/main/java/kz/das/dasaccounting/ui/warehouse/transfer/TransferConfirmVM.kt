@@ -23,7 +23,11 @@ class TransferConfirmVM: BaseVM() {
         this.fileIds = fileIds
     }
 
+    fun userLocation() = userRepository.getLastLocation()
+
     fun getFileIds(): ArrayList<Int>? = this.fileIds
+
+    fun getUserRole() = userRepository.getUserRole()
 
     fun getUser() = userRepository.getUser()
 
@@ -43,6 +47,7 @@ class TransferConfirmVM: BaseVM() {
             showLoading()
             try {
                 warehouseInventory?.let {
+
                     warehouseInventoryRepository.sendInventory(it, fileIds)
                 }
                 isWarehouseInventorySentLV.postValue(true)

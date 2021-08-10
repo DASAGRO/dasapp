@@ -1,6 +1,5 @@
 package kz.das.dasaccounting.ui.warehouse.transfer
 
-
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -26,6 +25,8 @@ class TransferAdditionalVM: BaseVM() {
     fun getWarehouseInventory(): WarehouseInventory? {
         return warehouseInventory
     }
+
+    fun getUserLocation() = userRepository.getLastLocation()
 
     fun getFileIds(): ArrayList<Int> = fileIds
 

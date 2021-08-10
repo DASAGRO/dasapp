@@ -42,6 +42,9 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
 
             btnAccept.setOnClickListener {
                 getWarehouseInventory()?.let {
+                    it.date = System.currentTimeMillis()
+                    it.latitude = mViewModel.getUserLocation().lat
+                    it.longitude = mViewModel.getUserLocation().long
                     requireRouter().replaceScreen(AcceptConfirmationFragment.getScreen(it))
                 }
             }

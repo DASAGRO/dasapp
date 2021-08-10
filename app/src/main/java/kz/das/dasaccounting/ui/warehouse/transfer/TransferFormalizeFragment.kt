@@ -40,6 +40,9 @@ class TransferFormalizeFragment: BaseBottomSheetFragment<FragmentBottomSheetMake
         mViewBinding.apply {
             this.btnMakeTransfer.setOnClickListener {
                 getWarehouse()?.let {
+                    it.date = System.currentTimeMillis()
+                    it.latitude = mViewModel.getUserLocation().lat
+                    it.longitude = mViewModel.getUserLocation().long
                     listener?.onTransfer(it)
                     dismiss()
                 }
