@@ -28,7 +28,7 @@ class WarehouseTransferPickFragment: BaseFragment<WarehouseTransferPickVM, Fragm
 
     override fun getViewBinding() = FragmentWarehouseRolePickBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+        override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setWarehouseInventory(getWarehouse())
 
         mViewBinding.toolbar.setNavigationOnClickListener { requireRouter().exit() }

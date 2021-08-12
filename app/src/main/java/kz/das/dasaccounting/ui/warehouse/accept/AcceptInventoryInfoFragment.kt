@@ -28,7 +28,7 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
 
     override fun getViewBinding() = FragmentInventoryAcceptBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+        override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setWarehouseInventory(getWarehouseInventory())
 
         mViewBinding.apply {

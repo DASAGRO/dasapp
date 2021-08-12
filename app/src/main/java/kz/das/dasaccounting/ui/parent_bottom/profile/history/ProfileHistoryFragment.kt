@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.parent_bottom.profile.history
 
+import android.os.Bundle
 import com.google.android.material.tabs.TabLayoutMediator
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
@@ -19,7 +20,7 @@ class ProfileHistoryFragment: BaseFragment<ProfileHistoryVM, FragmentProfileHist
 
     override fun getViewBinding() = FragmentProfileHistoryBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+    override fun setupUI(savedInstanceState: Bundle?) {
 
         mViewBinding.toolbar.setNavigationOnClickListener { requireRouter().exit() }
 

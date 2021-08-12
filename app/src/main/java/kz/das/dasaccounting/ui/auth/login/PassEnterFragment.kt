@@ -31,7 +31,7 @@ class PassEnterFragment: BaseFragment<PassEnterVM, FragmentPasswordBinding>(), K
 
     override fun getViewBinding() = FragmentPasswordBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+        override fun setupUI(savedInstanceState: Bundle?) {
         mViewBinding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = mViewModel

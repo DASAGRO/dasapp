@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui
 
+import android.os.Bundle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kz.das.dasaccounting.R
@@ -22,7 +23,7 @@ class SplashFragment: BaseFragment<SplashVM, FragmentSplashBinding>() {
 
     override fun getViewBinding() = FragmentSplashBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+    override fun setupUI(savedInstanceState: Bundle?) {
         changeStatusColor(R.color.white)
         mViewBinding.ivLogo.animateInfinitePulse(0.5f, 0.5f, 250)
         delayedTask(1000, CoroutineScope(Dispatchers.Main)) {

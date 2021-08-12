@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset
 
+import android.os.Bundle
 import androidx.lifecycle.Observer
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
@@ -18,7 +19,7 @@ class ProfilePassResetConfirmFragment : BaseFragment<ProfilePassResetConfirmVM, 
 
     override fun getViewBinding() = FragmentProfilePassResetConfirmBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+    override fun setupUI(savedInstanceState: Bundle?) {
         mViewBinding.run {
             toolbar.setNavigationOnClickListener { requireRouter().exit() }
             mViewBinding.btnConfirm.setOnClickListener { mViewModel.checkPassword(mViewBinding.edtPass.text.toString(), mViewBinding.edtPassConfirm.text.toString()) }

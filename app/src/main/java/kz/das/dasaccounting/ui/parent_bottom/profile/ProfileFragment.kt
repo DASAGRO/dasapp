@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.parent_bottom.profile
 
+import android.os.Bundle
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
@@ -21,7 +22,7 @@ class ProfileFragment: BaseFragment<ProfileVM, FragmentProfileBinding>() {
 
     override fun getViewBinding() = FragmentProfileBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+    override fun setupUI(savedInstanceState: Bundle?) {
         mViewBinding.run {
             lifecycleOwner = viewLifecycleOwner
             profileVM = mViewModel

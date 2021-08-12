@@ -1,10 +1,8 @@
 package kz.das.dasaccounting
 
 import android.annotation.SuppressLint
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import com.mapbox.mapboxsdk.Mapbox
 import kz.das.dasaccounting.core.navigation.RouterProvider
 import kz.das.dasaccounting.core.navigation.ScreenNavigator
 import kz.das.dasaccounting.core.navigation.onBackPressed
@@ -37,8 +35,6 @@ class MainActivity: BaseActivity<MainVM, ActivityMainBinding>(), RouterProvider 
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
-        Mapbox.getInstance(this, getString(R.string.mapbox_access_token))
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onCreate(savedInstanceState)
 
         val view = mViewBinding.root

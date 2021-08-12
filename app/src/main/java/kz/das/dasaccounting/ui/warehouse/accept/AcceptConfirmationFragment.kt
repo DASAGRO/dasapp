@@ -33,7 +33,7 @@ class AcceptConfirmationFragment: BaseFragment<AcceptConfirmationVM, FragmentInv
 
     override fun getViewBinding() = FragmentInventoryAcceptConfirmationBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+        override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setWarehouseInventory(getTransportInventory())
 
         profileSupportAttachedMediaAdapter = ProfileSupportAttachedMediaAdapter(requireContext(),

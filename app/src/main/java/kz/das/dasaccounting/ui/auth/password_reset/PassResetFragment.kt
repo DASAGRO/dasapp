@@ -28,7 +28,7 @@ class PassResetFragment: BaseFragment<PassResetVM, FragmentPasswordResetBinding>
 
     override fun getViewBinding() = FragmentPasswordResetBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+        override fun setupUI(savedInstanceState: Bundle?) {
         mViewBinding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = mViewModel

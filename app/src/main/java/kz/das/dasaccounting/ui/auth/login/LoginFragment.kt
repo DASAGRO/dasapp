@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.auth.login
 
+import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
@@ -22,7 +23,7 @@ class LoginFragment: BaseFragment<LoginVM, FragmentLoginBinding>() {
 
     override fun getViewBinding() = FragmentLoginBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+        override fun setupUI(savedInstanceState: Bundle?) {
         setupPhoneField()
         mViewBinding.btnConfirm.setOnClickListener {
             mViewModel.checkUser()

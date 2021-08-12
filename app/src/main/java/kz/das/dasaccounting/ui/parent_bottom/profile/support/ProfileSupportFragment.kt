@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.parent_bottom.profile.support
 
+import android.os.Bundle
 import androidx.lifecycle.Observer
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
@@ -24,7 +25,7 @@ class ProfileSupportFragment: BaseFragment<ProfileSupportVM, FragmentProfileSupp
 
     override fun getViewBinding() = FragmentProfileSupportBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+    override fun setupUI(savedInstanceState: Bundle?) {
 
         profileSupportAttachedMediaAdapter = ProfileSupportAttachedMediaAdapter(requireContext(),
             object : ProfileSupportAttachedMediaAdapter.ProfileSupportAttachedMediaAdapterEvents {

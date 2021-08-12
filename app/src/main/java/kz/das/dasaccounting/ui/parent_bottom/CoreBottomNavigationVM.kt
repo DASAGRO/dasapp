@@ -9,6 +9,7 @@ import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.ShiftRepository
 import kz.das.dasaccounting.domain.UserRepository
+import kz.das.dasaccounting.domain.data.Location
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.net.ConnectException
@@ -44,6 +45,14 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
     init {
         checkShiftState()
         retrieveNomenclatures()
+    }
+
+    fun saveLocation(long: Double, lat: Double) {
+        userRepository.saveLastLocation(Location(long, lat))
+    }
+
+    fun getLocation(): Location {
+        return userRepository.getLastLocation()
     }
 
     fun startWork() {

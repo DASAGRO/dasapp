@@ -91,6 +91,9 @@ dependencies {
     // HAWK
     implementation rootProject.ext.dependencies["hawk"]
 
+    // MAPS AND LOCATION
+    implementation rootProject.ext.dependencies["play_services_location"]
+
 
     // ROOM
     implementation rootProject.ext.dependencies["room_runtime"]
@@ -98,6 +101,7 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["room_persistence_arch"]
     implementation rootProject.ext.dependencies["room_ktx"]
     implementation rootProject.ext.dependencies["room_testing"]
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
     // SHAPE OF VIEW
     implementation 'io.github.florent37:shapeofview:1.4.7'
@@ -107,8 +111,6 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
 
-    // MAPBOX
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.1'
 
 
     // Fingerprint Scanner

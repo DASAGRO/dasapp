@@ -1,7 +1,7 @@
 <resources>
-    <string name="mapbox_access_token" translatable="false">sk.eyJ1IjoiZGFzYWdybyIsImEiOiJja291YnZkcWQwNTg5MnFxajlpZW1iendxIn0.pavabtbp9TwjeGC6GUfSow</string>
+    <string name="map_token" translatable="false">AIzaSyDn8B_PBimhiAnCnnFJPk1Zcguh4MOMgz4</string>
 
-    <string name="app_name">DAS Mobile 5</string>
+    <string name="app_name">DAS Mobile 6</string>
     <string name="action_settings">Настройки</string>
 
     <string name="common_next">Следующий</string>
@@ -159,6 +159,7 @@
     <string name="transport_inventory_transferred_successfully">ТС успешно передан</string>
     <string name="transport_accessory_inventory_transferred_successfully">ПО успешно передан</string>
 
+    <string name="current_location">Вы здесь</string>
 
     <string name="common_error_scan">Ошибка считывания!</string>
     <string name="gov_number">Гос номер: </string>

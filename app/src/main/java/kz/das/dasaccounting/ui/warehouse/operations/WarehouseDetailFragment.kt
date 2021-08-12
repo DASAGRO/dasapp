@@ -35,7 +35,7 @@ class WarehouseDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouse
 
     override fun getViewBinding() = FragmentWarehouseActionsBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+        override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setWarehouseInventory(getWarehouse())
         mViewBinding.apply {
             toolbar.setNavigationOnClickListener { requireRouter().exit() }

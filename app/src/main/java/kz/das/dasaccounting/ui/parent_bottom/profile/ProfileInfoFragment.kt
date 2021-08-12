@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.parent_bottom.profile
 
+import android.os.Bundle
 import androidx.lifecycle.Observer
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
@@ -23,7 +24,7 @@ class ProfileInfoFragment: BaseFragment<ProfileInfoVM, FragmentProfileInfoBindin
 
     override fun getViewBinding() = FragmentProfileInfoBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+    override fun setupUI(savedInstanceState: Bundle?) {
 
         mViewBinding.run {
             lifecycleOwner = viewLifecycleOwner

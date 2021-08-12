@@ -33,7 +33,7 @@ class HistoryDetailFragment: BaseFragment<HistoryDetailVM, FragmentProfileHistor
 
     override fun getViewBinding() = FragmentProfileHistoryDetailBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+        override fun setupUI(savedInstanceState: Bundle?) {
         mViewBinding.apply {
             toolbar.setNavigationOnClickListener { requireRouter().exit() }
             if (getStatus() == HistoryEnum.AWAIT.status) {

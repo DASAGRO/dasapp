@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset
 
+import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import kz.das.dasaccounting.core.navigation.DasAppScreen
@@ -18,7 +19,7 @@ class ProfilePassResetFragment: BaseFragment<ProfilePassResetVM, FragmentProfile
 
     override fun getViewBinding() = FragmentProfilePassResetBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+    override fun setupUI(savedInstanceState: Bundle?) {
         mViewBinding.run {
             edtPass.addTextChangedListener {
                 btnConfirm.isEnabled = it?.length == 6

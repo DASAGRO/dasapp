@@ -35,7 +35,7 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
 
     override fun getViewBinding() = FragmentInventoryAcceptConfirmationBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+        override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setOfficeInventory(getTransportInventory())
 
         profileSupportAttachedMediaAdapter = ProfileSupportAttachedMediaAdapter(requireContext(),

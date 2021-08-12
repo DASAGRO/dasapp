@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.parent_bottom.profile.history
 
+import android.os.Bundle
 import androidx.lifecycle.Observer
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
@@ -22,7 +23,7 @@ class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryG
 
     override fun getViewBinding() = FragmentProfileHistoryGivenBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+    override fun setupUI(savedInstanceState: Bundle?) {
         historyAdapter = ProfileHistoryAdapter(requireContext(), arrayListOf(), mViewModel.getUser()?.firstName + mViewModel.getUser()?.lastName)
         historyAdapter?.setHistoryOperationsAdapterEvent(object : ProfileHistoryAdapter.OnHistoryOperationsAdapterEvent {
             override fun onClick(title: String?, descr: String?, type: String?, status: String?) {

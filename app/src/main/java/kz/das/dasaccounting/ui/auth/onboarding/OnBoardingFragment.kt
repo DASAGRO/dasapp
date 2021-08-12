@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.auth.onboarding
 
+import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -29,7 +30,7 @@ class OnBoardingFragment: BaseFragment<OnBoardingVM, FragmentOnboardingBinding>(
 
     override fun getViewBinding() = FragmentOnboardingBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+    override fun setupUI(savedInstanceState: Bundle?) {
         layouts = intArrayOf(
             R.layout.board_screen_one,
             R.layout.board_screen_two,

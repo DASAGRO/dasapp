@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.auth.password_reset
 
+import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
@@ -21,7 +22,7 @@ class PhonePassResetFragment: BaseFragment<PhonePassResetVM, FragmentPhonePasswo
 
     override fun getViewBinding() = FragmentPhonePasswordResetBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+    override fun setupUI(savedInstanceState: Bundle?) {
         setupPhoneField()
         mViewBinding.toolbar.setNavigationOnClickListener {
             requireRouter().exit()

@@ -36,7 +36,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
 
     override fun getViewBinding() = FragmentBarcodeGenerateBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+        override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setTransportInventory(getTransportInventory())
         mViewBinding.apply {
             toolbar.setNavigationOnClickListener {

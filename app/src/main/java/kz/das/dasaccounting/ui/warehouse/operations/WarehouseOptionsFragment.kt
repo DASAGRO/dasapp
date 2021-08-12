@@ -23,7 +23,7 @@ class WarehouseOptionsFragment: BaseFragment<WarehouseOptionsVM, FragmentWarehou
 
     override fun getViewBinding() = FragmentWarehouseTranferActionBinding.inflate(layoutInflater)
 
-    override fun setupUI() {
+        override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setWarehouseInventory(getWarehouse())
 
         mViewBinding.apply {

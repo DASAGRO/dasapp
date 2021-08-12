@@ -17,7 +17,7 @@ abstract class BaseFragment<VM: BaseVM, VB: ViewBinding>(): Fragment(), ViewCall
     protected abstract val mViewModel: VM
 
     protected abstract fun getViewBinding(): VB
-    protected abstract fun setupUI()
+    protected abstract fun setupUI(savedInstanceState: Bundle?)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,7 +25,7 @@ abstract class BaseFragment<VM: BaseVM, VB: ViewBinding>(): Fragment(), ViewCall
         savedInstanceState: Bundle?
     ): View? {
         mViewBinding = getViewBinding()
-        setupUI()
+        setupUI(savedInstanceState)
         return mViewBinding.root
     }
 

@@ -2,25 +2,24 @@ package kz.das.dasaccounting.ui.parent_bottom.location
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.os.Build
+import android.content.Context
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.location.Criteria
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
-import android.os.Looper
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.mapbox.android.core.location.*
-import com.mapbox.android.core.permissions.PermissionsManager
-import com.mapbox.mapboxsdk.Mapbox
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
-import com.mapbox.mapboxsdk.location.modes.CameraMode
-import com.mapbox.mapboxsdk.location.modes.RenderMode
-import com.mapbox.mapboxsdk.maps.MapView
-import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
-import com.mapbox.mapboxsdk.maps.Style
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.ui.dialogs.NotificationDialog
@@ -30,32 +29,54 @@ import kz.das.dasaccounting.databinding.FragmentLocationBinding
 import kz.das.dasaccounting.domain.common.UserRole
 import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationVM
 import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
+import kz.das.dasaccounting.ui.utils.GeolocationUtils
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.lang.ref.WeakReference
+import kz.das.dasaccounting.R
 
-
-/**
- * Use the Mapbox Core Library to receive updates when the device changes location.
- */
 class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), OnMapReadyCallback {
 
-    private var mapboxMap: MapboxMap? = null
-    private var map: MapView? = null
-    private var permissionsManager: PermissionsManager? = null
-    private var locationEngine: LocationEngine? = null
-    private val callback = LocationChangeListeningActivityLocationCallback(this)
-
     private val coreMainVM: CoreBottomNavigationVM by sharedViewModel()
+
+    private lateinit var mapView: MapView
+    private var map: GoogleMap? = null
 
     override val mViewModel: LocationVM by viewModel()
 
     override fun getViewBinding() = FragmentLocationBinding.inflate(layoutInflater)
 
+    private val requestLocationPermissionsLaunch = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (!isGranted) {
+            showLocationPermissionRequireDialog()
+        } else {
+            setupLocation()
+        }
+    }
 
-    override fun setupUI() {
-        Mapbox.getInstance(requireContext(), getString(R.string.mapbox_access_token))
+    private var scale: Float = 12f
+    private var mPositionMarker: Marker? = null
+
+    override fun setupUI(savedInstanceState: Bundle?) {
         mViewBinding.apply {
+            mapView = mapLocation
+            mapView.onCreate(savedInstanceState)
+            mapView.onResume()
+            mapView.getMapAsync(this@LocationFragment)
+
+            checkLocation()
+
+            ivLocation.setOnClickListener {
+                checkLocation()
+            }
+
+            ivZoomIn.setOnClickListener {
+                map?.animateCamera(CameraUpdateFactory.zoomIn())
+            }
+
+            ivZoomOut.setOnClickListener {
+                map?.animateCamera(CameraUpdateFactory.zoomOut())
+            }
+
             btnStart.isVisible = coreMainVM.isOnWork() == false
             btnStop.isVisible = coreMainVM.isOnWork() == true
             coreMainVM.setControlOptionsState(coreMainVM.isOnWork())
@@ -82,8 +103,6 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
                 coreMainVM.stopWork()
             }
 
-            map = this.mapView
-            map?.getMapAsync(this@LocationFragment)
         }
     }
 
@@ -106,154 +125,112 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
         })
     }
 
-    override fun onMapReady(mapboxMap: MapboxMap) {
-        this.mapboxMap = mapboxMap
-        mapboxMap.setStyle(
-            Style.MAPBOX_STREETS
-        ) { style -> enableLocationComponent(style) }
+    override fun onLowMemory() {
+        mapView.onLowMemory()
+        super.onLowMemory()
     }
-
-    /**
-     * Initialize the Maps SDK's LocationComponent
-     */
-    @SuppressWarnings("MissingPermission")
-    private fun enableLocationComponent(loadedMapStyle: Style) {
-        // Check if permissions are enabled and if not request
-        if (PermissionsManager.areLocationPermissionsGranted(requireContext())) {
-
-            // Get an instance of the component
-            val locationComponent = mapboxMap!!.locationComponent
-
-            // Set the LocationComponent activation options
-            val locationComponentActivationOptions =
-                LocationComponentActivationOptions.builder(requireContext(), loadedMapStyle)
-                    .useDefaultLocationEngine(false)
-                    .build()
-
-            // Activate with the LocationComponentActivationOptions object
-            locationComponent.activateLocationComponent(locationComponentActivationOptions)
-
-            // Enable to make component visible
-            locationComponent.isLocationComponentEnabled = true
-
-            // Set the component's camera mode
-            locationComponent.cameraMode = CameraMode.TRACKING
-
-            // Set the component's render mode
-            locationComponent.renderMode = RenderMode.COMPASS
-            initLocationEngine()
-        } else {
-            showLocationPermissionRequireDialog()
-        }
-    }
-
-    /**
-     * Set up the LocationEngine and the parameters for querying the device's location
-     */
-    @SuppressLint("MissingPermission")
-    private fun initLocationEngine() {
-        locationEngine = LocationEngineProvider.getBestLocationEngine(requireContext())
-        val request = LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
-            .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
-            .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME).build()
-
-        locationEngine?.requestLocationUpdates(request, callback, Looper.getMainLooper())
-        locationEngine?.getLastLocation(callback)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        permissionsManager!!.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    private class LocationChangeListeningActivityLocationCallback internal constructor(fragment: LocationFragment) :
-        LocationEngineCallback<LocationEngineResult> {
-        private val activityWeakReference: WeakReference<LocationFragment> = WeakReference(fragment)
-
-        /**
-         * The LocationEngineCallback interface's method which fires when the device's location has changed.
-         *
-         * @param result the LocationEngineResult object which has the last known location within it.
-         */
-        override fun onSuccess(result: LocationEngineResult) {
-            val fragment = activityWeakReference.get()
-            if (fragment != null) {
-                val location = result.lastLocation ?: return
-
-                // Pass the new location to the Maps SDK's LocationComponent
-                if (fragment.mapboxMap != null && result.lastLocation != null) {
-                    try {
-                        fragment.mapboxMap?.locationComponent?.forceLocationUpdate(result.lastLocation)
-                    } catch (e: Exception) { }
-                }
-            }
-        }
-
-        /**
-         * The LocationEngineCallback interface's method which fires when the device's location can't be captured
-         *
-         * @param exception the exception message
-         */
-        override fun onFailure(exception: Exception) {
-            val fragment = activityWeakReference.get()
-            if (fragment != null) { }
-        }
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        map?.onCreate(savedInstanceState)
-        map?.onStart()
-    }
-
 
     override fun onResume() {
+        mapView.onResume()
         super.onResume()
-        map?.onResume()
     }
 
     override fun onPause() {
+        mapView.onPause()
         super.onPause()
-        map?.onPause()
     }
 
     override fun onDestroy() {
+        mapView.onDestroy()
         super.onDestroy()
-        locationEngine?.removeLocationUpdates(callback)
-        map?.onDestroy()
     }
 
-    override fun onLowMemory() {
-        super.onLowMemory()
-        map?.onLowMemory()
-    }
-
-    companion object {
-        private const val DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L
-        private const val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
-
-        fun getScreen() = DasAppScreen(LocationFragment())
-
-    }
-
-    private val requestLocationPermissionsLaunch =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (!isGranted) {
-                val provideRationale =
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)
-                    } else {
-                        false
-                    }
-            } else {
-                mapboxMap?.setStyle(
-                    Style.MAPBOX_STREETS
-                ) { style -> enableLocationComponent(style) }
+    override fun onMapReady(googleMap: GoogleMap?) {
+        googleMap?.let {
+            try {
+                MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style)
+            } catch (e: Resources.NotFoundException) {
+                Log.d("Map style file:", "Can't find style. Error: ", e)
             }
+            map = it
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun setupLocation() {
+        if (GeolocationUtils.isPermissionGranted(requireContext()) && map != null) {
+            val locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val criteria = Criteria()
+            val provider = locationManager.getBestProvider(criteria, true)
+
+            mViewModel.myLocation?.let {
+                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), scale))
+            }
+
+            val locationListener = object : LocationListener {
+                override fun onLocationChanged(location: Location) {
+                    mViewModel.myLocation = LatLng(location.latitude, location.longitude)
+                    mViewModel.myLocation?.let {
+                        drawMarker(it)
+                        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(it, scale)
+                        map?.animateCamera(cameraUpdate)
+                    }
+                }
+
+                override fun onStatusChanged(s: String, i: Int, bundle: Bundle) { }
+
+                override fun onProviderEnabled(s: String) { }
+
+                override fun onProviderDisabled(s: String) { }
+            }
+
+            provider?.let {
+                locationManager.requestLocationUpdates(it, DEFAULT_MAX_WAIT_TIME, 0f, locationListener)
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, locationListener)
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener)
+            }
+
+            mViewModel.locationIsSet = true
+        }
+    }
+
+    private fun drawMarker(location: LatLng) {
+        try {
+            requireContext().let {
+                mViewModel.myLocation = location
+
+                mPositionMarker?.remove()
+
+                val markerOptions = MarkerOptions()
+                    .position(location)
+                    .title(this.getString(R.string.current_location))
+                    .icon(bitmapDescriptorFromVector())
+                    //.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location))
+
+                mPositionMarker = map?.addMarker(markerOptions)
+                mPositionMarker?.tag = "user_current_location"
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun  bitmapDescriptorFromVector(): BitmapDescriptor {
+        val vectorDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_location)
+        vectorDrawable!!.setBounds(0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight)
+        val bitmap = Bitmap.createBitmap(vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas =  Canvas(bitmap)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+    private fun checkLocation() {
+        if (GeolocationUtils.isPermissionGranted(requireContext())) {
+            setupLocation()
+        } else {
+            requestLocationPermissionsLaunch.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
 
     private fun showLocationPermissionRequireDialog() {
         val notificationDialog = NotificationDialog.Builder()
@@ -261,11 +238,22 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
             .setDescription(getString(R.string.permission_location_desc))
             .setOnConfirmCallback(object : NotificationDialog.OnConfirmCallback {
                 override fun onConfirmClicked() {
-                    requestLocationPermissionsLaunch.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                    shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)
+                    //requestLocationPermissionsLaunch.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                 }
             })
             .build()
         notificationDialog.show(childFragmentManager, "PermissionNotificationDialog")
+    }
+
+
+
+    companion object {
+        private const val DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L
+        private const val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
+
+        fun getScreen() = DasAppScreen(LocationFragment())
+
     }
 
 
