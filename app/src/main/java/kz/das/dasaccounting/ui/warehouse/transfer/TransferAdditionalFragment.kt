@@ -85,9 +85,9 @@ class TransferAdditionalFragment: BaseBottomSheetFragment<FragmentBottomSheetWar
                 } else {
                     val warehouseInventory = mViewModel.getWarehouseInventory()
                     warehouseInventory?.sealNumber = edtSealNumber.text.toString()
-                    warehouseInventory.date = System.currentTimeMillis()
-                    warehouseInventory.latitude = mViewModel.getUserLocation().lat
-                    warehouseInventory.longitude = mViewModel.getUserLocation().long
+                    warehouseInventory?.date = System.currentTimeMillis()
+                    warehouseInventory?.latitude = mViewModel.getUserLocation().lat
+                    warehouseInventory?.longitude = mViewModel.getUserLocation().long
                     onTransferFieldsListener?.onTransfer(warehouseInventory, mViewModel.getFileIds())
                     dismiss()
                 }
