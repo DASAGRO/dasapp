@@ -7,7 +7,6 @@ import kz.das.dasaccounting.data.entities.requests.GetStoreRequest
 import kz.das.dasaccounting.data.entities.requests.SendStoreRequest
 import kz.das.dasaccounting.data.entities.warehouse.toDomain
 import kz.das.dasaccounting.data.source.network.WarehouseOperationApi
-import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.WarehouseInventoryRepository
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
@@ -18,7 +17,6 @@ import org.koin.core.inject
 class WarehouseInventoryRepositoryImpl: WarehouseInventoryRepository, KoinComponent {
 
     private val warehouseOperationApi: WarehouseOperationApi by inject()
-    private val userRepository: UserRepository by inject()
 
     override suspend fun getWarehouseInventories(): List<WarehouseInventory> {
         return warehouseOperationApi.getWarehouses().unwrap { list -> list.map { it.toDomain() } }
@@ -44,11 +42,11 @@ class WarehouseInventoryRepositoryImpl: WarehouseInventoryRepository, KoinCompon
         return warehouseOperationApi.getWarehouse(
             GetStoreRequest(
                 comment = comment,
-                date = System.currentTimeMillis(),
+                date = warehouseInventory.date,
                 fileIds = fileIds,
                 id = warehouseInventory.id,
-                latitude = userRepository.getLastLocation().lat,
-                longitude = userRepository.getLastLocation().long,
+                latitude = warehouseInventory.latitude ?: 0.0,
+                longitude = warehouseInventory.longitude ?: 0.0,
                 name = warehouseInventory.name,
                 requestId = warehouseInventory.requestId,
                 senderUUID = warehouseInventory.senderUUID,
@@ -67,11 +65,11 @@ class WarehouseInventoryRepositoryImpl: WarehouseInventoryRepository, KoinCompon
         return warehouseOperationApi.sendWarehouse(
             SendStoreRequest(
                 comment = "",
-                date = System.currentTimeMillis(),
+                date = warehouseInventory.date,
                 fileIds = fileIds ?: arrayListOf(),
                 id = warehouseInventory.id,
-                latitude = userRepository.getLastLocation().lat,
-                longitude = userRepository.getLastLocation().long,
+                latitude = warehouseInventory.latitude,
+                longitude = warehouseInventory.longitude,
                 name = warehouseInventory.name,
                 requestId = warehouseInventory.requestId,
                 sealNumber = warehouseInventory.sealNumber,
