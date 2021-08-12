@@ -30,48 +30,74 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
             })
     }
 
-    override suspend fun initAwaitAcceptInventory() {
-        dasAppDatabase.driverAcceptedInventoryDao().all.forEach {
-            driverInventoryApi.getInventoryDriverTransport(
-                it.toDomain().toGetRequest("Повторная отправка", null)
-            )
-                .unwrap(object : OnResponseCallback<Any> {
-                    override fun onSuccess(entity: Any) {
-                        dasAppDatabase.driverAcceptedInventoryDao().removeItem(it)
-                    }
 
-                    override fun onFail(exception: Exception) {}
-                })
-        }
+    override fun getUnsentInventories(): List<TransportInventory> {
+        return dasAppDatabase.driverSentInventoryDao().all.map { it.toDomain() }
     }
 
-    override suspend fun initAwaitSendInventory() {
-        dasAppDatabase.driverSentInventoryDao().all.forEach {
-            driverInventoryApi.sendInventoryDriverTransport(it.toDomain().toSentRequest())
-                .unwrap(object : OnResponseCallback<Any> {
-                    override fun onSuccess(entity: Any) {
-                        dasAppDatabase.driverSentInventoryDao().removeItem(it)
-                    }
-
-                    override fun onFail(exception: Exception) {}
-                })
-        }
+    override fun getUnAcceptedInventories(): List<TransportInventory> {
+        return dasAppDatabase.driverAcceptedInventoryDao().all.map { it.toDomain() }
     }
 
-    override suspend fun initAwaitReceiveFligerData() {
-        dasAppDatabase.driverFligelDataDao().all.forEach {
-            driverInventoryApi.receiveInventoryFligel(
-                it.toFligelProduct().toReceiveFligelDataRequest()
-            )
-                .unwrap(object : OnResponseCallback<Any> {
-                    override fun onSuccess(entity: Any) {
-                        dasAppDatabase.driverFligelDataDao().removeItem(it)
-                    }
-
-                    override fun onFail(exception: Exception) {}
-                })
-        }
+    override fun getFligelData(): List<FligelProduct> {
+        return dasAppDatabase.driverFligelDataDao().all.map { it.toFligelProduct() }
     }
+
+    override suspend fun removeFligelData(fligelProduct: FligelProduct) {
+        dasAppDatabase.driverFligelDataDao().removeItem(fligelProduct.toFligelProductEntity())
+    }
+
+    override suspend fun removeUnsentInventory(transportInventory: TransportInventory) {
+        dasAppDatabase.driverSentInventoryDao().removeItem(transportInventory.toSentEntity())
+    }
+
+    override suspend fun removeUnAcceptedInventory(transportInventory: TransportInventory) {
+        dasAppDatabase.driverAcceptedInventoryDao().removeItem(transportInventory.toAcceptedEntity())
+    }
+
+
+//    override suspend fun initAwaitAcceptInventory() {
+//        dasAppDatabase.driverAcceptedInventoryDao().all.forEach {
+//            driverInventoryApi.getInventoryDriverTransport(
+//                it.toDomain().toGetRequest("Повторная отправка", null)
+//            )
+//                .unwrap(object : OnResponseCallback<Any> {
+//                    override fun onSuccess(entity: Any) {
+//                        dasAppDatabase.driverAcceptedInventoryDao().removeItem(it)
+//                    }
+//
+//                    override fun onFail(exception: Exception) {}
+//                })
+//        }
+//    }
+
+    //    override suspend fun initAwaitSendInventory() {
+//        dasAppDatabase.driverSentInventoryDao().all.forEach {
+//            driverInventoryApi.sendInventoryDriverTransport(it.toDomain().toSentRequest())
+//                .unwrap(object : OnResponseCallback<Any> {
+//                    override fun onSuccess(entity: Any) {
+//                        dasAppDatabase.driverSentInventoryDao().removeItem(it)
+//                    }
+//
+//                    override fun onFail(exception: Exception) {}
+//                })
+//        }
+//    }
+//
+//    override suspend fun initAwaitReceiveFligerData() {
+//        dasAppDatabase.driverFligelDataDao().all.forEach {
+//            driverInventoryApi.receiveInventoryFligel(
+//                it.toFligelProduct().toReceiveFligelDataRequest()
+//            )
+//                .unwrap(object : OnResponseCallback<Any> {
+//                    override fun onSuccess(entity: Any) {
+//                        dasAppDatabase.driverFligelDataDao().removeItem(it)
+//                    }
+//
+//                    override fun onFail(exception: Exception) {}
+//                })
+//        }
+//    }
 
 
     override suspend fun acceptInventory(

@@ -5,6 +5,7 @@ import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.ShiftRepository
+import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -22,17 +23,57 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
         retrieve()
     }
 
+//    fun initAwaitRequests() {
+//        viewModelScope.launch {
+//            try {
+//                shiftRepository.initAwaitShiftStarted()
+//                shiftRepository.initAwaitShiftFinished()
+////                officeInventoryRepository.initAwaitAcceptInventory()
+////                officeInventoryRepository.initAwaitSendInventory()
+//            } catch (t: Throwable) {
+//                throwableHandler.handle(t)
+//            } finally {
+//            }
+//        }
+//    }
+
     fun initAwaitRequests() {
+
         viewModelScope.launch {
             try {
                 shiftRepository.initAwaitShiftStarted()
                 shiftRepository.initAwaitShiftFinished()
-                officeInventoryRepository.initAwaitAcceptInventory()
-                officeInventoryRepository.initAwaitSendInventory()
             } catch (t: Throwable) {
                 throwableHandler.handle(t)
             } finally {
             }
+        }
+
+        officeInventoryRepository.getUnAcceptedInventories().forEach {
+            sendAwaitUnAcceptedOfficeInventory(it)
+        }
+
+        officeInventoryRepository.getUnsentInventories().forEach {
+            sendAwaitUnsentOfficeInventory(it)
+        }
+    }
+
+    // Office send await requests
+    private fun sendAwaitUnsentOfficeInventory(officeInventory: OfficeInventory) {
+        viewModelScope.launch {
+            try {
+                officeInventoryRepository.sendInventory(officeInventory)
+                officeInventoryRepository.removeUnsentInventory(officeInventory)
+            } catch (t: Throwable) { }
+        }
+    }
+
+    private fun sendAwaitUnAcceptedOfficeInventory(officeInventory: OfficeInventory) {
+        viewModelScope.launch {
+            try {
+                officeInventoryRepository.acceptInventory(officeInventory, "Повторная отправка", arrayListOf())
+                officeInventoryRepository.removeUnAcceptedInventory(officeInventory)
+            } catch (t: Throwable) { }
         }
     }
 

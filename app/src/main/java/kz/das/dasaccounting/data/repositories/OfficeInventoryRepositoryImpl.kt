@@ -13,7 +13,9 @@ import kz.das.dasaccounting.data.source.network.OfficeOperationApi
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.office.NomenclatureOfficeInventory
+import kz.das.dasaccounting.domain.data.office.OfficeAcceptedInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
+import kz.das.dasaccounting.domain.data.office.OfficeSentInventory
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -148,64 +150,81 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
         return dasAppDatabase.officeInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
     }
 
-    override suspend fun initAwaitAcceptInventory() {
-        dasAppDatabase.officeInventoryAcceptedDao().all.forEach {
-            officeOperationApi.acceptInventory(
-                InventoryGetRequest(
-                    id = it.id,
-                    date = it.date,
-                    name = it.name,
-                    humidity = it.humidity,
-                    latitude = it.latitude,
-                    longitude = it.longitude,
-                    materialUUID = it.materialUUID,
-                    senderUUID = it.senderUUID,
-                    requestId = it.requestId,
-                    storeUUID = it.storeUUID,
-                    quantity = it.quantity,
-                    type = it.type,
-                    senderName = it.senderName,
-                    fileIds = null,
-                    comment = "Повторная отправка принятии"
-                )
-            )
-                .unwrap(object : OnResponseCallback<ApiResponseMessage> {
-                    override fun onSuccess(entity: ApiResponseMessage) {
-                        dasAppDatabase.officeInventoryAcceptedDao().removeItem(it)
-                    }
-
-                    override fun onFail(exception: Exception) {}
-                })
-        }
+    override fun getUnsentInventories(): List<OfficeInventory> {
+        return dasAppDatabase.officeInventorySentDao().all.map { it.toDomain() }
     }
 
-    override suspend fun initAwaitSendInventory() {
-        dasAppDatabase.officeInventorySentDao().all.forEach {
-            officeOperationApi.sendInventory(
-                InventorySendRequest(
-                    id = it.id,
-                    date = it.date,
-                    name = it.name,
-                    humidity = it.humidity,
-                    latitude = userRepository.getLastLocation().lat,
-                    longitude = userRepository.getLastLocation().long,
-                    materialUUID = it.materialUUID,
-                    requestId = it.requestId,
-                    storeUUID = it.storeUUID,
-                    quantity = it.quantity,
-                    type = it.type,
-                    senderName = it.senderName
-                )
-            )
-                .unwrap(object : OnResponseCallback<ApiResponseMessage> {
-                    override fun onSuccess(entity: ApiResponseMessage) {
-                        dasAppDatabase.officeInventorySentDao().removeItem(it)
-                    }
-
-                    override fun onFail(exception: Exception) {}
-                })
-        }
+    override fun getUnAcceptedInventories(): List<OfficeInventory> {
+        return dasAppDatabase.officeInventoryAcceptedDao().all.map { it.toDomain() }
     }
+
+    override suspend fun removeUnsentInventory(officeInventory: OfficeInventory) {
+        dasAppDatabase.officeInventorySentDao().removeItem(officeInventory.toSentEntity())
+    }
+
+    override suspend fun removeUnAcceptedInventory(officeInventory: OfficeInventory) {
+        dasAppDatabase.officeInventoryAcceptedDao().removeItem(officeInventory.toAcceptedEntity())
+    }
+
+
+    //    override suspend fun initAwaitAcceptInventory() {
+//        dasAppDatabase.officeInventoryAcceptedDao().all.forEach {
+//            officeOperationApi.acceptInventory(
+//                InventoryGetRequest(
+//                    id = it.id,
+//                    date = it.date,
+//                    name = it.name,
+//                    humidity = it.humidity,
+//                    latitude = it.latitude,
+//                    longitude = it.longitude,
+//                    materialUUID = it.materialUUID,
+//                    senderUUID = it.senderUUID,
+//                    requestId = it.requestId,
+//                    storeUUID = it.storeUUID,
+//                    quantity = it.quantity,
+//                    type = it.type,
+//                    senderName = it.senderName,
+//                    fileIds = null,
+//                    comment = "Повторная отправка принятии"
+//                )
+//            )
+//                .unwrap(object : OnResponseCallback<ApiResponseMessage> {
+//                    override fun onSuccess(entity: ApiResponseMessage) {
+//                        dasAppDatabase.officeInventoryAcceptedDao().removeItem(it)
+//                    }
+//
+//                    override fun onFail(exception: Exception) {}
+//                })
+//        }
+//    }
+//
+//    override suspend fun initAwaitSendInventory() {
+//        dasAppDatabase.officeInventorySentDao().all.forEach {
+//            officeOperationApi.sendInventory(
+//                InventorySendRequest(
+//                    id = it.id,
+//                    date = it.date,
+//                    name = it.name,
+//                    humidity = it.humidity,
+//                    latitude = userRepository.getLastLocation().lat,
+//                    longitude = userRepository.getLastLocation().long,
+//                    materialUUID = it.materialUUID,
+//                    requestId = it.requestId,
+//                    storeUUID = it.storeUUID,
+//                    quantity = it.quantity,
+//                    type = it.type,
+//                    senderName = it.senderName
+//                )
+//            )
+//                .unwrap(object : OnResponseCallback<ApiResponseMessage> {
+//                    override fun onSuccess(entity: ApiResponseMessage) {
+//                        dasAppDatabase.officeInventorySentDao().removeItem(it)
+//                    }
+//
+//                    override fun onFail(exception: Exception) {}
+//                })
+//        }
+//    }
 
     override fun getOfficeSentMaterialsLocally(): LiveData<List<OfficeInventory>> {
         return dasAppDatabase.officeInventorySentDao().allAsLiveData.map { it -> it.map { it.toDomain() } }

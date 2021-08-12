@@ -6,11 +6,23 @@ import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 
 interface DriverInventoryRepository {
 
-    suspend fun initAwaitAcceptInventory()
+//    suspend fun initAwaitAcceptInventory()
+//
+//    suspend fun initAwaitSendInventory()
+//
+//    suspend fun initAwaitReceiveFligerData()
 
-    suspend fun initAwaitSendInventory()
+    fun getUnsentInventories(): List<TransportInventory>
 
-    suspend fun initAwaitReceiveFligerData()
+    fun getUnAcceptedInventories(): List<TransportInventory>
+
+    fun getFligelData(): List<FligelProduct>
+
+    suspend fun removeFligelData(fligelProduct: FligelProduct)
+
+    suspend fun removeUnsentInventory(transportInventory: TransportInventory)
+
+    suspend fun removeUnAcceptedInventory(transportInventory: TransportInventory)
 
     suspend fun getDriverTransports(): List<TransportInventory>
 

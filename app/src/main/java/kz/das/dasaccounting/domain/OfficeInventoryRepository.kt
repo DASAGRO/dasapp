@@ -8,9 +8,13 @@ interface OfficeInventoryRepository {
 
     suspend fun getOfficeMaterials(): List<OfficeInventory>
 
-    suspend fun initAwaitAcceptInventory()
+    fun getUnsentInventories(): List<OfficeInventory>
 
-    suspend fun initAwaitSendInventory()
+    fun getUnAcceptedInventories(): List<OfficeInventory>
+
+    suspend fun removeUnsentInventory(officeInventory: OfficeInventory)
+
+    suspend fun removeUnAcceptedInventory(officeInventory: OfficeInventory)
 
     suspend fun acceptInventory(officeInventory: OfficeInventory, comment: String, fileIds: ArrayList<Int>): Any
 
