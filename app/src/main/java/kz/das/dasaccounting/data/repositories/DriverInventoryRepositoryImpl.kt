@@ -11,6 +11,8 @@ import kz.das.dasaccounting.data.source.network.DriverOperationApi
 import kz.das.dasaccounting.domain.DriverInventoryRepository
 import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.domain.data.drivers.toHistoryTransfer
+import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -159,6 +161,14 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
 
     override fun getDriverAcceptedMaterialsLocally(): LiveData<List<TransportInventory>> {
         return dasAppDatabase.driverAcceptedInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
+    }
+
+    override fun getHistoryDriverAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>> {
+        return dasAppDatabase.driverAcceptedInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
+    }
+
+    override fun getHistoryDriverSentMaterialsLocally(): LiveData<List<HistoryTransfer>> {
+        return dasAppDatabase.driverSentInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
     }
 
     override fun getAwaitFligelDataLocally(): LiveData<List<FligelProduct>> {

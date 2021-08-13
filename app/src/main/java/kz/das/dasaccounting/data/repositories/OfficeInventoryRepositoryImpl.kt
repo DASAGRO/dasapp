@@ -12,10 +12,8 @@ import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.OfficeOperationApi
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
-import kz.das.dasaccounting.domain.data.office.NomenclatureOfficeInventory
-import kz.das.dasaccounting.domain.data.office.OfficeAcceptedInventory
-import kz.das.dasaccounting.domain.data.office.OfficeInventory
-import kz.das.dasaccounting.domain.data.office.OfficeSentInventory
+import kz.das.dasaccounting.domain.data.history.HistoryTransfer
+import kz.das.dasaccounting.domain.data.office.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -232,6 +230,14 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
 
     override fun getOfficeAcceptedMaterialsLocally(): LiveData<List<OfficeInventory>> {
         return dasAppDatabase.officeInventoryAcceptedDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
+    }
+
+    override fun getHistoryOfficeAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>> {
+        return dasAppDatabase.officeInventoryAcceptedDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
+    }
+
+    override fun getHistoryOfficeSentMaterialsLocally(): LiveData<List<HistoryTransfer>> {
+        return dasAppDatabase.officeInventorySentDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
     }
 
     override suspend fun initDeleteData() {

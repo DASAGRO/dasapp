@@ -5,10 +5,7 @@ import androidx.lifecycle.Observer
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentProfileHistoryGivenBinding
-import kz.das.dasaccounting.domain.data.action.OperationAct
-import kz.das.dasaccounting.domain.data.drivers.toSent
-import kz.das.dasaccounting.domain.data.history.HistoryEnum
-import kz.das.dasaccounting.domain.data.office.toSent
+import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryGivenBinding>() {
@@ -17,15 +14,15 @@ class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryG
         fun newInstance() = HistoryGivenFragment()
     }
 
-    private var historyAdapter: ProfileHistoryAdapter? = null
+    private var historyAdapter: UserTransferHistoryAdapter? = null
 
     override val mViewModel: HistoryGivenVM by viewModel()
 
     override fun getViewBinding() = FragmentProfileHistoryGivenBinding.inflate(layoutInflater)
 
     override fun setupUI(savedInstanceState: Bundle?) {
-        historyAdapter = ProfileHistoryAdapter(requireContext(), arrayListOf(), mViewModel.getUser()?.firstName + mViewModel.getUser()?.lastName)
-        historyAdapter?.setHistoryOperationsAdapterEvent(object : ProfileHistoryAdapter.OnHistoryOperationsAdapterEvent {
+        historyAdapter = UserTransferHistoryAdapter(requireContext(), arrayListOf(), mViewModel.getUser()?.firstName + mViewModel.getUser()?.lastName)
+        historyAdapter?.setHistoryOperationsAdapterEvent(object : UserTransferHistoryAdapter.OnHistoryOperationsAdapterEvent {
             override fun onClick(title: String?, descr: String?, type: String?, status: String?) {
                 requireRouter().navigateTo(HistoryDetailFragment.getScreen(title, descr, type, status))
             }
@@ -37,50 +34,22 @@ class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryG
 
     override fun observeLiveData() {
         super.observeLiveData()
-        mViewModel.getHistoryOfficeInventoriesLocally().observe(viewLifecycleOwner, Observer {
-            it?.let { list ->
-                val acceptedList: ArrayList<OperationAct> = arrayListOf()
-                acceptedList.addAll(list.filter { item -> item.status == HistoryEnum.SENT.status })
-                historyAdapter?.clearOperations()
-                historyAdapter?.addAll(acceptedList)
+
+        mViewModel.getZippedHistory().observe(viewLifecycleOwner, Observer { list ->
+            val historyList = arrayListOf<HistoryTransfer>()
+            list.forEach {
+                if (it is ArrayList<*>) {
+                    it.forEach { item ->
+                        if (item is HistoryTransfer) {
+                            historyList.add(item)
+                        }
+                    }
+                }
             }
-        })
-        mViewModel.getHistoryTransportInventoriesLocally().observe(viewLifecycleOwner, Observer {
-            it?.let { list ->
-                val acceptedList: ArrayList<OperationAct> = arrayListOf()
-                acceptedList.addAll(list.filter { item -> item.status == HistoryEnum.SENT.status })
-                historyAdapter?.clearTransports()
-                historyAdapter?.addAll(acceptedList)
-            }
-        })
-        mViewModel.getHistoryWarehouseInventoriesLocally().observe(viewLifecycleOwner, Observer {
-            it?.let { list ->
-                val acceptedList: ArrayList<OperationAct> = arrayListOf()
-                acceptedList.addAll(list.filter { item -> item.status == HistoryEnum.SENT.status })
-                historyAdapter?.clearWarehouseOperations()
-                historyAdapter?.addAll(acceptedList)
-            }
+            historyList.sortedBy { it.date }
+            historyAdapter?.putItems(historyList)
         })
 
-        mViewModel.sentTransportInventoryLocally().observe(viewLifecycleOwner, Observer {
-            it?.let { list ->
-                val acceptedList: ArrayList<OperationAct> = arrayListOf()
-                val newList = list.map { officeInventory -> officeInventory.toSent() }
-                acceptedList.addAll(newList)
-                historyAdapter?.clearAwaitAcceptedOperations()
-                historyAdapter?.addAll(acceptedList)
-            }
-        })
-
-        mViewModel.sentOfficeInventoryLocally().observe(viewLifecycleOwner, Observer {
-            it?.let { list ->
-                val acceptedList: ArrayList<OperationAct> = arrayListOf()
-                val newList = list.map { transportInventory -> transportInventory.toSent() }
-                acceptedList.addAll(newList)
-                historyAdapter?.clearAwaitAcceptedTransports()
-                historyAdapter?.addAll(acceptedList)
-            }
-        })
     }
 
 }

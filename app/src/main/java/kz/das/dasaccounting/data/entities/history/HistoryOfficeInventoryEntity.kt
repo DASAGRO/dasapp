@@ -2,7 +2,11 @@ package kz.das.dasaccounting.data.entities.history
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kz.das.dasaccounting.R
+import kz.das.dasaccounting.core.extensions.getLongFromServerDate
 import kz.das.dasaccounting.domain.data.history.HistoryOfficeInventory
+import kz.das.dasaccounting.domain.data.history.HistoryTransfer
+import kz.das.dasaccounting.domain.data.history.OperationType
 import java.io.Serializable
 
 @Entity(tableName = "history_office_inventory")
@@ -36,5 +40,22 @@ fun HistoryOfficeInventoryEntity.toDomain(): HistoryOfficeInventory {
         longitude = this.longitude,
         latitude = this.latitude,
         status = this.status
+    )
+}
+
+fun HistoryOfficeInventoryEntity.toHistoryTransfer(): HistoryTransfer {
+    return HistoryTransfer(
+        title = this.name ?: "Продукт",
+        descr = ("Количество:" +
+                " " + this.quantity +
+                " " + this.measurement + "\n" +
+                String.format("От кого: %s", this.fullName)),
+        date = this.dateTime.getLongFromServerDate(),
+        dateText = this.dateTime ?: "Ошибка даты",
+        quantity = 0.0,
+        senderName = String.format("От кого: %s", this.fullName) ?: "",
+        operationType = OperationType.OFFICE.status,
+        isAwait = false,
+        status = this.status ?: ""
     )
 }

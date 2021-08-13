@@ -7,6 +7,7 @@ import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
 import kz.das.dasaccounting.domain.data.file.File
 import kz.das.dasaccounting.domain.data.history.HistoryOfficeInventory
+import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import kz.das.dasaccounting.domain.data.history.HistoryTransportInventory
 import kz.das.dasaccounting.domain.data.history.HistoryWarehouseInventory
 
@@ -50,16 +51,16 @@ interface UserRepository {
 
     suspend fun deleteData()
 
-    suspend fun getHistoryWarehouseInventories(): List<HistoryWarehouseInventory>
+    suspend fun getHistoryWarehouseInventories(): List<HistoryTransfer>
 
-    suspend fun getHistoryOfficeInventories(): List<HistoryOfficeInventory>
+    suspend fun getHistoryOfficeInventories(): List<HistoryTransfer>
 
-    suspend fun getHistoryTransportInventories(): List<HistoryTransportInventory>
+    suspend fun getHistoryTransportInventories(): List<HistoryTransfer>
 
-    fun getHistoryWarehouseInventoriesLocally(): LiveData<List<HistoryWarehouseInventory>>
+    fun getHistoryWarehouseInventoriesLocally(): LiveData<List<HistoryTransfer>>
 
-    fun getHistoryOfficeInventoriesLocally(): LiveData<List<HistoryOfficeInventory>>
+    fun getHistoryOfficeInventoriesLocally(): LiveData<List<HistoryTransfer>>
 
-    fun getHistoryTransportInventoriesLocally(): LiveData<List<HistoryTransportInventory>>
+    fun getHistoryTransportInventoriesLocally(): LiveData<List<HistoryTransfer>>
 
 }

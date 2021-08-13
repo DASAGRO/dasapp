@@ -3,6 +3,7 @@ package kz.das.dasaccounting.domain
 import androidx.lifecycle.LiveData
 import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 
 interface DriverInventoryRepository {
 
@@ -43,6 +44,10 @@ interface DriverInventoryRepository {
     fun getDriverSentMaterialsLocally(): LiveData<List<TransportInventory>>
 
     fun getDriverAcceptedMaterialsLocally(): LiveData<List<TransportInventory>>
+
+    fun getHistoryDriverAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>>
+
+    fun getHistoryDriverSentMaterialsLocally(): LiveData<List<HistoryTransfer>>
 
     fun getAwaitFligelDataLocally(): LiveData<List<FligelProduct>>
 

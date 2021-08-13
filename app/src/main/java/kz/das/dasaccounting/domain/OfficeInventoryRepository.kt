@@ -1,6 +1,7 @@
 package kz.das.dasaccounting.domain
 
 import androidx.lifecycle.LiveData
+import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import kz.das.dasaccounting.domain.data.office.NomenclatureOfficeInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 
@@ -35,6 +36,10 @@ interface OfficeInventoryRepository {
     fun getOfficeSentMaterialsLocally(): LiveData<List<OfficeInventory>>
 
     fun getOfficeAcceptedMaterialsLocally(): LiveData<List<OfficeInventory>>
+
+    fun getHistoryOfficeAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>>
+
+    fun getHistoryOfficeSentMaterialsLocally(): LiveData<List<HistoryTransfer>>
 
     suspend fun initDeleteData()
 

@@ -2,7 +2,11 @@ package kz.das.dasaccounting.data.entities.history
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kz.das.dasaccounting.core.extensions.getLongFromServerDate
+import kz.das.dasaccounting.domain.common.TransportType
+import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import kz.das.dasaccounting.domain.data.history.HistoryTransportInventory
+import kz.das.dasaccounting.domain.data.history.OperationType
 import java.io.Serializable
 
 @Entity(tableName = "history_transport_inventory")
@@ -36,5 +40,20 @@ fun HistoryTransportInventoryEntity.toDomain(): HistoryTransportInventory {
         fullName = this.fullName,
         molUUID = this.molUUID,
         status = this.status
+    )
+}
+
+
+fun HistoryTransportInventoryEntity.toHistoryTransfer(): HistoryTransfer {
+    return HistoryTransfer(
+        title = this.name ?: "Транспорт",
+        descr = "Гос. номер: " + this.stateNumber,
+        date = this.dateTime.getLongFromServerDate(),
+        dateText = this.dateTime ?: "Ошибка даты",
+        quantity = 0.0,
+        senderName = String.format("От кого: %s", this.fullName) ?: "",
+        operationType = if (this.tsType == TransportType.TRAILED.type) OperationType.DRIVER_ACCESSORY.status else OperationType.DRIVER.status,
+        isAwait = false,
+        status = this.status ?: ""
     )
 }

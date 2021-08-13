@@ -1,80 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root_history"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/selectable_accent"
-    android:clickable="true"
-    android:focusable="true">
+<layout>
 
-    <LinearLayout
-        android:id="@+id/ll_history_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_toStartOf="@+id/iv_status"
-        android:orientation="vertical">
+    <data>
+        <variable
+            name="userName"
+            type="String" />
+        <variable
+            name="historyTransfer"
+            type="kz.das.dasaccounting.domain.data.history.HistoryTransfer" />
+    </data>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_inventory_title"
-            style="@style/Widget.MaterialComponents.TextView.DAS"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="Kamaz 213123, 123asd02" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_inventory_date"
-            style="@style/Widget.MaterialComponents.TextView.DAS"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/color_grey_text"
-            tools:text="6 Октября 2020 года в 18:31" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_inventory_quantity"
-            style="@style/Widget.MaterialComponents.TextView.DAS"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/color_grey_text"
-            tools:text="Количество:" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_invented_user"
-            style="@style/Widget.MaterialComponents.TextView.DAS"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/color_grey_text"
-            android:textSize="14sp"
-            tools:text="передан  Алекссандра А.А" />
-
-    </LinearLayout>
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_status"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="16dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_banner_success_oval" />
-
-    <View
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/root_history"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/ll_history_detail"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/color_grey" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/selectable_accent"
+        android:clickable="true"
+        android:focusable="true">
 
-</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/ll_history_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_toStartOf="@+id/iv_status"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_inventory_title"
+                style="@style/Widget.MaterialComponents.TextView.DAS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="@{historyTransfer.title}"
+                tools:text="Kamaz 213123, 123asd02" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_inventory_date"
+                style="@style/Widget.MaterialComponents.TextView.DAS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@{historyTransfer.dateText}"
+                android:textColor="@color/color_grey_text"
+                tools:text="6 Октября 2020 года в 18:31" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_inventory_quantity"
+                style="@style/Widget.MaterialComponents.TextView.DAS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@{String.format(@string/total_quantity_formatter, historyTransfer.quantity)}"
+                android:textColor="@color/color_grey_text"
+                tools:text="Количество:" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_invented_user"
+                style="@style/Widget.MaterialComponents.TextView.DAS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@{userName.empty ? String.format(@string/inventory_sender_name, userName) : historyTransfer.senderName}"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/color_grey_text"
+                android:textSize="14sp"
+                tools:text="передан  Алекссандра А.А" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_status"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="16dp"
+            android:scaleType="centerInside"
+            android:src="@{historyTransfer.await ? @drawable/ic_banner_waiting_oval : @drawable/ic_banner_success_oval}" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/ll_history_detail"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/color_grey" />
+
+    </RelativeLayout>
+
+</layout>

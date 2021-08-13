@@ -2,10 +2,13 @@ package kz.das.dasaccounting.ui.parent_bottom.profile.history
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import kz.das.dasaccounting.core.extensions.zipLiveDataAny
+import kz.das.dasaccounting.core.extensions.zipLiveDataGenerics
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.DriverInventoryRepository
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
+import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import org.koin.core.inject
 
 class HistoryGivenVM: BaseVM() {
@@ -32,14 +35,20 @@ class HistoryGivenVM: BaseVM() {
 
     fun getUser() = userRepository.getUser()
 
-    fun getHistoryWarehouseInventoriesLocally() = userRepository.getHistoryWarehouseInventoriesLocally()
+    fun getZippedHistory() = zipLiveDataAny(getHistoryWarehouseInventoriesLocally(),
+        getHistoryTransportInventoriesLocally(),
+        getHistoryOfficeInventoriesLocally(),
+        sentTransportInventoryLocally(),
+        sentOfficeInventoryLocally())
 
-    fun getHistoryTransportInventoriesLocally() = userRepository.getHistoryTransportInventoriesLocally()
+    private fun getHistoryWarehouseInventoriesLocally() = userRepository.getHistoryWarehouseInventoriesLocally()
 
-    fun getHistoryOfficeInventoriesLocally() = userRepository.getHistoryOfficeInventoriesLocally()
+    private fun getHistoryTransportInventoriesLocally() = userRepository.getHistoryTransportInventoriesLocally()
 
-    fun sentTransportInventoryLocally() = driverInventoryRepository.getDriverSentMaterialsLocally()
+    private fun getHistoryOfficeInventoriesLocally() = userRepository.getHistoryOfficeInventoriesLocally()
 
-    fun sentOfficeInventoryLocally() = officeInventoryRepository.getOfficeSentMaterialsLocally()
+    private fun sentTransportInventoryLocally() = driverInventoryRepository.getDriverSentMaterialsLocally()
+
+    private fun sentOfficeInventoryLocally() = officeInventoryRepository.getOfficeSentMaterialsLocally()
 
 }
