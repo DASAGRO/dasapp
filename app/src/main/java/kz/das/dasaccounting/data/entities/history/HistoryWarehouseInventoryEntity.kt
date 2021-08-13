@@ -45,7 +45,7 @@ fun HistoryWarehouseInventoryEntity.toHistoryTransfer(): HistoryTransfer {
         descr = ("Номер пломбы: " + " " + this.sealNumber),
         date = this.dateTime.getLongFromServerDate(),
         dateText = this.dateTime ?: "Ошибка даты",
-        quantity = 0.0,
+        quantity = "1",
         senderName = String.format("От кого: %s", this.fullName) ?: "",
         operationType = OperationType.WAREHOUSE.status,
         isAwait = false,

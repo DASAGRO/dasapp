@@ -46,8 +46,8 @@ class HistoryAcceptedFragment: BaseFragment<HistoryAcceptedVM, FragmentProfileHi
                     }
                 }
             }
-            historyList.sortedBy { it.date }
-            historyAdapter?.putItems(historyList)
+            val sorted = historyList.sortedByDescending { it.date }
+            historyAdapter?.putItems(sorted)
         })
     }
 }

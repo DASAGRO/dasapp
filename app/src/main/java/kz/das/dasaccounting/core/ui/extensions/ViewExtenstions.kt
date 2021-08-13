@@ -45,6 +45,12 @@ fun View.setVisibility(isVisible: Boolean) {
     this.visibility = if (isVisible) View.VISIBLE else View.GONE
 }
 
+@BindingAdapter("app:isGone")
+fun View.setViewGone(isGone: Boolean) {
+    this.visibility = if (isGone) View.GONE else View.VISIBLE
+}
+
+
 fun TextView.setHtmlText(htmlText: String) {
     text = HtmlCompat.fromHtml(htmlText, HtmlCompat.FROM_HTML_MODE_LEGACY)
 }

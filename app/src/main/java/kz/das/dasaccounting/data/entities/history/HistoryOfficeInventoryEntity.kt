@@ -52,7 +52,7 @@ fun HistoryOfficeInventoryEntity.toHistoryTransfer(): HistoryTransfer {
                 String.format("От кого: %s", this.fullName)),
         date = this.dateTime.getLongFromServerDate(),
         dateText = this.dateTime ?: "Ошибка даты",
-        quantity = 0.0,
+        quantity = this.quantity ?: "",
         senderName = String.format("От кого: %s", this.fullName) ?: "",
         operationType = OperationType.OFFICE.status,
         isAwait = false,

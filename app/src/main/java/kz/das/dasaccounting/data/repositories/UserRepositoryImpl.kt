@@ -23,6 +23,7 @@ import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
 import kz.das.dasaccounting.domain.data.file.File
+import kz.das.dasaccounting.domain.data.history.HistoryEnum
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -152,15 +153,28 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
             })
     }
 
-    override fun getHistoryWarehouseInventoriesLocally(): LiveData<List<HistoryTransfer>>{
-        return dasAppDatabase.historyWarehouseInventoryDao().allAsLiveData.map { list -> list.map { it.toHistoryTransfer() }}
+    override fun getHistorySentWarehouseInventoriesLocally(): LiveData<List<HistoryTransfer>>{
+        return dasAppDatabase.historyWarehouseInventoryDao().allAsLiveData.map { list -> list.map { it.toHistoryTransfer() }.filter { it.status == HistoryEnum.SENT.status  }}
     }
 
-    override fun getHistoryOfficeInventoriesLocally(): LiveData<List<HistoryTransfer>> {
-        return dasAppDatabase.historyOfficeInventoryDao().allAsLiveData.map { list -> list.map { it.toHistoryTransfer() }}
+    override fun getHistorySentOfficeInventoriesLocally(): LiveData<List<HistoryTransfer>> {
+        return dasAppDatabase.historyOfficeInventoryDao().allAsLiveData.map { list -> list.map { it.toHistoryTransfer() }.filter { it.status == HistoryEnum.SENT.status  }}
     }
 
-    override fun getHistoryTransportInventoriesLocally(): LiveData<List<HistoryTransfer>> {
-        return dasAppDatabase.historyTransportInventoryDao().allAsLiveData.map { list -> list.map { it.toHistoryTransfer() }}
+    override fun getHistorySentTransportInventoriesLocally(): LiveData<List<HistoryTransfer>> {
+        return dasAppDatabase.historyTransportInventoryDao().allAsLiveData.map { list -> list.map { it.toHistoryTransfer() }.filter { it.status == HistoryEnum.SENT.status  }}
     }
+
+    override fun getHistoryAcceptedWarehouseInventoriesLocally(): LiveData<List<HistoryTransfer>> {
+        return dasAppDatabase.historyWarehouseInventoryDao().allAsLiveData.map { list -> list.map { it.toHistoryTransfer() }.filter { it.status == HistoryEnum.ACCEPTED.status  }}
+    }
+
+    override fun getHistoryAcceptedOfficeInventoriesLocally(): LiveData<List<HistoryTransfer>> {
+        return dasAppDatabase.historyOfficeInventoryDao().allAsLiveData.map { list -> list.map { it.toHistoryTransfer() }.filter { it.status == HistoryEnum.ACCEPTED.status  }}
+    }
+
+    override fun getHistoryAcceptedTransportInventoriesLocally(): LiveData<List<HistoryTransfer>> {
+        return dasAppDatabase.historyTransportInventoryDao().allAsLiveData.map { list -> list.map { it.toHistoryTransfer() }.filter { it.status == HistoryEnum.ACCEPTED.status  }}
+    }
+
 }

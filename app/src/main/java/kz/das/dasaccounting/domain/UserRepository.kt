@@ -57,10 +57,16 @@ interface UserRepository {
 
     suspend fun getHistoryTransportInventories(): List<HistoryTransfer>
 
-    fun getHistoryWarehouseInventoriesLocally(): LiveData<List<HistoryTransfer>>
+    fun getHistorySentWarehouseInventoriesLocally(): LiveData<List<HistoryTransfer>>
 
-    fun getHistoryOfficeInventoriesLocally(): LiveData<List<HistoryTransfer>>
+    fun getHistorySentOfficeInventoriesLocally(): LiveData<List<HistoryTransfer>>
 
-    fun getHistoryTransportInventoriesLocally(): LiveData<List<HistoryTransfer>>
+    fun getHistorySentTransportInventoriesLocally(): LiveData<List<HistoryTransfer>>
+
+    fun getHistoryAcceptedWarehouseInventoriesLocally(): LiveData<List<HistoryTransfer>>
+
+    fun getHistoryAcceptedOfficeInventoriesLocally(): LiveData<List<HistoryTransfer>>
+
+    fun getHistoryAcceptedTransportInventoriesLocally(): LiveData<List<HistoryTransfer>>
 
 }

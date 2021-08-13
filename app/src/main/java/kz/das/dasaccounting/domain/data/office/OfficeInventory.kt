@@ -89,7 +89,7 @@ fun OfficeInventory.toHistoryTransfer(): HistoryTransfer {
                 String.format("От кого: %s", this.senderName)),
         date = this.date ?: 0L,
         dateText = this.date.getServerDateFromLong() ?: "Ошибка даты",
-        quantity = 0.0,
+        quantity = this.quantity.toString(),
         senderName = String.format("От кого: %s", this.senderName) ?: "",
         operationType = OperationType.OFFICE.status,
         isAwait = false,

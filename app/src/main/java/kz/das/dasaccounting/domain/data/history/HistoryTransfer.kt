@@ -5,7 +5,7 @@ data class HistoryTransfer(
     val descr: String,
     val date: Long,
     val dateText: String,
-    val quantity: Double,
+    val quantity: String,
     val senderName: String,
     val operationType: String,
     val isAwait: Boolean,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="@{String.format(@string/total_quantity_formatter, historyTransfer.quantity)}"
+                android:text="@{String.format(@string/total_quantity_string_formatter, historyTransfer.quantity)}"
                 android:textColor="@color/color_grey_text"
                 tools:text="Количество:" />
 
@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="@{userName.empty ? String.format(@string/inventory_sender_name, userName) : historyTransfer.senderName}"
+                android:text="@{!userName.empty ? String.format(@string/inventory_sender_name, userName) : historyTransfer.senderName}"
                 android:layout_marginBottom="10dp"
                 android:textColor="@color/color_grey_text"
                 android:textSize="14sp"

@@ -3,12 +3,10 @@ package kz.das.dasaccounting.ui.parent_bottom.profile.history
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.extensions.zipLiveDataAny
-import kz.das.dasaccounting.core.extensions.zipLiveDataGenerics
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.DriverInventoryRepository
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
-import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import org.koin.core.inject
 
 class HistoryGivenVM: BaseVM() {
@@ -41,11 +39,11 @@ class HistoryGivenVM: BaseVM() {
         sentTransportInventoryLocally(),
         sentOfficeInventoryLocally())
 
-    private fun getHistoryWarehouseInventoriesLocally() = userRepository.getHistoryWarehouseInventoriesLocally()
+    private fun getHistoryWarehouseInventoriesLocally() = userRepository.getHistorySentWarehouseInventoriesLocally()
 
-    private fun getHistoryTransportInventoriesLocally() = userRepository.getHistoryTransportInventoriesLocally()
+    private fun getHistoryTransportInventoriesLocally() = userRepository.getHistorySentTransportInventoriesLocally()
 
-    private fun getHistoryOfficeInventoriesLocally() = userRepository.getHistoryOfficeInventoriesLocally()
+    private fun getHistoryOfficeInventoriesLocally() = userRepository.getHistorySentOfficeInventoriesLocally()
 
     private fun sentTransportInventoryLocally() = driverInventoryRepository.getDriverSentMaterialsLocally()
 

@@ -50,7 +50,7 @@ fun HistoryTransportInventoryEntity.toHistoryTransfer(): HistoryTransfer {
         descr = "Гос. номер: " + this.stateNumber,
         date = this.dateTime.getLongFromServerDate(),
         dateText = this.dateTime ?: "Ошибка даты",
-        quantity = 0.0,
+        quantity = "1",
         senderName = String.format("От кого: %s", this.fullName) ?: "",
         operationType = if (this.tsType == TransportType.TRAILED.type) OperationType.DRIVER_ACCESSORY.status else OperationType.DRIVER.status,
         isAwait = false,

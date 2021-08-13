@@ -76,7 +76,7 @@ fun TransportInventory.toHistoryTransfer(): HistoryTransfer {
         descr = "Гос. номер: " + this.stateNumber,
         date = this.dateTime ?: System.currentTimeMillis(),
         dateText = this.dateTime.getServerDateFromLong() ?: "Ошибка даты",
-        quantity = 0.0,
+        quantity = "1",
         senderName = String.format("От кого: %s", this.senderName) ?: "",
         operationType = if (this.tsType == TransportType.TRAILED.type) OperationType.DRIVER_ACCESSORY.status else OperationType.DRIVER.status,
         isAwait = true,

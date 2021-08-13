@@ -3,12 +3,14 @@ package kz.das.dasaccounting.ui.parent_bottom.profile.history
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import kz.das.dasaccounting.core.ui.recyclerview.BaseViewHolder
 import kz.das.dasaccounting.databinding.ItemHistoryBinding
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
+import kz.das.dasaccounting.domain.data.history.OperationType
 
-class UserTransferHistoryAdapter(val context: Context, private var operations: ArrayList<HistoryTransfer>, val userName: String): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class UserTransferHistoryAdapter(val context: Context, private var operations: ArrayList<HistoryTransfer>, val name: String): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var historyOperationsAdapterEvent: OnHistoryOperationsAdapterEvent? = null
 
@@ -56,6 +58,9 @@ class UserTransferHistoryAdapter(val context: Context, private var operations: A
         override fun bind(item: HistoryTransfer, position: Int) {
             this.itemBinding.run {
                 historyTransfer = item
+                userName = name
+                tvInventoryQuantity.isGone = item.operationType == OperationType.DRIVER_ACCESSORY.status ||
+                        item.operationType == OperationType.DRIVER.status
                 this.rootHistory.setOnClickListener {
                     historyOperationsAdapterEvent?.onClick(item.title, item.descr, item.operationType, item.status)
                 }
