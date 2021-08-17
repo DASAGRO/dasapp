@@ -65,44 +65,34 @@ class TransferConfirmFligelDataVM: BaseVM() {
                     it.comment = comment
                     driverInventoryRepository.receiveFligelData(it, fileIds)
                 }
-                driverInventoryRepository.getDriverTransports()
-                officeInventoryRepository.getOfficeMaterials()
                 driverInventoryDataLV.postValue(true)
             } catch (t: Throwable) {
-                if (t is SocketTimeoutException
-                    || t is UnknownHostException
-                    || t is ConnectException
-                ) {
-                    fligelProduct?.let {
-                        driverInventoryRepository.saveAwaitReceiveFligelData(it)
-                    }
-                    val nomenclatureOfficeInventory = nomenclatures.find { it.fieldNumber == fligelProduct?.fieldNumber.toString() }
-                    val constructOfficeInventory = OfficeInventory(
-                        id = 1,
-                        date = System.currentTimeMillis(),
-                        name = nomenclatureOfficeInventory?.name ?: "",
-                        humidity = fligelProduct?.humidity,
-                        latitude = userRepository.getLastLocation().lat,
-                        longitude = userRepository.getLastLocation().long,
-                        materialUUID = nomenclatureOfficeInventory?.materialUUID ?: "Not found UUID",
-                        senderUUID = userRepository.getUser()?.userId,
-                        requestId = UUID.randomUUID().toString(),
-                        storeUUID = null,
-                        quantity = fligelProduct?.harvestWeight,
-                        type = nomenclatureOfficeInventory?.measurement,
-                        acceptedAt = null,
-                        sendAt = null,
-                        syncRequire = 0,
-                        isSend = 0,
-                        senderName = userRepository.getUser()?.firstName + " " + userRepository.getUser()?.lastName,
-                        comment = ""
-                    )
-                    officeInventoryRepository.saveOfficeInventory(constructOfficeInventory)
-                    isOnAwaitLV.postValue(true)
-                } else {
-                    throwableHandler.handle(t)
-                    driverInventoryDataLV.postValue(false)
+                fligelProduct?.let {
+                    driverInventoryRepository.saveAwaitReceiveFligelData(it)
                 }
+                val nomenclatureOfficeInventory = nomenclatures.find { it.fieldNumber == fligelProduct?.fieldNumber.toString() }
+                val constructOfficeInventory = OfficeInventory(
+                    id = 1,
+                    date = System.currentTimeMillis(),
+                    name = nomenclatureOfficeInventory?.name ?: "",
+                    humidity = fligelProduct?.humidity,
+                    latitude = userRepository.getLastLocation().lat,
+                    longitude = userRepository.getLastLocation().long,
+                    materialUUID = nomenclatureOfficeInventory?.materialUUID ?: "Not found UUID",
+                    senderUUID = userRepository.getUser()?.userId,
+                    requestId = UUID.randomUUID().toString(),
+                    storeUUID = null,
+                    quantity = fligelProduct?.harvestWeight,
+                    type = nomenclatureOfficeInventory?.measurement,
+                    acceptedAt = null,
+                    sendAt = null,
+                    syncRequire = 0,
+                    isSend = 0,
+                    senderName = userRepository.getUser()?.firstName + " " + userRepository.getUser()?.lastName,
+                    comment = ""
+                )
+                officeInventoryRepository.saveOfficeInventory(constructOfficeInventory)
+                isOnAwaitLV.postValue(true)
                 hideLoading()
             } finally {
                 hideLoading()

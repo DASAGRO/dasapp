@@ -1,6 +1,7 @@
 package kz.das.dasaccounting.ui.office
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
@@ -78,11 +79,18 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
     }
 
     private fun retrieve() {
-        viewModelScope.launch {
-            try {
-                officeInventoryRepository.getOfficeMaterials()
-            } catch (t: Throwable) {
-                throwableHandler.handle(t)
+        if (officeInventoryRepository.getUnAcceptedInventories().isEmpty() &&
+            officeInventoryRepository.getUnsentInventories().isEmpty()) {
+            viewModelScope.launch {
+                try {
+                    showLoading()
+                    delay(15000L)
+                    officeInventoryRepository.getOfficeMaterials()
+                } catch (t: Throwable) {
+                    throwableHandler.handle(t)
+                } finally {
+                    hideLoading()
+                }
             }
         }
     }

@@ -9,9 +9,6 @@ import kz.das.dasaccounting.domain.DriverInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import org.koin.core.inject
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 class TransferConfirmVM: BaseVM() {
 
@@ -62,22 +59,14 @@ class TransferConfirmVM: BaseVM() {
             try {
                 transportInventory?.let {
                     transportInventoryRepository.sendInventory(it)
+                    transportInventoryRepository.removeItem(it)
                 }
-                transportInventoryRepository.getDriverTransports()
                 isTransportInventorySentLV.postValue(true)
             } catch (t: Throwable) {
-                if (t is SocketTimeoutException
-                    || t is UnknownHostException
-                    || t is ConnectException
-                ) {
-                    transportInventory?.let {
-                        transportInventoryRepository.saveAwaitSentInventory(it)
-                    }
-                    isOnAwaitLV.postValue(true)
-                } else {
-                    throwableHandler.handle(t)
-                    isTransportInventorySentLV.postValue(false)
+                transportInventory?.let {
+                    transportInventoryRepository.saveAwaitSentInventory(it)
                 }
+                isOnAwaitLV.postValue(true)
             } finally {
                 hideLoading()
             }

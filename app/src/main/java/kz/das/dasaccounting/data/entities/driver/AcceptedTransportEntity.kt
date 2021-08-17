@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import java.io.Serializable
+import java.util.*
 
 @Entity(tableName = "accepted_transports")
 data class AcceptedTransportEntity (
@@ -18,6 +19,7 @@ data class AcceptedTransportEntity (
     val molUuid: String?,
     var requestId: String? = null,
     var storeUUID: String? = null,
+    var senderUUID: String? = null,
     val stateNumber: String,
     val tsType: String,
     @PrimaryKey
@@ -36,6 +38,7 @@ fun AcceptedTransportEntity.toDomain(): TransportInventory {
         molUuid = this.molUuid,
         requestId = this.requestId,
         storeUUID = this.storeUUID,
+        senderUUID = this.senderUUID,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         uuid = this.uuid,
@@ -54,6 +57,7 @@ fun TransportInventory.toAcceptedEntity(): AcceptedTransportEntity {
         molUuid = this.molUuid,
         requestId = this.requestId,
         storeUUID = this.storeUUID,
+        senderUUID = this.senderUUID,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         uuid = this.uuid,

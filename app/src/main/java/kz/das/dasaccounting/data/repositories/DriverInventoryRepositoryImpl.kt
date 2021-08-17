@@ -25,7 +25,7 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
         return driverInventoryApi.getTransports().unwrap({ list -> list.map { it.toDomain() } },
             object : OnResponseCallback<List<TransportInventoryEntity>> {
                 override fun onSuccess(entity: List<TransportInventoryEntity>) {
-                    dasAppDatabase.driverInventoryDao().insertAll(entity)
+                    dasAppDatabase.driverInventoryDao().reload(entity)
                 }
 
                 override fun onFail(exception: Exception) {} // No handle require
@@ -146,21 +146,28 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
     }
 
     override suspend fun saveAwaitSentInventory(transportInventory: TransportInventory) {
-        dasAppDatabase.driverInventoryDao()
-            .removeItem(dasAppDatabase.driverInventoryDao().getItem(transportInventory.uuid))
+        dasAppDatabase.driverInventoryDao().removeItem(dasAppDatabase.driverInventoryDao().getItem(transportInventory.uuid))
         dasAppDatabase.driverSentInventoryDao().insertWithIgnore(transportInventory.toSentEntity())
+    }
+
+    override suspend fun removeItem(transportInventory: TransportInventory) {
+        dasAppDatabase.driverInventoryDao().removeItem(dasAppDatabase.driverInventoryDao().getItem(transportInventory.uuid))
+    }
+
+    override suspend fun addItem(transportInventory: TransportInventory) {
+        dasAppDatabase.driverInventoryDao().insert(transportInventory.toEntity())
     }
 
     override fun getTransportsLocally(): LiveData<List<TransportInventory>> {
         return dasAppDatabase.driverInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
     }
 
-    override fun getDriverSentMaterialsLocally(): LiveData<List<TransportInventory>> {
-        return dasAppDatabase.driverSentInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
+    override fun getDriverSentMaterialsLocally(): LiveData<List<HistoryTransfer>> {
+        return dasAppDatabase.driverSentInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
     }
 
-    override fun getDriverAcceptedMaterialsLocally(): LiveData<List<TransportInventory>> {
-        return dasAppDatabase.driverAcceptedInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
+    override fun getDriverAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>> {
+        return dasAppDatabase.driverAcceptedInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
     }
 
     override fun getHistoryDriverAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>> {

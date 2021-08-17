@@ -13,9 +13,6 @@ import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 class AcceptConfirmationVM : BaseVM(), KoinComponent {
 
@@ -54,22 +51,14 @@ class AcceptConfirmationVM : BaseVM(), KoinComponent {
             try {
                 officeInventory?.let {
                     officeInventoryRepository.acceptInventory(it, comment, fileIds)
+                    officeInventoryRepository.saveAwaitAcceptInventory(it, comment, fileIds)
                 }
-                officeInventoryRepository.getOfficeMaterials()
                 officeInventoryAcceptedLV.postValue(true)
             } catch (t: Throwable) {
-                if (t is SocketTimeoutException
-                    || t is UnknownHostException
-                    || t is ConnectException
-                ) {
-                    officeInventory?.let {
-                        officeInventoryRepository.saveAwaitAcceptInventory(it, comment, fileIds)
-                    }
-                    isOnAwaitLV.postValue(true)
-                } else {
-                    throwableHandler.handle(t)
-                    officeInventoryAcceptedLV.postValue(false)
+                officeInventory?.let {
+                    officeInventoryRepository.saveAwaitAcceptInventory(it, comment, fileIds)
                 }
+                isOnAwaitLV.postValue(true)
             } finally {
                 hideLoading()
             }

@@ -1,6 +1,7 @@
 package kz.das.dasaccounting.ui.drivers
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.DriverInventoryRepository
@@ -11,7 +12,7 @@ import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.inject
 
-class DriverBottomNavigationVM: BaseVM() {
+class DriverBottomNavigationVM : BaseVM() {
 
     private val shiftRepository: ShiftRepository by inject()
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
@@ -28,29 +29,46 @@ class DriverBottomNavigationVM: BaseVM() {
     }
 
     private fun retrieve() {
-        viewModelScope.launch {
-            showLoading()
-            try {
-                officeInventoryRepository.getOfficeMaterials()
-            } catch (t: Throwable) {
-                throwableHandler.handle(t)
-            } finally {
-                hideLoading()
+        if (officeInventoryRepository.getUnAcceptedInventories().isEmpty() &&
+            officeInventoryRepository.getUnsentInventories().isEmpty() &&
+            driverInventoryRepository.getUnsentInventories().isEmpty() &&
+            driverInventoryRepository.getUnAcceptedInventories().isEmpty() &&
+            driverInventoryRepository.getFligelData().isEmpty()
+        ) {
+            viewModelScope.launch {
+                showLoading()
+                delay(15000L)
+                try {
+                    officeInventoryRepository.getOfficeMaterials()
+                } catch (t: Throwable) {
+                    throwableHandler.handle(t)
+                } finally {
+                    hideLoading()
+                }
             }
         }
     }
 
     private fun retrieveTransports() {
-        viewModelScope.launch {
-            showLoading()
-            try {
-                driverInventoryRepository.getDriverTransports()
-            } catch (t: Throwable) {
-                throwableHandler.handle(t)
-            } finally {
-                hideLoading()
+        if (officeInventoryRepository.getUnAcceptedInventories().isEmpty() &&
+            officeInventoryRepository.getUnsentInventories().isEmpty() &&
+            driverInventoryRepository.getUnsentInventories().isEmpty() &&
+            driverInventoryRepository.getUnAcceptedInventories().isEmpty() &&
+            driverInventoryRepository.getFligelData().isEmpty()
+        ) {
+            viewModelScope.launch {
+                showLoading()
+                delay(15000L)
+                try {
+                    driverInventoryRepository.getDriverTransports()
+                } catch (t: Throwable) {
+                    throwableHandler.handle(t)
+                } finally {
+                    hideLoading()
+                }
             }
         }
+
     }
 
 //    fun initAwaitRequests() {
@@ -108,16 +126,22 @@ class DriverBottomNavigationVM: BaseVM() {
             try {
                 officeInventoryRepository.sendInventory(officeInventory)
                 officeInventoryRepository.removeUnsentInventory(officeInventory)
-            } catch (t: Throwable) { }
+            } catch (t: Throwable) {
+            }
         }
     }
 
     private fun sendAwaitUnAcceptedOfficeInventory(officeInventory: OfficeInventory) {
         viewModelScope.launch {
             try {
-                officeInventoryRepository.acceptInventory(officeInventory, "Повторная отправка", arrayListOf())
+                officeInventoryRepository.acceptInventory(
+                    officeInventory,
+                    "Повторная отправка",
+                    arrayListOf()
+                )
                 officeInventoryRepository.removeUnAcceptedInventory(officeInventory)
-            } catch (t: Throwable) { }
+            } catch (t: Throwable) {
+            }
         }
     }
 
@@ -127,25 +151,32 @@ class DriverBottomNavigationVM: BaseVM() {
             try {
                 driverInventoryRepository.sendInventory(driverInventory)
                 driverInventoryRepository.removeUnsentInventory(driverInventory)
-            } catch (t: Throwable) { }
+            } catch (t: Throwable) {
+            }
         }
     }
 
     private fun sendAwaitUnAcceptedTransportInventory(driverInventory: TransportInventory) {
         viewModelScope.launch {
             try {
-                driverInventoryRepository.acceptInventory(driverInventory, "Повторная отправка", arrayListOf())
+                driverInventoryRepository.acceptInventory(
+                    driverInventory,
+                    "Повторная отправка",
+                    arrayListOf()
+                )
                 driverInventoryRepository.removeUnAcceptedInventory(driverInventory)
-            } catch (t: Throwable) { }
+            } catch (t: Throwable) {
+            }
         }
     }
 
     private fun sendAwaitFligelTransportInventory(fligelProduct: FligelProduct) {
         viewModelScope.launch {
             try {
-                driverInventoryRepository.receiveFligelData(fligelProduct,  arrayListOf())
+                driverInventoryRepository.receiveFligelData(fligelProduct, arrayListOf())
                 driverInventoryRepository.removeFligelData(fligelProduct)
-            } catch (t: Throwable) { }
+            } catch (t: Throwable) {
+            }
         }
     }
 
@@ -160,7 +191,8 @@ class DriverBottomNavigationVM: BaseVM() {
 
     fun getAwaitSentTransportsLocally() = driverInventoryRepository.getDriverSentMaterialsLocally()
 
-    fun getAwaitAcceptedTransportsLocally() = driverInventoryRepository.getDriverAcceptedMaterialsLocally()
+    fun getAwaitAcceptedTransportsLocally() =
+        driverInventoryRepository.getDriverAcceptedMaterialsLocally()
 
     fun getAwaitFligelDataLocally() = driverInventoryRepository.getAwaitFligelDataLocally()
 }

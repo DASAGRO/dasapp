@@ -39,11 +39,15 @@ interface DriverInventoryRepository {
 
     suspend fun saveAwaitSentInventory(transportInventory: TransportInventory)
 
+    suspend fun removeItem(transportInventory: TransportInventory)
+
+    suspend fun addItem(transportInventory: TransportInventory)
+
     fun getTransportsLocally(): LiveData<List<TransportInventory>>
 
-    fun getDriverSentMaterialsLocally(): LiveData<List<TransportInventory>>
+    fun getDriverSentMaterialsLocally(): LiveData<List<HistoryTransfer>>
 
-    fun getDriverAcceptedMaterialsLocally(): LiveData<List<TransportInventory>>
+    fun getDriverAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>>
 
     fun getHistoryDriverAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>>
 

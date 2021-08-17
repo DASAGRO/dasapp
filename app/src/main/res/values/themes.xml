@@ -2,7 +2,7 @@
 
     <style name="AppThemeBase" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryDark">@color/purple_700</item>
+        <item name="colorPrimaryDark">@color/white</item>
         <item name="colorAccent">@color/purple_700_pressed</item>
         <item name="android:windowBackground">@drawable/shape_background</item>
     </style>

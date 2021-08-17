@@ -22,12 +22,10 @@ import kz.das.dasaccounting.databinding.FragmentNavBarParentBinding
 import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.container.ContainerFragment
 import kz.das.dasaccounting.ui.utils.CameraUtils
-import kz.das.dasaccounting.ui.utils.GeolocationUtils
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.util.concurrent.TimeUnit
 
-open class CoreBottomNavigationFragment :
-    BaseFragment<CoreBottomNavigationVM, FragmentNavBarParentBinding>() {
+open class CoreBottomNavigationFragment : BaseFragment<CoreBottomNavigationVM, FragmentNavBarParentBinding>() {
 
     companion object {
         fun getScreen() = DasAppScreen(CoreBottomNavigationFragment())
