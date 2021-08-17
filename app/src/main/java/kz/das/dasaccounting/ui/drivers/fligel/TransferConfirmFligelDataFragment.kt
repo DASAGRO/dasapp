@@ -123,9 +123,9 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
 
         mViewModel.isFilesUploading().observe(viewLifecycleOwner, Observer {
             if (it) {
-                showUploading()
+                showLoading()
             } else {
-                hideUploading()
+                hideLoading()
             }
         })
 

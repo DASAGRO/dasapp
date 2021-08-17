@@ -56,7 +56,7 @@ open class CoreBottomNavigationFragment :
     }
 
     override fun setupUI(savedInstanceState: Bundle?) {
-        changeStatusColor(R.color.teal_200)
+        //changeStatusColor(R.color.teal_200)
 
         if (!CameraUtils.isPermissionGranted(requireContext())) {
             showCameraPermissionRationaleDialog()

@@ -131,14 +131,6 @@ abstract class BaseBottomSheetFragment<VB : ViewBinding, VM : BaseVM> :
         (requireActivity() as BaseActivity<*, *>).hideLoading()
     }
 
-    override fun showUploading() {
-        (requireActivity() as BaseActivity<*, *>).showUploading()
-    }
-
-    override fun hideUploading() {
-        (requireActivity() as BaseActivity<*, *>).hideUploading()
-    }
-
     override fun navigateBack() {
         requireRouter().exit()
     }
@@ -202,14 +194,6 @@ abstract class BaseBottomSheetDialog<VB : ViewBinding> : BottomSheetDialogFragme
 
     override fun hideLoading() {
         (requireActivity() as BaseActivity<*, *>).hideLoading()
-    }
-
-    override fun showUploading() {
-        (requireActivity() as BaseActivity<*, *>).showUploading()
-    }
-
-    override fun hideUploading() {
-        (requireActivity() as BaseActivity<*, *>).hideUploading()
     }
 
     override fun navigateBack() {

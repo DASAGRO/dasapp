@@ -93,9 +93,9 @@ class ProfileSupportFragment: BaseFragment<ProfileSupportVM, FragmentProfileSupp
         super.observeLiveData()
         mViewModel.isFilesUploading().observe(viewLifecycleOwner, Observer {
             if (it) {
-                showUploading()
+                showLoading()
             } else {
-                hideUploading()
+                hideLoading()
             }
         })
 

@@ -26,7 +26,7 @@ abstract class BaseActivity<VM: ViewModel, VB: ViewBinding>: AppCompatActivity()
     protected lateinit var mViewBinding: VB
     protected abstract val mViewModel: VM
 
-    private var dialogLoading: ProgressDialogFragment? = null
+    //private var dialogLoading: ProgressDialogFragment? = null
     private var dialogUploading: UploadProgressDialog? = null
 
     private var commonNotificationDialog: NotificationDialog? = null
@@ -35,7 +35,7 @@ abstract class BaseActivity<VM: ViewModel, VB: ViewBinding>: AppCompatActivity()
     protected abstract fun getViewBinding(): VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        dialogLoading = ProgressDialogFragment()
+        //dialogLoading = ProgressDialogFragment()
         dialogUploading = UploadProgressDialog()
         mViewBinding = getViewBinding()
         super.onCreate(savedInstanceState)
@@ -97,29 +97,9 @@ abstract class BaseActivity<VM: ViewModel, VB: ViewBinding>: AppCompatActivity()
 
     open fun onLogout() { }
 
-    fun showLoading() {
-        if (dialogLoading?.isAdded != true) {
-            dialogLoading?.show(supportFragmentManager, ProgressDialogFragment.TAG)
-        }
-    }
+    abstract fun showLoading()
 
-    fun hideLoading() {
-        if (dialogLoading?.isAdded == true) {
-            dialogLoading?.dismiss()
-        }
-    }
-
-    fun showUploading() {
-        if (dialogLoading?.isAdded != true) {
-            dialogLoading?.show(supportFragmentManager, ProgressDialogFragment.TAG)
-        }
-    }
-
-    fun hideUploading() {
-        if (dialogLoading?.isAdded == true) {
-            dialogLoading?.dismiss()
-        }
-    }
+    abstract fun hideLoading()
 
     fun changeStatusBarColor(color: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

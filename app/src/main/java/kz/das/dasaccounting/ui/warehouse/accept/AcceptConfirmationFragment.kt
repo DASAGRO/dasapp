@@ -113,9 +113,9 @@ class AcceptConfirmationFragment: BaseFragment<AcceptConfirmationVM, FragmentInv
 
         mViewModel.isFilesUploading().observe(viewLifecycleOwner, Observer {
             if (it) {
-                showUploading()
+                showLoading()
             } else {
-                hideUploading()
+                hideLoading()
             }
         })
 

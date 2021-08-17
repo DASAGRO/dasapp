@@ -12,9 +12,5 @@ interface ViewCallback : BackendCallback {
 
     fun hideLoading()
 
-    fun showUploading()
-
-    fun hideUploading()
-
     fun navigateBack()
 }

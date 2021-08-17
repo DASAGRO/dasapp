@@ -136,14 +136,6 @@ abstract class BaseFragment<VM: BaseVM, VB: ViewBinding>(): Fragment(), ViewCall
         (requireActivity() as BaseActivity<*, *>).hideLoading()
     }
 
-    override fun showUploading() {
-        (requireActivity() as BaseActivity<*, *>).showUploading()
-    }
-
-    override fun hideUploading() {
-        (requireActivity() as BaseActivity<*, *>).hideUploading()
-    }
-
     override fun navigateBack() {
         requireRouter().exit()
     }

@@ -124,9 +124,9 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
 
         mViewModel.isFilesUploading().observe(viewLifecycleOwner, Observer {
             if (it) {
-                showUploading()
+                showLoading()
             } else {
-                hideUploading()
+                hideLoading()
             }
         })
 
