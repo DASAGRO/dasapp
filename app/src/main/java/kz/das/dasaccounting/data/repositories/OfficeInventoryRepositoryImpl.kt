@@ -85,6 +85,11 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
         comment: String,
         fileIds: ArrayList<Int>
     ) {
+        initCheckAwaitAcceptOperation(officeInventory)
+        dasAppDatabase.officeInventoryAcceptedDao().insert(officeInventory.toAcceptedEntity())
+    }
+
+    override suspend fun initCheckAwaitAcceptOperation(officeInventory: OfficeInventory) {
         val dataItem = dasAppDatabase.officeInventoryDao().getItem(officeInventory.materialUUID)
         if (dataItem != null) {
             officeInventory.quantity?.let { cnt ->
@@ -95,24 +100,26 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
         } else {
             dasAppDatabase.officeInventoryDao().insert(officeInventory.toEntity())
         }
-        dasAppDatabase.officeInventoryAcceptedDao()
-            .insert(officeInventory.toAcceptedEntity())
     }
 
     override suspend fun saveAwaitSentInventory(officeInventory: OfficeInventory) {
+        initCheckAwaitSentOperation(officeInventory)
+        dasAppDatabase.officeInventorySentDao().insert(officeInventory.toSentEntity())
+    }
+
+    override suspend fun initCheckAwaitSentOperation(officeInventory: OfficeInventory) {
         val dataItem = dasAppDatabase.officeInventoryDao().getItem(officeInventory.materialUUID)
         dataItem?.let {
             officeInventory.quantity?.let { cnt ->
                 dasAppDatabase.officeInventoryDao().removeItem(dataItem)
                 dataItem.quantity = dataItem.quantity!! - cnt
-                if (dataItem.quantity == 0.0) {
+                if (dataItem.quantity!! <= 0.0) {
                     dasAppDatabase.officeInventoryDao().removeItem(dataItem)
                 } else {
                     dasAppDatabase.officeInventoryDao().insert(dataItem)
                 }
             }
         }
-        dasAppDatabase.officeInventorySentDao().insert(officeInventory.toSentEntity())
     }
 
     override suspend fun getNomenclatures(): List<NomenclatureOfficeInventory> {

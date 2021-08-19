@@ -58,7 +58,7 @@ class TransferConfirmVM: BaseVM() {
             try {
                 officeInventory?.let {
                     officeInventoryRepository.sendInventory(it)
-                    officeInventoryRepository.saveAwaitSentInventory(it)
+                    officeInventoryRepository.initCheckAwaitSentOperation(it)
                 }
                 isOfficeInventorySentLV.postValue(true)
             } catch (t: Throwable) {

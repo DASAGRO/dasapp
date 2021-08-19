@@ -59,6 +59,7 @@ open class CoreBottomNavigationFragment : BaseFragment<CoreBottomNavigationVM, F
         if (!CameraUtils.isPermissionGranted(requireContext())) {
             showCameraPermissionRationaleDialog()
         }
+        requestLocation()
 
         mViewBinding.bslOperations.isVisible = mViewModel.isOnWork()
 

@@ -106,7 +106,7 @@ class UserPreferences(private val preferences: SharedPreferences) {
             val json = preferences.getString(PREFERENCES_LAST_LOCATION, null)
             Gson().fromJson(json, Location::class.java)
         } catch (e: Exception) {
-            Location(48.005284, 66.9045434)
+            Location(43.237853, 76.945298)
         }
     }
 

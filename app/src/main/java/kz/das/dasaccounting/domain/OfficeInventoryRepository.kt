@@ -25,6 +25,10 @@ interface OfficeInventoryRepository {
 
     suspend fun saveAwaitSentInventory(officeInventory: OfficeInventory)
 
+    suspend fun initCheckAwaitSentOperation(officeInventory: OfficeInventory)
+
+    suspend fun initCheckAwaitAcceptOperation(officeInventory: OfficeInventory)
+
     suspend fun getNomenclatures(): List<NomenclatureOfficeInventory>
 
     suspend fun saveOfficeInventory(officeInventory: OfficeInventory)

@@ -51,7 +51,7 @@ class AcceptConfirmationVM : BaseVM(), KoinComponent {
             try {
                 officeInventory?.let {
                     officeInventoryRepository.acceptInventory(it, comment, fileIds)
-                    officeInventoryRepository.saveAwaitAcceptInventory(it, comment, fileIds)
+                    officeInventoryRepository.initCheckAwaitAcceptOperation(it)
                 }
                 officeInventoryAcceptedLV.postValue(true)
             } catch (t: Throwable) {
