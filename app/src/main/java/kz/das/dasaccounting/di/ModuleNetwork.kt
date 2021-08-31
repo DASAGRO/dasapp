@@ -6,6 +6,7 @@ import kz.das.dasaccounting.data.source.network.interceptors.HeadersInterceptor
 import kz.das.dasaccounting.data.source.preferences.UserPreferences
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,7 +17,9 @@ internal fun getNetworkModule() = module {
     single { provideHeadersInterceptor(get()) }
     single { provideGson() }
     single { provideOkHttpClient(get(), get()) }
+    single(named("lateCallOkHttp")) { provideLateCallOkHttpClient(get(), get()) }
     single { provideRetrofit(get(), get()) }
+    single(named("lateCallRetrofit")) { provideLateCallOkHttpClient(get(named("lateCallOkHttp")), get()) }
 }
 
 private fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
@@ -45,11 +48,26 @@ private fun provideGson(): Gson {
         .create()
 }
 
+private fun provideLateCallOkHttpClient(
+    loggingInterceptor: HttpLoggingInterceptor,
+    headersInterceptor: HeadersInterceptor
+): OkHttpClient {
+    return OkHttpClient.Builder()
+        .callTimeout(1, TimeUnit.MINUTES)
+        .connectTimeout(3, TimeUnit.MINUTES)
+        .readTimeout(3, TimeUnit.MINUTES)
+        .writeTimeout(3, TimeUnit.MINUTES)
+        .addInterceptor(headersInterceptor)
+        .addInterceptor(loggingInterceptor)
+        .build()
+}
+
 private fun provideOkHttpClient(
     loggingInterceptor: HttpLoggingInterceptor,
     headersInterceptor: HeadersInterceptor
 ): OkHttpClient {
     return OkHttpClient.Builder()
+        .callTimeout(5, TimeUnit.SECONDS)
         .connectTimeout(5, TimeUnit.SECONDS)
         .readTimeout(5, TimeUnit.SECONDS)
         .writeTimeout(5, TimeUnit.SECONDS)
@@ -59,6 +77,15 @@ private fun provideOkHttpClient(
 }
 
 private fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
+    return Retrofit.Builder()
+        .baseUrl("https://app.dasagro.kz")
+        //.baseUrl(GATEWAY_DEBUG_HOST)
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .client(okHttpClient)
+        .build()
+}
+
+private fun provideLateCallRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
     return Retrofit.Builder()
         .baseUrl("https://app.dasagro.kz")
         //.baseUrl(GATEWAY_DEBUG_HOST)

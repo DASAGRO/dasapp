@@ -83,7 +83,6 @@ fun TransportInventory.toSentRequest(): SendTransportRequest {
     )
 }
 
-
 fun TransportInventory.toGetRequest(comment: String, fileIds: ArrayList<Int>?): GetTransportRequest {
     return GetTransportRequest(
         date = this.dateTime ?: System.currentTimeMillis(),
