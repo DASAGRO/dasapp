@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
+import kz.das.dasaccounting.domain.AwaitRequestInventoryRepository
 import kz.das.dasaccounting.domain.DriverInventoryRepository
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.ShiftRepository
@@ -17,6 +18,7 @@ class DriverBottomNavigationVM : BaseVM() {
     private val shiftRepository: ShiftRepository by inject()
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
     private val driverInventoryRepository: DriverInventoryRepository by inject()
+    private val awaitRequestInventoryRepository: AwaitRequestInventoryRepository by inject()
 
     init {
         refresh()
@@ -99,25 +101,34 @@ class DriverBottomNavigationVM : BaseVM() {
             }
         }
 
-        officeInventoryRepository.getUnAcceptedInventories().forEach {
-            sendAwaitUnAcceptedOfficeInventory(it)
+        viewModelScope.launch {
+            try {
+                awaitRequestInventoryRepository.initAwaitRequests()
+                awaitRequestInventoryRepository.removeAllAwaitRequests()
+            } catch (t: Throwable) {
+                //throwableHandler.handle(t)
+            }
         }
 
-        officeInventoryRepository.getUnsentInventories().forEach {
-            sendAwaitUnsentOfficeInventory(it)
-        }
-
-        driverInventoryRepository.getUnsentInventories().forEach {
-            sendAwaitUnsentTransportInventory(it)
-        }
-
-        driverInventoryRepository.getUnAcceptedInventories().forEach {
-            sendAwaitUnAcceptedTransportInventory(it)
-        }
-
-        driverInventoryRepository.getFligelData().forEach {
-            sendAwaitFligelTransportInventory(it)
-        }
+//        officeInventoryRepository.getUnAcceptedInventories().forEach {
+//            sendAwaitUnAcceptedOfficeInventory(it)
+//        }
+//
+//        officeInventoryRepository.getUnsentInventories().forEach {
+//            sendAwaitUnsentOfficeInventory(it)
+//        }
+//
+//        driverInventoryRepository.getUnsentInventories().forEach {
+//            sendAwaitUnsentTransportInventory(it)
+//        }
+//
+//        driverInventoryRepository.getUnAcceptedInventories().forEach {
+//            sendAwaitUnAcceptedTransportInventory(it)
+//        }
+//
+//        driverInventoryRepository.getFligelData().forEach {
+//            sendAwaitFligelTransportInventory(it)
+//        }
     }
 
     // Office send await requests

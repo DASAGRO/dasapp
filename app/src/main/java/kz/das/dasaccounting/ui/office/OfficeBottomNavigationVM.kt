@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
+import kz.das.dasaccounting.domain.AwaitRequestInventoryRepository
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.ShiftRepository
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
@@ -14,6 +15,7 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
 
     private val shiftRepository: ShiftRepository by inject()
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
+    private val awaitRequestInventoryRepository: AwaitRequestInventoryRepository by inject()
 
     init {
         refresh()
@@ -50,13 +52,22 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
             }
         }
 
-        officeInventoryRepository.getUnAcceptedInventories().forEach {
-            sendAwaitUnAcceptedOfficeInventory(it)
+        viewModelScope.launch {
+            try {
+                awaitRequestInventoryRepository.initAwaitRequests()
+                awaitRequestInventoryRepository.removeAllAwaitRequests()
+            } catch (t: Throwable) {
+                //throwableHandler.handle(t)
+            }
         }
 
-        officeInventoryRepository.getUnsentInventories().forEach {
-            sendAwaitUnsentOfficeInventory(it)
-        }
+//        officeInventoryRepository.getUnAcceptedInventories().forEach {
+//            sendAwaitUnAcceptedOfficeInventory(it)
+//        }
+//
+//        officeInventoryRepository.getUnsentInventories().forEach {
+//            sendAwaitUnsentOfficeInventory(it)
+//        }
     }
 
     // Office send await requests

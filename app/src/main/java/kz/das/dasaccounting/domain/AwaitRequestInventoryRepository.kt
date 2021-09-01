@@ -2,7 +2,7 @@ package kz.das.dasaccounting.domain
 
 interface AwaitRequestInventoryRepository {
 
-    suspend fun initItems()
+    suspend fun initAwaitRequests(): Any
 
     suspend fun removeAllAwaitRequests()
 

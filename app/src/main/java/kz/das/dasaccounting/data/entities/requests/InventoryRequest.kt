@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.data.entities.requests
 
+import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import java.io.Serializable
 
 open class InventorySendRequest(
@@ -35,3 +36,41 @@ open class InventoryGetRequest(
     var fileIds: Array<Any>?,
     var comment: String?
 ) : Serializable
+
+fun OfficeInventory.toSendRequest(): InventorySendRequest {
+    return InventorySendRequest(
+        id = this.id,
+        date = this.date,
+        name = this.name,
+        humidity = this.humidity,
+        latitude = this.latitude,
+        longitude = this.longitude,
+        materialUUID = this.materialUUID,
+        requestId = this.requestId,
+        storeUUID = this.storeUUID,
+        quantity = this.quantity,
+        type = this.type,
+        senderName = this.senderName
+    )
+}
+
+fun OfficeInventory.toGetRequest(comment: String ?= "",
+                                 fileIds: ArrayList<Int> = arrayListOf()): InventoryGetRequest {
+    return InventoryGetRequest(
+        id = this.id,
+        date = this.date,
+        name = this.name,
+        humidity = this.humidity,
+        latitude = this.latitude,
+        longitude = this.longitude,
+        materialUUID = this.materialUUID,
+        senderUUID = this.senderUUID,
+        requestId = this.requestId,
+        storeUUID = this.storeUUID,
+        quantity = this.quantity,
+        type = this.type,
+        senderName = this.senderName,
+        fileIds = fileIds.toArray(),
+        comment = comment ?: ""
+    )
+}

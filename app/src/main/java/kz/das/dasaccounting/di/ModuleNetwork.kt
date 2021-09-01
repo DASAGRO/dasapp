@@ -19,7 +19,7 @@ internal fun getNetworkModule() = module {
     single { provideOkHttpClient(get(), get()) }
     single(named("lateCallOkHttp")) { provideLateCallOkHttpClient(get(), get()) }
     single { provideRetrofit(get(), get()) }
-    single(named("lateCallRetrofit")) { provideLateCallOkHttpClient(get(named("lateCallOkHttp")), get()) }
+    single(named("lateCallRetrofit")) { provideRetrofit(get(named("lateCallOkHttp")), get()) }
 }
 
 private fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {

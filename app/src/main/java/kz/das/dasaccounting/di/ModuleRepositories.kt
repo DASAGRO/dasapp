@@ -11,4 +11,5 @@ internal fun getRepositoriesModule() = module {
     single<OfficeInventoryRepository> { OfficeInventoryRepositoryImpl() }
     single<DriverInventoryRepository> { DriverInventoryRepositoryImpl() }
     single<WarehouseInventoryRepository> { WarehouseInventoryRepositoryImpl() }
+    single<AwaitRequestInventoryRepository> { AwaitRequestInventoryRepositoryImpl() }
 }
