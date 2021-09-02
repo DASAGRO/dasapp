@@ -1,6 +1,8 @@
 package kz.das.dasaccounting.ui.office.transfer
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.lifecycle.Observer
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.dialogs.BaseBottomSheetFragment
@@ -9,7 +11,8 @@ import kz.das.dasaccounting.databinding.FragmentBottomSheetInventoryInputBinding
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class TransferFragment: BaseBottomSheetFragment<FragmentBottomSheetInventoryInputBinding, TransferVM>() {
+class TransferFragment :
+    BaseBottomSheetFragment<FragmentBottomSheetInventoryInputBinding, TransferVM>() {
 
     companion object {
 
@@ -23,7 +26,7 @@ class TransferFragment: BaseBottomSheetFragment<FragmentBottomSheetInventoryInpu
 
     }
 
-    private var listener: OnTransferCallback ?= null
+    private var listener: OnTransferCallback? = null
 
     interface OnTransferCallback {
         fun onTransfer(officeInventory: OfficeInventory)
@@ -37,8 +40,10 @@ class TransferFragment: BaseBottomSheetFragment<FragmentBottomSheetInventoryInpu
 
     override fun getViewBinding() = FragmentBottomSheetInventoryInputBinding.inflate(layoutInflater)
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun setupUI() {
         mViewModel.setOfficeInventory(getOfficeInventory())
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED)
         mViewBinding.apply {
             this.ivClose.setOnClickListener {
                 dismiss()
@@ -49,7 +54,10 @@ class TransferFragment: BaseBottomSheetFragment<FragmentBottomSheetInventoryInpu
                         it.quantity = mViewBinding.edtQuantity.text.toString().toDouble()
                         checkConfirmation(it)
                     } else {
-                        showError(getString(R.string.common_error), getString(R.string.quantity_compare_error))
+                        showError(
+                            getString(R.string.common_error),
+                            getString(R.string.quantity_compare_error)
+                        )
                     }
                 }
             }
@@ -62,7 +70,10 @@ class TransferFragment: BaseBottomSheetFragment<FragmentBottomSheetInventoryInpu
             it?.let {
                 mViewBinding.tvNaming.text = it.name
                 mViewBinding.tvQuantity.text =
-                    (String.format(getString(R.string.total_quantity), it.quantity.toString()) + " " + it.type)
+                    (String.format(
+                        getString(R.string.total_quantity),
+                        it.quantity.toString()
+                    ) + " " + it.type)
             }
         })
     }
@@ -73,14 +84,24 @@ class TransferFragment: BaseBottomSheetFragment<FragmentBottomSheetInventoryInpu
                 listener?.onTransfer(officeInventory)
                 dismiss()
             },
-            { showError(getString(R.string.common_error), getString(R.string.error_not_valid_finger)) },
-            { showError(getString(R.string.common_error), getString(R.string.common_unexpected_error)) }
+            {
+                showError(
+                    getString(R.string.common_error),
+                    getString(R.string.error_not_valid_finger)
+                )
+            },
+            {
+                showError(
+                    getString(R.string.common_error),
+                    getString(R.string.common_unexpected_error)
+                )
+            }
         )
     }
 
-    override fun showAwait(title: String?, message: String?) { }
+    override fun showAwait(title: String?, message: String?) {}
 
-    override fun onSaveRequire(title: String?, message: String?, data: Any?) { }
+    override fun onSaveRequire(title: String?, message: String?, data: Any?) {}
 
     private fun getOfficeInventory(): OfficeInventory? {
         return arguments?.getParcelable(OFFICE_INVENTORY)

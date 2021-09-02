@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,11 +8,11 @@
         android:id="@+id/iv_close"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:background="@drawable/default_oval"
-        android:padding="13dp"
         android:layout_margin="13dp"
+        android:background="@drawable/default_oval"
         android:clickable="true"
         android:focusable="true"
+        android:padding="13dp"
         android:src="@drawable/ic_close"
         android:tint="@color/color_grey_text"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,14 +21,14 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_title"
         android:layout_width="0dp"
-        android:layout_marginTop="20dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/purple_700"
-        android:text="@string/transfer_inventory"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
+        android:text="@string/transfer_inventory"
+        android:textColor="@color/purple_700"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_close" />
@@ -48,11 +47,11 @@
             android:id="@+id/tv_naming"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:textStyle="bold"
-            android:textColor="@color/purple_700"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:textSize="18sp" />
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/purple_700"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ll_quantity"
@@ -60,8 +59,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="bottom"
+            android:paddingBottom="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/loginTopGuidline">
@@ -73,39 +74,39 @@
                 android:hint="@string/quantity"
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
-                android:textColor="@color/purple_700"
                 android:padding="6dp"
+                android:textColor="@color/purple_700"
                 android:textSize="14sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_quantity"
-            android:layout_marginStart="26dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="5dp"
-            android:textStyle="bold"
-            android:textColor="@color/purple_700"
-            android:text="@string/total_quantity"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="-20dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/total_quantity"
+            android:textColor="@color/purple_700"
+            android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_transfer"
-            android:background="@drawable/selectable_default_button_background"
-            android:textAllCaps="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="50dp"
             android:layout_marginEnd="32dp"
-            android:gravity="start|center_vertical"
-            android:text="@string/transfer"
-            android:textColor="@color/white"
             android:layout_marginBottom="20dp"
+            android:background="@drawable/selectable_default_button_background"
+            android:drawableEnd="@drawable/ic_arrow_next_mini"
+            android:gravity="start|center_vertical"
             android:paddingStart="30dp"
             android:paddingEnd="16dp"
-            android:drawableEnd="@drawable/ic_arrow_next_mini"
+            android:text="@string/transfer"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/tv_inventory_time"
             app:layout_constraintStart_toStartOf="@+id/tv_inventory_time"

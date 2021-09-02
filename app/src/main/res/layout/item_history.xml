@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="@{!userName.empty ? String.format(@string/inventory_sender_name, userName) : historyTransfer.senderName}"
+                android:text="@{!userName.empty ? String.format(@string/inventory_sender_name_from, userName) : historyTransfer.senderName}"
                 android:layout_marginBottom="10dp"
                 android:textColor="@color/color_grey_text"
                 android:textSize="14sp"

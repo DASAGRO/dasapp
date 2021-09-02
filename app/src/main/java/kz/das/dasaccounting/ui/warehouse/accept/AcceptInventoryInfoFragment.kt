@@ -36,10 +36,6 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
                 requireRouter().exit()
             }
 
-            btnCancel.setOnClickListener {
-                requireRouter().exit()
-            }
-
             btnAccept.setOnClickListener {
                 getWarehouseInventory()?.let {
                     it.date = System.currentTimeMillis()

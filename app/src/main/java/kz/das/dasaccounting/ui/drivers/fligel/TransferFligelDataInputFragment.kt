@@ -39,13 +39,11 @@ class TransferFligelDataInputFragment: BaseBottomSheetFragment<FragmentBottomShe
             }
             this.btnMakeTransfer.setOnClickListener {
                 if (!edtFieldNumber.text.isNullOrEmpty() &&
-                    !edtGatherWet.text.isNullOrEmpty() &&
                     !edtGatherWeight.text.isNullOrEmpty() &&
                     !edtTransportType.text.isNullOrEmpty() &&
                     mViewModel.getNomenclatures().filter { it.fieldNumber == edtFieldNumber.text.toString() }.isNullOrEmpty()) {
                     showError(getString(R.string.common_error), "Не удалось найти урожай по номеру поля")
                 } else if (!edtFieldNumber.text.isNullOrEmpty() &&
-                    !edtGatherWet.text.isNullOrEmpty() &&
                     !edtGatherWeight.text.isNullOrEmpty() &&
                     !edtTransportType.text.isNullOrEmpty()) {
                     checkConfirmation(FligelProduct(
@@ -57,7 +55,7 @@ class TransferFligelDataInputFragment: BaseBottomSheetFragment<FragmentBottomShe
                         "Отправка урожая",
                         edtFieldNumber.text.toString().toInt(),
                         edtGatherWeight.text.toString().toDouble(),
-                        edtGatherWet.text.toString().toInt(),
+                        0,
                         UUID.randomUUID().toString(),
                         mViewModel.getNomenclatures().filter { it.fieldNumber == edtFieldNumber.text.toString() }[0].name ?: "Неизвестный урожай"
                     ))

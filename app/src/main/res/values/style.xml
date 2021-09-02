@@ -114,4 +114,9 @@
         <item name="android:background">@drawable/default_shape_top_corner_16dp</item>
     </style>
 
+    <style name="AdjustedBottomSheetDialogTheme" parent="AppBottomSheetDialogTheme">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustPan</item>
+    </style>
+
 </resources>

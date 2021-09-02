@@ -38,10 +38,6 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
                 requireRouter().exit()
             }
 
-            btnCancel.setOnClickListener {
-                requireRouter().exit()
-            }
-
             btnAccept.setOnClickListener {
                 getOfficeInventory()?.let {
                     it.dateTime = System.currentTimeMillis()

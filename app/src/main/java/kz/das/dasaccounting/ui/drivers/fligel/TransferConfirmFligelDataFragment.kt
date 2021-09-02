@@ -146,8 +146,7 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
             mViewBinding.tvInventoryDesc.text = (
                     "Номер комбайна: " + it.combinerNumber + "\n" +
                             "Номер поля: " + it.fieldNumber + "\n" +
-                            "Вес урожая: " + it.harvestWeight + "\n" +
-                            "Влажность: " + it.humidity)
+                            "Вес урожая: " + it.harvestWeight)
         }
     }
 
