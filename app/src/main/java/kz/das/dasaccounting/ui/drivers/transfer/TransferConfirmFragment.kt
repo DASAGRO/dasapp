@@ -17,6 +17,7 @@ import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.drivers.getTsTypeImage
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
+import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -77,6 +78,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                         getString(R.string.transport_inventory_transferred_successfully)
                     }
                 )
+                MediaPlayerUtils.playSuccessSound(requireContext())
                 Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
                     requireRouter().newRootScreen(screen)
                 }
@@ -92,6 +94,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                         "Передача ТС в ожидании!"
                     }
                 )
+                MediaPlayerUtils.playSuccessSound(requireContext())
                 Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
                     requireRouter().newRootScreen(screen)
                 }

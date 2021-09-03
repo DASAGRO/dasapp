@@ -14,6 +14,7 @@ import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEnti
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import kz.das.dasaccounting.ui.Screens
+import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -68,6 +69,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
         mViewModel.isOfficeInventorySent().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showSuccess(getString(R.string.common_banner_success), getString(R.string.office_inventory_transferred_successfully))
+                MediaPlayerUtils.playSuccessSound(requireContext())
                 Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
                     requireRouter().newRootScreen(screen)
                 }
@@ -77,6 +79,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
         mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showAwait(getString(R.string.common_banner_await), "Передача ТМЦ в ожидании!")
+                MediaPlayerUtils.playSuccessSound(requireContext())
                 Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
                     requireRouter().newRootScreen(screen)
                 }

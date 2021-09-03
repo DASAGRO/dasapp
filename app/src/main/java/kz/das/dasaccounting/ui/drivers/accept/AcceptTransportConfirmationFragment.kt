@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.drivers.accept
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import gun0912.tedimagepicker.builder.TedImagePicker
@@ -16,6 +17,7 @@ import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.DialogBottomMediaTypePick
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportAttachedMediaAdapter
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.data.Media
+import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirmationVM, FragmentInventoryAcceptConfirmationBinding>() {
@@ -116,6 +118,7 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
                         getString(R.string.transport_inventory_accepted_successfully)
                     }
                 )
+                MediaPlayerUtils.playSuccessSound(requireContext())
                 Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
                     requireRouter().newRootScreen(screen)
                 }
@@ -149,6 +152,7 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
                         "Получение ТС в ожидании!"
                     }
                 )
+                MediaPlayerUtils.playSuccessSound(requireContext())
                 Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
                     requireRouter().newRootScreen(screen)
                 }

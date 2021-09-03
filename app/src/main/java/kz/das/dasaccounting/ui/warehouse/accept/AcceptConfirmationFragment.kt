@@ -13,6 +13,7 @@ import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.DialogBottomMediaTypePick
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportAttachedMediaAdapter
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.data.Media
+import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AcceptConfirmationFragment: BaseFragment<AcceptConfirmationVM, FragmentInventoryAcceptConfirmationBinding>() {
@@ -107,6 +108,7 @@ class AcceptConfirmationFragment: BaseFragment<AcceptConfirmationVM, FragmentInv
         mViewModel.isWarehouseInventoryAccepted().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showSuccess(getString(R.string.common_banner_success), "Склад успешно принят")
+                MediaPlayerUtils.playSuccessSound(requireContext())
                 requireRouter().exit()
             }
         })

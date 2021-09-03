@@ -14,6 +14,7 @@ import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.DialogBottomMediaTypePick
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportAttachedMediaAdapter
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.data.Media
+import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentInventoryAcceptConfirmationBinding>() {
@@ -109,6 +110,7 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
             if (it) {
                 showSuccess(getString(R.string.common_banner_success),
                     getString(R.string.office_inventory_accepted_successfully))
+                MediaPlayerUtils.playSuccessSound(requireContext())
                 Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
                     requireRouter().newRootScreen(screen)
                 }
@@ -126,6 +128,7 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
         mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showAwait(getString(R.string.common_banner_await), "Получение ТМЦ в ожидании!")
+                MediaPlayerUtils.playSuccessSound(requireContext())
                 Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
                     requireRouter().newRootScreen(screen)
                 }

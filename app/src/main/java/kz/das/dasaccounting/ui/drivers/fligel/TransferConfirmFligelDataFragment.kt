@@ -15,6 +15,7 @@ import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.DialogBottomMediaTypePick
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportAttachedMediaAdapter
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.data.Media
+import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelDataVM, FragmentInventoryAcceptConfirmationBinding>() {
@@ -115,6 +116,7 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
             if (it) {
                 showSuccess(getString(R.string.common_banner_success),
                     getString(R.string.transport_fligel_data_accepted_successfully))
+                MediaPlayerUtils.playSuccessSound(requireContext())
                 Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
                     requireRouter().newRootScreen(screen)
                 }
@@ -132,6 +134,7 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
         mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showAwait(getString(R.string.common_banner_await), "Формирование ТМЦ в ожидании!")
+                MediaPlayerUtils.playSuccessSound(requireContext())
                 Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
                     requireRouter().newRootScreen(screen)
                 }

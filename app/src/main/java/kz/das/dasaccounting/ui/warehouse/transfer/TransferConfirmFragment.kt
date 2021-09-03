@@ -13,6 +13,7 @@ import kz.das.dasaccounting.data.source.local.typeconvertors.WarehouseInventoryT
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
 import kz.das.dasaccounting.ui.Screens
+import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
 import kz.das.dasaccounting.ui.warehouse.WarehouseBottomNavigationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
@@ -72,6 +73,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
         mViewModel.isWarehouseInventorySent().observe(viewLifecycleOwner, Observer {
             if (it) {
                 showSuccess(getString(R.string.common_banner_success), "Склад успешно передан")
+                MediaPlayerUtils.playSuccessSound(requireContext())
                 requireRouter().newRootScreen(Screens.getRoleScreens(mViewModel.getUserRole() ?: "") ?: WarehouseBottomNavigationFragment.getScreen())
             }
         })
