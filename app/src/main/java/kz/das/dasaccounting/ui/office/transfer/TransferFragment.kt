@@ -49,15 +49,22 @@ class TransferFragment :
                 dismiss()
             }
             this.btnTransfer.setOnClickListener {
-                getOfficeInventory()?.let {
-                    if (it.quantity ?: 0.0 >= mViewBinding.edtQuantity.text.toString().toDouble()) {
-                        it.quantity = mViewBinding.edtQuantity.text.toString().toDouble()
-                        checkConfirmation(it)
-                    } else {
-                        showError(
-                            getString(R.string.common_error),
-                            getString(R.string.quantity_compare_error)
-                        )
+                if (mViewBinding.edtQuantity.text.isNullOrEmpty()) {
+                    showError(
+                        getString(R.string.common_error),
+                        getString(R.string.quantity_is_empty_error)
+                    )
+                } else {
+                    getOfficeInventory()?.let {
+                        if (it.quantity ?: 0.0 >= mViewBinding.edtQuantity.text.toString().toDouble()) {
+                            it.quantity = mViewBinding.edtQuantity.text.toString().toDouble()
+                            checkConfirmation(it)
+                        } else {
+                            showError(
+                                getString(R.string.common_error),
+                                getString(R.string.quantity_compare_error)
+                            )
+                        }
                     }
                 }
             }

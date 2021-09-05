@@ -1,7 +1,7 @@
 <resources>
     <string name="map_token" translatable="false">AIzaSyDn8B_PBimhiAnCnnFJPk1Zcguh4MOMgz4</string>
 
-    <string name="app_name">DAS Mobile 9</string>
+    <string name="app_name">DAS Mobile 10</string>
     <string name="action_settings">Настройки</string>
 
     <string name="common_next">Следующий</string>
@@ -148,6 +148,7 @@
     <string name="transport_tracktor_title">ТС</string>
     <string name="transport_trailer_title">ПО</string>
     <string name="quantity_compare_error">Количество не должно превышать общего количество!</string>
+    <string name="quantity_is_empty_error">Введите количество!</string>
     <string name="common_fill_all_inputs">Введите все данные!</string>
     <string name="confirm_with_finger">Подтвердите отпечатком</string>
     <string name="error_not_valid_finger">Неверный отпечаток</string>
