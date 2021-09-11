@@ -2,9 +2,7 @@ package kz.das.dasaccounting.domain.data.drivers
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import kz.das.dasaccounting.core.extensions.getLongFromServerDate
 import kz.das.dasaccounting.core.extensions.getServerDateFromLong
-import kz.das.dasaccounting.data.entities.history.toHistoryTransfer
 import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.history.HistoryEnum

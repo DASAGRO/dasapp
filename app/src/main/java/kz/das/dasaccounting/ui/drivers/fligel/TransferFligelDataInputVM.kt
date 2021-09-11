@@ -3,6 +3,7 @@ package kz.das.dasaccounting.ui.drivers.fligel
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
+import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import kz.das.dasaccounting.domain.data.office.NomenclatureOfficeInventory
 import org.koin.core.inject
 
@@ -17,6 +18,9 @@ class TransferFligelDataInputVM: BaseVM() {
         nomenclatures.clear()
         nomenclatures.addAll(list)
     }
+
+    fun compareWithTheLast(fligelProduct: FligelProduct) =
+        officeInventoryRepository.isEqualToLastFligelProduct(fligelProduct)
 
     fun getLocation() = userRepository.getLastLocation()
 

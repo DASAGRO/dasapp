@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import java.io.Serializable
-import java.util.*
 
 @Entity(tableName = "accepted_transports")
 data class AcceptedTransportEntity (

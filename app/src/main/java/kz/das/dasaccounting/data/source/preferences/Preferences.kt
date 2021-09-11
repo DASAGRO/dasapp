@@ -4,8 +4,10 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.orhanobut.hawk.Hawk
 import kz.das.dasaccounting.data.entities.common.ShiftRequest
+import kz.das.dasaccounting.data.entities.driver.FligelProductEntity
 import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
+import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 
 private const val PREFERENCES_USER_ACCESS_TOKEN = "user_access_token"
 private const val PREFERENCES_USER_PROFILE = "user_profile"
@@ -15,6 +17,8 @@ private const val PREFERENCES_LAST_LOCATION = "last_location"
 private const val PREFERENCES_AWAIT_START_WORK = "await_start_work"
 private const val PREFERENCES_AWAIT_FINISH_WORK = "await_finish_work"
 
+private const val PREFERENCES_LAST_FLIGEL_PRODUCT = "last_fligel_product"
+private const val PREFERENCES_LAST_FLIGEL_PRODUCT_CNT = "last_fligel_product_cnt"
 
 class UserPreferences(private val preferences: SharedPreferences) {
 
@@ -95,6 +99,27 @@ class UserPreferences(private val preferences: SharedPreferences) {
 
     fun finishWork() {
         preferences.edit().putBoolean(PREFERENCES_USER_ON_WORK, false).apply()
+    }
+
+    fun saveLastFligelProduct(fligelProduct: FligelProduct) {
+        preferences.edit().putString(PREFERENCES_LAST_FLIGEL_PRODUCT, Gson().toJson(fligelProduct)).apply()
+    }
+
+    fun getLastFligelProduct(): FligelProduct? {
+        return try {
+            val json = preferences.getString(PREFERENCES_LAST_FLIGEL_PRODUCT, null)
+            Gson().fromJson(json, FligelProduct::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun saveLastFligelProductCnt(count: Int) {
+        preferences.edit().putInt(PREFERENCES_LAST_FLIGEL_PRODUCT_CNT, count).apply()
+    }
+
+    fun getLastFligelProductCnt(): Int {
+        return preferences.getInt(PREFERENCES_LAST_FLIGEL_PRODUCT_CNT, 0)
     }
 
     fun saveLastLocation(location: Location) {

@@ -6,10 +6,7 @@ import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
 import kz.das.dasaccounting.domain.data.file.File
-import kz.das.dasaccounting.domain.data.history.HistoryOfficeInventory
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
-import kz.das.dasaccounting.domain.data.history.HistoryTransportInventory
-import kz.das.dasaccounting.domain.data.history.HistoryWarehouseInventory
 
 interface UserRepository {
 

@@ -2,6 +2,7 @@ package kz.das.dasaccounting.ui.drivers.fligel
 
 import androidx.lifecycle.Observer
 import kz.das.dasaccounting.R
+import kz.das.dasaccounting.core.ui.dialogs.ActionConfirmDialog
 import kz.das.dasaccounting.core.ui.dialogs.BaseBottomSheetFragment
 import kz.das.dasaccounting.core.ui.extensions.verifyToInit
 import kz.das.dasaccounting.databinding.FragmentBottomSheetGatherInputBinding
@@ -76,12 +77,31 @@ class TransferFligelDataInputFragment: BaseBottomSheetFragment<FragmentBottomShe
     private fun checkConfirmation(fligelProduct: FligelProduct) {
         this@TransferFligelDataInputFragment.verifyToInit(
             {
-                listener?.onTransfer(fligelProduct)
-                dismiss()
+                if (mViewModel.compareWithTheLast(fligelProduct)) {
+                    showConfirmRepeatFligelInputDialog(fligelProduct)
+                } else {
+                    listener?.onTransfer(fligelProduct)
+                    dismiss()
+                }
             },
             { showError(getString(R.string.common_error), getString(R.string.error_not_valid_finger)) },
             { showError(getString(R.string.common_error), getString(R.string.common_unexpected_error)) }
         )
+    }
+
+    private fun showConfirmRepeatFligelInputDialog(fligelProduct: FligelProduct) {
+        val actionDialog = ActionConfirmDialog.Builder()
+            .setCancelable(true)
+            .setTitle(getString(R.string.attention))
+            .setDescription(getString(R.string.fligel_equal_with_the_last))
+            .setOnConfirmCallback(object : ActionConfirmDialog.OnConfirmCallback {
+                override fun onConfirmClicked() {
+                    listener?.onTransfer(fligelProduct)
+                    dismiss()
+                }
+                override fun onCancelClicked() { }
+            }).build()
+        actionDialog.show(childFragmentManager, ActionConfirmDialog.TAG)
     }
 
     override fun showAwait(title: String?, message: String?) { }

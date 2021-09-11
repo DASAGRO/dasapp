@@ -33,6 +33,16 @@ fun FligelProduct.toAwait(): FligelAwaitProduct {
     )
 }
 
+fun FligelProduct.compare(fligelProduct: FligelProduct): Boolean {
+    return this.id == fligelProduct.id &&
+            this.combinerNumber == fligelProduct.combinerNumber &&
+            this.comment == fligelProduct.comment &&
+            this.fieldNumber == fligelProduct.fieldNumber &&
+            this.harvestWeight == fligelProduct.harvestWeight &&
+            this.requestUUID == fligelProduct.requestUUID &&
+            this.name == fligelProduct.name
+}
+
 @Parcelize
 data class FligelAwaitProduct(
     var id: Int?,

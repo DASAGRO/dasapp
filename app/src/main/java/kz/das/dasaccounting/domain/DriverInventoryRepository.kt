@@ -33,6 +33,8 @@ interface DriverInventoryRepository {
 
     suspend fun receiveFligelData(fligelProduct: FligelProduct, fileIds: ArrayList<Int>?): Any
 
+    suspend fun saveFligelProduct(fligelProduct: FligelProduct)
+
     suspend fun saveAwaitReceiveFligelData(fligelProduct: FligelProduct)
 
     suspend fun saveAwaitAcceptInventory(transportInventory: TransportInventory, comment: String, fileIds: ArrayList<Int>)

@@ -10,8 +10,11 @@ import kz.das.dasaccounting.data.entities.requests.InventorySendRequest
 import kz.das.dasaccounting.data.entities.office.*
 import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.OfficeOperationApi
+import kz.das.dasaccounting.data.source.preferences.UserPreferences
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
+import kz.das.dasaccounting.domain.data.drivers.FligelProduct
+import kz.das.dasaccounting.domain.data.drivers.compare
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import kz.das.dasaccounting.domain.data.office.*
 import org.koin.core.KoinComponent
@@ -23,6 +26,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
     private val dasAppDatabase: DasAppDatabase by inject()
 
     private val userRepository: UserRepository by inject()
+    private val userPreferences: UserPreferences by inject()
 
     override suspend fun getOfficeMaterials(): List<OfficeInventory> {
         return officeOperationApi.getMaterials().unwrap({ list -> list.map { it.toDomain() } },
@@ -135,6 +139,10 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
 
     override fun getNomenclaturesLocally(): LiveData<List<NomenclatureOfficeInventory>> {
         return dasAppDatabase.nomenclaturesDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
+    }
+
+    override fun isEqualToLastFligelProduct(fligelProduct: FligelProduct): Boolean {
+        return userPreferences.getLastFligelProductCnt() > 3 && userPreferences.getLastFligelProduct()?.compare(fligelProduct) ?: false
     }
 
     override suspend fun saveOfficeInventory(officeInventory: OfficeInventory) {
