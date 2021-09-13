@@ -21,6 +21,7 @@ data class OfficeInventory(
     var longitude: Double? = null,
     var materialUUID: String,
     var senderUUID: String? = null,
+    var receiverUUID: String? = null,
     var requestId: String? = null,
     var storeUUID: String? = null,
     var quantity: Double? = null,
@@ -30,6 +31,7 @@ data class OfficeInventory(
     var syncRequire: Int = 0,
     var isSend: Int = 0,
     var senderName: String? = "",
+    var receiverName: String? = "",
     var comment: String? = "",
     var isAccepted: Int = 0
 ): OperationAct(), Parcelable

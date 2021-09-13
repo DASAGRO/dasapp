@@ -21,9 +21,11 @@ data class TransportInventory(
     var requestId: String? = null,
     var storeUUID: String? = null,
     var senderUUID: String? = null,
+    var receiverUUID: String? = null,
     var stateNumber: String,
     var tsType: String,
     var senderName: String?,
+    var receiverName: String? = "",
     var uuid: String,
     var isPending: Boolean = false
 ) : OperationAct(), Parcelable

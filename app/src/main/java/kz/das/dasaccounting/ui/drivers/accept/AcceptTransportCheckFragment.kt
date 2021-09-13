@@ -1,4 +1,4 @@
-package kz.das.dasaccounting.ui.drivers.transfer
+package kz.das.dasaccounting.ui.drivers.accept
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -17,35 +17,39 @@ import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.drivers.getTsTypeImage
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
-import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
 import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.util.*
 
-class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGenerateBinding>() {
+class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, FragmentBarcodeGenerateBinding>() {
 
     companion object {
         private const val TRANSPORT_INVENTORY = "inventory"
 
-        fun getScreen(transportInventory: TransportInventory) = DasAppScreen(TransferConfirmFragment()).apply {
+        fun getScreen(transportInventory: TransportInventory) = DasAppScreen(AcceptTransportCheckFragment()).apply {
             val args = Bundle()
             args.putParcelable(TRANSPORT_INVENTORY, transportInventory)
             this.setArgs(args)
         }
     }
 
-    override val mViewModel: TransferConfirmVM by viewModel()
+    override val mViewModel: AcceptTransportCheckVM by viewModel()
 
     override fun getViewBinding() = FragmentBarcodeGenerateBinding.inflate(layoutInflater)
 
-        override fun setupUI(savedInstanceState: Bundle?) {
+    override fun setupUI(savedInstanceState: Bundle?) {
+
         mViewModel.setTransportInventory(getTransportInventory())
         mViewBinding.apply {
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }
             btnReady.setOnClickListener {
-                showConfirmDialog()
+                mViewModel.getLocalInventory()?.let {
+                    it.dateTime = System.currentTimeMillis()
+//                    it.latitude = mViewModel.getLocation().lat
+//                    it.longitude = mViewModel.getLocation().long
+                    requireRouter().replaceScreen(AcceptTransportConfirmationFragment.getScreen(it))
+                }
             }
         }
     }
@@ -62,27 +66,10 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                             " " + it.stateNumber)
                 try {
                     val inventory = mViewModel.getLocalInventory()?.toEntity()
-                    inventory?.requestId = UUID.randomUUID().toString()
                     inventory?.senderUUID = mViewModel.getUser()?.userId
                     mViewBinding.ivQr.setImageBitmap(DriverInventoryTypeConvertor().transportTransportToString(inventory).generateQR())
                     inventory?.let { inventoryTransport -> mViewModel.setLocalInventory(inventoryTransport.toDomain()) }
                 } catch (e: Exception) { }
-            }
-        })
-
-        mViewModel.isTransportInventorySent().observe(viewLifecycleOwner, Observer {
-            if (it) {
-                showSuccess(getString(R.string.common_banner_success),
-                    if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
-                        getString(R.string.transport_accessory_inventory_transferred_successfully)
-                    } else {
-                        getString(R.string.transport_inventory_transferred_successfully)
-                    }
-                )
-                MediaPlayerUtils.playSuccessSound(requireContext())
-                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-                    requireRouter().newRootScreen(screen)
-                }
             }
         })
 
@@ -111,26 +98,11 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             .setImage(mViewModel.getTransportInventory().value?.getTsTypeImage() ?: R.drawable.ic_tractor)
             .setOnConfirmCallback(object : ActionInventoryConfirmDialog.OnConfirmCallback {
                 override fun onConfirmClicked() {
-                    mViewModel.sendInventory()
+
                 }
                 override fun onCancelClicked() { }
             }).build()
         actionDialog.show(childFragmentManager, ActionInventoryConfirmDialog.TAG)
-    }
-
-    private fun showBarcodeQR() {
-        val qrDialog = QrFragment.Builder()
-            .setCancelable(true)
-            .setOnScanCallback(object : QrFragment.OnScanCallback {
-                override fun onScan(qrScan: String) {
-
-                }
-            }).build()
-        qrDialog.show(parentFragmentManager, "Reverse scan dialog")
-    }
-
-    private fun showReverseScanConfirmDialog() {
-
     }
 
     private fun getTransportInventory(): TransportInventory? {
