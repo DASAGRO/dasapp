@@ -8,6 +8,8 @@ import kz.das.dasaccounting.core.extensions.unwrap
 import kz.das.dasaccounting.data.entities.requests.InventoryGetRequest
 import kz.das.dasaccounting.data.entities.requests.InventorySendRequest
 import kz.das.dasaccounting.data.entities.office.*
+import kz.das.dasaccounting.data.entities.requests.toGetRequest
+import kz.das.dasaccounting.data.entities.requests.toSendRequest
 import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.OfficeOperationApi
 import kz.das.dasaccounting.data.source.preferences.UserPreferences
@@ -45,42 +47,44 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
         fileIds: ArrayList<Int>
     ): Any {
         return officeOperationApi.acceptInventory(
-            InventoryGetRequest(
-                id = officeInventory.id,
-                date = officeInventory.date,
-                name = officeInventory.name,
-                humidity = officeInventory.humidity,
-                latitude = officeInventory.latitude,
-                longitude = officeInventory.longitude,
-                materialUUID = officeInventory.materialUUID,
-                senderUUID = officeInventory.senderUUID,
-                requestId = officeInventory.requestId,
-                storeUUID = officeInventory.storeUUID,
-                quantity = officeInventory.quantity,
-                type = officeInventory.type,
-                senderName = officeInventory.senderName,
-                fileIds = fileIds.toArray(),
-                comment = comment
-            )
+            officeInventory.toGetRequest(comment, fileIds)
+//            InventoryGetRequest(
+//                id = officeInventory.id,
+//                date = officeInventory.date,
+//                name = officeInventory.name,
+//                humidity = officeInventory.humidity,
+//                latitude = officeInventory.latitude,
+//                longitude = officeInventory.longitude,
+//                materialUUID = officeInventory.materialUUID,
+//                senderUUID = officeInventory.senderUUID,
+//                requestId = officeInventory.requestId,
+//                storeUUID = officeInventory.storeUUID,
+//                quantity = officeInventory.quantity,
+//                type = officeInventory.type,
+//                senderName = officeInventory.senderName,
+//                fileIds = fileIds.toArray(),
+//                comment = comment
+//            )
         ).unwrap()
     }
 
     override suspend fun sendInventory(officeInventory: OfficeInventory): Any {
         return officeOperationApi.sendInventory(
-            InventorySendRequest(
-                id = officeInventory.id,
-                date = officeInventory.date,
-                name = officeInventory.name,
-                humidity = officeInventory.humidity,
-                latitude = officeInventory.latitude,
-                longitude = officeInventory.longitude,
-                materialUUID = officeInventory.materialUUID,
-                requestId = officeInventory.requestId,
-                storeUUID = officeInventory.storeUUID,
-                quantity = officeInventory.quantity,
-                type = officeInventory.type,
-                senderName = officeInventory.senderName
-            )
+            officeInventory.toSendRequest()
+//            InventorySendRequest(
+//                id = officeInventory.id,
+//                date = officeInventory.date,
+//                name = officeInventory.name,
+//                humidity = officeInventory.humidity,
+//                latitude = officeInventory.latitude,
+//                longitude = officeInventory.longitude,
+//                materialUUID = officeInventory.materialUUID,
+//                requestId = officeInventory.requestId,
+//                storeUUID = officeInventory.storeUUID,
+//                quantity = officeInventory.quantity,
+//                type = officeInventory.type,
+//                senderName = officeInventory.senderName
+//            )
         ).unwrap()
     }
 

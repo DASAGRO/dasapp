@@ -16,17 +16,15 @@ data class OfficeInventoryEntity(
     @PrimaryKey
     val materialUUID: String,
     val senderUUID: String? = null,
+    val receiverUUID: String? = null,
     var requestId: String? = null,
     var storeUUID: String? = null,
     var quantity: Double? = null,
     val type: String? = null,
-    val acceptedAt: Long? = 0,
-    val sendAt: Long? = 0,
     val syncRequire: Int = 0,
     val senderName: String? = null,
-    var comment: String? = null,
-    val isSend: Int = 0,
-    val isAccepted: Int = 0
+    val receiverName: String? = null,
+    var comment: String? = null
 ) : Serializable
 
 
@@ -40,16 +38,14 @@ fun OfficeInventoryEntity.toDomain(): OfficeInventory {
         longitude = this.longitude,
         materialUUID = this.materialUUID,
         senderUUID = this.senderUUID,
+        receiverUUID = this.receiverUUID,
         requestId = this.requestId,
         storeUUID = this.storeUUID,
         quantity = this.quantity,
         type = this.type,
-        acceptedAt = this.acceptedAt,
-        sendAt = this.sendAt,
         syncRequire = this.syncRequire,
         senderName = this.senderName,
-        isSend = this.isSend,
-        isAccepted = this.isAccepted
+        receiverName = this.receiverName
     )
 }
 
@@ -63,15 +59,13 @@ fun OfficeInventory.toEntity(): OfficeInventoryEntity {
         longitude = this.longitude,
         materialUUID = this.materialUUID,
         senderUUID = this.senderUUID,
+        receiverUUID = this.receiverUUID,
         requestId = this.requestId,
         storeUUID = this.storeUUID,
         quantity = this.quantity,
         type = this.type,
-        acceptedAt = this.acceptedAt,
-        sendAt = this.sendAt,
         syncRequire = this.syncRequire,
         senderName = this.senderName,
-        isSend = this.isSend,
-        isAccepted = this.isAccepted
+        receiverName = this.receiverName
     )
 }

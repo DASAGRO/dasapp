@@ -2,7 +2,10 @@ package kz.das.dasaccounting.ui.drivers.transfer
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kz.das.dasaccounting.R
+import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
@@ -10,11 +13,14 @@ import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.data.entities.driver.toDomain
 import kz.das.dasaccounting.data.entities.driver.toEntity
+import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
+import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.ui.Screens
+import kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoFragment
 import kz.das.dasaccounting.ui.drivers.getTsTypeImage
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
@@ -45,7 +51,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                 requireRouter().exit()
             }
             btnReady.setOnClickListener {
-                showConfirmDialog()
+                showBarcodeQR()
             }
         }
     }
@@ -103,11 +109,11 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
         })
     }
 
-    private fun showConfirmDialog() {
+    private fun showConfirmDialog(title: String, descr: String) {
         val actionDialog = ActionInventoryConfirmDialog.Builder()
             .setCancelable(true)
-            .setTitle(mViewBinding.tvInventoryTitle.text)
-            .setDescription(mViewBinding.tvInventoryDesc.text)
+            .setTitle(title)
+            .setDescription(descr)
             .setImage(mViewModel.getTransportInventory().value?.getTsTypeImage() ?: R.drawable.ic_tractor)
             .setOnConfirmCallback(object : ActionInventoryConfirmDialog.OnConfirmCallback {
                 override fun onConfirmClicked() {
@@ -123,7 +129,25 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             .setCancelable(true)
             .setOnScanCallback(object : QrFragment.OnScanCallback {
                 override fun onScan(qrScan: String) {
-
+                    delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
+                        if (qrScan.contains("model") || qrScan.contains("stateNumber")) {
+                            try {
+                                DriverInventoryTypeConvertor().stringToTransportInventory(qrScan)?.toDomain()?.let {
+                                    showConfirmDialog(
+                                        it.model,
+                                            (getString(R.string.gov_number) +
+                                                    " " + it.stateNumber) + "\n" +
+                                                    (getString(R.string.from_namespace)) + " " + it.senderName + "\n" +
+                                                    (getString(R.string.given_namespace)) + " " + it.receiverName
+                                    )
+                                }
+                            } catch (e: Exception) {
+                                showError(getString(R.string.common_error), getString(R.string.common_error_scan))
+                            }
+                        } else {
+                            showError(getString(R.string.common_error), getString(R.string.common_error_scan))
+                        }
+                    }
                 }
             }).build()
         qrDialog.show(parentFragmentManager, "Reverse scan dialog")

@@ -41,10 +41,12 @@ fun TransportInventory.toSent(): TransportSentInventory {
         molUuid = this.molUuid,
         requestId = this.requestId,
         senderUUID = this.senderUUID,
+        receiverUUID = this.receiverUUID,
         storeUUID = this.storeUUID,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
+        receiverName = this.receiverName,
         uuid = this.uuid,
         isPending = this.isPending
     )
@@ -61,10 +63,12 @@ fun TransportInventory.toAccepted(): TransportAcceptedInventory {
         molUuid = this.molUuid,
         requestId = this.requestId,
         senderUUID = this.senderUUID,
+        receiverUUID = this.receiverUUID,
         storeUUID = this.storeUUID,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
+        receiverName = this.receiverName,
         uuid = this.uuid,
         isPending = this.isPending
     )
@@ -97,9 +101,11 @@ data class TransportSentInventory(
     var requestId: String? = null,
     var storeUUID: String? = null,
     var senderUUID: String? = null,
+    var receiverUUID: String? = null,
     var stateNumber: String,
     var tsType: String,
     var senderName: String?,
+    var receiverName: String? = "",
     var uuid: String,
     var isPending: Boolean = false
 ) : OperationAct(), Parcelable
@@ -116,9 +122,11 @@ data class TransportAcceptedInventory(
     var requestId: String? = null,
     var storeUUID: String? = null,
     var senderUUID: String? = null,
+    var receiverUUID: String? = null,
     var stateNumber: String,
     var tsType: String,
     var senderName: String?,
+    var receiverName: String? = "",
     var uuid: String,
     var isPending: Boolean = false
 ) : OperationAct(), Parcelable

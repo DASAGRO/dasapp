@@ -15,10 +15,12 @@ data class TransportInventoryEntity(
     val molUuid: String?,
     var requestId: String? = null,
     var senderUUID: String? = null,
+    var receiverUUID: String? = null,
     var storeUUID: String? = null,
     val stateNumber: String,
     val tsType: String,
     var senderName: String?,
+    var receiverName: String?,
     @PrimaryKey
     val uuid: String
 )
@@ -34,10 +36,12 @@ fun TransportInventoryEntity.toDomain(): TransportInventory {
         molUuid = this.molUuid,
         requestId = this.requestId,
         senderUUID = this.senderUUID,
+        receiverUUID = this.receiverUUID,
         storeUUID = this.storeUUID,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
+        receiverName = this.receiverName,
         uuid = this.uuid
     )
 }
@@ -53,10 +57,12 @@ fun TransportInventory.toEntity(): TransportInventoryEntity {
         molUuid = this.molUuid,
         requestId = this.requestId,
         senderUUID = this.senderUUID,
+        receiverUUID = this.receiverUUID,
         storeUUID = this.storeUUID,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         uuid = this.uuid,
-        senderName = this.senderName
+        senderName = this.senderName,
+        receiverName = this.receiverName
     )
 }

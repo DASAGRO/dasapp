@@ -1,8 +1,6 @@
 package kz.das.dasaccounting.ui.drivers.accept
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.DriverInventoryRepository
@@ -12,7 +10,6 @@ import org.koin.core.inject
 
 class AcceptTransportCheckVM: BaseVM() {
 
-    private val transportInventoryRepository: DriverInventoryRepository by inject()
     private val userRepository: UserRepository by inject()
 
     private var transportInventory: TransportInventory? = null
@@ -35,7 +32,8 @@ class AcceptTransportCheckVM: BaseVM() {
 
     fun setTransportInventory(transportInventory: TransportInventory?) {
         this.transportInventory = transportInventory
-        this.transportInventory?.senderName = userRepository.getUser()?.lastName + " "
+        transportInventory?.receiverUUID = userRepository.getUser()?.userId
+        transportInventory?.receiverName = userRepository.getUser()?.lastName + " "
         if (userRepository.getUser()?.firstName?.length ?: 0 > 0) {
             userRepository.getUser()?.firstName?.toCharArray()?.let { it[0] }?.plus(".")
         } else {

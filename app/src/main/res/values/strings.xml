@@ -105,6 +105,7 @@
     <string name="camera_access_title">Доступ к камере</string>
     <string name="make_transfer">Сформировать передачу</string>
     <string name="barcode_bottom_text">Внимание! Для Передачи просим нажать на кнопку “Готова”</string>
+    <string name="barcode_bottom_text_reverse_scan">Внимание! Для подтверждения передачи просим нажать на кнопку “Готова”</string>
     <string name="ready">Готово</string>
     <string name="accept_gather">Принять урожай</string>
     <string name="transport_type">Номер комбайна</string>

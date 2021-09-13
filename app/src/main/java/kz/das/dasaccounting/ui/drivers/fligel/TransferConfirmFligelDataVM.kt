@@ -86,10 +86,7 @@ class TransferConfirmFligelDataVM: BaseVM() {
                     storeUUID = null,
                     quantity = fligelProduct?.harvestWeight,
                     type = nomenclatureOfficeInventory?.measurement,
-                    acceptedAt = null,
-                    sendAt = null,
                     syncRequire = 0,
-                    isSend = 0,
                     senderName = userRepository.getUser()?.firstName + " " + userRepository.getUser()?.lastName,
                     comment = ""
                 )

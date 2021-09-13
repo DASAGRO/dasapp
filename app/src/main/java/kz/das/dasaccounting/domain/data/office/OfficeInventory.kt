@@ -2,10 +2,7 @@ package kz.das.dasaccounting.domain.data.office
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import kz.das.dasaccounting.core.extensions.getLongFromServerDate
 import kz.das.dasaccounting.core.extensions.getServerDateFromLong
-import kz.das.dasaccounting.data.entities.history.toHistoryTransfer
-import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.history.HistoryEnum
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
@@ -26,14 +23,10 @@ data class OfficeInventory(
     var storeUUID: String? = null,
     var quantity: Double? = null,
     var type: String? = null,
-    var acceptedAt: Long? = 0,
-    var sendAt: Long? = 0,
     var syncRequire: Int = 0,
-    var isSend: Int = 0,
     var senderName: String? = "",
     var receiverName: String? = "",
-    var comment: String? = "",
-    var isAccepted: Int = 0
+    var comment: String? = ""
 ): OperationAct(), Parcelable
 
 fun OfficeInventory.toAccepted(): OfficeAcceptedInventory {
@@ -49,13 +42,9 @@ fun OfficeInventory.toAccepted(): OfficeAcceptedInventory {
         requestId = this.requestId,
         quantity = this.quantity,
         type = this.type,
-        acceptedAt = this.acceptedAt,
-        sendAt = this.sendAt,
         syncRequire = this.syncRequire,
-        isSend = this.isSend,
         senderName = this.senderName,
-        comment = this.comment,
-        isAccepted = this.isAccepted
+        comment = this.comment
     )
 }
 
@@ -72,13 +61,9 @@ fun OfficeInventory.toSent(): OfficeSentInventory {
         requestId = this.requestId,
         quantity = this.quantity,
         type = this.type,
-        acceptedAt = this.acceptedAt,
-        sendAt = this.sendAt,
         syncRequire = this.syncRequire,
-        isSend = this.isSend,
         senderName = this.senderName,
-        comment = this.comment,
-        isAccepted = this.isAccepted
+        comment = this.comment
     )
 }
 
@@ -114,13 +99,9 @@ data class OfficeAcceptedInventory(
     var storeUUID: String? = null,
     var quantity: Double? = null,
     var type: String? = null,
-    var acceptedAt: Long? = 0,
-    var sendAt: Long? = 0,
     var syncRequire: Int = 0,
-    var isSend: Int = 0,
     var senderName: String? = "",
-    var comment: String? = "",
-    var isAccepted: Int = 0
+    var comment: String? = ""
 ): OperationAct(), Parcelable
 
 
@@ -138,11 +119,7 @@ data class OfficeSentInventory(
     var storeUUID: String? = null,
     var quantity: Double? = null,
     var type: String? = null,
-    var acceptedAt: Long? = 0,
-    var sendAt: Long? = 0,
     var syncRequire: Int = 0,
-    var isSend: Int = 0,
     var senderName: String? = "",
-    var comment: String? = "",
-    var isAccepted: Int = 0
+    var comment: String? = ""
 ): OperationAct(), Parcelable

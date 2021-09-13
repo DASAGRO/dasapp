@@ -1,5 +1,7 @@
 package kz.das.dasaccounting.data.entities.requests
 
+import kz.das.dasaccounting.data.entities.office.toEntity
+import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import java.io.Serializable
 
@@ -13,6 +15,8 @@ open class InventorySendRequest(
     val materialUUID: String? = null,
     var requestId: String? = null,
     var storeUUID: String? = null,
+    var receiverUUID: String? = null,
+    var qrData: String? = null,
     val quantity: Double? = null,
     val type: String? = null,
     val senderName: String? = null
@@ -30,6 +34,8 @@ open class InventoryGetRequest(
     val senderUUID: String? = null,
     var requestId: String? = null,
     var storeUUID: String? = null,
+    var receiverUUID: String? = null,
+    var qrData: String? = null,
     val quantity: Double? = null,
     val type: String? = null,
     val senderName: String? = null,
@@ -47,6 +53,8 @@ fun OfficeInventory.toSendRequest(): InventorySendRequest {
         longitude = this.longitude,
         materialUUID = this.materialUUID,
         requestId = this.requestId,
+        receiverUUID = this.receiverUUID,
+        qrData = OfficeInventoryEntityTypeConvertor().officeInventoryToString(this.toEntity()),
         storeUUID = this.storeUUID,
         quantity = this.quantity,
         type = this.type,
@@ -66,6 +74,8 @@ fun OfficeInventory.toGetRequest(comment: String ?= "",
         materialUUID = this.materialUUID,
         senderUUID = this.senderUUID,
         requestId = this.requestId,
+        receiverUUID = this.receiverUUID,
+        qrData = OfficeInventoryEntityTypeConvertor().officeInventoryToString(this.toEntity()),
         storeUUID = this.storeUUID,
         quantity = this.quantity,
         type = this.type,

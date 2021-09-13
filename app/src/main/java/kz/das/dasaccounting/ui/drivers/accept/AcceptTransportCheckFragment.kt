@@ -40,16 +40,12 @@ class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, Fragmen
 
         mViewModel.setTransportInventory(getTransportInventory())
         mViewBinding.apply {
+            mViewBinding.tvWarning.text = getString(R.string.barcode_bottom_text_reverse_scan)
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }
             btnReady.setOnClickListener {
-                mViewModel.getLocalInventory()?.let {
-                    it.dateTime = System.currentTimeMillis()
-//                    it.latitude = mViewModel.getLocation().lat
-//                    it.longitude = mViewModel.getLocation().long
-                    requireRouter().replaceScreen(AcceptTransportConfirmationFragment.getScreen(it))
-                }
+                showConfirmDialog()
             }
         }
     }
@@ -98,7 +94,9 @@ class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, Fragmen
             .setImage(mViewModel.getTransportInventory().value?.getTsTypeImage() ?: R.drawable.ic_tractor)
             .setOnConfirmCallback(object : ActionInventoryConfirmDialog.OnConfirmCallback {
                 override fun onConfirmClicked() {
-
+                    mViewModel.getLocalInventory()?.let {
+                        requireRouter().replaceScreen(AcceptTransportConfirmationFragment.getScreen(it))
+                    }
                 }
                 override fun onCancelClicked() { }
             }).build()
