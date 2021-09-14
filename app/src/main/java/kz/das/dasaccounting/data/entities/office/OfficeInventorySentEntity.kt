@@ -43,12 +43,8 @@ fun OfficeInventorySentEntity.toDomain(): OfficeInventory {
         storeUUID = this.storeUUID,
         quantity = this.quantity,
         type = this.type,
-        acceptedAt = this.acceptedAt,
-        sendAt = this.sendAt,
         syncRequire = this.syncRequire,
-        senderName = this.senderName,
-        isSend = this.isSend,
-        isAccepted = this.isAccepted
+        senderName = this.senderName
     )
 }
 
@@ -66,11 +62,7 @@ fun OfficeInventory.toSentEntity(): OfficeInventorySentEntity {
         storeUUID = this.storeUUID,
         quantity = this.quantity,
         type = this.type,
-        acceptedAt = this.acceptedAt,
-        sendAt = this.sendAt,
         syncRequire = this.syncRequire,
-        senderName = this.senderName,
-        isSend = this.isSend,
-        isAccepted = this.isAccepted
+        senderName = this.senderName
     )
 }

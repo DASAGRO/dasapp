@@ -2,7 +2,10 @@ package kz.das.dasaccounting.ui.office.transfer
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kz.das.dasaccounting.R
+import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
@@ -14,6 +17,7 @@ import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEnti
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import kz.das.dasaccounting.ui.Screens
+import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
 import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
@@ -41,7 +45,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                 requireRouter().exit()
             }
             btnReady.setOnClickListener {
-                showConfirmDialog()
+                showBarcodeQR()
             }
         }
     }
@@ -87,11 +91,11 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
         })
     }
 
-    private fun showConfirmDialog() {
+    private fun showConfirmDialog(title: String, descr: String) {
         val actionDialog = ActionInventoryConfirmDialog.Builder()
             .setCancelable(true)
-            .setTitle(mViewBinding.tvInventoryTitle.text)
-            .setDescription(mViewBinding.tvInventoryDesc.text)
+            .setTitle(title)
+            .setDescription(descr)
             .setImage(R.drawable.ic_inventory)
             .setOnConfirmCallback(object : ActionInventoryConfirmDialog.OnConfirmCallback {
                 override fun onConfirmClicked() {
@@ -100,6 +104,33 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                 override fun onCancelClicked() { }
             }).build()
         actionDialog.show(childFragmentManager, ActionInventoryConfirmDialog.TAG)
+    }
+
+    private fun showBarcodeQR() {
+        val qrDialog = QrFragment.Builder()
+            .setCancelable(true)
+            .setOnScanCallback(object : QrFragment.OnScanCallback {
+                override fun onScan(qrScan: String) {
+                    delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
+                        try {
+                            if (!qrScan.contains("stateNumber") || !qrScan.contains("storeUUID") || !qrScan.contains("sealNumber") || !qrScan.contains("model")) {
+                                OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
+                                    showConfirmDialog(it.name ?: "", ((getString(R.string.inventory_total_quantity) +
+                                            " " + it.quantity +
+                                            " " + it.type) + "\n" +
+                                            String.format((getString(R.string.from_namespace)), it.senderName) + "\n" +
+                                            String.format((getString(R.string.to_namespace)), it.receiverName)))
+                                }
+                            } else {
+                                showError(getString(R.string.common_error), getString(R.string.common_error_scan))
+                            }
+                        } catch (e: Exception) {
+                            showError(getString(R.string.common_error), getString(R.string.common_error_scan))
+                        }
+                    }
+                }
+            }).build()
+        qrDialog.show(parentFragmentManager, "Reverse scan dialog")
     }
 
     private fun getOfficeInventory(): OfficeInventory? {

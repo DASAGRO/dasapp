@@ -42,7 +42,7 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
                     it.date = System.currentTimeMillis()
                     it.latitude = mViewModel.getLocation().lat
                     it.longitude = mViewModel.getLocation().long
-                    requireRouter().replaceScreen(AcceptConfirmationFragment.getScreen(it))
+                    requireRouter().replaceScreen(AcceptInventoryCheckFragment.getScreen(it))
                 }
             }
         }

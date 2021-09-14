@@ -1,7 +1,7 @@
 <resources>
     <string name="map_token" translatable="false">AIzaSyDn8B_PBimhiAnCnnFJPk1Zcguh4MOMgz4</string>
 
-    <string name="app_name">DAS Mobile 10</string>
+    <string name="app_name">DAS Mobile 1.0</string>
     <string name="action_settings">Настройки</string>
 
     <string name="common_next">Следующий</string>
@@ -80,6 +80,7 @@
     <string name="text_support_info">Если у вас есть какие либо затруднения с приложением, либо вы хотите подсказать какие-то улучшения, мы обязательно выслушаем вас.</string>
     <string name="from_namespace">от %s</string>
     <string name="given_namespace">передан %s</string>
+    <string name="to_namespace">кому %s</string>
     <string name="accept">Принять</string>
     <string name="accept_title">Принято</string>
     <string name="given">Передан</string>

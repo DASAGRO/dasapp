@@ -9,7 +9,6 @@ import kz.das.dasaccounting.databinding.FragmentBottomSheetMakeTransferBinding
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import org.koin.android.viewmodel.ext.android.viewModel
-import org.koin.core.get
 
 class TransferFormalizeFragment: BaseBottomSheetFragment<FragmentBottomSheetMakeTransferBinding, kz.das.dasaccounting.ui.drivers.transfer.TransferFormalizeVM>() {
 

@@ -56,8 +56,9 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
                 mViewBinding.ivInventory.setTsTypeImage(it)
                 mViewBinding.tvInventoryTitle.text = it.model
                 mViewBinding.tvInventoryDesc.text =
-                    (getString(R.string.gov_number) +
-                            " " + it.stateNumber)
+                    ((getString(R.string.gov_number) +
+                            " " + it.stateNumber) + "\n" +
+                            String.format(getString(R.string.inventory_sender_name), it.senderName))
             }
         })
     }

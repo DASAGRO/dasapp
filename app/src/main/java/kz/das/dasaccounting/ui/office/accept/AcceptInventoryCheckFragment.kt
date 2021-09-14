@@ -1,4 +1,4 @@
-package kz.das.dasaccounting.ui.drivers.accept
+package kz.das.dasaccounting.ui.office.accept
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -8,36 +8,33 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
 import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
-import kz.das.dasaccounting.data.entities.driver.toDomain
-import kz.das.dasaccounting.data.entities.driver.toEntity
-import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
+import kz.das.dasaccounting.data.entities.office.toDomain
+import kz.das.dasaccounting.data.entities.office.toEntity
+import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
-import kz.das.dasaccounting.domain.data.drivers.TransportInventory
-import kz.das.dasaccounting.ui.drivers.getTsTypeImage
-import kz.das.dasaccounting.ui.drivers.setTsTypeImage
+import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
 
-class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, FragmentBarcodeGenerateBinding>() {
+class AcceptInventoryCheckFragment: BaseFragment<AcceptInventoryCheckVM, FragmentBarcodeGenerateBinding>() {
 
     companion object {
-        private const val TRANSPORT_INVENTORY = "inventory"
+        private const val OFFICE_INVENTORY = "inventory"
 
-        fun getScreen(transportInventory: TransportInventory) = DasAppScreen(AcceptTransportCheckFragment()).apply {
+        fun getScreen(officeInventoryAccept: OfficeInventory) = DasAppScreen(AcceptInventoryCheckFragment()).apply {
             val args = Bundle()
-            args.putParcelable(TRANSPORT_INVENTORY, transportInventory)
+            args.putParcelable(OFFICE_INVENTORY, officeInventoryAccept)
             this.setArgs(args)
         }
     }
 
-    override val mViewModel: AcceptTransportCheckVM by viewModel()
+    override val mViewModel: AcceptInventoryCheckVM by viewModel()
 
     override fun getViewBinding() = FragmentBarcodeGenerateBinding.inflate(layoutInflater)
 
     override fun setupUI(savedInstanceState: Bundle?) {
-
-        mViewModel.setTransportInventory(getTransportInventory())
+        mViewModel.setOfficeInventory(getOfficeInventory())
         mViewBinding.apply {
-            mViewBinding.tvWarning.text = getString(R.string.barcode_bottom_text_reverse_scan)
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }
@@ -50,20 +47,21 @@ class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, Fragmen
     override fun observeLiveData() {
         super.observeLiveData()
 
-        mViewModel.getTransportInventory().observe(viewLifecycleOwner, Observer {
+        mViewModel.getOfficeInventory().observe(viewLifecycleOwner, Observer {
             it?.let {
-                mViewBinding.ivInventory.setTsTypeImage(it)
-                mViewBinding.tvInventoryTitle.text = it.model
+                mViewBinding.ivInventory.setImageResource(R.drawable.ic_inventory)
+                mViewBinding.tvInventoryTitle.text = it.name
                 mViewBinding.tvInventoryDesc.text =
-                    ((getString(R.string.gov_number) +
-                            " " + it.stateNumber) + "\n" +
+                    ((getString(R.string.inventory_total_quantity) +
+                            " " + it.quantity +
+                            " " + it.type) + "\n" +
                             String.format((getString(R.string.from_namespace)), it.senderName) + "\n" +
                             String.format((getString(R.string.to_namespace)), it.senderName) + " " + it.receiverName)
                 try {
                     val inventory = mViewModel.getLocalInventory()?.toEntity()
-                    inventory?.senderUUID = mViewModel.getUser()?.userId
-                    mViewBinding.ivQr.setImageBitmap(DriverInventoryTypeConvertor().transportTransportToString(inventory).generateQR())
-                    inventory?.let { inventoryTransport -> mViewModel.setLocalInventory(inventoryTransport.toDomain()) }
+                    inventory?.requestId = UUID.randomUUID().toString()
+                    mViewBinding.ivQr.setImageBitmap(OfficeInventoryEntityTypeConvertor().officeInventoryToString(inventory).generateQR())
+                    inventory?.let { inventoryOffice -> mViewModel.setLocalInventory(inventoryOffice.toDomain()) }
                 } catch (e: Exception) { }
             }
         })
@@ -75,11 +73,11 @@ class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, Fragmen
             .setCancelable(true)
             .setTitle(mViewBinding.tvInventoryTitle.text)
             .setDescription(mViewBinding.tvInventoryDesc.text)
-            .setImage(mViewModel.getTransportInventory().value?.getTsTypeImage() ?: R.drawable.ic_tractor)
+            .setImage(R.drawable.ic_inventory)
             .setOnConfirmCallback(object : ActionInventoryConfirmDialog.OnConfirmCallback {
                 override fun onConfirmClicked() {
                     mViewModel.getLocalInventory()?.let {
-                        requireRouter().replaceScreen(AcceptTransportConfirmationFragment.getScreen(it))
+                        requireRouter().replaceScreen(AcceptConfirmationFragment.getScreen(it))
                     }
                 }
                 override fun onCancelClicked() { }
@@ -87,7 +85,9 @@ class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, Fragmen
         actionDialog.show(childFragmentManager, ActionInventoryConfirmDialog.TAG)
     }
 
-    private fun getTransportInventory(): TransportInventory? {
-        return arguments?.getParcelable(TRANSPORT_INVENTORY)
+    private fun getOfficeInventory(): OfficeInventory? {
+        return arguments?.getParcelable(OFFICE_INVENTORY)
     }
+
+
 }

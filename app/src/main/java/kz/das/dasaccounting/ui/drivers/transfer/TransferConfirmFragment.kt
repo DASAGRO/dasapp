@@ -137,8 +137,8 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                                         it.model,
                                             (getString(R.string.gov_number) +
                                                     " " + it.stateNumber) + "\n" +
-                                                    (getString(R.string.from_namespace)) + " " + it.senderName + "\n" +
-                                                    (getString(R.string.given_namespace)) + " " + it.receiverName
+                                                    String.format((getString(R.string.from_namespace)), it.senderName) + "\n" +
+                                                    String.format((getString(R.string.to_namespace)), it.receiverName)
                                     )
                                 }
                             } catch (e: Exception) {
@@ -151,10 +151,6 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                 }
             }).build()
         qrDialog.show(parentFragmentManager, "Reverse scan dialog")
-    }
-
-    private fun showReverseScanConfirmDialog() {
-
     }
 
     private fun getTransportInventory(): TransportInventory? {
