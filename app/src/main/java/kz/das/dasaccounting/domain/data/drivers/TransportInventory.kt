@@ -3,6 +3,8 @@ package kz.das.dasaccounting.domain.data.drivers
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import kz.das.dasaccounting.core.extensions.getServerDateFromLong
+import kz.das.dasaccounting.data.entities.driver.toEntity
+import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
 import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.history.HistoryEnum
@@ -74,7 +76,51 @@ fun TransportInventory.toAccepted(): TransportAcceptedInventory {
     )
 }
 
-fun TransportInventory.toHistoryTransfer(): HistoryTransfer {
+fun TransportAcceptedInventory.toDomain(): TransportInventory {
+    return TransportInventory(
+        comment = this.comment,
+        dateTime = this.dateTime,
+        id = this.id,
+        latitude = this.latitude,
+        longitude = this.longitude,
+        model = this.model,
+        molUuid = this.molUuid,
+        requestId = this.requestId,
+        senderUUID = this.senderUUID,
+        receiverUUID = this.receiverUUID,
+        storeUUID = this.storeUUID,
+        stateNumber = this.stateNumber,
+        tsType = this.tsType,
+        senderName = this.senderName,
+        receiverName = this.receiverName,
+        uuid = this.uuid,
+        isPending = this.isPending
+    )
+}
+
+fun TransportSentInventory.toDomain(): TransportInventory {
+    return TransportInventory(
+        comment = this.comment,
+        dateTime = this.dateTime,
+        id = this.id,
+        latitude = this.latitude,
+        longitude = this.longitude,
+        model = this.model,
+        molUuid = this.molUuid,
+        requestId = this.requestId,
+        senderUUID = this.senderUUID,
+        receiverUUID = this.receiverUUID,
+        storeUUID = this.storeUUID,
+        stateNumber = this.stateNumber,
+        tsType = this.tsType,
+        senderName = this.senderName,
+        receiverName = this.receiverName,
+        uuid = this.uuid,
+        isPending = this.isPending
+    )
+}
+
+fun TransportAcceptedInventory.toHistoryTransfer(): HistoryTransfer {
     return HistoryTransfer(
         title = this.model ?: "Транспорт",
         descr = "Гос. номер: " + this.stateNumber,
@@ -83,11 +129,26 @@ fun TransportInventory.toHistoryTransfer(): HistoryTransfer {
         quantity = "1",
         senderName = String.format("От кого: %s", this.senderName) ?: "",
         operationType = if (this.tsType == TransportType.TRAILED.type) OperationType.DRIVER_ACCESSORY.status else OperationType.DRIVER.status,
+        qrData = DriverInventoryTypeConvertor().transportTransportToString(this.toDomain().toEntity()),
         isAwait = true,
         status = HistoryEnum.AWAIT.status
     )
 }
 
+fun TransportSentInventory.toHistoryTransfer(): HistoryTransfer {
+    return HistoryTransfer(
+        title = this.model ?: "Транспорт",
+        descr = "Гос. номер: " + this.stateNumber,
+        date = this.dateTime ?: System.currentTimeMillis(),
+        dateText = this.dateTime.getServerDateFromLong() ?: "Ошибка даты",
+        quantity = "1",
+        senderName = String.format("Кому: %s", this.receiverName) ?: "",
+        operationType = if (this.tsType == TransportType.TRAILED.type) OperationType.DRIVER_ACCESSORY.status else OperationType.DRIVER.status,
+        isAwait = true,
+        qrData = DriverInventoryTypeConvertor().transportTransportToString(this.toDomain().toEntity()),
+        status = HistoryEnum.AWAIT.status
+    )
+}
 
 @Parcelize
 data class TransportSentInventory(

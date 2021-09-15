@@ -21,10 +21,10 @@ class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryG
     override fun getViewBinding() = FragmentProfileHistoryGivenBinding.inflate(layoutInflater)
 
     override fun setupUI(savedInstanceState: Bundle?) {
-        historyAdapter = UserTransferHistoryAdapter(requireContext(), arrayListOf(), mViewModel.getUser()?.firstName +  " " + mViewModel.getUser()?.lastName)
+        historyAdapter = UserTransferHistoryAdapter(requireContext(), arrayListOf())
         historyAdapter?.setHistoryOperationsAdapterEvent(object : UserTransferHistoryAdapter.OnHistoryOperationsAdapterEvent {
-            override fun onClick(title: String?, descr: String?, type: String?, status: String?) {
-                requireRouter().navigateTo(HistoryDetailFragment.getScreen(title, descr, type, status))
+            override fun onClick(title: String?, descr: String?, type: String?, status: String?, qr: String?) {
+                requireRouter().navigateTo(HistoryDetailFragment.getScreen(title, descr, type, status, qr ?: ""))
             }
         })
         mViewBinding.rvGiven.apply {

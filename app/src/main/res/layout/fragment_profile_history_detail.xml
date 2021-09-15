@@ -116,5 +116,16 @@
         app:layout_constraintTop_toBottomOf="@+id/cl_inventory_info"
         tools:text="Время получение: 08:00 \nДата получение: 01.10.2021" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_barcode"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_inventory_time" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

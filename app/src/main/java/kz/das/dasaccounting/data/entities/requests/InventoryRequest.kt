@@ -22,7 +22,6 @@ open class InventorySendRequest(
     val senderName: String? = null
 ) : Serializable
 
-
 open class InventoryGetRequest(
     val id: Int = 0,
     val date: Long = System.currentTimeMillis(),
@@ -34,7 +33,6 @@ open class InventoryGetRequest(
     val senderUUID: String? = null,
     var requestId: String? = null,
     var storeUUID: String? = null,
-    var receiverUUID: String? = null,
     var qrData: String? = null,
     val quantity: Double? = null,
     val type: String? = null,
@@ -74,7 +72,6 @@ fun OfficeInventory.toGetRequest(comment: String ?= "",
         materialUUID = this.materialUUID,
         senderUUID = this.senderUUID,
         requestId = this.requestId,
-        receiverUUID = this.receiverUUID,
         qrData = OfficeInventoryEntityTypeConvertor().officeInventoryToString(this.toEntity()),
         storeUUID = this.storeUUID,
         quantity = this.quantity,

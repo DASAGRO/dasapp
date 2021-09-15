@@ -13,14 +13,11 @@ import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.data.entities.driver.toDomain
 import kz.das.dasaccounting.data.entities.driver.toEntity
-import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
-import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.ui.Screens
-import kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoFragment
 import kz.das.dasaccounting.ui.drivers.getTsTypeImage
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment

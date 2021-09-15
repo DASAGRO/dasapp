@@ -12,6 +12,7 @@ data class HistoryOfficeInventory (
     val humidity: String? = null,
     val molUUID: String? = null,
     val fullName: String? = null,
+    val qrData: String? = null,
     val longitude: String? = null,
     val latitude: String? = null,
     val status: String? = null

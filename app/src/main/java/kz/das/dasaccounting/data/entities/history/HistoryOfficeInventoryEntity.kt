@@ -2,7 +2,6 @@ package kz.das.dasaccounting.data.entities.history
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.extensions.getLongFromServerDate
 import kz.das.dasaccounting.domain.data.history.HistoryOfficeInventory
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
@@ -21,6 +20,7 @@ data class HistoryOfficeInventoryEntity(
     val humidity: String? = null,
     val molUUID: String? = null,
     val fullName: String? = null,
+    val qrData: String? = null,
     val longitude: String? = null,
     val latitude: String? = null,
     val status: String? = null
@@ -37,6 +37,7 @@ fun HistoryOfficeInventoryEntity.toDomain(): HistoryOfficeInventory {
         humidity = this.humidity,
         molUUID = this.molUUID,
         fullName = this.fullName,
+        qrData = this.qrData,
         longitude = this.longitude,
         latitude = this.latitude,
         status = this.status
@@ -49,11 +50,12 @@ fun HistoryOfficeInventoryEntity.toHistoryTransfer(): HistoryTransfer {
         descr = ("Количество:" +
                 " " + this.quantity +
                 " " + this.measurement + "\n" +
-                String.format("От кого: %s", this.fullName)),
+        String.format((if (this.status == "Принят") "От кого: %s" else "Кому: %s"), this.fullName) ?: ""),
         date = this.dateTime.getLongFromServerDate(),
         dateText = this.dateTime ?: "Ошибка даты",
         quantity = this.quantity ?: "",
-        senderName = String.format("От кого: %s", this.fullName) ?: "",
+        senderName = String.format((if (this.status == "Принят") "От кого: %s" else "Кому: %s"), this.fullName) ?: "",
+        qrData = this.qrData,
         operationType = OperationType.OFFICE.status,
         isAwait = false,
         status = this.status ?: ""

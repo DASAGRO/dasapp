@@ -7,7 +7,9 @@ import kz.das.dasaccounting.data.entities.requests.GetTransportRequest
 import kz.das.dasaccounting.data.entities.requests.SendTransportRequest
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.domain.data.drivers.TransportSentInventory
 import java.io.Serializable
+import kotlin.collections.ArrayList
 
 @Entity(tableName = "sent_transports")
 data class SentTransportEntity(
@@ -21,6 +23,9 @@ data class SentTransportEntity(
     val molUuid: String?,
     var requestId: String? = null,
     var storeUUID: String? = null,
+    val senderUUID: String? = null,
+    val receiverUUID: String? = null,
+    val receiverName: String? = null,
     val stateNumber: String,
     val tsType: String,
     @PrimaryKey
@@ -46,6 +51,27 @@ fun SentTransportEntity.toDomain(): TransportInventory {
     )
 }
 
+fun SentTransportEntity.toSent(): TransportSentInventory {
+    return TransportSentInventory(
+        comment = this.comment,
+        dateTime = this.dateTime,
+        id = this.id,
+        latitude = this.latitude,
+        longitude = this.longitude,
+        model = this.model,
+        molUuid = this.molUuid,
+        requestId = this.requestId,
+        storeUUID = this.storeUUID,
+        stateNumber = this.stateNumber,
+        tsType = this.tsType,
+        receiverUUID = this.receiverUUID,
+        receiverName = this.receiverName,
+        senderUUID = this.senderUUID,
+        senderName = this.senderName,
+        uuid = this.uuid
+    )
+}
+
 fun TransportInventory.toSentEntity(): SentTransportEntity {
     return SentTransportEntity(
         comment = this.comment,
@@ -59,6 +85,9 @@ fun TransportInventory.toSentEntity(): SentTransportEntity {
         storeUUID = this.storeUUID,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
+        receiverUUID = this.receiverUUID,
+        receiverName = this.receiverName,
+        senderUUID = this.senderUUID,
         senderName = this.senderName,
         uuid = this.uuid
     )

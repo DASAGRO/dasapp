@@ -22,6 +22,7 @@ data class HistoryTransportInventoryEntity(
     val latitude: String? = null,
     val quantity: String? = null,
     val fullName: String? = null,
+    val qrData: String? = null,
     val molUUID: String? = null,
     val status: String? = null
 ): Serializable
@@ -38,6 +39,7 @@ fun HistoryTransportInventoryEntity.toDomain(): HistoryTransportInventory {
         latitude = this.latitude,
         quantity = this.quantity,
         fullName = this.fullName,
+        qrData = this.qrData,
         molUUID = this.molUUID,
         status = this.status
     )
@@ -51,8 +53,9 @@ fun HistoryTransportInventoryEntity.toHistoryTransfer(): HistoryTransfer {
         date = this.dateTime.getLongFromServerDate(),
         dateText = this.dateTime ?: "Ошибка даты",
         quantity = "1",
-        senderName = String.format("От кого: %s", this.fullName) ?: "",
+        senderName = String.format((if (this.status == "Принят") "От кого: %s" else "Кому: %s"), this.fullName) ?: "",
         operationType = if (this.tsType == TransportType.TRAILED.type) OperationType.DRIVER_ACCESSORY.status else OperationType.DRIVER.status,
+        qrData = this.qrData,
         isAwait = false,
         status = this.status ?: ""
     )

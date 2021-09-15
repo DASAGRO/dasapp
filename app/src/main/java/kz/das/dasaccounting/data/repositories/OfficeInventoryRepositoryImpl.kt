@@ -252,11 +252,11 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
     }
 
     override fun getHistoryOfficeAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>> {
-        return dasAppDatabase.officeInventoryAcceptedDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
+        return dasAppDatabase.officeInventoryAcceptedDao().allAsLiveData.map { it -> it.map { it.toHistory() } }
     }
 
     override fun getHistoryOfficeSentMaterialsLocally(): LiveData<List<HistoryTransfer>> {
-        return dasAppDatabase.officeInventorySentDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
+        return dasAppDatabase.officeInventorySentDao().allAsLiveData.map { it -> it.map { it.toHistory() } }
     }
 
     override suspend fun initDeleteData() {
