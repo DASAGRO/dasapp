@@ -130,6 +130,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                         if (qrScan.contains("model") || qrScan.contains("stateNumber")) {
                             try {
                                 DriverInventoryTypeConvertor().stringToTransportInventory(qrScan)?.toDomain()?.let {
+                                    mViewModel.setTransportInventory(it)
                                     showConfirmDialog(
                                         it.model,
                                             (getString(R.string.gov_number) +

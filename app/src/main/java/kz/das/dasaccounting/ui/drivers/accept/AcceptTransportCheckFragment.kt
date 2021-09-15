@@ -58,7 +58,7 @@ class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, Fragmen
                     ((getString(R.string.gov_number) +
                             " " + it.stateNumber) + "\n" +
                             String.format((getString(R.string.from_namespace)), it.senderName) + "\n" +
-                            String.format((getString(R.string.to_namespace)), it.senderName) + " " + it.receiverName)
+                            String.format((getString(R.string.to_namespace)), it.receiverName))
                 try {
                     val inventory = mViewModel.getLocalInventory()?.toEntity()
                     inventory?.senderUUID = mViewModel.getUser()?.userId

@@ -56,7 +56,7 @@ class AcceptInventoryCheckFragment: BaseFragment<AcceptInventoryCheckVM, Fragmen
                             " " + it.quantity +
                             " " + it.type) + "\n" +
                             String.format((getString(R.string.from_namespace)), it.senderName) + "\n" +
-                            String.format((getString(R.string.to_namespace)), it.senderName) + " " + it.receiverName)
+                            String.format((getString(R.string.to_namespace)), it.receiverName))
                 try {
                     val inventory = mViewModel.getLocalInventory()?.toEntity()
                     inventory?.requestId = UUID.randomUUID().toString()

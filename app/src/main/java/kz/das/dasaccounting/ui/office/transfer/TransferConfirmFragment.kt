@@ -115,6 +115,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                         try {
                             if (!qrScan.contains("stateNumber") || !qrScan.contains("storeUUID") || !qrScan.contains("sealNumber") || !qrScan.contains("model")) {
                                 OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
+                                    mViewModel.setOfficeInventory(it)
                                     showConfirmDialog(it.name ?: "", ((getString(R.string.inventory_total_quantity) +
                                             " " + it.quantity +
                                             " " + it.type) + "\n" +
