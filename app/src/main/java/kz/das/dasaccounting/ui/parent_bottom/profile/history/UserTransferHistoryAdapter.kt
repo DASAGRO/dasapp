@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
+import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.recyclerview.BaseViewHolder
 import kz.das.dasaccounting.databinding.ItemHistoryBinding
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
@@ -59,6 +60,11 @@ class UserTransferHistoryAdapter(val context: Context, private var operations: A
             this.itemBinding.run {
                 historyTransfer = item
                 userName = item.senderName
+                if (item.status == "В ожидании") {
+                    this.ivStatus.setImageResource(R.drawable.ic_banner_waiting_oval)
+                } else {
+                    this.ivStatus.setImageResource(R.drawable.ic_banner_success_oval)
+                }
                 tvInventoryQuantity.isGone = item.operationType == OperationType.DRIVER_ACCESSORY.status ||
                         item.operationType == OperationType.DRIVER.status
                 this.rootHistory.setOnClickListener {

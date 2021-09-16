@@ -81,8 +81,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_margin="16dp"
-            android:scaleType="centerInside"
-            android:src="@{historyTransfer.await ? @drawable/ic_banner_waiting_oval : @drawable/ic_banner_success_oval}" />
+            android:scaleType="centerInside" />
 
         <View
             android:layout_width="match_parent"

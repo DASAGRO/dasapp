@@ -47,6 +47,6 @@ class HistoryAcceptedVM: BaseVM() {
 
     private fun acceptedTransportInventoryLocally() = driverInventoryRepository.getDriverAcceptedMaterialsLocally()
 
-    private fun acceptedOfficeInventoryLocally() = officeInventoryRepository.getOfficeAcceptedMaterialsLocally()
+    private fun acceptedOfficeInventoryLocally() = officeInventoryRepository.getHistoryOfficeAcceptedMaterialsLocally()
 
 }

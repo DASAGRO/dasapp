@@ -108,12 +108,14 @@ fun OfficeInventory.toSentEntity(): OfficeInventorySentEntity {
         latitude = this.latitude,
         longitude = this.longitude,
         materialUUID = this.materialUUID,
+        receiverUUID = this.receiverUUID,
+        receiverName = this.receiverName,
         senderUUID = this.senderUUID,
+        senderName = this.senderName,
         requestId = this.requestId,
         storeUUID = this.storeUUID,
         quantity = this.quantity,
         type = this.type,
-        syncRequire = this.syncRequire,
-        senderName = this.senderName
+        syncRequire = this.syncRequire
     )
 }

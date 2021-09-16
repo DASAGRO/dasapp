@@ -90,7 +90,7 @@
     <string name="cancel">Отмена</string>
     <string name="log_out_title">Выйти из приложения</string>
     <string name="attention">Внимание</string>
-    <string name="fligel_equal_with_the_last">Вы уверены? Данные совподают(повторяется) с тремя транзакциями</string>
+    <string name="fligel_equal_with_the_last">Вы уверены что хотите продолжить? Данные совпадают(повторяется) с тремя последними транзакциями</string>
     <string name="log_out_desc">Вы уверены что хотите выйти из приложения, все данные будут стерты и не будут доступны для восстановления!</string>
     <string name="accept_inventory">Принять ТМЦ</string>
     <string name="available_operations">Доступные операции</string>

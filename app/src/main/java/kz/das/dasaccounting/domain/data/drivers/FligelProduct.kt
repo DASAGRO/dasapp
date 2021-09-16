@@ -33,14 +33,10 @@ fun FligelProduct.toAwait(): FligelAwaitProduct {
     )
 }
 
-fun FligelProduct.compare(fligelProduct: FligelProduct): Boolean {
-    return this.id == fligelProduct.id &&
-            this.combinerNumber == fligelProduct.combinerNumber &&
-            this.comment == fligelProduct.comment &&
+fun FligelProduct.compareRepeat(fligelProduct: FligelProduct): Boolean {
+    return this.combinerNumber == fligelProduct.combinerNumber &&
             this.fieldNumber == fligelProduct.fieldNumber &&
-            this.harvestWeight == fligelProduct.harvestWeight &&
-            this.requestUUID == fligelProduct.requestUUID &&
-            this.name == fligelProduct.name
+            this.harvestWeight == fligelProduct.harvestWeight
 }
 
 @Parcelize

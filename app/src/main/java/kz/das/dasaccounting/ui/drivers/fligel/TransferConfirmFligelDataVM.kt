@@ -63,13 +63,11 @@ class TransferConfirmFligelDataVM: BaseVM() {
             try {
                 fligelProduct?.let {
                     it.comment = comment
-                    driverInventoryRepository.saveFligelProduct(it)
                     driverInventoryRepository.receiveFligelData(it, fileIds)
                 }
                 driverInventoryDataLV.postValue(true)
             } catch (t: Throwable) {
                 fligelProduct?.let {
-                    driverInventoryRepository.saveFligelProduct(it)
                     driverInventoryRepository.saveAwaitReceiveFligelData(it)
                 }
                 val nomenclatureOfficeInventory = nomenclatures.find { it.fieldNumber == fligelProduct?.fieldNumber.toString() }

@@ -26,20 +26,6 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
         retrieve()
     }
 
-//    fun initAwaitRequests() {
-//        viewModelScope.launch {
-//            try {
-//                shiftRepository.initAwaitShiftStarted()
-//                shiftRepository.initAwaitShiftFinished()
-////                officeInventoryRepository.initAwaitAcceptInventory()
-////                officeInventoryRepository.initAwaitSendInventory()
-//            } catch (t: Throwable) {
-//                throwableHandler.handle(t)
-//            } finally {
-//            }
-//        }
-//    }
-
     fun initAwaitRequests() {
 
         viewModelScope.launch {
@@ -61,32 +47,6 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
             }
         }
 
-//        officeInventoryRepository.getUnAcceptedInventories().forEach {
-//            sendAwaitUnAcceptedOfficeInventory(it)
-//        }
-//
-//        officeInventoryRepository.getUnsentInventories().forEach {
-//            sendAwaitUnsentOfficeInventory(it)
-//        }
-    }
-
-    // Office send await requests
-    private fun sendAwaitUnsentOfficeInventory(officeInventory: OfficeInventory) {
-        viewModelScope.launch {
-            try {
-                officeInventoryRepository.sendInventory(officeInventory)
-                officeInventoryRepository.removeUnsentInventory(officeInventory)
-            } catch (t: Throwable) { }
-        }
-    }
-
-    private fun sendAwaitUnAcceptedOfficeInventory(officeInventory: OfficeInventory) {
-        viewModelScope.launch {
-            try {
-                officeInventoryRepository.acceptInventory(officeInventory, "Повторная отправка", arrayListOf())
-                officeInventoryRepository.removeUnAcceptedInventory(officeInventory)
-            } catch (t: Throwable) { }
-        }
     }
 
     private fun retrieve() {
@@ -107,8 +67,6 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
     }
 
     fun getAwaitSentOperationsLocally() = officeInventoryRepository.getOfficeSentMaterialsLocally()
-
-    fun getAwaitAcceptedOperationsLocally() = officeInventoryRepository.getOfficeAcceptedMaterialsLocally()
 
     fun getOperationsLocally() = officeInventoryRepository.getOfficeMaterialsLocally()
 

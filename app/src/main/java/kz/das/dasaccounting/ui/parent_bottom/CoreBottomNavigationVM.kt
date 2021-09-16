@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
+import kz.das.dasaccounting.domain.DriverInventoryRepository
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.ShiftRepository
 import kz.das.dasaccounting.domain.UserRepository
@@ -45,6 +46,7 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
     init {
         checkShiftState()
         retrieveNomenclatures()
+        retrieveTransferHistory()
     }
 
     fun saveLocation(long: Double, lat: Double) {
@@ -152,6 +154,18 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
         }
     }
 
+    private fun retrieveTransferHistory() {
+        viewModelScope.launch {
+            try {
+                userRepository.getHistoryOfficeInventories()
+                userRepository.getHistoryTransportInventories()
+                userRepository.getHistoryWarehouseInventories()
+            } catch (t: Throwable) {
+                throwableHandler.handle(t)
+            }
+        }
+    }
+
     private fun checkShiftState() {
         viewModelScope.launch {
             try {
@@ -169,6 +183,5 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
             }
         }
     }
-
 
 }

@@ -2,11 +2,8 @@ package kz.das.dasaccounting.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.core.extensions.OnResponseCallback
 import kz.das.dasaccounting.core.extensions.unwrap
-import kz.das.dasaccounting.data.entities.requests.InventoryGetRequest
-import kz.das.dasaccounting.data.entities.requests.InventorySendRequest
 import kz.das.dasaccounting.data.entities.office.*
 import kz.das.dasaccounting.data.entities.requests.toGetRequest
 import kz.das.dasaccounting.data.entities.requests.toSendRequest
@@ -16,9 +13,10 @@ import kz.das.dasaccounting.data.source.preferences.UserPreferences
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.drivers.FligelProduct
-import kz.das.dasaccounting.domain.data.drivers.compare
+import kz.das.dasaccounting.domain.data.drivers.compareRepeat
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
-import kz.das.dasaccounting.domain.data.office.*
+import kz.das.dasaccounting.domain.data.office.NomenclatureOfficeInventory
+import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -146,7 +144,16 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
     }
 
     override fun isEqualToLastFligelProduct(fligelProduct: FligelProduct): Boolean {
-        return userPreferences.getLastFligelProductCnt() > 3 && userPreferences.getLastFligelProduct()?.compare(fligelProduct) ?: false
+        if (userPreferences.getLastFligelProduct()?.compareRepeat(fligelProduct) == false) {
+            userPreferences.saveLastFligelProductCnt(0)
+            userPreferences.saveLastFligelProduct(fligelProduct)
+        } else {
+            var cnt = userPreferences.getLastFligelProductCnt()
+            cnt += 1
+            userPreferences.saveLastFligelProductCnt(cnt)
+        }
+
+        return userPreferences.getLastFligelProductCnt() > 3
     }
 
     override suspend fun saveOfficeInventory(officeInventory: OfficeInventory) {

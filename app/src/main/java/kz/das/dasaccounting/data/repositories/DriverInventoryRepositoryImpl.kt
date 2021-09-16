@@ -8,7 +8,6 @@ import kz.das.dasaccounting.data.entities.driver.*
 import kz.das.dasaccounting.data.entities.requests.toReceiveFligelDataRequest
 import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.DriverOperationApi
-import kz.das.dasaccounting.data.source.preferences.UserPreferences
 import kz.das.dasaccounting.domain.DriverInventoryRepository
 import kz.das.dasaccounting.domain.data.drivers.*
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
@@ -19,7 +18,6 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
 
     private val driverInventoryApi: DriverOperationApi by inject()
     private val dasAppDatabase: DasAppDatabase by inject()
-    private val userPreferences: UserPreferences by inject()
 
     override suspend fun getDriverTransports(): List<TransportInventory> {
         return driverInventoryApi.getTransports().unwrap({ list -> list.map { it.toDomain() } },
@@ -57,51 +55,6 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
         dasAppDatabase.driverAcceptedInventoryDao().removeItem(transportInventory.toAcceptedEntity())
     }
 
-
-//    override suspend fun initAwaitAcceptInventory() {
-//        dasAppDatabase.driverAcceptedInventoryDao().all.forEach {
-//            driverInventoryApi.getInventoryDriverTransport(
-//                it.toDomain().toGetRequest("Повторная отправка", null)
-//            )
-//                .unwrap(object : OnResponseCallback<Any> {
-//                    override fun onSuccess(entity: Any) {
-//                        dasAppDatabase.driverAcceptedInventoryDao().removeItem(it)
-//                    }
-//
-//                    override fun onFail(exception: Exception) {}
-//                })
-//        }
-//    }
-
-    //    override suspend fun initAwaitSendInventory() {
-//        dasAppDatabase.driverSentInventoryDao().all.forEach {
-//            driverInventoryApi.sendInventoryDriverTransport(it.toDomain().toSentRequest())
-//                .unwrap(object : OnResponseCallback<Any> {
-//                    override fun onSuccess(entity: Any) {
-//                        dasAppDatabase.driverSentInventoryDao().removeItem(it)
-//                    }
-//
-//                    override fun onFail(exception: Exception) {}
-//                })
-//        }
-//    }
-//
-//    override suspend fun initAwaitReceiveFligerData() {
-//        dasAppDatabase.driverFligelDataDao().all.forEach {
-//            driverInventoryApi.receiveInventoryFligel(
-//                it.toFligelProduct().toReceiveFligelDataRequest()
-//            )
-//                .unwrap(object : OnResponseCallback<Any> {
-//                    override fun onSuccess(entity: Any) {
-//                        dasAppDatabase.driverFligelDataDao().removeItem(it)
-//                    }
-//
-//                    override fun onFail(exception: Exception) {}
-//                })
-//        }
-//    }
-
-
     override suspend fun acceptInventory(
         transportInventory: TransportInventory,
         comment: String,
@@ -130,17 +83,6 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
                 ""
             )
         ).unwrap()
-    }
-
-    override suspend fun saveFligelProduct(fligelProduct: FligelProduct) {
-        if (userPreferences.getLastFligelProduct()?.compare(fligelProduct) == false) {
-            userPreferences.saveLastFligelProductCnt(0)
-            userPreferences.saveLastFligelProduct(fligelProduct)
-        } else {
-            var cnt = userPreferences.getLastFligelProductCnt()
-            cnt += 1
-            userPreferences.saveLastFligelProductCnt(cnt)
-        }
     }
 
     override suspend fun saveAwaitReceiveFligelData(fligelProduct: FligelProduct) {
