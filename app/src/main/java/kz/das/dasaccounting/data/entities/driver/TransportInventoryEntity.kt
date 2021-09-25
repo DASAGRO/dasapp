@@ -2,6 +2,7 @@ package kz.das.dasaccounting.data.entities.driver
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 
 @Entity(tableName = "transports")
@@ -16,7 +17,8 @@ data class TransportInventoryEntity(
     var requestId: String? = null,
     var senderUUID: String? = null,
     var receiverUUID: String? = null,
-    var storeUUID: String? = null,
+    var storeUUIDSender: String? = null,
+    var storeUUIDReceiver: String? = null,
     val stateNumber: String,
     val tsType: String,
     var senderName: String?,
@@ -37,7 +39,8 @@ fun TransportInventoryEntity.toDomain(): TransportInventory {
         requestId = this.requestId,
         senderUUID = this.senderUUID,
         receiverUUID = this.receiverUUID,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
@@ -58,7 +61,8 @@ fun TransportInventory.toEntity(): TransportInventoryEntity {
         requestId = this.requestId,
         senderUUID = this.senderUUID,
         receiverUUID = this.receiverUUID,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         uuid = this.uuid,

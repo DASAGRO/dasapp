@@ -4,6 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import kz.das.dasaccounting.core.extensions.getServerDateFromLong
 import kz.das.dasaccounting.data.entities.driver.toEntity
+import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
 import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.action.OperationAct
@@ -21,7 +22,8 @@ data class TransportInventory(
     var model: String,
     var molUuid: String?,
     var requestId: String? = null,
-    var storeUUID: String? = null,
+    var storeUUIDSender: String? = null,
+    var storeUUIDReceiver: String? = null,
     var senderUUID: String? = null,
     var receiverUUID: String? = null,
     var stateNumber: String,
@@ -44,7 +46,8 @@ fun TransportInventory.toSent(): TransportSentInventory {
         requestId = this.requestId,
         senderUUID = this.senderUUID,
         receiverUUID = this.receiverUUID,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
@@ -66,7 +69,8 @@ fun TransportInventory.toAccepted(): TransportAcceptedInventory {
         requestId = this.requestId,
         senderUUID = this.senderUUID,
         receiverUUID = this.receiverUUID,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
@@ -88,7 +92,8 @@ fun TransportAcceptedInventory.toDomain(): TransportInventory {
         requestId = this.requestId,
         senderUUID = this.senderUUID,
         receiverUUID = this.receiverUUID,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
@@ -110,7 +115,8 @@ fun TransportSentInventory.toDomain(): TransportInventory {
         requestId = this.requestId,
         senderUUID = this.senderUUID,
         receiverUUID = this.receiverUUID,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
@@ -160,7 +166,8 @@ data class TransportSentInventory(
     var model: String,
     var molUuid: String?,
     var requestId: String? = null,
-    var storeUUID: String? = null,
+    var storeUUIDSender: String? = null,
+    var storeUUIDReceiver: String? = null,
     var senderUUID: String? = null,
     var receiverUUID: String? = null,
     var stateNumber: String,
@@ -181,7 +188,8 @@ data class TransportAcceptedInventory(
     var model: String,
     var molUuid: String?,
     var requestId: String? = null,
-    var storeUUID: String? = null,
+    var storeUUIDSender: String? = null,
+    var storeUUIDReceiver: String? = null,
     var senderUUID: String? = null,
     var receiverUUID: String? = null,
     var stateNumber: String,

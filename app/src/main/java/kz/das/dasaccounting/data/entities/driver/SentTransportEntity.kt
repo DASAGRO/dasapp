@@ -3,6 +3,7 @@ package kz.das.dasaccounting.data.entities.driver
 import androidx.annotation.Nullable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.entities.requests.GetTransportRequest
 import kz.das.dasaccounting.data.entities.requests.SendTransportRequest
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
@@ -22,7 +23,8 @@ data class SentTransportEntity(
     val model: String,
     val molUuid: String?,
     var requestId: String? = null,
-    var storeUUID: String? = null,
+    var storeUUIDSender: String? = null,
+    var storeUUIDReceiver: String? = null,
     val senderUUID: String? = null,
     val receiverUUID: String? = null,
     val receiverName: String? = null,
@@ -43,7 +45,8 @@ fun SentTransportEntity.toDomain(): TransportInventory {
         model = this.model,
         molUuid = this.molUuid,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
@@ -61,7 +64,8 @@ fun SentTransportEntity.toSent(): TransportSentInventory {
         model = this.model,
         molUuid = this.molUuid,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         receiverUUID = this.receiverUUID,
@@ -82,7 +86,8 @@ fun TransportInventory.toSentEntity(): SentTransportEntity {
         model = this.model,
         molUuid = this.molUuid,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         receiverUUID = this.receiverUUID,
@@ -104,7 +109,8 @@ fun TransportInventory.toSentRequest(): SendTransportRequest {
         requestId = this.requestId,
         syncRequire = 0,
         tcUUID = this.uuid,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         receiverUUID = this.receiverUUID,
         qrData = DriverInventoryTypeConvertor().transportTransportToString(this.toEntity()),
         type = this.tsType
@@ -122,7 +128,8 @@ fun TransportInventory.toGetRequest(comment: String, fileIds: ArrayList<Int>?): 
         requestId = this.requestId,
         syncRequire = 0,
         tcUUID = this.uuid,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         qrData = DriverInventoryTypeConvertor().transportTransportToString(this.toEntity()),
         type = this.tsType,
         comment = comment,

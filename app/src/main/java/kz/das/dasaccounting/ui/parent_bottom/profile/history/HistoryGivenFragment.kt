@@ -46,7 +46,8 @@ class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryG
                     }
                 }
             }
-            val sorted = historyList.sortedByDescending { it.date }
+            val distinctList = historyList.distinct()
+            val sorted = distinctList.sortedByDescending { it.date }
             historyAdapter?.putItems(sorted)
         })
 

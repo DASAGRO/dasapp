@@ -3,6 +3,7 @@ package kz.das.dasaccounting.data.entities.driver
 import androidx.annotation.Nullable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.domain.data.drivers.TransportAcceptedInventory
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import java.io.Serializable
@@ -18,7 +19,8 @@ data class AcceptedTransportEntity (
     val model: String,
     val molUuid: String?,
     var requestId: String? = null,
-    var storeUUID: String? = null,
+    var storeUUIDSender: String? = null,
+    var storeUUIDReceiver: String? = null,
     var senderUUID: String? = null,
     val receiverUUID: String? = null,
     val receiverName: String? = null,
@@ -39,7 +41,8 @@ fun AcceptedTransportEntity.toDomain(): TransportInventory {
         model = this.model,
         molUuid = this.molUuid,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         receiverUUID = this.receiverUUID,
         senderUUID = this.senderUUID,
         senderName = this.senderName,
@@ -61,7 +64,8 @@ fun AcceptedTransportEntity.toAccepted(): TransportAcceptedInventory {
         model = this.model,
         molUuid = this.molUuid,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         receiverUUID = this.receiverUUID,
         senderUUID = this.senderUUID,
         senderName = this.senderName,
@@ -86,7 +90,8 @@ fun TransportInventory.toAcceptedEntity(): AcceptedTransportEntity {
         receiverName = this.receiverName,
         senderUUID = this.senderUUID,
         senderName = this.senderName,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         uuid = this.uuid

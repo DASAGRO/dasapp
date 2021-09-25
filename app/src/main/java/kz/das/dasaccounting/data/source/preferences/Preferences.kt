@@ -81,6 +81,8 @@ class UserPreferences(private val preferences: SharedPreferences) {
     }
 
     fun clearUser() {
+        preferences.edit().remove(PREFERENCES_LAST_FLIGEL_PRODUCT).apply()
+        preferences.edit().remove(PREFERENCES_LAST_FLIGEL_PRODUCT_CNT).apply()
         preferences.edit().remove(PREFERENCES_USER_ACCESS_TOKEN).apply()
         preferences.edit().remove(PREFERENCES_USER_PROFILE).apply()
         preferences.edit().remove(PREFERENCES_USER_ON_WORK).apply()
@@ -131,7 +133,7 @@ class UserPreferences(private val preferences: SharedPreferences) {
             val json = preferences.getString(PREFERENCES_LAST_LOCATION, null)
             Gson().fromJson(json, Location::class.java)
         } catch (e: Exception) {
-            Location(43.237853, 76.945298)
+            Location(0.0, 0.0)
         }
     }
 

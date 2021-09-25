@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kz.das.dasaccounting.core.extensions.getServerDateFromLong
 import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryAcceptedTypeConvertor
-import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.domain.data.history.HistoryEnum
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import kz.das.dasaccounting.domain.data.history.OperationType
@@ -26,7 +25,8 @@ data class OfficeInventoryAcceptedEntity(
     val receiverUUID: String? = null,
     val receiverName: String? = null,
     var requestId: String? = null,
-    var storeUUID: String? = null,
+    var storeUUIDSender: String? = null,
+    var storeUUIDReceiver: String? = null,
     val quantity: Double? = null,
     val type: String? = null,
     val acceptedAt: Long? = 0,
@@ -53,7 +53,8 @@ fun OfficeInventoryAcceptedEntity.toDomain(): OfficeInventory {
         senderUUID = this.senderUUID,
         senderName = this.senderName,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         quantity = this.quantity,
         type = this.type,
         syncRequire = this.syncRequire
@@ -75,7 +76,8 @@ fun OfficeInventoryAcceptedEntity.toAccepted(): OfficeAcceptedInventory {
         senderUUID = this.senderUUID,
         senderName = this.senderName,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         quantity = this.quantity,
         type = this.type,
         syncRequire = this.syncRequire
@@ -112,7 +114,8 @@ fun OfficeInventory.toAcceptedEntity(): OfficeInventoryAcceptedEntity {
         materialUUID = this.materialUUID,
         senderUUID = this.senderUUID,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         quantity = this.quantity,
         type = this.type,
         syncRequire = this.syncRequire,
