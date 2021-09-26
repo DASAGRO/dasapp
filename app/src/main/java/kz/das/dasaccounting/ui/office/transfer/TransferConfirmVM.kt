@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
+import kz.das.dasaccounting.data.entities.common.TransferItem
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
@@ -50,6 +51,27 @@ class TransferConfirmVM: BaseVM() {
                     " "
                 }
         officeInventoryLV.postValue(officeInventory)
+    }
+
+    fun setTransferItem(transferItem: TransferItem?): OfficeInventory? {
+        this.officeInventory?.receiverName = transferItem?.receiverName
+        this.officeInventory?.receiverUUID = transferItem?.receiverUUID
+        this.officeInventory?.storeUUIDReceiver = transferItem?.storeUUIDReceiver
+        this.officeInventory?.senderUUID = userRepository.getUser()?.userId
+        this.officeInventory?.senderName = userRepository.getUser()?.lastName + " " +
+                if (userRepository.getUser()?.firstName?.length ?: 0 > 0) {
+                    userRepository.getUser()?.firstName?.toCharArray()?.let { it[0] }?.plus(".")
+                } else {
+                    " "
+                }  +
+
+                if (userRepository.getUser()?.middleName?.length ?: 0 > 0) {
+                    userRepository.getUser()?.middleName?.toCharArray()?.let { it[0] }?.plus(".")
+                } else {
+                    " "
+                }
+        officeInventoryLV.postValue(officeInventory)
+        return this.officeInventory
     }
 
     fun sendInventory() {

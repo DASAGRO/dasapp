@@ -3,7 +3,6 @@ package kz.das.dasaccounting.data.entities.driver
 import androidx.annotation.Nullable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.entities.requests.GetTransportRequest
 import kz.das.dasaccounting.data.entities.requests.SendTransportRequest
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
@@ -111,6 +110,7 @@ fun TransportInventory.toSentRequest(): SendTransportRequest {
         tcUUID = this.uuid,
         storeUUIDSender = this.storeUUIDSender,
         storeUUIDReceiver = this.storeUUIDReceiver,
+        senderUUID = this.senderUUID,
         receiverUUID = this.receiverUUID,
         qrData = DriverInventoryTypeConvertor().transportTransportToString(this.toEntity()),
         type = this.tsType
@@ -130,6 +130,7 @@ fun TransportInventory.toGetRequest(comment: String, fileIds: ArrayList<Int>?): 
         tcUUID = this.uuid,
         storeUUIDSender = this.storeUUIDSender,
         storeUUIDReceiver = this.storeUUIDReceiver,
+        receiverUUID = this.receiverUUID,
         qrData = DriverInventoryTypeConvertor().transportTransportToString(this.toEntity()),
         type = this.tsType,
         comment = comment,

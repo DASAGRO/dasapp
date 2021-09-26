@@ -8,6 +8,9 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
 import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
+import kz.das.dasaccounting.data.entities.common.TransferItem
+import kz.das.dasaccounting.data.entities.common.TransferItemTypeConvertor
+import kz.das.dasaccounting.data.entities.driver.toEntity
 import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.entities.office.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
@@ -59,8 +62,16 @@ class AcceptInventoryCheckFragment: BaseFragment<AcceptInventoryCheckVM, Fragmen
                             String.format((getString(R.string.to_namespace)), it.receiverName))
                 try {
                     val inventory = mViewModel.getLocalInventory()?.toEntity()
-                    inventory?.requestId = UUID.randomUUID().toString()
-                    mViewBinding.ivQr.setImageBitmap(OfficeInventoryEntityTypeConvertor().officeInventoryToString(inventory).generateQR())
+                    val transferItem = TransferItem(
+                        storeUUIDReceiver = mViewModel.getLocalInventory()?.storeUUIDReceiver,
+                        receiverUUID = it.receiverUUID,
+                        receiverName = it.receiverName,
+                        transferType = "material_type"
+                    )
+                    mViewBinding.ivQr.setImageBitmap(TransferItemTypeConvertor().transferItemToString(transferItem).generateQR())
+
+
+                    //mViewBinding.ivQr.setImageBitmap(OfficeInventoryEntityTypeConvertor().officeInventoryToString(inventory).generateQR())
                     inventory?.let { inventoryOffice -> mViewModel.setLocalInventory(inventoryOffice.toDomain()) }
                 } catch (e: Exception) { }
             }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
+import kz.das.dasaccounting.data.entities.common.TransferItem
 import kz.das.dasaccounting.domain.DriverInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
@@ -49,6 +50,27 @@ class TransferConfirmVM: BaseVM() {
                 }
         transportInventoryLV.postValue(transportInventory)
     }
+
+    fun setTransferItem(transferItem: TransferItem?): TransportInventory? {
+        this.transportInventory?.receiverName = transferItem?.receiverName
+        this.transportInventory?.receiverUUID = transferItem?.receiverUUID
+        this.transportInventory?.storeUUIDReceiver = transferItem?.storeUUIDReceiver
+        this.transportInventory?.senderName = userRepository.getUser()?.lastName + " "
+        if (userRepository.getUser()?.firstName?.length ?: 0 > 0) {
+            userRepository.getUser()?.firstName?.toCharArray()?.let { it[0] }?.plus(".")
+        } else {
+            ""
+        }  +
+
+                if (userRepository.getUser()?.middleName?.length ?: 0 > 0) {
+                    userRepository.getUser()?.middleName?.toCharArray()?.let { it[0] }?.plus(".")
+                } else {
+                    ""
+                }
+        transportInventoryLV.postValue(transportInventory)
+        return this.transportInventory
+    }
+
 
     private val isTransportInventorySentLV = SingleLiveEvent<Boolean>()
     fun isTransportInventorySent(): LiveData<Boolean> = isTransportInventorySentLV

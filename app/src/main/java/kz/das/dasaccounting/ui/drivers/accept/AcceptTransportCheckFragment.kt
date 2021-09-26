@@ -8,6 +8,8 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
 import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
+import kz.das.dasaccounting.data.entities.common.TransferItem
+import kz.das.dasaccounting.data.entities.common.TransferItemTypeConvertor
 import kz.das.dasaccounting.data.entities.driver.toDomain
 import kz.das.dasaccounting.data.entities.driver.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
@@ -61,8 +63,13 @@ class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, Fragmen
                             String.format((getString(R.string.to_namespace)), it.receiverName))
                 try {
                     val inventory = mViewModel.getLocalInventory()?.toEntity()
-                    inventory?.senderUUID = mViewModel.getUser()?.userId
-                    mViewBinding.ivQr.setImageBitmap(DriverInventoryTypeConvertor().transportTransportToString(inventory).generateQR())
+                    val transferItem = TransferItem(
+                        storeUUIDReceiver = mViewModel.getLocalInventory()?.storeUUIDReceiver,
+                        receiverUUID = it.receiverUUID,
+                        receiverName = it.receiverName,
+                        transferType = "transport_type"
+                    )
+                    mViewBinding.ivQr.setImageBitmap(TransferItemTypeConvertor().transferItemToString(transferItem).generateQR())
                     inventory?.let { inventoryTransport -> mViewModel.setLocalInventory(inventoryTransport.toDomain()) }
                 } catch (e: Exception) { }
             }

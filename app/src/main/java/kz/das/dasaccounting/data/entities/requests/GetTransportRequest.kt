@@ -9,6 +9,7 @@ data class GetTransportRequest(
     val longitude: Double,
     val name: String,
     val senderUUID: String?,
+    val receiverUUID: String?,
     var requestId: String? = null,
     var qrData: String? = null,
     val senderName: String?,

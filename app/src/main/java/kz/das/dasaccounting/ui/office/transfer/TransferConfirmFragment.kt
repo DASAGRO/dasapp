@@ -11,6 +11,7 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
 import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
+import kz.das.dasaccounting.data.entities.common.TransferItemTypeConvertor
 import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.entities.office.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
@@ -113,14 +114,14 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                 override fun onScan(qrScan: String) {
                     delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
                         try {
-                            if (!qrScan.contains("stateNumber") || !qrScan.contains("storeUUID") || !qrScan.contains("sealNumber") || !qrScan.contains("model")) {
-                                OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
-                                    mViewModel.setOfficeInventory(it)
-                                    showConfirmDialog(it.name ?: "", ((getString(R.string.inventory_total_quantity) +
-                                            " " + it.quantity +
-                                            " " + it.type) + "\n" +
-                                            String.format((getString(R.string.from_namespace)), it.senderName) + "\n" +
-                                            String.format((getString(R.string.to_namespace)), it.receiverName)))
+                            if (qrScan.contains("material_type")) {
+                                TransferItemTypeConvertor().stringToTransferItemInventory(qrScan)?.let {
+                                    val transferItem = mViewModel.setTransferItem(it)
+                                    showConfirmDialog(transferItem?.name ?: "", ((getString(R.string.inventory_total_quantity) +
+                                            " " + transferItem?.quantity +
+                                            " " + transferItem?.type) + "\n" +
+                                            String.format((getString(R.string.from_namespace)), transferItem?.senderName) + "\n" +
+                                            String.format((getString(R.string.to_namespace)), transferItem?.receiverName)))
                                 }
                             } else {
                                 showError(getString(R.string.common_error), getString(R.string.common_error_scan))

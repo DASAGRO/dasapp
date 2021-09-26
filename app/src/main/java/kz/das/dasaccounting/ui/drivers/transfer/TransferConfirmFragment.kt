@@ -11,6 +11,7 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
 import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
+import kz.das.dasaccounting.data.entities.common.TransferItemTypeConvertor
 import kz.das.dasaccounting.data.entities.driver.toDomain
 import kz.das.dasaccounting.data.entities.driver.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
@@ -127,16 +128,16 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             .setOnScanCallback(object : QrFragment.OnScanCallback {
                 override fun onScan(qrScan: String) {
                     delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
-                        if (qrScan.contains("model") || qrScan.contains("stateNumber")) {
+                        if (qrScan.contains("transport_type")) {
                             try {
-                                DriverInventoryTypeConvertor().stringToTransportInventory(qrScan)?.toDomain()?.let {
-                                    mViewModel.setTransportInventory(it)
+                                TransferItemTypeConvertor().stringToTransferItemInventory(qrScan).let {
+                                    val transportInventory = mViewModel.setTransferItem(it)
                                     showConfirmDialog(
-                                        it.model,
+                                        transportInventory?.model ?: "",
                                             (getString(R.string.gov_number) +
-                                                    " " + it.stateNumber) + "\n" +
-                                                    String.format((getString(R.string.from_namespace)), it.senderName) + "\n" +
-                                                    String.format((getString(R.string.to_namespace)), it.receiverName)
+                                                    " " + transportInventory?.stateNumber) + "\n" +
+                                                    String.format((getString(R.string.from_namespace)), transportInventory?.senderName) + "\n" +
+                                                    String.format((getString(R.string.to_namespace)), transportInventory?.receiverName)
                                     )
                                 }
                             } catch (e: Exception) {
