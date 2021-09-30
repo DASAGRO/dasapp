@@ -10,10 +10,8 @@ import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.data.entities.common.TransferItem
 import kz.das.dasaccounting.data.entities.common.TransferItemTypeConvertor
-import kz.das.dasaccounting.data.entities.driver.toEntity
 import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.entities.office.toEntity
-import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.android.viewmodel.ext.android.viewModel
