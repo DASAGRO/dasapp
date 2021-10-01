@@ -75,7 +75,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_toEndOf="@+id/iv_inventory"
                     android:gravity="start"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginTop="32dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +94,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_toEndOf="@+id/iv_inventory"
                     android:gravity="start"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginBottom="32dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -160,7 +160,7 @@
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/btn_ready"
+                android:id="@+id/btn_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginStart="35dp"
@@ -171,9 +171,9 @@
                 android:gravity="center"
                 android:paddingStart="24dp"
                 android:paddingEnd="24dp"
-                android:text="@string/ready"
+                android:text="@string/confirm"
                 android:textColor="@color/red"
-                android:textSize="14sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

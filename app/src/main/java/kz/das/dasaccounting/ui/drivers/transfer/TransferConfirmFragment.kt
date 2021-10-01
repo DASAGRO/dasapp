@@ -48,7 +48,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }
-            btnReady.setOnClickListener {
+            btnConfirm.setOnClickListener {
                 showBarcodeQR()
             }
         }
@@ -74,37 +74,37 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             }
         })
 
-        mViewModel.isTransportInventorySent().observe(viewLifecycleOwner, Observer {
-            if (it) {
-                showSuccess(getString(R.string.common_banner_success),
-                    if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
-                        getString(R.string.transport_accessory_inventory_transferred_successfully)
-                    } else {
-                        getString(R.string.transport_inventory_transferred_successfully)
-                    }
-                )
-                MediaPlayerUtils.playSuccessSound(requireContext())
-                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-                    requireRouter().newRootScreen(screen)
-                }
-            }
-        })
-
-        mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
-            if (it) {
-                showAwait(getString(R.string.common_banner_await),
-                    if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
-                        "Передача ПО в ожидании!"
-                    } else {
-                        "Передача ТС в ожидании!"
-                    }
-                )
-                MediaPlayerUtils.playSuccessSound(requireContext())
-                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-                    requireRouter().newRootScreen(screen)
-                }
-            }
-        })
+//        mViewModel.isTransportInventorySent().observe(viewLifecycleOwner, Observer {
+//            if (it) {
+//                showSuccess(getString(R.string.common_banner_success),
+//                    if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
+//                        getString(R.string.transport_accessory_inventory_transferred_successfully)
+//                    } else {
+//                        getString(R.string.transport_inventory_transferred_successfully)
+//                    }
+//                )
+//                MediaPlayerUtils.playSuccessSound(requireContext())
+//                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+//                    requireRouter().newRootScreen(screen)
+//                }
+//            }
+//        })
+//
+//        mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
+//            if (it) {
+//                showAwait(getString(R.string.common_banner_await),
+//                    if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
+//                        "Передача ПО в ожидании!"
+//                    } else {
+//                        "Передача ТС в ожидании!"
+//                    }
+//                )
+//                MediaPlayerUtils.playSuccessSound(requireContext())
+//                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+//                    requireRouter().newRootScreen(screen)
+//                }
+//            }
+//        })
     }
 
     private fun showConfirmDialog(title: String, descr: String) {
@@ -115,7 +115,29 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             .setImage(mViewModel.getTransportInventory().value?.getTsTypeImage() ?: R.drawable.ic_tractor)
             .setOnConfirmCallback(object : ActionInventoryConfirmDialog.OnConfirmCallback {
                 override fun onConfirmClicked() {
-                    mViewModel.sendInventory()
+//                    mViewModel.sendInventory()
+                    mViewModel.isOnAwait().value?.let{
+                        showAwait(getString(R.string.common_banner_await),
+                            if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
+                                "Передача ПО в ожидании!"
+                            } else {
+                                "Передача ТС в ожидании!"
+                            }
+                        )
+                    }
+                    mViewModel.isTransportInventorySent().value?.let{
+                        showSuccess(getString(R.string.common_banner_success),
+                            if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
+                                getString(R.string.transport_accessory_inventory_transferred_successfully)
+                            } else {
+                                getString(R.string.transport_inventory_transferred_successfully)
+                            }
+                        )
+                    }
+                    MediaPlayerUtils.playSuccessSound(requireContext())
+                    Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                        requireRouter().newRootScreen(screen)
+                    }
                 }
                 override fun onCancelClicked() { }
             }).build()
@@ -131,6 +153,8 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                         if (qrScan.contains("transport_type")) {
                             try {
                                 TransferItemTypeConvertor().stringToTransferItemInventory(qrScan).let {
+                                    mViewModel.sendInventory()
+
                                     val transportInventory = mViewModel.setTransferItem(it)
                                     showConfirmDialog(
                                         transportInventory?.model ?: "",

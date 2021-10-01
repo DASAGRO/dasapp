@@ -14,19 +14,26 @@ import kz.das.dasaccounting.data.entities.driver.toDomain
 import kz.das.dasaccounting.data.entities.driver.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
+import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.drivers.getTsTypeImage
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
+import kz.das.dasaccounting.ui.office.accept.AcceptInventoryCheckFragment
+import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
+import kz.das.dasaccounting.utils.AppConstants
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, FragmentBarcodeGenerateBinding>() {
 
     companion object {
         private const val TRANSPORT_INVENTORY = "inventory"
+        private const val RESPONSE_TYPE = "response_type"
 
-        fun getScreen(transportInventory: TransportInventory) = DasAppScreen(AcceptTransportCheckFragment()).apply {
+        fun getScreen(transportInventory: TransportInventory, responseType: String? = null) = DasAppScreen(AcceptTransportCheckFragment()).apply {
             val args = Bundle()
             args.putParcelable(TRANSPORT_INVENTORY, transportInventory)
+            args.putString(RESPONSE_TYPE, responseType)
             this.setArgs(args)
         }
     }
@@ -36,15 +43,41 @@ class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, Fragmen
     override fun getViewBinding() = FragmentBarcodeGenerateBinding.inflate(layoutInflater)
 
     override fun setupUI(savedInstanceState: Bundle?) {
-
         mViewModel.setTransportInventory(getTransportInventory())
         mViewBinding.apply {
             mViewBinding.tvWarning.text = getString(R.string.barcode_bottom_text_reverse_scan)
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }
-            btnReady.setOnClickListener {
-                showConfirmDialog()
+            btnConfirm.setOnClickListener {
+
+                when(getResponseType()) {
+                    AppConstants.IS_SUCCESS ->{
+                        showSuccess(getString(R.string.common_banner_success),
+                                if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
+                                    getString(R.string.transport_accessory_inventory_accepted_successfully)
+                                } else {
+                                    getString(R.string.transport_inventory_accepted_successfully)
+                                }
+                        )
+                    }
+
+                    AppConstants.IS_ON_AWAIT ->{
+                        showAwait(getString(R.string.common_banner_await),
+                                if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
+                                    getString(R.string.transport_accessory_inventory_await)
+                                } else {
+                                    getString(R.string.transport_inventory_await)
+                                }
+                        )
+                    }
+                }
+
+
+                MediaPlayerUtils.playSuccessSound(requireContext())
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
             }
         }
     }
@@ -97,4 +130,6 @@ class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, Fragmen
     private fun getTransportInventory(): TransportInventory? {
         return arguments?.getParcelable(TRANSPORT_INVENTORY)
     }
+
+    private fun getResponseType() = arguments?.getString(RESPONSE_TYPE) ?: ""
 }

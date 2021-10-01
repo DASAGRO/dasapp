@@ -14,6 +14,9 @@ import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.entities.office.toEntity
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
+import kz.das.dasaccounting.ui.Screens
+import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
+import kz.das.dasaccounting.utils.AppConstants
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -21,10 +24,12 @@ class AcceptInventoryCheckFragment: BaseFragment<AcceptInventoryCheckVM, Fragmen
 
     companion object {
         private const val OFFICE_INVENTORY = "inventory"
+        private const val RESPONSE_TYPE = "response_type"
 
-        fun getScreen(officeInventoryAccept: OfficeInventory) = DasAppScreen(AcceptInventoryCheckFragment()).apply {
+        fun getScreen(officeInventoryAccept: OfficeInventory, responseType: String? = null) = DasAppScreen(AcceptInventoryCheckFragment()).apply {
             val args = Bundle()
             args.putParcelable(OFFICE_INVENTORY, officeInventoryAccept)
+            args.putString(RESPONSE_TYPE, responseType)
             this.setArgs(args)
         }
     }
@@ -39,8 +44,22 @@ class AcceptInventoryCheckFragment: BaseFragment<AcceptInventoryCheckVM, Fragmen
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }
-            btnReady.setOnClickListener {
-                showConfirmDialog()
+            btnConfirm.setOnClickListener {
+                when(getResponseType()) {
+                    AppConstants.IS_SUCCESS ->{
+                        showSuccess(getString(R.string.common_banner_success),
+                                getString(R.string.office_inventory_accepted_successfully))
+                    }
+
+                    AppConstants.IS_ON_AWAIT ->{
+                        showAwait(getString(R.string.common_banner_await), "Получение ТМЦ в ожидании!")
+                    }
+                }
+
+                MediaPlayerUtils.playSuccessSound(requireContext())
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
             }
         }
     }
@@ -98,5 +117,5 @@ class AcceptInventoryCheckFragment: BaseFragment<AcceptInventoryCheckVM, Fragmen
         return arguments?.getParcelable(OFFICE_INVENTORY)
     }
 
-
+    private fun getResponseType() = arguments?.getString(RESPONSE_TYPE) ?: ""
 }

@@ -167,6 +167,9 @@
     <string name="transport_inventory_transferred_successfully">ТС успешно передан</string>
     <string name="transport_accessory_inventory_transferred_successfully">ПО успешно передан</string>
 
+    <string name="transport_inventory_await">Получение ТС в ожидании</string>
+    <string name="transport_accessory_inventory_await">Получение ПО в ожидании</string>
+
     <string name="current_location">Вы здесь</string>
 
     <string name="common_error_scan">Ошибка считывания!</string>
@@ -174,6 +177,7 @@
     <string name="seal_number">Номер пломбы: </string>
     <string name="dialog_inventory_confirm_title">Вы уверены что партнер отсканировал QR код ?</string>
     <string name="quantity">Количество</string>
+    <string name="success_send">Вы успешно нередали!</string>
 
 
 </resources>

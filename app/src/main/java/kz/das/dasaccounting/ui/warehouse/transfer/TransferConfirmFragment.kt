@@ -45,7 +45,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }
-            btnReady.setOnClickListener {
+            btnConfirm.setOnClickListener {
                 showConfirmDialog()
             }
         }

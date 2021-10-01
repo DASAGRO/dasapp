@@ -19,7 +19,7 @@ import kz.das.dasaccounting.domain.data.action.OperationInit
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import kz.das.dasaccounting.domain.data.office.toAccepted
 import kz.das.dasaccounting.domain.data.office.toSent
-import kz.das.dasaccounting.ui.office.accept.AcceptInventoryInfoFragment
+import kz.das.dasaccounting.ui.office.accept.AcceptConfirmationFragment
 import kz.das.dasaccounting.ui.office.transfer.TransferConfirmFragment
 import kz.das.dasaccounting.ui.office.transfer.TransferFormalizeFragment
 import kz.das.dasaccounting.ui.office.transfer.TransferFragment
@@ -131,7 +131,8 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
                         try {
                             if (!qrScan.contains("stateNumber") || !qrScan.contains("storeUUID") || !qrScan.contains("sealNumber") || !qrScan.contains("model")) {
                                 OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
-                                    requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(it))
+//                                    requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(it))
+                                    requireRouter().navigateTo(AcceptConfirmationFragment.getScreen(it))
                                 }
                             }
                         } catch (e: Exception) {

@@ -10,11 +10,10 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentInventoryAcceptConfirmationBinding
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
-import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.DialogBottomMediaTypePick
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportAttachedMediaAdapter
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.data.Media
-import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
+import kz.das.dasaccounting.utils.AppConstants
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentInventoryAcceptConfirmationBinding>() {
@@ -35,16 +34,16 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
 
     override fun getViewBinding() = FragmentInventoryAcceptConfirmationBinding.inflate(layoutInflater)
 
-        override fun setupUI(savedInstanceState: Bundle?) {
+    override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setOfficeInventory(getOfficeInventory())
 
         profileSupportAttachedMediaAdapter = ProfileSupportAttachedMediaAdapter(requireContext(),
-            object : ProfileSupportAttachedMediaAdapter.ProfileSupportAttachedMediaAdapterEvents {
-                override fun onRemoveMedia(media: Media, position: Int) {
-                    profileSupportAttachedMediaAdapter?.removeItem(media)
-                    mViewModel.remove(position)
-                }
-            }, arrayListOf()
+                object : ProfileSupportAttachedMediaAdapter.ProfileSupportAttachedMediaAdapterEvents {
+                    override fun onRemoveMedia(media: Media, position: Int) {
+                        profileSupportAttachedMediaAdapter?.removeItem(media)
+                        mViewModel.remove(position)
+                    }
+                }, arrayListOf()
         )
 
         mViewBinding.apply {
@@ -58,42 +57,42 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
                 dialogBottomMediaTypePick.setListener(object : DialogBottomMediaTypePick.OnMediaTypeListener {
                     override fun onMediaImagePicked() {
                         TedImagePicker.with(requireActivity())
-                            .backButton(R.drawable.ic_arrow_back)
-                            .title("Выбрать фото")
-                            .mediaType(MediaType.IMAGE)
-                            .buttonBackground(R.drawable.selectable_default_button_background)
-                            .zoomIndicator(true)
-                            .max(5, "Максимум 5 медиафайлов")
-                            .imageCountTextFormat("Выбрано %s")
-                            .buttonText("Готово")
-                            .cameraTileBackground(R.color.white)
-                            .startMultiImage { list ->
-                                profileSupportAttachedMediaAdapter?.addList(list.mapIndexed { index, uri -> Media(index, uri) })
-                                mViewModel.upload(list)
-                            }
+                                .backButton(R.drawable.ic_arrow_back)
+                                .title("Выбрать фото")
+                                .mediaType(MediaType.IMAGE)
+                                .buttonBackground(R.drawable.selectable_default_button_background)
+                                .zoomIndicator(true)
+                                .max(5, "Максимум 5 медиафайлов")
+                                .imageCountTextFormat("Выбрано %s")
+                                .buttonText("Готово")
+                                .cameraTileBackground(R.color.white)
+                                .startMultiImage { list ->
+                                    profileSupportAttachedMediaAdapter?.addList(list.mapIndexed { index, uri -> Media(index, uri) })
+                                    mViewModel.upload(list)
+                                }
                     }
 
                     override fun onMediaVideoPicked() {
                         TedImagePicker.with(requireActivity())
-                            .backButton(R.drawable.ic_arrow_back)
-                            .title("Выбрать видео")
-                            .mediaType(MediaType.VIDEO)
-                            .buttonBackground(R.drawable.selectable_default_button_background)
-                            .zoomIndicator(true)
-                            .max(5, "Максимум 5 медиафайлов")
-                            .imageCountTextFormat("Выбрано %s")
-                            .buttonText("Готово")
-                            .cameraTileBackground(R.color.white)
-                            .startMultiImage { list ->
-                                profileSupportAttachedMediaAdapter?.addList(list.mapIndexed { index, uri -> Media(index, uri) })
-                                mViewModel.upload(list)
-                            }
+                                .backButton(R.drawable.ic_arrow_back)
+                                .title("Выбрать видео")
+                                .mediaType(MediaType.VIDEO)
+                                .buttonBackground(R.drawable.selectable_default_button_background)
+                                .zoomIndicator(true)
+                                .max(5, "Максимум 5 медиафайлов")
+                                .imageCountTextFormat("Выбрано %s")
+                                .buttonText("Готово")
+                                .cameraTileBackground(R.color.white)
+                                .startMultiImage { list ->
+                                    profileSupportAttachedMediaAdapter?.addList(list.mapIndexed { index, uri -> Media(index, uri) })
+                                    mViewModel.upload(list)
+                                }
                     }
                 })
                 dialogBottomMediaTypePick.show(childFragmentManager, dialogBottomMediaTypePick.tag)
             }
 
-            btnReady.setOnClickListener {
+            btnConfirm.setOnClickListener {
                 mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
             }
         }
@@ -108,12 +107,15 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
 
         mViewModel.isOfficeInventoryAccepted().observe(viewLifecycleOwner, Observer {
             if (it) {
-                showSuccess(getString(R.string.common_banner_success),
-                    getString(R.string.office_inventory_accepted_successfully))
-                MediaPlayerUtils.playSuccessSound(requireContext())
-                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-                    requireRouter().newRootScreen(screen)
+                getOfficeInventory()?.let {
+                    requireRouter().replaceScreen(AcceptInventoryCheckFragment.getScreen(it, AppConstants.IS_SUCCESS))
                 }
+//                showSuccess(getString(R.string.common_banner_success),
+//                    getString(R.string.office_inventory_accepted_successfully))
+//                MediaPlayerUtils.playSuccessSound(requireContext())
+//                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+//                    requireRouter().newRootScreen(screen)
+//                }
             }
         })
 
@@ -127,11 +129,14 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
 
         mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
             if (it) {
-                showAwait(getString(R.string.common_banner_await), "Получение ТМЦ в ожидании!")
-                MediaPlayerUtils.playSuccessSound(requireContext())
-                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-                    requireRouter().newRootScreen(screen)
+                getOfficeInventory()?.let {
+                    requireRouter().replaceScreen(AcceptInventoryCheckFragment.getScreen(it, AppConstants.IS_ON_AWAIT))
                 }
+//                showAwait(getString(R.string.common_banner_await), "Получение ТМЦ в ожидании!")
+//                MediaPlayerUtils.playSuccessSound(requireContext())
+//                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+//                    requireRouter().newRootScreen(screen)
+//                }
             }
         })
     }
@@ -141,10 +146,10 @@ class AcceptConfirmationFragment : BaseFragment<AcceptConfirmationVM, FragmentIn
             mViewBinding.ivInventory.setImageResource(R.drawable.ic_inventory)
             mViewBinding.tvInventoryTitle.text = it.name
             mViewBinding.tvInventoryDesc.text =
-                (getString(R.string.inventory_total_quantity) +
-                        " " + it.quantity +
-                        " " + it.type + "\n" +
-                        String.format(getString(R.string.inventory_sender_name), it.senderName))
+                    (getString(R.string.inventory_total_quantity) +
+                            " " + it.quantity +
+                            " " + it.type + "\n" +
+                            String.format(getString(R.string.inventory_sender_name), it.senderName))
         }
     }
 

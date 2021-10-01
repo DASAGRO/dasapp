@@ -94,7 +94,7 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
                 dialogBottomMediaTypePick.show(childFragmentManager, dialogBottomMediaTypePick.tag)
             }
 
-            btnReady.setOnClickListener {
+            btnConfirm.setOnClickListener {
                 showConfirmDialog()
                 //mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
             }

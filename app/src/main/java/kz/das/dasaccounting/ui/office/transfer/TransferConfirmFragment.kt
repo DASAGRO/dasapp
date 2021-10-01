@@ -45,7 +45,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }
-            btnReady.setOnClickListener {
+            btnConfirm.setOnClickListener {
                 showBarcodeQR()
             }
         }
@@ -71,25 +71,25 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             }
         })
 
-        mViewModel.isOfficeInventorySent().observe(viewLifecycleOwner, Observer {
-            if (it) {
-                showSuccess(getString(R.string.common_banner_success), getString(R.string.office_inventory_transferred_successfully))
-                MediaPlayerUtils.playSuccessSound(requireContext())
-                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-                    requireRouter().newRootScreen(screen)
-                }
-            }
-        })
-
-        mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
-            if (it) {
-                showAwait(getString(R.string.common_banner_await), "Передача ТМЦ в ожидании!")
-                MediaPlayerUtils.playSuccessSound(requireContext())
-                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-                    requireRouter().newRootScreen(screen)
-                }
-            }
-        })
+//        mViewModel.isOfficeInventorySent().observe(viewLifecycleOwner, Observer {
+//            if (it) {
+//                showSuccess(getString(R.string.common_banner_success), getString(R.string.office_inventory_transferred_successfully))
+//                MediaPlayerUtils.playSuccessSound(requireContext())
+//                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+//                    requireRouter().newRootScreen(screen)
+//                }
+//            }
+//        })
+//
+//        mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
+//            if (it) {
+//                showAwait(getString(R.string.common_banner_await), "Передача ТМЦ в ожидании!")
+//                MediaPlayerUtils.playSuccessSound(requireContext())
+//                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+//                    requireRouter().newRootScreen(screen)
+//                }
+//            }
+//        })
     }
 
     private fun showConfirmDialog(title: String, descr: String) {
@@ -100,9 +100,25 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             .setImage(R.drawable.ic_inventory)
             .setOnConfirmCallback(object : ActionInventoryConfirmDialog.OnConfirmCallback {
                 override fun onConfirmClicked() {
-                    mViewModel.sendInventory()
+//                    mViewModel.sendInventory()
+                    mViewModel.isOnAwait().value?.let {
+                        showAwait(
+                            getString(R.string.common_banner_await),
+                            "Передача ТМЦ в ожидании!"
+                        )
+                    }
+                    mViewModel.isOfficeInventorySent().value?.let {
+                        showSuccess(
+                            getString(R.string.common_banner_success),
+                            getString(R.string.office_inventory_transferred_successfully)
+                        )
+                    }
+                    MediaPlayerUtils.playSuccessSound(requireContext())
+                    Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                        requireRouter().newRootScreen(screen)
+                    }
                 }
-                override fun onCancelClicked() { }
+                override fun onCancelClicked() {}
             }).build()
         actionDialog.show(childFragmentManager, ActionInventoryConfirmDialog.TAG)
     }
@@ -116,6 +132,8 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                         try {
                             if (qrScan.contains("material_type")) {
                                 TransferItemTypeConvertor().stringToTransferItemInventory(qrScan)?.let {
+                                    mViewModel.sendInventory()
+
                                     val transferItem = mViewModel.setTransferItem(it)
                                     showConfirmDialog(transferItem?.name ?: "", ((getString(R.string.inventory_total_quantity) +
                                             " " + transferItem?.quantity +
