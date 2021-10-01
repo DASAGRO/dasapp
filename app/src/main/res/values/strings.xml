@@ -105,8 +105,8 @@
     <string name="camera_qr_scan_permission_required_rationale">Для корректной работы нужно дать разрешение камеры для QR-сканера!</string>
     <string name="camera_access_title">Доступ к камере</string>
     <string name="make_transfer">Сформировать передачу</string>
-    <string name="barcode_bottom_text">Внимание! Для Передачи просим нажать на кнопку “Готова”</string>
-    <string name="barcode_bottom_text_reverse_scan">Внимание! Для подтверждения передачи просим нажать на кнопку “Готова”</string>
+    <string name="barcode_bottom_text">Внимание! Для Передачи просим нажать на кнопку “Готово”</string>
+    <string name="barcode_bottom_text_reverse_scan">Внимание! Для подтверждения передачи просим нажать на кнопку “Готово”</string>
     <string name="ready">Готово</string>
     <string name="accept_gather">Принять урожай</string>
     <string name="transport_type">Номер комбайна</string>
@@ -123,7 +123,7 @@
     <string name="inventory_sender_name">От кого: %s</string>
     <string name="inventory_sender_name_from">Кому: %s</string>
     <string name="transfer_inventory">Передать ТМЦ</string>
-    <string name="gather_tranfer_title">Заполните данные по <урож></урож>аю</string>
+    <string name="gather_tranfer_title">Заполните данные поля</string>
     <string name="transfer_confirm_title">Вы подтверждаете данную передачу?</string>
     <string name="inventory_accept_confirmed_title">Подтвердите передачу</string>
     <string name="inventory_fligel_data_correct_title">Вы принимаете товар с поля??</string>
@@ -151,7 +151,7 @@
     <string name="warehouse_title_head">Склад</string>
     <string name="transport_tracktor_title">ТС</string>
     <string name="transport_trailer_title">ПО</string>
-    <string name="quantity_compare_error">Количество не должно превышать общего количество!</string>
+    <string name="quantity_compare_error">Вносимое значение не должно превышать общего количества</string>
     <string name="quantity_is_empty_error">Введите количество!</string>
     <string name="common_fill_all_inputs">Введите все данные!</string>
     <string name="confirm_with_finger">Подтвердите отпечатком</string>
@@ -177,7 +177,7 @@
     <string name="seal_number">Номер пломбы: </string>
     <string name="dialog_inventory_confirm_title">Вы уверены что партнер отсканировал QR код ?</string>
     <string name="quantity">Количество</string>
-    <string name="success_send">Вы успешно нередали!</string>
+    <string name="success_send">Вы успешно передали!</string>
 
 
 </resources>
