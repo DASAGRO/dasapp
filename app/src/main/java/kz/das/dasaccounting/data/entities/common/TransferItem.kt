@@ -12,7 +12,8 @@ data class TransferItem (
     var receiverUUID: String? = null,
     var senderName: String? = null,
     var receiverName: String? = null,
-    var transferType: String? = null
+    var transferType: String? = null,
+    var requestId: String? = null
 ): Serializable
 
 class TransferItemTypeConvertor {

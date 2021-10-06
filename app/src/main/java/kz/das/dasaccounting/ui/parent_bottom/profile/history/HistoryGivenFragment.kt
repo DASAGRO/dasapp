@@ -23,7 +23,7 @@ class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryG
     override fun setupUI(savedInstanceState: Bundle?) {
         historyAdapter = UserTransferHistoryAdapter(requireContext(), arrayListOf())
         historyAdapter?.setHistoryOperationsAdapterEvent(object : UserTransferHistoryAdapter.OnHistoryOperationsAdapterEvent {
-            override fun onClick(title: String?, descr: String?, type: String?, status: String?, qr: String?) {
+            override fun onClick(title: String?, descr: String?, type: String?, status: String?, qr: String?, trasferType: String?) {
                 requireRouter().navigateTo(HistoryDetailFragment.getScreen(title, descr, type, status, qr ?: ""))
             }
         })

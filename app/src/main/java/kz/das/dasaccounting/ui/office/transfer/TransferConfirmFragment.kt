@@ -65,6 +65,8 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                 try {
                     val inventory = mViewModel.getLocalInventory()?.toEntity()
                     inventory?.requestId = UUID.randomUUID().toString()
+                    mViewModel.setGeneratedRequestId(inventory?.requestId!!)
+
                     mViewBinding.ivQr.setImageBitmap(OfficeInventoryEntityTypeConvertor().officeInventoryToString(inventory).generateQR())
                     inventory?.let { inventoryOffice -> mViewModel.setLocalInventory(inventoryOffice.toDomain()) }
                 } catch (e: Exception) { }
@@ -132,14 +134,19 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                         try {
                             if (qrScan.contains("material_type")) {
                                 TransferItemTypeConvertor().stringToTransferItemInventory(qrScan)?.let {
-                                    mViewModel.sendInventory()
+                                    if(mViewModel.getGeneratedRequestId() == it.requestId) {
+                                        val transferItem = mViewModel.setTransferItem(it)
+                                        mViewModel.sendInventory()
 
-                                    val transferItem = mViewModel.setTransferItem(it)
-                                    showConfirmDialog(transferItem?.name ?: "", ((getString(R.string.inventory_total_quantity) +
-                                            " " + transferItem?.quantity +
-                                            " " + transferItem?.type) + "\n" +
-                                            String.format((getString(R.string.from_namespace)), transferItem?.senderName) + "\n" +
-                                            String.format((getString(R.string.to_namespace)), transferItem?.receiverName)))
+                                        showConfirmDialog(transferItem?.name
+                                                ?: "", ((getString(R.string.inventory_total_quantity) +
+                                                " " + transferItem?.quantity +
+                                                " " + transferItem?.type) + "\n" +
+                                                String.format((getString(R.string.from_namespace)), transferItem?.senderName) + "\n" +
+                                                String.format((getString(R.string.to_namespace)), transferItem?.receiverName)))
+                                    } else {
+                                        showError(getString(R.string.common_error), getString(R.string.requestID_error_scan))
+                                    }
                                 }
                             } else {
                                 showError(getString(R.string.common_error), getString(R.string.common_error_scan))

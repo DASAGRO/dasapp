@@ -68,6 +68,8 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                     val inventory = mViewModel.getLocalInventory()?.toEntity()
                     inventory?.requestId = UUID.randomUUID().toString()
                     inventory?.senderUUID = mViewModel.getUser()?.userId
+                    mViewModel.setGeneratedRequestId(inventory?.requestId!!)
+
                     mViewBinding.ivQr.setImageBitmap(DriverInventoryTypeConvertor().transportTransportToString(inventory).generateQR())
                     inventory?.let { inventoryTransport -> mViewModel.setLocalInventory(inventoryTransport.toDomain()) }
                 } catch (e: Exception) { }
@@ -153,16 +155,21 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                         if (qrScan.contains("transport_type")) {
                             try {
                                 TransferItemTypeConvertor().stringToTransferItemInventory(qrScan).let {
-                                    mViewModel.sendInventory()
+                                    if(mViewModel.getGeneratedRequestId() == it?.requestId) {
 
-                                    val transportInventory = mViewModel.setTransferItem(it)
-                                    showConfirmDialog(
-                                        transportInventory?.model ?: "",
-                                            (getString(R.string.gov_number) +
-                                                    " " + transportInventory?.stateNumber) + "\n" +
-                                                    String.format((getString(R.string.from_namespace)), transportInventory?.senderName) + "\n" +
-                                                    String.format((getString(R.string.to_namespace)), transportInventory?.receiverName)
-                                    )
+                                        val transportInventory = mViewModel.setTransferItem(it)
+                                        mViewModel.sendInventory()
+
+                                        showConfirmDialog(
+                                                transportInventory?.model ?: "",
+                                                (getString(R.string.gov_number) +
+                                                        " " + transportInventory?.stateNumber) + "\n" +
+                                                        String.format((getString(R.string.from_namespace)), transportInventory?.senderName) + "\n" +
+                                                        String.format((getString(R.string.to_namespace)), transportInventory?.receiverName)
+                                        )
+                                    } else {
+                                        showError(getString(R.string.common_error), getString(R.string.requestID_error_scan))
+                                    }
                                 }
                             } catch (e: Exception) {
                                 showError(getString(R.string.common_error), getString(R.string.common_error_scan))

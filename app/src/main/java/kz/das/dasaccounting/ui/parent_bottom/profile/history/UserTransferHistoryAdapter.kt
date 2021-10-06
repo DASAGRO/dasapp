@@ -16,7 +16,7 @@ class UserTransferHistoryAdapter(val context: Context, private var operations: A
     private var historyOperationsAdapterEvent: OnHistoryOperationsAdapterEvent? = null
 
     interface OnHistoryOperationsAdapterEvent {
-        fun onClick(title: String?, descr: String?, type: String?, status: String?, qr: String?)
+        fun onClick(title: String?, descr: String?, type: String?, status: String?, qr: String?, transferType: String?)
     }
 
     fun setHistoryOperationsAdapterEvent(historyOperationsAdapterEvent: OnHistoryOperationsAdapterEvent) {
@@ -68,7 +68,7 @@ class UserTransferHistoryAdapter(val context: Context, private var operations: A
                 tvInventoryQuantity.isGone = item.operationType == OperationType.DRIVER_ACCESSORY.status ||
                         item.operationType == OperationType.DRIVER.status
                 this.rootHistory.setOnClickListener {
-                    historyOperationsAdapterEvent?.onClick(item.title, item.descr, item.operationType, item.status, item.qrData)
+                    historyOperationsAdapterEvent?.onClick(item.title, item.descr, item.operationType, item.status, item.qrData, item.transferType)
                 }
                 executePendingBindings()
             }

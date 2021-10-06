@@ -17,6 +17,7 @@ class TransferConfirmVM: BaseVM() {
     private val userRepository: UserRepository by inject()
 
     private var officeInventory: OfficeInventory? = null
+    private var generatedRequestId: String? = null
 
     private val officeInventoryLV = SingleLiveEvent<OfficeInventory?>()
     fun getOfficeInventory(): LiveData<OfficeInventory?> = officeInventoryLV
@@ -33,7 +34,13 @@ class TransferConfirmVM: BaseVM() {
         this.officeInventory = officeInventory
     }
 
+    fun setGeneratedRequestId(requestId: String) {
+        this.generatedRequestId = requestId
+    }
+
     fun getUserRole() = userRepository.getUserRole()
+
+    fun getGeneratedRequestId() = generatedRequestId
 
     fun setOfficeInventory(officeInventory: OfficeInventory?) {
         this.officeInventory = officeInventory

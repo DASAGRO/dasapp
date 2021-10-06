@@ -83,7 +83,8 @@ class AcceptInventoryCheckFragment: BaseFragment<AcceptInventoryCheckVM, Fragmen
                         storeUUIDReceiver = mViewModel.getLocalInventory()?.storeUUIDReceiver,
                         receiverUUID = it.receiverUUID,
                         receiverName = it.receiverName,
-                        transferType = "material_type"
+                        transferType = "material_type",
+                        requestId = inventory?.requestId ?: ""
                     )
                     mViewBinding.ivQr.setImageBitmap(TransferItemTypeConvertor().transferItemToString(transferItem).generateQR())
 

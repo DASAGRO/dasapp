@@ -110,7 +110,7 @@ fun TransportInventory.toSentRequest(): SendTransportRequest {
         tcUUID = this.uuid,
         storeUUIDSender = this.storeUUIDSender,
         storeUUIDReceiver = this.storeUUIDReceiver,
-        senderUUID = this.senderUUID,
+//        senderUUID = this.senderUUID,
         receiverUUID = this.receiverUUID,
         qrData = DriverInventoryTypeConvertor().transportTransportToString(this.toEntity()),
         type = this.tsType
@@ -130,7 +130,7 @@ fun TransportInventory.toGetRequest(comment: String, fileIds: ArrayList<Int>?): 
         tcUUID = this.uuid,
         storeUUIDSender = this.storeUUIDSender,
         storeUUIDReceiver = this.storeUUIDReceiver,
-        receiverUUID = this.receiverUUID,
+//        receiverUUID = this.receiverUUID,
         qrData = DriverInventoryTypeConvertor().transportTransportToString(this.toEntity()),
         type = this.tsType,
         comment = comment,

@@ -23,8 +23,8 @@ class HistoryAcceptedFragment: BaseFragment<HistoryAcceptedVM, FragmentProfileHi
     override fun setupUI(savedInstanceState: Bundle?) {
         historyAdapter = UserTransferHistoryAdapter(requireContext(), arrayListOf())
         historyAdapter?.setHistoryOperationsAdapterEvent(object : UserTransferHistoryAdapter.OnHistoryOperationsAdapterEvent {
-            override fun onClick(title: String?, descr: String?, type: String?, status: String?, qr: String?) {
-                requireRouter().navigateTo(HistoryDetailFragment.getScreen(title, descr, type, status, qr ?: ""))
+            override fun onClick(title: String?, descr: String?, type: String?, status: String?, qr: String?, transferType: String?) {
+                requireRouter().navigateTo(HistoryDetailFragment.getScreen(title, descr, type, status, mViewModel.getQrData(qr, transferType, status)))
             }
         })
         mViewBinding.rvAccepted.apply {

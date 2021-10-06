@@ -173,6 +173,7 @@
     <string name="current_location">Вы здесь</string>
 
     <string name="common_error_scan">Ошибка считывания!</string>
+    <string name="requestID_error_scan">Неправильный ID транзакции!</string>
     <string name="gov_number">Гос номер: </string>
     <string name="seal_number">Номер пломбы: </string>
     <string name="dialog_inventory_confirm_title">Вы уверены что партнер отсканировал QR код ?</string>

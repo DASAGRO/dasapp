@@ -46,7 +46,7 @@ fun HistoryTransportInventoryEntity.toDomain(): HistoryTransportInventory {
 }
 
 
-fun HistoryTransportInventoryEntity.toHistoryTransfer(): HistoryTransfer {
+fun HistoryTransportInventoryEntity.toHistoryTransfer(transferType: String? = null): HistoryTransfer {
     return HistoryTransfer(
         title = this.name ?: "Транспорт",
         descr = "Гос. номер: " + this.stateNumber,
@@ -57,6 +57,7 @@ fun HistoryTransportInventoryEntity.toHistoryTransfer(): HistoryTransfer {
         operationType = if (this.tsType == TransportType.TRAILED.type) OperationType.DRIVER_ACCESSORY.status else OperationType.DRIVER.status,
         qrData = this.qrData,
         isAwait = false,
-        status = this.status ?: ""
+        status = this.status ?: "",
+        transferType = transferType ?: "transport_type"
     )
 }

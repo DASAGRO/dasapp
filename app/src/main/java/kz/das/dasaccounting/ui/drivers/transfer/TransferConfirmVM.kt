@@ -17,6 +17,7 @@ class TransferConfirmVM: BaseVM() {
     private val userRepository: UserRepository by inject()
 
     private var transportInventory: TransportInventory? = null
+    private var generatedRequestId: String? = null
 
     private val transportInventoryLV = SingleLiveEvent<TransportInventory?>()
     fun getTransportInventory(): LiveData<TransportInventory?> = transportInventoryLV
@@ -32,7 +33,13 @@ class TransferConfirmVM: BaseVM() {
         this.transportInventory = transportInventory
     }
 
+    fun setGeneratedRequestId(requestId: String) {
+        this.generatedRequestId = requestId
+    }
+
     fun getLocalInventory() = transportInventory
+
+    fun getGeneratedRequestId() = generatedRequestId
 
     fun setTransportInventory(transportInventory: TransportInventory?) {
         this.transportInventory = transportInventory

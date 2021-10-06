@@ -84,7 +84,7 @@ fun OfficeInventoryAcceptedEntity.toAccepted(): OfficeAcceptedInventory {
     )
 }
 
-fun OfficeInventoryAcceptedEntity.toHistory(): HistoryTransfer {
+fun OfficeInventoryAcceptedEntity.toHistory(transferType: String? = null): HistoryTransfer {
     return HistoryTransfer(
         title = this.name ?: "Продукт",
         descr = ("Количество:" +
@@ -98,7 +98,8 @@ fun OfficeInventoryAcceptedEntity.toHistory(): HistoryTransfer {
         operationType = OperationType.OFFICE.status,
         isAwait = false,
         qrData = OfficeInventoryAcceptedTypeConvertor().officeAcceptedInventoryToString(this),
-        status = HistoryEnum.AWAIT.status
+        status = HistoryEnum.AWAIT.status,
+        transferType = transferType ?: "material_type"
     )
 }
 

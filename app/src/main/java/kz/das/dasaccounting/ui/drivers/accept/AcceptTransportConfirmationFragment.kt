@@ -112,7 +112,7 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
         mViewModel.isTransportInventoryAccepted().observe(viewLifecycleOwner, Observer {
             if (it) {
                 getTransportInventory()?.let {
-                    requireRouter().replaceScreen(AcceptTransportCheckFragment.getScreen(it))
+                    requireRouter().replaceScreen(AcceptTransportCheckFragment.getScreen(it, AppConstants.IS_SUCCESS))
                 }
 //                showSuccess(getString(R.string.common_banner_success),
 //                    if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {

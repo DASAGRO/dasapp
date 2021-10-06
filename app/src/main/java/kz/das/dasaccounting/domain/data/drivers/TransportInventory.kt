@@ -126,7 +126,7 @@ fun TransportSentInventory.toDomain(): TransportInventory {
     )
 }
 
-fun TransportAcceptedInventory.toHistoryTransfer(): HistoryTransfer {
+fun TransportAcceptedInventory.toHistoryTransfer(transferType: String? = null): HistoryTransfer {
     return HistoryTransfer(
         title = this.model ?: "Транспорт",
         descr = "Гос. номер: " + this.stateNumber,
@@ -137,7 +137,8 @@ fun TransportAcceptedInventory.toHistoryTransfer(): HistoryTransfer {
         operationType = if (this.tsType == TransportType.TRAILED.type) OperationType.DRIVER_ACCESSORY.status else OperationType.DRIVER.status,
         qrData = DriverInventoryTypeConvertor().transportTransportToString(this.toDomain().toEntity()),
         isAwait = true,
-        status = HistoryEnum.AWAIT.status
+        status = HistoryEnum.AWAIT.status,
+        transferType = transferType ?: "transport_type"
     )
 }
 

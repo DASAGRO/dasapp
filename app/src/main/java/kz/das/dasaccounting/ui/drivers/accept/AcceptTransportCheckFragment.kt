@@ -100,7 +100,8 @@ class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, Fragmen
                         storeUUIDReceiver = mViewModel.getLocalInventory()?.storeUUIDReceiver,
                         receiverUUID = it.receiverUUID,
                         receiverName = it.receiverName,
-                        transferType = "transport_type"
+                        transferType = "transport_type",
+                        requestId = inventory?.requestId ?: ""
                     )
                     mViewBinding.ivQr.setImageBitmap(TransferItemTypeConvertor().transferItemToString(transferItem).generateQR())
                     inventory?.let { inventoryTransport -> mViewModel.setLocalInventory(inventoryTransport.toDomain()) }

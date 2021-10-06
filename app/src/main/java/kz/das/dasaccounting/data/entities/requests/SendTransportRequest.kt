@@ -11,7 +11,6 @@ data class SendTransportRequest(
     var storeUUIDSender: String? = null,
     var storeUUIDReceiver: String? = null,
     var receiverUUID: String? = null,
-    var senderUUID: String? = null,
     var qrData: String? = null,
     val syncRequire: Int?,
     val tcUUID: String?,
