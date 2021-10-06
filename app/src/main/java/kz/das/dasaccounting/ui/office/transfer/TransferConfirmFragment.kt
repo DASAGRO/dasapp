@@ -73,25 +73,27 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             }
         })
 
-//        mViewModel.isOfficeInventorySent().observe(viewLifecycleOwner, Observer {
-//            if (it) {
-//                showSuccess(getString(R.string.common_banner_success), getString(R.string.office_inventory_transferred_successfully))
-//                MediaPlayerUtils.playSuccessSound(requireContext())
-//                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-//                    requireRouter().newRootScreen(screen)
-//                }
-//            }
-//        })
-//
-//        mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
-//            if (it) {
-//                showAwait(getString(R.string.common_banner_await), "Передача ТМЦ в ожидании!")
-//                MediaPlayerUtils.playSuccessSound(requireContext())
-//                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-//                    requireRouter().newRootScreen(screen)
-//                }
-//            }
-//        })
+        mViewModel.isOfficeInventorySent().observe(viewLifecycleOwner, Observer {
+            if (it) {
+                showSuccess(getString(R.string.common_banner_success), getString(R.string.office_inventory_transferred_successfully))
+
+                MediaPlayerUtils.playSuccessSound(requireContext())
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
+            }
+        })
+
+        mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
+            if (it) {
+                showAwait(getString(R.string.common_banner_await), "Передача ТМЦ в ожидании!")
+
+                MediaPlayerUtils.playSuccessSound(requireContext())
+                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+                    requireRouter().newRootScreen(screen)
+                }
+            }
+        })
     }
 
     private fun showConfirmDialog(title: String, descr: String) {
@@ -138,12 +140,12 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                                         val transferItem = mViewModel.setTransferItem(it)
                                         mViewModel.sendInventory()
 
-                                        showConfirmDialog(transferItem?.name
-                                                ?: "", ((getString(R.string.inventory_total_quantity) +
-                                                " " + transferItem?.quantity +
-                                                " " + transferItem?.type) + "\n" +
-                                                String.format((getString(R.string.from_namespace)), transferItem?.senderName) + "\n" +
-                                                String.format((getString(R.string.to_namespace)), transferItem?.receiverName)))
+//                                        showConfirmDialog(transferItem?.name
+//                                                ?: "", ((getString(R.string.inventory_total_quantity) +
+//                                                " " + transferItem?.quantity +
+//                                                " " + transferItem?.type) + "\n" +
+//                                                String.format((getString(R.string.from_namespace)), transferItem?.senderName) + "\n" +
+//                                                String.format((getString(R.string.to_namespace)), transferItem?.receiverName)))
                                     } else {
                                         showError(getString(R.string.common_error), getString(R.string.requestID_error_scan))
                                     }
