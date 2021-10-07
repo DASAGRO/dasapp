@@ -42,9 +42,9 @@ class HistoryAcceptedVM: BaseVM() {
         acceptedTransportInventoryLocally(),
         acceptedOfficeInventoryLocally())
 
-    fun getQrData(qrString: String?, type: String?, status: String?): String{
+    fun getQrData(qrString: String?, type: String?, status: String?): String? {
         val gson = Gson()
-        val qrDataFull = gson.fromJson(qrString, QrDateFull::class.java)
+        val qrDataFull = gson.fromJson(qrString, QrDateFull::class.java) ?: return null
         val qrDateShort = QrDateShort(
                 receiverName = userRepository.getUser()?.lastName + " " +
                         if (userRepository.getUser()?.firstName?.length ?: 0 > 0) {
@@ -60,13 +60,14 @@ class HistoryAcceptedVM: BaseVM() {
                         },
                 receiverUUID = userRepository.getUser()?.userId,
                 transferType = type,
-                requestId = qrDataFull?.requestId ?: ""
+                requestId = qrDataFull.requestId ?: ""
         )
-        return if(status == "В ожидании") {
-            gson.toJson(qrDateShort)
-        } else {
-            gson.toJson(qrDataFull)
-        }
+         return gson.toJson(qrDateShort)
+//        return if(status == "В ожидании") {
+//            gson.toJson(qrDateShort)
+//        } else {
+//            gson.toJson(qrDataFull)
+//        }
     }
 
     private fun getHistoryWarehouseInventoriesLocally() = userRepository.getHistoryAcceptedWarehouseInventoriesLocally()

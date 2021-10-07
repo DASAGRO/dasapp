@@ -41,6 +41,9 @@ class AcceptInventoryCheckFragment: BaseFragment<AcceptInventoryCheckVM, Fragmen
     override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setOfficeInventory(getOfficeInventory())
         mViewBinding.apply {
+            tvWarning.text = getString(R.string.barcode_bottom_text)
+            btnConfirm.text = getString(R.string.ready)
+
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }

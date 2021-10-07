@@ -45,7 +45,9 @@ class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, Fragmen
     override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setTransportInventory(getTransportInventory())
         mViewBinding.apply {
-            mViewBinding.tvWarning.text = getString(R.string.barcode_bottom_text_reverse_scan)
+            tvWarning.text = getString(R.string.barcode_bottom_text)
+            btnConfirm.text = getString(R.string.ready)
+
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }

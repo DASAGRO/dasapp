@@ -44,7 +44,7 @@ fun HistoryOfficeInventoryEntity.toDomain(): HistoryOfficeInventory {
     )
 }
 
-fun HistoryOfficeInventoryEntity.toHistoryTransfer(): HistoryTransfer {
+fun HistoryOfficeInventoryEntity.toHistoryTransfer(trasferType: String? = null): HistoryTransfer {
     return HistoryTransfer(
         title = this.name ?: "Продукт",
         descr = ("Количество:" +
@@ -58,6 +58,7 @@ fun HistoryOfficeInventoryEntity.toHistoryTransfer(): HistoryTransfer {
         qrData = this.qrData,
         operationType = OperationType.OFFICE.status,
         isAwait = false,
-        status = this.status ?: ""
+        status = this.status ?: "",
+        transferType = trasferType ?: "material_type"
     )
 }

@@ -12,6 +12,7 @@ import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentProfileInfoBinding
 import kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset.ProfilePassResetFragment
 import kz.das.dasaccounting.ui.parent_bottom.showBottomNavMenu
+import kz.das.dasaccounting.utils.AppConstants
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ProfileInfoFragment: BaseFragment<ProfileInfoVM, FragmentProfileInfoBinding>() {
@@ -33,7 +34,7 @@ class ProfileInfoFragment: BaseFragment<ProfileInfoVM, FragmentProfileInfoBindin
                 requireRouter().exit()
             }
             rlPassReset.setOnClickListener {
-                requireRouter().navigateTo(ProfilePassResetFragment.getScreen())
+                requireRouter().navigateTo(ProfilePassResetFragment.getScreen(AppConstants.PASS_RESET))
             }
             ivChangeAvatar.setOnClickListener {
                 TedImagePicker.with(requireActivity())

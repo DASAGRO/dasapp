@@ -153,7 +153,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
             userPreferences.saveLastFligelProductCnt(cnt)
         }
 
-        return userPreferences.getLastFligelProductCnt() > 3
+        return userPreferences.getLastFligelProductCnt() > 1
     }
 
     override suspend fun saveOfficeInventory(officeInventory: OfficeInventory) {

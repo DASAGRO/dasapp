@@ -42,6 +42,9 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
         override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setOfficeInventory(getOfficeInventory())
         mViewBinding.apply {
+            tvWarning.text = getString(R.string.barcode_next_bottom_text)
+            btnConfirm.text = getString(R.string.next)
+
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }

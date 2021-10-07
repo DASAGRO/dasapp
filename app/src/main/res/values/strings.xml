@@ -106,6 +106,7 @@
     <string name="camera_access_title">Доступ к камере</string>
     <string name="make_transfer">Сформировать передачу</string>
     <string name="barcode_bottom_text">Внимание! Для Передачи просим нажать на кнопку “Готово”</string>
+    <string name="barcode_next_bottom_text">Внимание! Для Передачи просим нажать на кнопку “Далее”</string>
     <string name="barcode_bottom_text_reverse_scan">Внимание! Для подтверждения передачи просим нажать на кнопку “Готово”</string>
     <string name="ready">Готово</string>
     <string name="accept_gather">Принять урожай</string>
@@ -125,7 +126,7 @@
     <string name="transfer_inventory">Передать ТМЦ</string>
     <string name="gather_tranfer_title">Заполните данные поля</string>
     <string name="transfer_confirm_title">Вы подтверждаете данную передачу?</string>
-    <string name="inventory_accept_confirmed_title">Подтвердите передачу</string>
+    <string name="inventory_accept_confirmed_title">Подтвердите операцию</string>
     <string name="inventory_fligel_data_correct_title">Вы принимаете товар с поля??</string>
     <string name="search">Искать</string>
     <string name="warehouse_title">Название Склада</string>
@@ -179,6 +180,9 @@
     <string name="dialog_inventory_confirm_title">Вы уверены что партнер отсканировал QR код ?</string>
     <string name="quantity">Количество</string>
     <string name="success_send">Вы успешно передали!</string>
+    <string name="next">Далее</string>
+    <string name="enter_pass_for_exit">Чтобы выйти введите пароль</string>
+    <string name="static_pass_incorrect">Пароль не верный!</string>
 
 
 </resources>
