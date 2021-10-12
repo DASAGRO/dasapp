@@ -90,7 +90,7 @@
     <string name="cancel">Отмена</string>
     <string name="log_out_title">Выйти из приложения</string>
     <string name="attention">Внимание</string>
-    <string name="fligel_equal_with_the_last">Вы уверены что хотите продолжить? Данные совпадают(повторяется) с тремя последними транзакциями</string>
+    <string name="fligel_equal_with_the_last">Вы уверены что хотите продолжить? В течение последних трех операции вы принимали с этого комбайна с таким весом!</string>
     <string name="log_out_desc">Вы уверены что хотите выйти из приложения, все данные будут стерты и не будут доступны для восстановления!</string>
     <string name="accept_inventory">Принять ТМЦ</string>
     <string name="available_operations">Доступные операции</string>
@@ -183,6 +183,8 @@
     <string name="next">Далее</string>
     <string name="enter_pass_for_exit">Чтобы выйти введите пароль</string>
     <string name="static_pass_incorrect">Пароль не верный!</string>
-
-
+    <string name="about_app">О программе</string>
+    <string name="about_app_desc">Мобильное приложение DAS Mobile (далее – МП) собственная разработка ТОО «Digital Agro Service». Разработка мобильного приложения преследовала цель исключить ведения учёта движения товарно-материальных ценностей (далее – ТМЦ) на бумаге, также для исключения человеческого фактора при учёте рабочего времени сотрудников.</string>
+    <string name="license_reserved">Все права защищены</string>
+    <string name="instruction">Инструкция</string>
 </resources>

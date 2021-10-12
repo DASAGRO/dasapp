@@ -9,6 +9,7 @@ import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentProfileBinding
 import kz.das.dasaccounting.ui.parent_bottom.hideBottomNavMenu
 import kz.das.dasaccounting.ui.parent_bottom.profile.history.ProfileHistoryFragment
+import kz.das.dasaccounting.ui.parent_bottom.profile.instructions.InstructionFragment
 import kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset.ProfilePassResetFragment
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportFragment
 import kz.das.dasaccounting.utils.AppConstants
@@ -29,7 +30,6 @@ class ProfileFragment: BaseFragment<ProfileVM, FragmentProfileBinding>() {
             lifecycleOwner = viewLifecycleOwner
             profileVM = mViewModel
 
-            tvVersion.text = "Version ${context?.packageManager?.getPackageInfo(context?.packageName!!, 0)!!.versionName}"
             clProfile.setOnClickListener {
                 hideBottomNavMenu()
                 requireRouter().navigateTo(ProfileInfoFragment.getScreen())
@@ -45,6 +45,14 @@ class ProfileFragment: BaseFragment<ProfileVM, FragmentProfileBinding>() {
             this.rlLogOut.setOnClickListener {
                 requireRouter().navigateTo(ProfilePassResetFragment.getScreen(AppConstants.EXIT))
 //                showLogOutDialog()
+            }
+            this.rlInstruction.setOnClickListener {
+                hideBottomNavMenu()
+                requireRouter().navigateTo(InstructionFragment.getScreen())
+            }
+            this.rlAboutApp.setOnClickListener {
+                hideBottomNavMenu()
+                requireRouter().navigateTo(AboutAppFragment.getScreen())
             }
         }
     }

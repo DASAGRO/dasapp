@@ -95,8 +95,7 @@ class TransferConfirmFligelDataFragment : BaseFragment<TransferConfirmFligelData
             }
 
             btnConfirm.setOnClickListener {
-                showConfirmDialog()
-                //mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
+                mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
             }
         }
     }
