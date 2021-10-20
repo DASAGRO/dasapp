@@ -22,20 +22,28 @@ class ProfileHistoryFragment: BaseFragment<ProfileHistoryVM, FragmentProfileHist
 
     override fun setupUI(savedInstanceState: Bundle?) {
 
-        mViewBinding.toolbar.setNavigationOnClickListener { requireRouter().exit() }
+        mViewBinding.apply {
+            toolbar.setNavigationOnClickListener { requireRouter().exit() }
 
-        mViewBinding.vpHistory.run {
+            ivRefresh.setOnClickListener {
+                mViewModel.retrieve()
+            }
+
+            vpHistory.run {
                 isSaveEnabled = true
                 isUserInputEnabled = false
                 adapter = ProfileHistoryPageAdapter(childFragmentManager, lifecycle,
-                    HistoryAcceptedFragment.newInstance(), HistoryGivenFragment.newInstance())
+                        HistoryAcceptedFragment.newInstance(), HistoryGivenFragment.newInstance())
                 offscreenPageLimit = 2
                 TabLayoutMediator(mViewBinding.tlHistory, mViewBinding.vpHistory) {
-                        tab, position ->
+                    tab, position ->
                     tab.text = if (position == 0) getString(R.string.accept_title) else getString(R.string.give_title)
                 }.attach()
             }
+        }
     }
+
+
 
     override fun onDestroy() {
         showBottomNavMenu()

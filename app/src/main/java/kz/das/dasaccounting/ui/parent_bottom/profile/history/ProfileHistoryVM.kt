@@ -14,7 +14,7 @@ class ProfileHistoryVM: BaseVM() {
         retrieve()
     }
 
-    private fun retrieve() {
+    fun retrieve() {
         viewModelScope.launch {
             try {
                 userRepository.getHistoryOfficeInventories()

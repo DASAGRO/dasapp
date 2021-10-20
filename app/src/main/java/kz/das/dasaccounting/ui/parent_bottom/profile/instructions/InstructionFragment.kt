@@ -21,7 +21,9 @@ class InstructionFragment : BaseFragment<ProfileVM, FragmentInstructionBinding>(
         R.drawable.img_instruction_1,
         R.drawable.img_instruction_2,
         R.drawable.img_instruction_3,
-        R.drawable.img_instruction_4
+        R.drawable.img_instruction_4,
+        R.drawable.img_instruction_5,
+        R.drawable.img_instruction_6
     )
 
     companion object {

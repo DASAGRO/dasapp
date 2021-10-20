@@ -2,7 +2,7 @@ package kz.das.dasaccounting.utils
 
 class AppConstants {
     companion object{
-        const val STATIC_PASSWORD = "10051910*"
+        const val STATIC_PASSWORD = "100510"
 
         const val IS_SUCCESS = "isOfficeInventory"
         const val IS_ON_AWAIT = "isOnAwait"
