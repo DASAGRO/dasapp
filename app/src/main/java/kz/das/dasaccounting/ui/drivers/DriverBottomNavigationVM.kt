@@ -1,7 +1,9 @@
 package kz.das.dasaccounting.ui.drivers
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.AwaitRequestInventoryRepository
@@ -74,11 +76,11 @@ class DriverBottomNavigationVM : BaseVM() {
 
         viewModelScope.launch {
             try {
-                shiftRepository.initAwaitShiftStarted()
-                shiftRepository.initAwaitShiftFinished()
-            } catch (t: Throwable) {
-                throwableHandler.handle(t)
-            }
+                shiftRepository.getAwaitShiftStarted()?.let {
+                    shiftRepository.startShift(it.latitude, it.longitude, it.time, it.qr)
+                            .collect { shiftRepository.initAwaitShiftFinished() }
+                } ?: run { shiftRepository.initAwaitShiftFinished() }
+            } catch (t: Throwable) { throwableHandler.handle(t) }
         }
 
         viewModelScope.launch {

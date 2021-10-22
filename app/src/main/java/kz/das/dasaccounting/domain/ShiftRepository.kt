@@ -1,6 +1,8 @@
 package kz.das.dasaccounting.domain
 
+import kotlinx.coroutines.flow.Flow
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
+import kz.das.dasaccounting.data.entities.common.ShiftRequest
 import kz.das.dasaccounting.domain.common.ShiftState
 
 interface ShiftRepository {
@@ -10,7 +12,7 @@ interface ShiftRepository {
         long: Double,
         time: Long,
         scannedQR: String? = null
-    ): ApiResponseMessage
+    ): Flow<ApiResponseMessage>
 
     suspend fun finishShift(lat: Double, long: Double, time: Long): ApiResponseMessage
 
@@ -27,4 +29,7 @@ interface ShiftRepository {
 
     suspend fun initAwaitShiftFinished()
 
+    fun getAwaitShiftStarted(): ShiftRequest?
+
+    fun getAwaitShiftFinished(): ShiftRequest?
 }

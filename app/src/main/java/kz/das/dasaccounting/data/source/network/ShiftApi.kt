@@ -13,7 +13,7 @@ interface ShiftApi {
      * shift start POST request method
      * */
     @POST("api/shift/open")
-    suspend fun startWork(@Body shiftMap: HashMap<String, Any?>): Response<ApiResponseMessage>
+    suspend fun startWork(@Body shiftMap: HashMap<String, Any?>): ApiResponseMessage
 
     /**
      * @author kassiend

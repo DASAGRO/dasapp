@@ -1,8 +1,11 @@
 package kz.das.dasaccounting.ui.parent_bottom
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
@@ -61,25 +64,28 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
         viewModelScope.launch {
             showLoading()
             try {
-                shiftRepository.startShift(userRepository.getLastLocation().lat,
-                    userRepository.getLastLocation().long,
-                    System.currentTimeMillis())
                 userRepository.startWork()
-                setControlOptionsState(isOnWork())
-                isWorkStartedLV.postValue(true)
-            } catch (t: Throwable) {
-                if (t is SocketTimeoutException
-                    || t is UnknownHostException
-                    || t is ConnectException
-                ) {
-                    shiftRepository.saveAwaitStartShift(userRepository.getLastLocation().lat,
+                shiftRepository.startShift(userRepository.getLastLocation().lat,
                         userRepository.getLastLocation().long,
                         System.currentTimeMillis())
-                    setControlOptionsState(isOnWork())
-                    isWorkStartedLV.postValue(true)
-                } else {
-                    throwableHandler.handle(t)
-                }
+                        .catch {
+                            if (it is SocketTimeoutException
+                                    || it is UnknownHostException
+                                    || it is ConnectException
+                            ) {
+                                shiftRepository.saveAwaitStartShift(userRepository.getLastLocation().lat,
+                                        userRepository.getLastLocation().long,
+                                        System.currentTimeMillis())
+                                setControlOptionsState(isOnWork())
+                                isWorkStartedLV.postValue(true)
+                            } else {
+                                throwableHandler.handle(it)
+                            }
+                        }
+                        .collect {
+                            setControlOptionsState(isOnWork())
+                            isWorkStartedLV.postValue(true)
+                        }
             } finally {
                 hideLoading()
             }
