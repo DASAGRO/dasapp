@@ -50,6 +50,7 @@ class ProfileInfoFragment: BaseFragment<ProfileInfoVM, FragmentProfileInfoBindin
                         mViewModel.updateImagePath(uri)
                     }
             }
+            ibShare.setOnClickListener { mViewModel.sendLogs() }
         }
 
     }

@@ -1,9 +1,11 @@
 package kz.das.dasaccounting.ui.office.transfer
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
+import kz.das.dasaccounting.core.ui.utils.writeObjectToLog
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.data.entities.common.TransferItem
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
@@ -12,6 +14,7 @@ import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.inject
 
 class TransferConfirmVM: BaseVM() {
+    private val context: Context by inject()
 
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
     private val userRepository: UserRepository by inject()
@@ -86,6 +89,8 @@ class TransferConfirmVM: BaseVM() {
             showLoading()
             try {
                 officeInventory?.let {
+                    writeObjectToLog(officeInventory.toString(), context)
+
                     officeInventoryRepository.sendInventory(it)
                     officeInventoryRepository.initCheckAwaitSentOperation(it)
                 }

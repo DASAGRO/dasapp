@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.office.accept
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -7,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
+import kz.das.dasaccounting.core.ui.utils.writeObjectToLog
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
@@ -15,6 +17,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class AcceptConfirmationVM : BaseVM(), KoinComponent {
+    private val context: Context by inject()
 
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
     private val userRepository: UserRepository by inject()
@@ -50,6 +53,8 @@ class AcceptConfirmationVM : BaseVM(), KoinComponent {
             showLoading()
             try {
                 officeInventory?.let {
+                    writeObjectToLog(it.toString(), context)
+
                     officeInventoryRepository.acceptInventory(it, comment, fileIds)
                     officeInventoryRepository.initCheckAwaitAcceptOperation(it)
                 }

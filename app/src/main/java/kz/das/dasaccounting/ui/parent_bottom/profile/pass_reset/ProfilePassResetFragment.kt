@@ -7,6 +7,7 @@ import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
+import kz.das.dasaccounting.core.ui.utils.clearLogs
 import kz.das.dasaccounting.databinding.FragmentProfilePassResetBinding
 import kz.das.dasaccounting.utils.AppConstants
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -60,6 +61,7 @@ class ProfilePassResetFragment: BaseFragment<ProfilePassResetVM, FragmentProfile
 
     private fun checkStaticPass(pass: String) {
         if (mViewModel.checkStaticPass(pass)) {
+            clearLogs(requireContext())
             onLogout()
         } else {
             showError(getString(R.string.common_error), getString(R.string.static_pass_incorrect))
