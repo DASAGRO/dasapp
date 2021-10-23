@@ -77,12 +77,12 @@ class TransferFligelDataInputFragment: BaseBottomSheetFragment<FragmentBottomShe
     private fun checkConfirmation(fligelProduct: FligelProduct) {
         this@TransferFligelDataInputFragment.verifyToInit(
             {
-                if (mViewModel.compareWithTheLast(fligelProduct)) {
-                    showConfirmRepeatFligelInputDialog(fligelProduct)
-                } else {
-                    listener?.onTransfer(fligelProduct)
-                    dismiss()
-                }
+//                if (mViewModel.compareWithTheLast(fligelProduct)) {
+//                    showConfirmRepeatFligelInputDialog(fligelProduct)
+//                } else {
+                listener?.onTransfer(fligelProduct)
+                dismiss()
+//                }
             },
             { showError(getString(R.string.common_error), getString(R.string.error_not_valid_finger)) },
             { showError(getString(R.string.common_error), getString(R.string.common_unexpected_error)) }

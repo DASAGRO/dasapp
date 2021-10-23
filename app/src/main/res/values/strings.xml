@@ -1,7 +1,7 @@
 <resources>
     <string name="map_token" translatable="false">AIzaSyDn8B_PBimhiAnCnnFJPk1Zcguh4MOMgz4</string>
 
-    <string name="app_name">DAS Mobile 1.0</string>
+    <string name="app_name">DAS Mobile</string>
     <string name="action_settings">Настройки</string>
 
     <string name="common_next">Следующий</string>
