@@ -13,6 +13,7 @@ data class HistoryTransportInventory(
     val latitude: String? = null,
     val quantity: String? = null,
     val fullName: String? = null,
+    val qrData: String? = null,
     val molUUID: String? = null,
     val status: String? = null
 ): OperationAct()

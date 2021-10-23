@@ -1,6 +1,7 @@
 package kz.das.dasaccounting.domain
 
 import androidx.lifecycle.LiveData
+import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import kz.das.dasaccounting.domain.data.office.NomenclatureOfficeInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
@@ -32,6 +33,8 @@ interface OfficeInventoryRepository {
     suspend fun getNomenclatures(): List<NomenclatureOfficeInventory>
 
     suspend fun saveOfficeInventory(officeInventory: OfficeInventory)
+
+    fun isEqualToLastFligelProduct(fligelProduct: FligelProduct): Boolean
 
     fun getNomenclaturesLocally(): LiveData<List<NomenclatureOfficeInventory>>
 

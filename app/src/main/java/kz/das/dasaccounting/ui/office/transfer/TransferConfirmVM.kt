@@ -1,21 +1,26 @@
 package kz.das.dasaccounting.ui.office.transfer
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
+import kz.das.dasaccounting.core.ui.utils.writeObjectToLog
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
+import kz.das.dasaccounting.data.entities.common.TransferItem
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.inject
 
 class TransferConfirmVM: BaseVM() {
+    private val context: Context by inject()
 
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
     private val userRepository: UserRepository by inject()
 
     private var officeInventory: OfficeInventory? = null
+    private var generatedRequestId: String? = null
 
     private val officeInventoryLV = SingleLiveEvent<OfficeInventory?>()
     fun getOfficeInventory(): LiveData<OfficeInventory?> = officeInventoryLV
@@ -32,7 +37,13 @@ class TransferConfirmVM: BaseVM() {
         this.officeInventory = officeInventory
     }
 
+    fun setGeneratedRequestId(requestId: String) {
+        this.generatedRequestId = requestId
+    }
+
     fun getUserRole() = userRepository.getUserRole()
+
+    fun getGeneratedRequestId() = generatedRequestId
 
     fun setOfficeInventory(officeInventory: OfficeInventory?) {
         this.officeInventory = officeInventory
@@ -52,11 +63,34 @@ class TransferConfirmVM: BaseVM() {
         officeInventoryLV.postValue(officeInventory)
     }
 
+    fun setTransferItem(transferItem: TransferItem?): OfficeInventory? {
+        this.officeInventory?.receiverName = transferItem?.receiverName
+        this.officeInventory?.receiverUUID = transferItem?.receiverUUID
+        this.officeInventory?.storeUUIDReceiver = transferItem?.storeUUIDReceiver
+        this.officeInventory?.senderUUID = userRepository.getUser()?.userId
+        this.officeInventory?.senderName = userRepository.getUser()?.lastName + " " +
+                if (userRepository.getUser()?.firstName?.length ?: 0 > 0) {
+                    userRepository.getUser()?.firstName?.toCharArray()?.let { it[0] }?.plus(".")
+                } else {
+                    " "
+                }  +
+
+                if (userRepository.getUser()?.middleName?.length ?: 0 > 0) {
+                    userRepository.getUser()?.middleName?.toCharArray()?.let { it[0] }?.plus(".")
+                } else {
+                    " "
+                }
+        officeInventoryLV.postValue(officeInventory)
+        return this.officeInventory
+    }
+
     fun sendInventory() {
         viewModelScope.launch {
             showLoading()
             try {
                 officeInventory?.let {
+                    writeObjectToLog(officeInventory.toString(), context)
+
                     officeInventoryRepository.sendInventory(it)
                     officeInventoryRepository.initCheckAwaitSentOperation(it)
                 }

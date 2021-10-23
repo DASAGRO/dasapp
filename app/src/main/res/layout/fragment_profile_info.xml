@@ -61,24 +61,45 @@
 
                     </io.github.florent37.shapeofview.shapes.CircleView>
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/ivChangeAvatar"
-                        style="@style/Widget.MaterialComponents.TextView.DAS"
-                        android:layout_width="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:background="@drawable/selectable_accent"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:paddingStart="20dp"
-                        android:paddingTop="8dp"
-                        android:paddingEnd="20dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/change_avatar"
-                        android:textColor="@color/purple_700_secondary"
                         app:layout_constraintEnd_toEndOf="@+id/circleView"
                         app:layout_constraintStart_toStartOf="@+id/circleView"
-                        app:layout_constraintTop_toBottomOf="@+id/circleView" />
+                        app:layout_constraintTop_toBottomOf="@+id/circleView"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/ivChangeAvatar"
+                            style="@style/Widget.MaterialComponents.TextView.DAS"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:background="@drawable/selectable_accent"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:paddingStart="20dp"
+                            android:paddingTop="8dp"
+                            android:paddingEnd="20dp"
+                            android:paddingBottom="8dp"
+                            android:text="@string/change_avatar"
+                            android:textColor="@color/purple_700_secondary"
+                            />
+
+                        <ImageButton
+                            android:id="@+id/ibShare"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/ic_share"
+                            android:layout_marginStart="12dp"
+                            app:layout_constraintTop_toTopOf="@id/ivChangeAvatar"
+                            app:layout_constraintBottom_toBottomOf="@id/ivChangeAvatar"
+                            app:layout_constraintStart_toEndOf="@id/ivChangeAvatar"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

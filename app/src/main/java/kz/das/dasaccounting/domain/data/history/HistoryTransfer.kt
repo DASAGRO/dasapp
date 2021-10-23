@@ -9,6 +9,8 @@ data class HistoryTransfer(
     val senderName: String,
     val operationType: String,
     val isAwait: Boolean,
-    val status: String
+    val qrData: String? = null,
+    val status: String,
+    val transferType: String? = null
 )
 

@@ -1,6 +1,5 @@
 package kz.das.dasaccounting.ui.drivers.accept
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import gun0912.tedimagepicker.builder.TedImagePicker
@@ -18,6 +17,7 @@ import kz.das.dasaccounting.ui.parent_bottom.profile.support.DialogBottomMediaTy
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportAttachedMediaAdapter
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.data.Media
 import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
+import kz.das.dasaccounting.utils.AppConstants
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirmationVM, FragmentInventoryAcceptConfirmationBinding>() {
@@ -96,7 +96,7 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
                 dialogBottomMediaTypePick.show(childFragmentManager, dialogBottomMediaTypePick.tag)
             }
 
-            btnReady.setOnClickListener {
+            btnConfirm.setOnClickListener {
                 mViewModel.acceptInventory(mViewBinding.edtComment.text.toString() ?: "")
             }
         }
@@ -111,17 +111,20 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
 
         mViewModel.isTransportInventoryAccepted().observe(viewLifecycleOwner, Observer {
             if (it) {
-                showSuccess(getString(R.string.common_banner_success),
-                    if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
-                        getString(R.string.transport_accessory_inventory_accepted_successfully)
-                    } else {
-                        getString(R.string.transport_inventory_accepted_successfully)
-                    }
-                )
-                MediaPlayerUtils.playSuccessSound(requireContext())
-                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-                    requireRouter().newRootScreen(screen)
+                getTransportInventory()?.let {
+                    requireRouter().replaceScreen(AcceptTransportCheckFragment.getScreen(it, AppConstants.IS_SUCCESS))
                 }
+//                showSuccess(getString(R.string.common_banner_success),
+//                    if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
+//                        getString(R.string.transport_accessory_inventory_accepted_successfully)
+//                    } else {
+//                        getString(R.string.transport_inventory_accepted_successfully)
+//                    }
+//                )
+//                MediaPlayerUtils.playSuccessSound(requireContext())
+//                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+//                    requireRouter().newRootScreen(screen)
+//                }
             }
         })
 
@@ -136,26 +139,32 @@ class AcceptTransportConfirmationFragment : BaseFragment<AcceptTransportConfirma
         mViewModel.isReportSent().observe(viewLifecycleOwner, Observer {
             if (it) {
                 hideLoading()
-                showSuccess(getString(R.string.common_banner_success), "Отчет успешно отправлен!")
-                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-                    requireRouter().newRootScreen(screen)
+                getTransportInventory()?.let {
+                    requireRouter().replaceScreen(AcceptTransportCheckFragment.getScreen(it, AppConstants.IS_SUCCESS))
                 }
+//                showSuccess(getString(R.string.common_banner_success), "Отчет успешно отправлен!")
+//                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+//                    requireRouter().newRootScreen(screen)
+//                }
             }
         })
 
         mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
             if (it) {
-                showAwait(getString(R.string.common_banner_await),
-                    if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
-                        "Получение ПО в ожидании!"
-                    } else {
-                        "Получение ТС в ожидании!"
-                    }
-                )
-                MediaPlayerUtils.playSuccessSound(requireContext())
-                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-                    requireRouter().newRootScreen(screen)
+                getTransportInventory()?.let {
+                    requireRouter().replaceScreen(AcceptTransportCheckFragment.getScreen(it, AppConstants.IS_ON_AWAIT))
                 }
+//                showAwait(getString(R.string.common_banner_await),
+//                    if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
+//                        "Получение ПО в ожидании!"
+//                    } else {
+//                        "Получение ТС в ожидании!"
+//                    }
+//                )
+//                MediaPlayerUtils.playSuccessSound(requireContext())
+//                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+//                    requireRouter().newRootScreen(screen)
+//                }
             }
         })
 

@@ -26,6 +26,7 @@ import kz.das.dasaccounting.domain.data.office.toSent
 import kz.das.dasaccounting.ui.drivers.fligel.TransferConfirmFligelDataFragment
 import kz.das.dasaccounting.ui.drivers.fligel.TransferFligelDataFormalizeFragment
 import kz.das.dasaccounting.ui.drivers.fligel.TransferFligelDataInputFragment
+import kz.das.dasaccounting.ui.office.accept.AcceptConfirmationFragment
 import kz.das.dasaccounting.ui.office.accept.AcceptInventoryInfoFragment
 import kz.das.dasaccounting.ui.office.transfer.TransferConfirmFragment
 import kz.das.dasaccounting.ui.office.transfer.TransferFormalizeFragment
@@ -188,7 +189,8 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
                         if (qrScan.contains("model") || qrScan.contains("stateNumber")) {
                             try {
                                 DriverInventoryTypeConvertor().stringToTransportInventory(qrScan)?.toDomain()?.let {
-                                    requireRouter().navigateTo(kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoFragment.getScreen(it))
+//                                    requireRouter().navigateTo(kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoFragment.getScreen(it))
+                                    requireRouter().navigateTo(kz.das.dasaccounting.ui.drivers.accept.AcceptTransportConfirmationFragment.getScreen(it))
                                 }
                             } catch (e: Exception) {
                                 showError(getString(R.string.common_error), getString(R.string.common_error_scan))
@@ -196,7 +198,8 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
                         } else {
                             try {
                                 OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
-                                    requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(it))
+//                                    requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(it))
+                                    requireRouter().navigateTo(AcceptConfirmationFragment.getScreen(it))
                                 }
                             } catch (e: Exception) {
                                 showError(getString(R.string.common_error), getString(R.string.common_error_scan))

@@ -9,9 +9,7 @@ import kz.das.dasaccounting.data.entities.requests.toReceiveFligelDataRequest
 import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.DriverOperationApi
 import kz.das.dasaccounting.domain.DriverInventoryRepository
-import kz.das.dasaccounting.domain.data.drivers.FligelProduct
-import kz.das.dasaccounting.domain.data.drivers.TransportInventory
-import kz.das.dasaccounting.domain.data.drivers.toHistoryTransfer
+import kz.das.dasaccounting.domain.data.drivers.*
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -56,51 +54,6 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
     override suspend fun removeUnAcceptedInventory(transportInventory: TransportInventory) {
         dasAppDatabase.driverAcceptedInventoryDao().removeItem(transportInventory.toAcceptedEntity())
     }
-
-
-//    override suspend fun initAwaitAcceptInventory() {
-//        dasAppDatabase.driverAcceptedInventoryDao().all.forEach {
-//            driverInventoryApi.getInventoryDriverTransport(
-//                it.toDomain().toGetRequest("Повторная отправка", null)
-//            )
-//                .unwrap(object : OnResponseCallback<Any> {
-//                    override fun onSuccess(entity: Any) {
-//                        dasAppDatabase.driverAcceptedInventoryDao().removeItem(it)
-//                    }
-//
-//                    override fun onFail(exception: Exception) {}
-//                })
-//        }
-//    }
-
-    //    override suspend fun initAwaitSendInventory() {
-//        dasAppDatabase.driverSentInventoryDao().all.forEach {
-//            driverInventoryApi.sendInventoryDriverTransport(it.toDomain().toSentRequest())
-//                .unwrap(object : OnResponseCallback<Any> {
-//                    override fun onSuccess(entity: Any) {
-//                        dasAppDatabase.driverSentInventoryDao().removeItem(it)
-//                    }
-//
-//                    override fun onFail(exception: Exception) {}
-//                })
-//        }
-//    }
-//
-//    override suspend fun initAwaitReceiveFligerData() {
-//        dasAppDatabase.driverFligelDataDao().all.forEach {
-//            driverInventoryApi.receiveInventoryFligel(
-//                it.toFligelProduct().toReceiveFligelDataRequest()
-//            )
-//                .unwrap(object : OnResponseCallback<Any> {
-//                    override fun onSuccess(entity: Any) {
-//                        dasAppDatabase.driverFligelDataDao().removeItem(it)
-//                    }
-//
-//                    override fun onFail(exception: Exception) {}
-//                })
-//        }
-//    }
-
 
     override suspend fun acceptInventory(
         transportInventory: TransportInventory,
@@ -163,19 +116,19 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
     }
 
     override fun getDriverSentMaterialsLocally(): LiveData<List<HistoryTransfer>> {
-        return dasAppDatabase.driverSentInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
+        return dasAppDatabase.driverSentInventoryDao().allAsLiveData.map { it -> it.map { it.toSent().toHistoryTransfer() } }
     }
 
     override fun getDriverAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>> {
-        return dasAppDatabase.driverAcceptedInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
+        return dasAppDatabase.driverAcceptedInventoryDao().allAsLiveData.map { it -> it.map { it.toAccepted().toHistoryTransfer() } }
     }
 
     override fun getHistoryDriverAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>> {
-        return dasAppDatabase.driverAcceptedInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
+        return dasAppDatabase.driverAcceptedInventoryDao().allAsLiveData.map { it -> it.map { it.toAccepted().toHistoryTransfer() } }
     }
 
     override fun getHistoryDriverSentMaterialsLocally(): LiveData<List<HistoryTransfer>> {
-        return dasAppDatabase.driverSentInventoryDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
+        return dasAppDatabase.driverSentInventoryDao().allAsLiveData.map { it -> it.map { it.toSent().toHistoryTransfer() } }
     }
 
     override fun getAwaitFligelDataLocally(): LiveData<List<FligelProduct>> {

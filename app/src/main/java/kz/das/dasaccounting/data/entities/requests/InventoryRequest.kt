@@ -1,5 +1,7 @@
 package kz.das.dasaccounting.data.entities.requests
 
+import kz.das.dasaccounting.data.entities.office.toEntity
+import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import java.io.Serializable
 
@@ -12,12 +14,15 @@ open class InventorySendRequest(
     val longitude: Double? = null,
     val materialUUID: String? = null,
     var requestId: String? = null,
-    var storeUUID: String? = null,
+    var storeUUIDSender: String? = null,
+    var storeUUIDReceiver: String? = null,
+    var receiverUUID: String? = null,
+//    var senderUUID: String? = null,
+    var qrData: String? = null,
     val quantity: Double? = null,
     val type: String? = null,
     val senderName: String? = null
 ) : Serializable
-
 
 open class InventoryGetRequest(
     val id: Int = 0,
@@ -28,8 +33,11 @@ open class InventoryGetRequest(
     val longitude: Double? = null,
     val materialUUID: String? = null,
     val senderUUID: String? = null,
+//    val receiverUUID: String? = null,
     var requestId: String? = null,
-    var storeUUID: String? = null,
+    var storeUUIDSender: String? = null,
+    var storeUUIDReceiver: String? = null,
+    var qrData: String? = null,
     val quantity: Double? = null,
     val type: String? = null,
     val senderName: String? = null,
@@ -47,7 +55,11 @@ fun OfficeInventory.toSendRequest(): InventorySendRequest {
         longitude = this.longitude,
         materialUUID = this.materialUUID,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        receiverUUID = this.receiverUUID,
+//        senderUUID = this.senderUUID,
+        qrData = OfficeInventoryEntityTypeConvertor().officeInventoryToString(this.toEntity()),
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         quantity = this.quantity,
         type = this.type,
         senderName = this.senderName
@@ -65,8 +77,11 @@ fun OfficeInventory.toGetRequest(comment: String ?= "",
         longitude = this.longitude,
         materialUUID = this.materialUUID,
         senderUUID = this.senderUUID,
+//        receiverUUID = this.receiverUUID,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        qrData = OfficeInventoryEntityTypeConvertor().officeInventoryToString(this.toEntity()),
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         quantity = this.quantity,
         type = this.type,
         senderName = this.senderName,

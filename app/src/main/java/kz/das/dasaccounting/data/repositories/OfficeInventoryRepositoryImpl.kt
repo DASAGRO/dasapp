@@ -2,18 +2,21 @@ package kz.das.dasaccounting.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.core.extensions.OnResponseCallback
 import kz.das.dasaccounting.core.extensions.unwrap
-import kz.das.dasaccounting.data.entities.requests.InventoryGetRequest
-import kz.das.dasaccounting.data.entities.requests.InventorySendRequest
 import kz.das.dasaccounting.data.entities.office.*
+import kz.das.dasaccounting.data.entities.requests.toGetRequest
+import kz.das.dasaccounting.data.entities.requests.toSendRequest
 import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.OfficeOperationApi
+import kz.das.dasaccounting.data.source.preferences.UserPreferences
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
+import kz.das.dasaccounting.domain.data.drivers.FligelProduct
+import kz.das.dasaccounting.domain.data.drivers.compareRepeat
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
-import kz.das.dasaccounting.domain.data.office.*
+import kz.das.dasaccounting.domain.data.office.NomenclatureOfficeInventory
+import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -23,6 +26,7 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
     private val dasAppDatabase: DasAppDatabase by inject()
 
     private val userRepository: UserRepository by inject()
+    private val userPreferences: UserPreferences by inject()
 
     override suspend fun getOfficeMaterials(): List<OfficeInventory> {
         return officeOperationApi.getMaterials().unwrap({ list -> list.map { it.toDomain() } },
@@ -41,42 +45,44 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
         fileIds: ArrayList<Int>
     ): Any {
         return officeOperationApi.acceptInventory(
-            InventoryGetRequest(
-                id = officeInventory.id,
-                date = officeInventory.date,
-                name = officeInventory.name,
-                humidity = officeInventory.humidity,
-                latitude = officeInventory.latitude,
-                longitude = officeInventory.longitude,
-                materialUUID = officeInventory.materialUUID,
-                senderUUID = officeInventory.senderUUID,
-                requestId = officeInventory.requestId,
-                storeUUID = officeInventory.storeUUID,
-                quantity = officeInventory.quantity,
-                type = officeInventory.type,
-                senderName = officeInventory.senderName,
-                fileIds = fileIds.toArray(),
-                comment = comment
-            )
+            officeInventory.toGetRequest(comment, fileIds)
+//            InventoryGetRequest(
+//                id = officeInventory.id,
+//                date = officeInventory.date,
+//                name = officeInventory.name,
+//                humidity = officeInventory.humidity,
+//                latitude = officeInventory.latitude,
+//                longitude = officeInventory.longitude,
+//                materialUUID = officeInventory.materialUUID,
+//                senderUUID = officeInventory.senderUUID,
+//                requestId = officeInventory.requestId,
+//                storeUUID = officeInventory.storeUUID,
+//                quantity = officeInventory.quantity,
+//                type = officeInventory.type,
+//                senderName = officeInventory.senderName,
+//                fileIds = fileIds.toArray(),
+//                comment = comment
+//            )
         ).unwrap()
     }
 
     override suspend fun sendInventory(officeInventory: OfficeInventory): Any {
         return officeOperationApi.sendInventory(
-            InventorySendRequest(
-                id = officeInventory.id,
-                date = officeInventory.date,
-                name = officeInventory.name,
-                humidity = officeInventory.humidity,
-                latitude = officeInventory.latitude,
-                longitude = officeInventory.longitude,
-                materialUUID = officeInventory.materialUUID,
-                requestId = officeInventory.requestId,
-                storeUUID = officeInventory.storeUUID,
-                quantity = officeInventory.quantity,
-                type = officeInventory.type,
-                senderName = officeInventory.senderName
-            )
+            officeInventory.toSendRequest()
+//            InventorySendRequest(
+//                id = officeInventory.id,
+//                date = officeInventory.date,
+//                name = officeInventory.name,
+//                humidity = officeInventory.humidity,
+//                latitude = officeInventory.latitude,
+//                longitude = officeInventory.longitude,
+//                materialUUID = officeInventory.materialUUID,
+//                requestId = officeInventory.requestId,
+//                storeUUID = officeInventory.storeUUID,
+//                quantity = officeInventory.quantity,
+//                type = officeInventory.type,
+//                senderName = officeInventory.senderName
+//            )
         ).unwrap()
     }
 
@@ -135,6 +141,19 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
 
     override fun getNomenclaturesLocally(): LiveData<List<NomenclatureOfficeInventory>> {
         return dasAppDatabase.nomenclaturesDao().allAsLiveData.map { it -> it.map { it.toDomain() } }
+    }
+
+    override fun isEqualToLastFligelProduct(fligelProduct: FligelProduct): Boolean {
+        if (userPreferences.getLastFligelProduct()?.compareRepeat(fligelProduct) == false) {
+            userPreferences.saveLastFligelProductCnt(0)
+            userPreferences.saveLastFligelProduct(fligelProduct)
+        } else {
+            var cnt = userPreferences.getLastFligelProductCnt()
+            cnt += 1
+            userPreferences.saveLastFligelProductCnt(cnt)
+        }
+
+        return userPreferences.getLastFligelProductCnt() > 1
     }
 
     override suspend fun saveOfficeInventory(officeInventory: OfficeInventory) {
@@ -240,11 +259,11 @@ class OfficeInventoryRepositoryImpl : OfficeInventoryRepository, KoinComponent {
     }
 
     override fun getHistoryOfficeAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>> {
-        return dasAppDatabase.officeInventoryAcceptedDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
+        return dasAppDatabase.officeInventoryAcceptedDao().allAsLiveData.map { it -> it.map { it.toHistory() } }
     }
 
     override fun getHistoryOfficeSentMaterialsLocally(): LiveData<List<HistoryTransfer>> {
-        return dasAppDatabase.officeInventorySentDao().allAsLiveData.map { it -> it.map { it.toDomain().toHistoryTransfer() } }
+        return dasAppDatabase.officeInventorySentDao().allAsLiveData.map { it -> it.map { it.toHistory() } }
     }
 
     override suspend fun initDeleteData() {

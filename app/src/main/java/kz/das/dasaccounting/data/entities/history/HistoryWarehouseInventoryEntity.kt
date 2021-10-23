@@ -2,7 +2,6 @@ package kz.das.dasaccounting.data.entities.history
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.extensions.getLongFromServerDate
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import kz.das.dasaccounting.domain.data.history.HistoryWarehouseInventory
@@ -46,7 +45,7 @@ fun HistoryWarehouseInventoryEntity.toHistoryTransfer(): HistoryTransfer {
         date = this.dateTime.getLongFromServerDate(),
         dateText = this.dateTime ?: "Ошибка даты",
         quantity = "1",
-        senderName = String.format("От кого: %s", this.fullName) ?: "",
+        senderName = String.format((if (this.status == "Принят") "От кого: %s" else "Кому: %s"), this.fullName) ?: "",
         operationType = OperationType.WAREHOUSE.status,
         isAwait = false,
         status = this.status ?: ""

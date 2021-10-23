@@ -2,6 +2,7 @@ package kz.das.dasaccounting.data.entities.driver
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 
 @Entity(tableName = "transports")
@@ -15,10 +16,13 @@ data class TransportInventoryEntity(
     val molUuid: String?,
     var requestId: String? = null,
     var senderUUID: String? = null,
-    var storeUUID: String? = null,
+    var receiverUUID: String? = null,
+    var storeUUIDSender: String? = null,
+    var storeUUIDReceiver: String? = null,
     val stateNumber: String,
     val tsType: String,
     var senderName: String?,
+    var receiverName: String?,
     @PrimaryKey
     val uuid: String
 )
@@ -34,10 +38,13 @@ fun TransportInventoryEntity.toDomain(): TransportInventory {
         molUuid = this.molUuid,
         requestId = this.requestId,
         senderUUID = this.senderUUID,
-        storeUUID = this.storeUUID,
+        receiverUUID = this.receiverUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         senderName = this.senderName,
+        receiverName = this.receiverName,
         uuid = this.uuid
     )
 }
@@ -53,10 +60,13 @@ fun TransportInventory.toEntity(): TransportInventoryEntity {
         molUuid = this.molUuid,
         requestId = this.requestId,
         senderUUID = this.senderUUID,
-        storeUUID = this.storeUUID,
+        receiverUUID = this.receiverUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
         uuid = this.uuid,
-        senderName = this.senderName
+        senderName = this.senderName,
+        receiverName = this.receiverName
     )
 }

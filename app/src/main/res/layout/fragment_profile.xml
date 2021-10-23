@@ -199,6 +199,96 @@
                 android:layout_height="1dp"/>
 
             <RelativeLayout
+                android:id="@+id/rl_instruction"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/selectable_accent"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_instruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_instrucetion"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextView.DAS"
+                    android:layout_toEndOf="@+id/ic_instruction"
+                    android:text="@string/instruction"
+                    android:textSize="16sp"
+                    android:layout_toStartOf="@+id/ic_chevron_instruction"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_chevron_instruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_chevron_right" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/color_grey"
+                android:layout_height="1dp"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_about_app"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/selectable_accent"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_about_app"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_support"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextView.DAS"
+                    android:layout_toEndOf="@+id/ic_about_app"
+                    android:text="@string/about_app"
+                    android:textSize="16sp"
+                    android:layout_toStartOf="@+id/ic_chevron_about_app"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_chevron_about_app"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_chevron_right" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/color_grey"
+                android:layout_height="1dp"/>
+
+            <RelativeLayout
                 android:id="@+id/rl_log_out"
                 android:clickable="true"
                 android:focusable="true"

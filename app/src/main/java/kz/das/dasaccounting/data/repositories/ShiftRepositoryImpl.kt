@@ -1,5 +1,7 @@
 package kz.das.dasaccounting.data.repositories
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.core.extensions.unwrap
 import kz.das.dasaccounting.data.entities.common.ShiftRequest
@@ -23,16 +25,18 @@ class ShiftRepositoryImpl : ShiftRepository, KoinComponent {
         long: Double,
         time: Long,
         scannedQR: String?
-    ): ApiResponseMessage {
+    ): Flow<ApiResponseMessage> {
 
-        return shiftApi.startWork(
-            hashMapOf(
-                "latitude" to lat,
-                "longitude" to long,
-                "time" to time,
-                "qr" to scannedQR
-            )
-        ).unwrap()
+        return flow { emit(
+                shiftApi.startWork(
+                        hashMapOf(
+                                "latitude" to lat,
+                                "longitude" to long,
+                                "time" to time,
+                                "qr" to scannedQR
+                        )
+                )
+        ) }
     }
 
     override suspend fun finishShift(
@@ -56,7 +60,7 @@ class ShiftRepositoryImpl : ShiftRepository, KoinComponent {
         scannedQR: String?
     ) {
         userRepository.startWork()
-        userPreferences.setAwaitFinishWork(ShiftRequest(lat, long, time, scannedQR))
+        userPreferences.setAwaitStartWork(ShiftRequest(lat, long, time, scannedQR))
     }
 
     override suspend fun saveAwaitFinishShift(lat: Double, long: Double, time: Long) {
@@ -66,6 +70,18 @@ class ShiftRepositoryImpl : ShiftRepository, KoinComponent {
 
     override suspend fun isShiftState(): ShiftState {
         return shiftApi.isOnSession().unwrap { it.toDomain() }
+    }
+
+    override fun getAwaitShiftStarted(): ShiftRequest? {
+        userPreferences.getAwaitStartWork()?.let {
+            return it
+        } ?: run { return null }
+    }
+
+    override fun getAwaitShiftFinished(): ShiftRequest? {
+        userPreferences.getAwaitFinishWork()?.let {
+            return it
+        } ?: run { return null }
     }
 
     override suspend fun initAwaitShiftStarted() {

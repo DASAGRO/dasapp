@@ -47,6 +47,6 @@ class HistoryGivenVM: BaseVM() {
 
     private fun sentTransportInventoryLocally() = driverInventoryRepository.getDriverSentMaterialsLocally()
 
-    private fun sentOfficeInventoryLocally() = officeInventoryRepository.getOfficeSentMaterialsLocally()
+    private fun sentOfficeInventoryLocally() = officeInventoryRepository.getHistoryOfficeSentMaterialsLocally()
 
 }

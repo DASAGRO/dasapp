@@ -3,9 +3,10 @@ package kz.das.dasaccounting.data.entities.driver
 import androidx.annotation.Nullable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kz.das.dasaccounting.data.entities.office.toDomain
+import kz.das.dasaccounting.domain.data.drivers.TransportAcceptedInventory
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import java.io.Serializable
-import java.util.*
 
 @Entity(tableName = "accepted_transports")
 data class AcceptedTransportEntity (
@@ -18,8 +19,11 @@ data class AcceptedTransportEntity (
     val model: String,
     val molUuid: String?,
     var requestId: String? = null,
-    var storeUUID: String? = null,
+    var storeUUIDSender: String? = null,
+    var storeUUIDReceiver: String? = null,
     var senderUUID: String? = null,
+    val receiverUUID: String? = null,
+    val receiverName: String? = null,
     val stateNumber: String,
     val tsType: String,
     @PrimaryKey
@@ -37,12 +41,38 @@ fun AcceptedTransportEntity.toDomain(): TransportInventory {
         model = this.model,
         molUuid = this.molUuid,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
+        receiverUUID = this.receiverUUID,
         senderUUID = this.senderUUID,
+        senderName = this.senderName,
+        receiverName = this.receiverName,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
-        uuid = this.uuid,
-        senderName = this.senderName
+        uuid = this.uuid
+    )
+}
+
+
+fun AcceptedTransportEntity.toAccepted(): TransportAcceptedInventory {
+    return TransportAcceptedInventory(
+        comment = this.comment,
+        dateTime = this.dateTime,
+        id = this.id,
+        latitude = this.latitude,
+        longitude = this.longitude,
+        model = this.model,
+        molUuid = this.molUuid,
+        requestId = this.requestId,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
+        receiverUUID = this.receiverUUID,
+        senderUUID = this.senderUUID,
+        senderName = this.senderName,
+        receiverName = this.receiverName,
+        stateNumber = this.stateNumber,
+        tsType = this.tsType,
+        uuid = this.uuid
     )
 }
 
@@ -56,11 +86,14 @@ fun TransportInventory.toAcceptedEntity(): AcceptedTransportEntity {
         model = this.model,
         molUuid = this.molUuid,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        receiverUUID = this.receiverUUID,
+        receiverName = this.receiverName,
         senderUUID = this.senderUUID,
+        senderName = this.senderName,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
-        uuid = this.uuid,
-        senderName = this.senderName
+        uuid = this.uuid
     )
 }

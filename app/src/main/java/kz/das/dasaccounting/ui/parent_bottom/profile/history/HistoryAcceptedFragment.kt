@@ -21,10 +21,10 @@ class HistoryAcceptedFragment: BaseFragment<HistoryAcceptedVM, FragmentProfileHi
     override fun getViewBinding() = FragmentProfileHistoryAcceptedBinding.inflate(layoutInflater)
 
     override fun setupUI(savedInstanceState: Bundle?) {
-        historyAdapter = UserTransferHistoryAdapter(requireContext(), arrayListOf(), "")
+        historyAdapter = UserTransferHistoryAdapter(requireContext(), arrayListOf())
         historyAdapter?.setHistoryOperationsAdapterEvent(object : UserTransferHistoryAdapter.OnHistoryOperationsAdapterEvent {
-            override fun onClick(title: String?, descr: String?, type: String?, status: String?) {
-                requireRouter().navigateTo(HistoryDetailFragment.getScreen(title, descr, type, status))
+            override fun onClick(title: String?, descr: String?, type: String?, status: String?, qr: String?, transferType: String?) {
+                requireRouter().navigateTo(HistoryDetailFragment.getScreen(title, descr, type, status, mViewModel.getQrData(qr, transferType, status)))
             }
         })
         mViewBinding.rvAccepted.apply {
@@ -46,7 +46,8 @@ class HistoryAcceptedFragment: BaseFragment<HistoryAcceptedVM, FragmentProfileHi
                     }
                 }
             }
-            val sorted = historyList.sortedByDescending { it.date }
+            val distinctList = historyList.distinct()
+            val sorted = distinctList.sortedByDescending { it.date }
             historyAdapter?.putItems(sorted)
         })
     }

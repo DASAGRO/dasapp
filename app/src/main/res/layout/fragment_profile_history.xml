@@ -14,6 +14,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_refresh"
+        android:background="@drawable/ic_oval_dummy"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_await"
+        android:layout_width="32dp"
+        android:layout_height="32dp" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_support"
         android:layout_width="wrap_content"

@@ -59,20 +59,20 @@ class WarehouseDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouse
                 override fun onScan(qrScan: String) {
                     delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
                         try {
-                            if (qrScan.contains("sealNumber") && qrScan.contains("storeUUID") && !qrScan.contains("model") && !qrScan.contains("stateNumber")) {
+                            if (qrScan.contains("sealNumber") && !qrScan.contains("model") && !qrScan.contains("stateNumber")) {
                                 WarehouseInventoryTypeConvertor().stringToWarehouseInventory(qrScan)?.toDomain()?.let {
                                     requireRouter().navigateTo(AcceptInventoryInfoFragment.getScreen(it))
                                 }
                             } else if (qrScan.contains("model") && qrScan.contains("stateNumber")) {
                                 DriverInventoryTypeConvertor().stringToTransportInventory(qrScan)?.toDomain()?.let {
                                     val inventory = it
-                                    inventory.storeUUID = mViewModel.getWarehouseInventory()?.storeUUID
+                                    inventory.storeUUIDReceiver = mViewModel.getWarehouseInventory()?.storeUUID
                                     requireRouter().navigateTo(kz.das.dasaccounting.ui.drivers.accept.AcceptInventoryInfoFragment.getScreen(it))
                                 }
-                            } else if (qrScan.contains("name") && (!qrScan.contains("stateNumber") && !qrScan.contains("storeUUID") && !qrScan.contains("sealNumber") && !qrScan.contains("model"))) {
+                            } else if (qrScan.contains("name") && (!qrScan.contains("stateNumber") && !qrScan.contains("sealNumber") && !qrScan.contains("model"))) {
                                 OfficeInventoryEntityTypeConvertor().stringToOfficeInventory(qrScan)?.toDomain()?.let {
                                     val inventory = it
-                                    inventory.storeUUID = mViewModel.getWarehouseInventory()?.storeUUID
+                                    inventory.storeUUIDReceiver = mViewModel.getWarehouseInventory()?.storeUUID
                                     requireRouter().navigateTo(kz.das.dasaccounting.ui.office.accept.AcceptInventoryInfoFragment.getScreen(it))
                                 }
                             } else {

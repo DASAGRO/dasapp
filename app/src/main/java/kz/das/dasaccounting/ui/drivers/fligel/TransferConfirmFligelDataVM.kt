@@ -81,13 +81,9 @@ class TransferConfirmFligelDataVM: BaseVM() {
                     materialUUID = nomenclatureOfficeInventory?.materialUUID ?: "Not found UUID",
                     senderUUID = userRepository.getUser()?.userId,
                     requestId = UUID.randomUUID().toString(),
-                    storeUUID = null,
                     quantity = fligelProduct?.harvestWeight,
                     type = nomenclatureOfficeInventory?.measurement,
-                    acceptedAt = null,
-                    sendAt = null,
                     syncRequire = 0,
-                    isSend = 0,
                     senderName = userRepository.getUser()?.firstName + " " + userRepository.getUser()?.lastName,
                     comment = ""
                 )

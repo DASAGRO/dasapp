@@ -25,6 +25,8 @@ class SplashFragment: BaseFragment<SplashVM, FragmentSplashBinding>() {
     override fun setupUI(savedInstanceState: Bundle?) {
         //changeStatusColor(R.color.white)
         mViewBinding.ivLogo.animateInfinitePulse(0.5f, 0.5f, 250)
+        mViewBinding.tvVersion.text = "Version ${context?.packageManager?.getPackageInfo(context?.packageName!!, 0)!!.versionName}"
+
         delayedTask(1000, CoroutineScope(Dispatchers.Main)) {
             if (mViewModel.isUserOnSession()) {
                 mViewModel.getUserRole()?.let {

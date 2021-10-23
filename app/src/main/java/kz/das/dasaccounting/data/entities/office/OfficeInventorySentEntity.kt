@@ -2,7 +2,15 @@ package kz.das.dasaccounting.data.entities.office
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kz.das.dasaccounting.core.extensions.getServerDateFromLong
+import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryAcceptedTypeConvertor
+import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventorySentTypeConvertor
+import kz.das.dasaccounting.domain.data.history.HistoryEnum
+import kz.das.dasaccounting.domain.data.history.HistoryTransfer
+import kz.das.dasaccounting.domain.data.history.OperationType
+import kz.das.dasaccounting.domain.data.office.OfficeAcceptedInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
+import kz.das.dasaccounting.domain.data.office.OfficeSentInventory
 import java.io.Serializable
 
 @Entity(tableName = "materials_sent")
@@ -16,8 +24,11 @@ data class OfficeInventorySentEntity(
     val longitude: Double? = null,
     val materialUUID: String,
     val senderUUID: String? = null,
+    val receiverUUID: String? = null,
+    val receiverName: String? = null,
     var requestId: String? = null,
-    var storeUUID: String? = null,
+    var storeUUIDSender: String? = null,
+    var storeUUIDReceiver: String? = null,
     val quantity: Double? = null,
     val type: String? = null,
     val acceptedAt: Long? = 0,
@@ -38,17 +49,56 @@ fun OfficeInventorySentEntity.toDomain(): OfficeInventory {
         latitude = this.latitude,
         longitude = this.longitude,
         materialUUID = this.materialUUID,
+        receiverUUID = this.receiverUUID,
+        receiverName = this.receiverName,
         senderUUID = this.senderUUID,
+        senderName = this.senderName,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         quantity = this.quantity,
         type = this.type,
-        acceptedAt = this.acceptedAt,
-        sendAt = this.sendAt,
-        syncRequire = this.syncRequire,
+        syncRequire = this.syncRequire
+    )
+}
+
+fun OfficeInventorySentEntity.toHistory(): HistoryTransfer {
+    return HistoryTransfer(
+        title = this.name ?: "Продукт",
+        descr = ("Количество:" +
+                " " + this.quantity +
+                " " + this.type + "\n" +
+                String.format("Кому: %s", this.receiverName)),
+        date = this.date ?: 0L,
+        dateText = this.date.getServerDateFromLong() ?: "Ошибка даты",
+        quantity = this.quantity.toString(),
+        senderName = String.format("Кому: %s", this.receiverName) ?: "",
+        operationType = OperationType.OFFICE.status,
+        isAwait = false,
+        qrData = OfficeInventorySentTypeConvertor().officeSentInventoryToString(this),
+        status = HistoryEnum.AWAIT.status
+    )
+}
+
+fun OfficeInventorySentEntity.toAccepted(): OfficeSentInventory {
+    return OfficeSentInventory(
+        id = this.id,
+        date = this.date,
+        name = this.name,
+        humidity = this.humidity,
+        latitude = this.latitude,
+        longitude = this.longitude,
+        materialUUID = this.materialUUID,
+        receiverUUID = this.receiverUUID,
+        receiverName = this.receiverName,
+        senderUUID = this.senderUUID,
         senderName = this.senderName,
-        isSend = this.isSend,
-        isAccepted = this.isAccepted
+        requestId = this.requestId,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
+        quantity = this.quantity,
+        type = this.type,
+        syncRequire = this.syncRequire
     )
 }
 
@@ -61,16 +111,15 @@ fun OfficeInventory.toSentEntity(): OfficeInventorySentEntity {
         latitude = this.latitude,
         longitude = this.longitude,
         materialUUID = this.materialUUID,
+        receiverUUID = this.receiverUUID,
+        receiverName = this.receiverName,
         senderUUID = this.senderUUID,
+        senderName = this.senderName,
         requestId = this.requestId,
-        storeUUID = this.storeUUID,
+        storeUUIDSender = this.storeUUIDSender,
+        storeUUIDReceiver = this.storeUUIDReceiver,
         quantity = this.quantity,
         type = this.type,
-        acceptedAt = this.acceptedAt,
-        sendAt = this.sendAt,
-        syncRequire = this.syncRequire,
-        senderName = this.senderName,
-        isSend = this.isSend,
-        isAccepted = this.isAccepted
+        syncRequire = this.syncRequire
     )
 }

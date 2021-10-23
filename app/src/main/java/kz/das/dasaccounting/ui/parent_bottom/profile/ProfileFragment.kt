@@ -9,7 +9,10 @@ import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentProfileBinding
 import kz.das.dasaccounting.ui.parent_bottom.hideBottomNavMenu
 import kz.das.dasaccounting.ui.parent_bottom.profile.history.ProfileHistoryFragment
+import kz.das.dasaccounting.ui.parent_bottom.profile.instructions.InstructionFragment
+import kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset.ProfilePassResetFragment
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportFragment
+import kz.das.dasaccounting.utils.AppConstants
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ProfileFragment: BaseFragment<ProfileVM, FragmentProfileBinding>() {
@@ -26,6 +29,7 @@ class ProfileFragment: BaseFragment<ProfileVM, FragmentProfileBinding>() {
         mViewBinding.run {
             lifecycleOwner = viewLifecycleOwner
             profileVM = mViewModel
+
             clProfile.setOnClickListener {
                 hideBottomNavMenu()
                 requireRouter().navigateTo(ProfileInfoFragment.getScreen())
@@ -39,7 +43,16 @@ class ProfileFragment: BaseFragment<ProfileVM, FragmentProfileBinding>() {
                 requireRouter().navigateTo(ProfileSupportFragment.getScreen())
             }
             this.rlLogOut.setOnClickListener {
-                showLogOutDialog()
+                requireRouter().navigateTo(ProfilePassResetFragment.getScreen(AppConstants.EXIT))
+//                showLogOutDialog()
+            }
+            this.rlInstruction.setOnClickListener {
+                hideBottomNavMenu()
+                requireRouter().navigateTo(InstructionFragment.getScreen())
+            }
+            this.rlAboutApp.setOnClickListener {
+                hideBottomNavMenu()
+                requireRouter().navigateTo(AboutAppFragment.getScreen())
             }
         }
     }

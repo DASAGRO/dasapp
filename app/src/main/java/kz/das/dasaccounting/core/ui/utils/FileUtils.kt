@@ -11,8 +11,9 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
+import java.io.*
 
+private val fileName = "request_logs.txt"
 
 fun getImageFileMultipart(context: Context, path: Uri): MultipartBody.Part? {
     val file: File? = File(getRealLocalPathFromURI(context, path)?: "")
@@ -117,4 +118,51 @@ fun isMediaDocument(uri: Uri): Boolean {
 
 fun isGooglePhotosUri(uri: Uri): Boolean {
     return "com.google.android.apps.photos.content" == uri.authority
+}
+
+fun writeObjectToLog(stringToSave: String, context: Context) {
+    val outStream: FileOutputStream?
+    var osw: OutputStreamWriter? = null
+
+    try {
+        outStream = context.openFileOutput(fileName, Context.MODE_APPEND)
+        osw = OutputStreamWriter(outStream)
+        osw.write(stringToSave)
+        osw.flush()
+    } finally {
+        osw?.close()
+    }
+}
+
+ fun readFile(context: Context): String {
+    var inStream: FileInputStream? = null
+    var myInputStreamReader: InputStreamReader? = null
+    var myBufferedReader: BufferedReader? = null
+    var retrievedString = ""
+    try {
+        inStream = context.openFileInput(fileName)
+        myInputStreamReader = InputStreamReader(inStream!!)
+        myBufferedReader = BufferedReader(myInputStreamReader)
+        var readLineString: String? = myBufferedReader.readLine()
+        while (readLineString != null) {
+            retrievedString += readLineString
+            readLineString = myBufferedReader.readLine()
+        }
+    } finally {
+        myBufferedReader!!.close()
+        myInputStreamReader!!.close()
+        inStream!!.close()
+    }
+    return retrievedString
+}
+
+fun clearLogs(context: Context) {
+    var outStream: FileOutputStream? = null
+
+    try {
+        outStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
+        outStream.write("".toByteArray())
+    } finally {
+        outStream!!.close()
+    }
 }

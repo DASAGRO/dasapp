@@ -10,7 +10,6 @@ import kz.das.dasaccounting.databinding.FragmentInventoryAcceptBinding
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.ui.drivers.setTsTypeImage
 import org.koin.android.viewmodel.ext.android.viewModel
-import org.koin.core.get
 
 class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentInventoryAcceptBinding>() {
 
@@ -30,7 +29,7 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
 
     override fun getViewBinding() = FragmentInventoryAcceptBinding.inflate(layoutInflater)
 
-        override fun setupUI(savedInstanceState: Bundle?) {
+    override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setTransportInventory(getOfficeInventory())
 
         mViewBinding.apply {
@@ -43,7 +42,7 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
                     it.dateTime = System.currentTimeMillis()
                     it.latitude = mViewModel.getLocation().lat
                     it.longitude = mViewModel.getLocation().long
-                    requireRouter().replaceScreen(AcceptTransportConfirmationFragment.getScreen(it))
+                    requireRouter().replaceScreen(AcceptTransportCheckFragment.getScreen(it))
                 }
             }
         }
@@ -57,8 +56,9 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
                 mViewBinding.ivInventory.setTsTypeImage(it)
                 mViewBinding.tvInventoryTitle.text = it.model
                 mViewBinding.tvInventoryDesc.text =
-                    (getString(R.string.gov_number) +
-                            " " + it.stateNumber)
+                    ((getString(R.string.gov_number) +
+                            " " + it.stateNumber) + "\n" +
+                            String.format(getString(R.string.inventory_sender_name), it.senderName))
             }
         })
     }

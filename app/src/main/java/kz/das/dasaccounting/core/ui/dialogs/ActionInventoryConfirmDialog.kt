@@ -48,7 +48,7 @@ class ActionInventoryConfirmDialog : BaseDialogFragment<DialogInventoryConfirmAc
         }
 
         when (val mainTitle = arguments?.getCharSequence(MAIN_TITLE)) {
-            null -> mViewBinding.tvTitle.text = getString(R.string.dialog_inventory_confirm_title)
+            null -> mViewBinding.tvTitle.text = getString(R.string.success_send)
             else -> mViewBinding.tvTitle.text = mainTitle
         }
 
