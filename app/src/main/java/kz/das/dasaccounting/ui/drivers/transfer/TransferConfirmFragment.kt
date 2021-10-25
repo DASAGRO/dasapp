@@ -42,7 +42,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
 
     override fun getViewBinding() = FragmentBarcodeGenerateBinding.inflate(layoutInflater)
 
-        override fun setupUI(savedInstanceState: Bundle?) {
+    override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setTransportInventory(getTransportInventory())
         mViewBinding.apply {
             tvWarning.text = getString(R.string.barcode_next_bottom_text)
@@ -54,6 +54,16 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             btnConfirm.setOnClickListener {
                 showBarcodeQR()
             }
+
+            try {
+                val inventory = mViewModel.getLocalInventory()?.toEntity()
+                inventory?.requestId = UUID.randomUUID().toString()
+                inventory?.senderUUID = mViewModel.getUser()?.userId
+                mViewModel.setGeneratedRequestId(inventory?.requestId!!)
+
+                mViewBinding.ivQr.setImageBitmap(DriverInventoryTypeConvertor().transportTransportToString(inventory).generateQR())
+                inventory?.let { inventoryTransport -> mViewModel.setLocalInventory(inventoryTransport.toDomain()) }
+            } catch (e: Exception) { }
         }
     }
 
@@ -67,15 +77,6 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                 mViewBinding.tvInventoryDesc.text =
                     (getString(R.string.gov_number) +
                             " " + it.stateNumber)
-                try {
-                    val inventory = mViewModel.getLocalInventory()?.toEntity()
-                    inventory?.requestId = UUID.randomUUID().toString()
-                    inventory?.senderUUID = mViewModel.getUser()?.userId
-                    mViewModel.setGeneratedRequestId(inventory?.requestId!!)
-
-                    mViewBinding.ivQr.setImageBitmap(DriverInventoryTypeConvertor().transportTransportToString(inventory).generateQR())
-                    inventory?.let { inventoryTransport -> mViewModel.setLocalInventory(inventoryTransport.toDomain()) }
-                } catch (e: Exception) { }
             }
         })
 

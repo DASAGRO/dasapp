@@ -44,7 +44,11 @@ class TransferConfirmVM: BaseVM() {
 
     fun getGeneratedRequestId() = generatedRequestId
 
+    fun getUserLocation() = userRepository.getLastLocation()
+
     fun setTransportInventory(transportInventory: TransportInventory?) {
+        transportInventory?.dateTime = System.currentTimeMillis()
+
         this.transportInventory = transportInventory
         this.transportInventory?.senderName = userRepository.getUser()?.lastName + " "
                 if (userRepository.getUser()?.firstName?.length ?: 0 > 0) {
@@ -89,11 +93,13 @@ class TransferConfirmVM: BaseVM() {
         viewModelScope.launch {
             showLoading()
             try {
-                transportInventory?.let {
-                    writeObjectToLog(it.toString(), context)
+                transportInventory?.apply {
+                    latitude = getUserLocation().lat
+                    longitude = getUserLocation().long
+                    writeObjectToLog(this.toString(), context)
 
-                    transportInventoryRepository.sendInventory(it)
-                    transportInventoryRepository.removeItem(it)
+                    transportInventoryRepository.sendInventory(this)
+                    transportInventoryRepository.removeItem(this)
                 }
                 isTransportInventorySentLV.postValue(true)
             } catch (t: Throwable) {

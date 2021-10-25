@@ -39,7 +39,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
 
     override fun getViewBinding() = FragmentBarcodeGenerateBinding.inflate(layoutInflater)
 
-        override fun setupUI(savedInstanceState: Bundle?) {
+    override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setOfficeInventory(getOfficeInventory())
         mViewBinding.apply {
             tvWarning.text = getString(R.string.barcode_next_bottom_text)
@@ -51,6 +51,15 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             btnConfirm.setOnClickListener {
                 showBarcodeQR()
             }
+
+            try {
+                val inventory = mViewModel.getLocalInventory()?.toEntity()
+                inventory?.requestId = UUID.randomUUID().toString()
+                mViewModel.setGeneratedRequestId(inventory?.requestId!!)
+
+                ivQr.setImageBitmap(OfficeInventoryEntityTypeConvertor().officeInventoryToString(inventory).generateQR())
+                inventory?.let { inventoryOffice -> mViewModel.setLocalInventory(inventoryOffice.toDomain()) }
+            } catch (e: Exception) { }
         }
     }
 
@@ -65,14 +74,6 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                     (getString(R.string.inventory_total_quantity) +
                             " " + it.quantity +
                             " " + it.type)
-                try {
-                    val inventory = mViewModel.getLocalInventory()?.toEntity()
-                    inventory?.requestId = UUID.randomUUID().toString()
-                    mViewModel.setGeneratedRequestId(inventory?.requestId!!)
-
-                    mViewBinding.ivQr.setImageBitmap(OfficeInventoryEntityTypeConvertor().officeInventoryToString(inventory).generateQR())
-                    inventory?.let { inventoryOffice -> mViewModel.setLocalInventory(inventoryOffice.toDomain()) }
-                } catch (e: Exception) { }
             }
         })
 

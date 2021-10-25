@@ -40,6 +40,8 @@ class AcceptTransportConfirmationVM : BaseVM(), KoinComponent {
 
     fun getUserRole() = userRepository.getUserRole()
 
+    fun getUserLocation() = userRepository.getLastLocation()
+
     fun setTransportInventory(officeInventory: TransportInventory?) {
         this.transportInventory = officeInventory
         transportInventoryLV.postValue(officeInventory)
@@ -52,11 +54,13 @@ class AcceptTransportConfirmationVM : BaseVM(), KoinComponent {
         viewModelScope.launch {
             showLoading()
             try {
-                transportInventory?.let {
-                    writeObjectToLog(it.toString(), context)
+                transportInventory?.apply {
+                    latitude = getUserLocation().lat
+                    longitude = getUserLocation().long
+                    writeObjectToLog(this.toString(), context)
 
-                    officeInventoryRepository.acceptInventory(it, comment, fileIds)
-                    officeInventoryRepository.addItem(it)
+                    officeInventoryRepository.acceptInventory(this, comment, fileIds)
+                    officeInventoryRepository.addItem(this)
                 }
                 driverInventoryAcceptedLV.postValue(true)
             } catch (t: Throwable) {
