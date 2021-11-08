@@ -1,6 +1,5 @@
 package kz.das.dasaccounting.ui.office.accept
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -8,15 +7,11 @@ import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.utils.writeObjectToLog
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
-import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.inject
 
 class AcceptInventoryInfoVM: BaseVM() {
 
-    private val context: Context by inject()
-
-    private val userRepository: UserRepository by inject()
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
 
     private var officeInventory: OfficeInventory? = null

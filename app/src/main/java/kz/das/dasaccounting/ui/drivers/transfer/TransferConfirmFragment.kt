@@ -16,6 +16,7 @@ import kz.das.dasaccounting.data.entities.driver.toDomain
 import kz.das.dasaccounting.data.entities.driver.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
+import kz.das.dasaccounting.domain.common.InventoryType
 import kz.das.dasaccounting.domain.common.TransportType
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.ui.Screens
@@ -43,27 +44,42 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
     override fun getViewBinding() = FragmentBarcodeGenerateBinding.inflate(layoutInflater)
 
     override fun setupUI(savedInstanceState: Bundle?) {
-        mViewModel.setTransportInventory(getTransportInventory())
         mViewBinding.apply {
             tvWarning.text = getString(R.string.barcode_next_bottom_text)
             btnConfirm.text = getString(R.string.next)
 
-            toolbar.setNavigationOnClickListener {
-                requireRouter().exit()
-            }
-            btnConfirm.setOnClickListener {
-                showBarcodeQR()
-            }
+            toolbar.setNavigationOnClickListener { requireRouter().exit() }
 
-            try {
-                val inventory = mViewModel.getLocalInventory()?.toEntity()
-                inventory?.requestId = UUID.randomUUID().toString()
-                inventory?.senderUUID = mViewModel.getUser()?.userId
-                mViewModel.setGeneratedRequestId(inventory?.requestId!!)
+            btnConfirm.setOnClickListener { showBarcodeQR() }
 
-                mViewBinding.ivQr.setImageBitmap(DriverInventoryTypeConvertor().transportTransportToString(inventory).generateQR())
-                inventory?.let { inventoryTransport -> mViewModel.setLocalInventory(inventoryTransport.toDomain()) }
-            } catch (e: Exception) { }
+            mViewModel.apply {
+                getSavedInventory(InventoryType.TRANSPORT)?.let {
+                    it as TransportInventory
+
+                    setTransportInventory(it)
+                    setGeneratedRequestId(it.requestId!!)
+
+                    ivQr.setImageBitmap(DriverInventoryTypeConvertor().transportTransportToString(it.toEntity()).generateQR())
+                    setLocalInventory(it.toEntity().toDomain())
+                } ?: run {
+                    setTransportInventory(this@TransferConfirmFragment.getTransportInventory())
+
+                    try {
+                        val inventory = mViewModel.getLocalInventory()?.toEntity()
+                        inventory?.requestId = UUID.randomUUID().toString()
+                        inventory?.senderUUID = mViewModel.getUser()?.userId
+                        setGeneratedRequestId(inventory?.requestId!!)
+
+                        mViewBinding.ivQr.setImageBitmap(DriverInventoryTypeConvertor().transportTransportToString(inventory).generateQR())
+                        inventory?.let { inventoryTransport ->
+                            val domainInventoryTransport = inventoryTransport.toDomain()
+
+                            setLocalInventory(domainInventoryTransport)
+                            saveInventory(domainInventoryTransport, InventoryType.TRANSPORT)
+                        }
+                    } catch (e: Exception) { }
+                }
+            }
         }
     }
 

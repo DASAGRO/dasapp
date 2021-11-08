@@ -61,7 +61,11 @@ class WarehouseBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
 
             override fun onInventoryTransfer(warehouseInventory: WarehouseInventory) {
-                requireRouter().navigateTo(WarehouseDetailFragment.getScreen(warehouseInventory))
+                if (!warehouseBottomNavigationVM.isHaveSavedInventory()) {
+                    requireRouter().navigateTo(WarehouseDetailFragment.getScreen(warehouseInventory))
+                } else {
+                    showExistInventory()
+                }
             }
 
         })

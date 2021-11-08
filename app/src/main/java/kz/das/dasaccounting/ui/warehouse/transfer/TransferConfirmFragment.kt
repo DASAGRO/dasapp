@@ -8,9 +8,11 @@ import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
 import kz.das.dasaccounting.core.ui.extensions.generateQR
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
+import kz.das.dasaccounting.data.entities.warehouse.toDomain
 import kz.das.dasaccounting.data.entities.warehouse.toEntity
 import kz.das.dasaccounting.data.source.local.typeconvertors.WarehouseInventoryTypeConvertor
 import kz.das.dasaccounting.databinding.FragmentBarcodeGenerateBinding
+import kz.das.dasaccounting.domain.common.InventoryType
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
 import kz.das.dasaccounting.ui.Screens
 import kz.das.dasaccounting.ui.utils.MediaPlayerUtils
@@ -38,8 +40,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
 
     override fun getViewBinding() = FragmentBarcodeGenerateBinding.inflate(layoutInflater)
 
-        override fun setupUI(savedInstanceState: Bundle?) {
-        mViewModel.setWarehouseInventory(getWarehouse())
+    override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setFileIds(getFileIds())
         mViewBinding.apply {
             tvWarning.text = getString(R.string.barcode_next_bottom_text)
@@ -50,6 +51,25 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             }
             btnConfirm.setOnClickListener {
                 showConfirmDialog()
+            }
+        }
+
+        mViewModel.apply {
+            getSavedInventory(InventoryType.WAREHOUSE)?.let {
+                it as WarehouseInventory
+
+                mViewModel.setWarehouseInventory(it)
+                mViewBinding.ivQr.setImageBitmap(WarehouseInventoryTypeConvertor().warehouseToString(it.toEntity()).generateQR())
+            } ?: run {
+                mViewModel.setWarehouseInventory(getWarehouse())
+                try {
+                    val inventory = mViewModel.getLocalInventory()?.toEntity()
+                    inventory?.requestId = UUID.randomUUID().toString()
+                    inventory?.senderUUID = mViewModel.getUser()?.userId
+                    mViewBinding.ivQr.setImageBitmap(WarehouseInventoryTypeConvertor().warehouseToString(inventory).generateQR())
+
+                    inventory?.let{ mViewModel.saveInventory(it.toDomain(), InventoryType.WAREHOUSE) }
+                } catch (e: Exception) { }
             }
         }
     }
@@ -64,12 +84,6 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
                 mViewBinding.tvInventoryDesc.text =
                     (getString(R.string.seal_number) +
                             " " + it.sealNumber)
-                try {
-                    val inventory = it.toEntity()
-                    inventory.requestId = UUID.randomUUID().toString()
-                    inventory.senderUUID = mViewModel.getUser()?.userId
-                    mViewBinding.ivQr.setImageBitmap(WarehouseInventoryTypeConvertor().warehouseToString(inventory).generateQR())
-                } catch (e: Exception) { }
             }
         })
 

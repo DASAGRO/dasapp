@@ -7,6 +7,7 @@ import kz.das.dasaccounting.data.entities.common.ShiftRequest
 import kz.das.dasaccounting.data.entities.driver.FligelProductEntity
 import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
+import kz.das.dasaccounting.domain.data.action.InventoryRetain
 import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 
 private const val PREFERENCES_USER_ACCESS_TOKEN = "user_access_token"
@@ -19,6 +20,9 @@ private const val PREFERENCES_AWAIT_FINISH_WORK = "await_finish_work"
 
 private const val PREFERENCES_LAST_FLIGEL_PRODUCT = "last_fligel_product"
 private const val PREFERENCES_LAST_FLIGEL_PRODUCT_CNT = "last_fligel_product_cnt"
+
+private const val PREFERENCES_OPENED_INVENTORY = "opened_inventory"
+private const val PREFERENCES_START_QR_SCAN = "start_qr_scan"
 
 class UserPreferences(private val preferences: SharedPreferences) {
 
@@ -146,5 +150,32 @@ class UserPreferences(private val preferences: SharedPreferences) {
         }
     }
 
+    fun saveInventory(inventoryRetain: InventoryRetain) {
+        preferences.edit().putString(PREFERENCES_OPENED_INVENTORY, Gson().toJson(inventoryRetain)).apply()
+    }
 
+    fun getSavedInventory(): InventoryRetain? {
+        return try {
+            val json = preferences.getString(PREFERENCES_OPENED_INVENTORY, null)
+            Gson().fromJson(json, InventoryRetain::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun deleteSavedInventory() {
+        preferences.edit().remove(PREFERENCES_OPENED_INVENTORY).apply()
+    }
+
+    fun saveStartQrScan(qrScan: String) {
+        preferences.edit().putString(PREFERENCES_START_QR_SCAN, qrScan).apply()
+    }
+
+    fun getStartQrScan(): String? {
+        return preferences.getString(PREFERENCES_START_QR_SCAN, null)
+    }
+
+    fun deleteStartQrScan(){
+        preferences.edit().remove(PREFERENCES_START_QR_SCAN).apply()
+    }
 }

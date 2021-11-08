@@ -7,14 +7,12 @@ import kz.das.dasaccounting.core.extensions.zipLiveDataAny
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.DriverInventoryRepository
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
-import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.history.QrDateFull
 import kz.das.dasaccounting.domain.data.history.QrDateShort
 import org.koin.core.inject
 
 class HistoryAcceptedVM: BaseVM() {
 
-    private val userRepository: UserRepository by inject()
     private val driverInventoryRepository: DriverInventoryRepository by inject()
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
 

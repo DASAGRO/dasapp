@@ -11,11 +11,7 @@ import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.shared.NetworkConnectionVM
-import kz.das.dasaccounting.data.entities.driver.toDomain
-import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.data.entities.warehouse.toDomain
-import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
-import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.data.source.local.typeconvertors.WarehouseInventoryTypeConvertor
 import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.action.OperationHead
@@ -68,7 +64,11 @@ class GuardBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
 
             override fun onInventoryTransfer(warehouseInventory: WarehouseInventory) {
-                requireRouter().navigateTo(GuardDetailFragment.getScreen(warehouseInventory))
+                if (!warehouseBottomNavigationVM.isHaveSavedInventory()) {
+                    requireRouter().navigateTo(GuardDetailFragment.getScreen(warehouseInventory))
+                } else {
+                    showExistInventory()
+                }
             }
 
         })

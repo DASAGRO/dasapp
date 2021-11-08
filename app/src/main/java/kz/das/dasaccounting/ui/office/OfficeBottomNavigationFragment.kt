@@ -68,13 +68,11 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
 
             override fun onInventoryTransfer(officeInventory: OfficeInventory) {
-                val inventoryTransferDialog = TransferFormalizeFragment.newInstance(officeInventory)
-                inventoryTransferDialog.setOnTransferCallback(object : TransferFormalizeFragment.OnTransferCallback {
-                    override fun onTransfer(officeInventory: OfficeInventory) {
-                        showTransferDialog(officeInventory)
-                    }
-                })
-                inventoryTransferDialog.show(childFragmentManager, inventoryTransferDialog.tag)
+                if (!officeBottomNavigationVM.isHaveSavedInventory()) {
+                    showInventoryTransferDialog(officeInventory)
+                } else {
+                    showExistInventory()
+                }
             }
         })
 
@@ -153,6 +151,17 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
         })
         transferFragment.show(childFragmentManager, transferFragment.tag)
+    }
+
+    private fun showInventoryTransferDialog(officeInventory: OfficeInventory) {
+        val transferFormalizeFragment = TransferFormalizeFragment.newInstance(officeInventory)
+        transferFormalizeFragment.setOnTransferCallback(object :
+            TransferFormalizeFragment.OnTransferCallback {
+            override fun onTransfer(officeInventory: OfficeInventory) {
+                showTransferDialog(officeInventory)
+            }
+        })
+        transferFormalizeFragment.show(childFragmentManager, this.tag)
     }
 
     private fun getInitOperations(): ArrayList<OperationAct>  {

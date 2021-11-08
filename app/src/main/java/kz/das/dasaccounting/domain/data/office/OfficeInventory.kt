@@ -2,7 +2,13 @@ package kz.das.dasaccounting.domain.data.office
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import kz.das.dasaccounting.core.extensions.getServerDateFromLong
+import kz.das.dasaccounting.data.entities.office.toEntity
+import kz.das.dasaccounting.data.source.local.typeconvertors.OfficeInventoryEntityTypeConvertor
 import kz.das.dasaccounting.domain.data.action.OperationAct
+import kz.das.dasaccounting.domain.data.history.HistoryEnum
+import kz.das.dasaccounting.domain.data.history.HistoryTransfer
+import kz.das.dasaccounting.domain.data.history.OperationType
 
 @Parcelize
 data class OfficeInventory(
@@ -61,6 +67,21 @@ fun OfficeInventory.toSent(): OfficeSentInventory {
         syncRequire = this.syncRequire,
         senderName = this.senderName,
         comment = this.comment
+    )
+}
+
+fun OfficeInventory.toHistory(): HistoryTransfer {
+    return HistoryTransfer(
+            title = this.name ?: "",
+            descr = "${this.quantity} + ${this.type}",
+            quantity = this.quantity.toString(),
+            date = this.date,
+            dateText = this.date.getServerDateFromLong() ?: "Ошибка даты",
+            senderName = String.format("Кому: %s", this.receiverName) ?: "",
+            operationType = OperationType.OFFICE.status,
+            isAwait = false,
+            qrData = OfficeInventoryEntityTypeConvertor().officeInventoryToString(this.toEntity()),
+            status = HistoryEnum.UNFINISHED.status
     )
 }
 

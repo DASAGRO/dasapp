@@ -100,7 +100,25 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
             }
 
             btnStop.setOnClickListener {
-                coreMainVM.stopWork()
+                if (coreMainVM.getUserRole() == UserRole.OFFICE.role) {
+                    val qrFragment = QrFragment.Builder()
+                            .setCancelable(true)
+                            .setOnScanCallback(object : QrFragment.OnScanCallback {
+                                override fun onScan(qrScan: String) {
+                                    delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
+                                        if (coreMainVM.isQrSessionEqual(qrScan)) {
+                                            coreMainVM.stopWork()
+                                        } else {
+                                            showError(getString(R.string.common_error), getString(R.string.qr_session_error))
+                                        }
+                                    }
+                                }
+                            })
+                            .build()
+                    qrFragment.show(childFragmentManager, "QrShiftFragment")
+                } else {
+                    coreMainVM.stopWork()
+                }
             }
 
         }

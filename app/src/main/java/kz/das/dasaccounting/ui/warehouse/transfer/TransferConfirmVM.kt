@@ -1,23 +1,19 @@
 package kz.das.dasaccounting.ui.warehouse.transfer
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.utils.writeObjectToLog
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
-import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.WarehouseInventoryRepository
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
 import org.koin.core.inject
 
 
 class TransferConfirmVM: BaseVM() {
-    private val context: Context by inject()
-
     private val warehouseInventoryRepository: WarehouseInventoryRepository by inject()
-    private val userRepository: UserRepository by inject()
 
     private var warehouseInventory: WarehouseInventory? = null
     private var fileIds: ArrayList<Int>? = null
@@ -49,6 +45,8 @@ class TransferConfirmVM: BaseVM() {
         warehouseInventoryLV.postValue(warehouseInventory)
     }
 
+    fun getLocalInventory() = warehouseInventory
+
     fun sendInventory() {
         viewModelScope.launch {
             showLoading()
@@ -65,6 +63,7 @@ class TransferConfirmVM: BaseVM() {
                 throwableHandler.handle(t)
                 isWarehouseInventorySentLV.postValue(false)
             } finally {
+                deleteSavedInventory()
                 hideLoading()
             }
         }

@@ -30,6 +30,7 @@ import kz.das.dasaccounting.ui.parent_bottom.profile.history.HistoryDetailVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.history.HistoryGivenVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset.ProfilePassResetConfirmVM
 import kz.das.dasaccounting.ui.parent_bottom.profile.pass_reset.ProfilePassResetVM
+import kz.das.dasaccounting.ui.saved_inventory.DeleteSavedInventoryVM
 import kz.das.dasaccounting.ui.warehouse.WarehouseBottomNavigationVM
 import kz.das.dasaccounting.ui.warehouse.operations.WarehouseDetailVM
 import kz.das.dasaccounting.ui.warehouse.operations.WarehouseOperationsVM
@@ -107,4 +108,8 @@ internal fun getLocationViewModels() = module {
 
 internal fun getConfigViewModels() = module {
     viewModel { NetworkConnectionVM() }
+}
+
+internal fun getSavedInventoryModels() = module {
+    viewModel { DeleteSavedInventoryVM() }
 }

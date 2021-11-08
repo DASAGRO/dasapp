@@ -43,14 +43,17 @@ class ShiftRepositoryImpl : ShiftRepository, KoinComponent {
         lat: Double,
         long: Double,
         time: Long
-    ): ApiResponseMessage {
-        return shiftApi.finishWork(
-            hashMapOf(
-                "latitude" to lat,
-                "longitude" to long,
-                "time" to time
+    ): Flow<ApiResponseMessage> {
+
+        return flow { emit(
+            shiftApi.finishWork(
+                    hashMapOf(
+                            "latitude" to lat,
+                            "longitude" to long,
+                            "time" to time
+                    )
             )
-        ).unwrap()
+        )}
     }
 
     override suspend fun saveAwaitStartShift(
@@ -63,9 +66,17 @@ class ShiftRepositoryImpl : ShiftRepository, KoinComponent {
         userPreferences.setAwaitStartWork(ShiftRequest(lat, long, time, scannedQR))
     }
 
+    override fun clearAwaitStartWork() {
+        userPreferences.clearAwaitStartWork()
+    }
+
     override suspend fun saveAwaitFinishShift(lat: Double, long: Double, time: Long) {
         userRepository.stopWork()
         userPreferences.setAwaitFinishWork(ShiftRequest(lat, long, time))
+    }
+
+    override fun clearAwaitFinishWork() {
+        userPreferences.clearAwaitFinishWork()
     }
 
     override suspend fun isShiftState(): ShiftState {
@@ -82,17 +93,5 @@ class ShiftRepositoryImpl : ShiftRepository, KoinComponent {
         userPreferences.getAwaitFinishWork()?.let {
             return it
         } ?: run { return null }
-    }
-
-    override suspend fun initAwaitShiftStarted() {
-        userPreferences.getAwaitStartWork()?.let {
-            startShift(it.latitude, it.longitude, it.time, it.qr)
-        }
-    }
-
-    override suspend fun initAwaitShiftFinished() {
-        userPreferences.getAwaitFinishWork()?.let {
-            finishShift(it.latitude, it.longitude, it.time)
-        }
     }
 }
