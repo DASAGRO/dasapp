@@ -38,7 +38,9 @@ class HistoryAcceptedVM: BaseVM() {
         getHistoryTransportInventoriesLocally(),
         getHistoryOfficeInventoriesLocally(),
         acceptedTransportInventoryLocally(),
-        acceptedOfficeInventoryLocally())
+        acceptedOfficeInventoryLocally(),
+        getHistoryFligelDataLocally()
+    )
 
     fun getQrData(qrString: String?, type: String?, status: String?): String? {
         val gson = Gson()
@@ -78,4 +80,5 @@ class HistoryAcceptedVM: BaseVM() {
 
     private fun acceptedOfficeInventoryLocally() = officeInventoryRepository.getHistoryOfficeAcceptedMaterialsLocally()
 
+    private fun getHistoryFligelDataLocally() = driverInventoryRepository.getHistoryDriverAcceptedFligelLocally()
 }

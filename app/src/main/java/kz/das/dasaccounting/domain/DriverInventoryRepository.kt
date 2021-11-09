@@ -55,6 +55,8 @@ interface DriverInventoryRepository {
 
     fun getAwaitFligelDataLocally(): LiveData<List<FligelProduct>>
 
+    fun getHistoryDriverAcceptedFligelLocally(): LiveData<List<HistoryTransfer>>
+
     fun initDeleteData()
 
     fun containsAwaitRequests(): Boolean
