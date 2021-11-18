@@ -25,7 +25,6 @@ class DeleteSavedInventoryFragment :
             toolbar.setNavigationOnClickListener { requireRouter().exit() }
 
             btnConfirm.setOnClickListener {
-                mViewModel.deleteSavedInventory()
                 mViewModel.demicalCodeLiveData.value?.let {
                     val usersPin = edt_pass.text.toString().replace(("[^\\d.]").toRegex(), "")
                     if (usersPin == it) {

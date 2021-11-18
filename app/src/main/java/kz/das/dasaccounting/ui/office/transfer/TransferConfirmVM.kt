@@ -8,6 +8,7 @@ import kz.das.dasaccounting.core.ui.utils.writeObjectToLog
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.data.entities.common.TransferItem
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
+import kz.das.dasaccounting.domain.common.UserRole
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.inject
 
@@ -44,6 +45,9 @@ class TransferConfirmVM: BaseVM() {
 
     fun setOfficeInventory(officeInventory: OfficeInventory?) {
         officeInventory?.date = System.currentTimeMillis()
+        if(userRepository.getUserRole() != UserRole.WAREHOUSE.role) {
+            officeInventory?.storeUUIDSender = null
+        }
 
         this.officeInventory = officeInventory
         this.officeInventory?.senderUUID = userRepository.getUser()?.userId
