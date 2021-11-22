@@ -1,8 +1,10 @@
 package kz.das.dasaccounting.domain.data.office
 
+import kz.das.dasaccounting.domain.common.ShiftType
+
 data class QrSession(
-        val id: Int,
-        val uuid: String,
-        val name: String? = null,
-        val comment: String? = null
+    val id: Int,
+    val uuid: String,
+    val shift: String,
+    val name: String
 )

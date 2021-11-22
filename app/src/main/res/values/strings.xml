@@ -191,4 +191,5 @@
     <string name="delete_saved_inventory_info">Внимание! пароль состоит из 6 цифр, первые 4 цифры генерериуется автоматически 0000##, последних двух цифр уточните у администратора!</string>
     <string name="success_deleted_inventory">Заявка успешно удалена!</string>
     <string name="qr_session_error">Текущий Qr не предыдущий!</string>
+    <string name="qr_session_incorrect">Текущий Qr неправильный!</string>
 </resources>

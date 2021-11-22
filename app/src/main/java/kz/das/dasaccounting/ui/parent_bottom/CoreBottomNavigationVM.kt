@@ -15,6 +15,7 @@ import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.office.QrSession
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.io.InterruptedIOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -69,8 +70,9 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
                         System.currentTimeMillis()
                 ).catch {
                     if (it is SocketTimeoutException
-                            || it is UnknownHostException
-                            || it is ConnectException
+                        || it is UnknownHostException
+                        || it is ConnectException
+                        || it is InterruptedIOException
                     ) {
                         shiftRepository.saveAwaitStartShift(userRepository.getLastLocation().lat,
                                 userRepository.getLastLocation().long,
@@ -105,8 +107,9 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
                         System.currentTimeMillis(), qrScan
                 ).catch {
                     if (it is SocketTimeoutException
-                            || it is UnknownHostException
-                            || it is ConnectException
+                        || it is UnknownHostException
+                        || it is ConnectException
+                        || it is InterruptedIOException
                     ) {
                         shiftRepository.saveAwaitStartShift(userRepository.getLastLocation().lat,
                                 userRepository.getLastLocation().long,
@@ -128,12 +131,25 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
         }
     }
 
+    fun isQrSessionStartOrStop(type: String, qrScan: String): Boolean{
+        return try {
+            val currentQrSession = Gson().fromJson(qrScan, QrSession::class.java)
+            currentQrSession.shift == type
+        } catch (t: Throwable) {
+            false
+        }
+    }
+
     fun isQrSessionEqual(currentQrScan: String): Boolean {
         val gson = Gson()
-        val currentQrSession = gson.fromJson(currentQrScan, QrSession::class.java)
-        val startQrSession = gson.fromJson(userRepository.getStartQrScan(), QrSession::class.java)
+        return try{
+            val currentQrSession = gson.fromJson(currentQrScan, QrSession::class.java)
+            val startQrSession = gson.fromJson(userRepository.getStartQrScan(), QrSession::class.java)
 
-        return currentQrSession.uuid == startQrSession.uuid
+            currentQrSession.uuid == startQrSession.uuid
+        } catch (t: Throwable) {
+            false
+        }
     }
 
     fun stopWork() {
@@ -145,8 +161,9 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
                         System.currentTimeMillis()
                 ).catch {
                     if (it is SocketTimeoutException
-                            || it is UnknownHostException
-                            || it is ConnectException
+                        || it is UnknownHostException
+                        || it is ConnectException
+                        || it is InterruptedIOException
                     ) {
                         shiftRepository.saveAwaitFinishShift(userRepository.getLastLocation().lat,
                                 userRepository.getLastLocation().long,
