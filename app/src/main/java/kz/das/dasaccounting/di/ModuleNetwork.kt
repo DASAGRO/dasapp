@@ -67,10 +67,10 @@ private fun provideOkHttpClient(
     headersInterceptor: HeadersInterceptor
 ): OkHttpClient {
     return OkHttpClient.Builder()
-        .callTimeout(15, TimeUnit.SECONDS)
-        .connectTimeout(15, TimeUnit.SECONDS)
-        .readTimeout(15, TimeUnit.SECONDS)
-        .writeTimeout(15, TimeUnit.SECONDS)
+        .callTimeout(6, TimeUnit.SECONDS)
+        .connectTimeout(6, TimeUnit.SECONDS)
+        .readTimeout(6, TimeUnit.SECONDS)
+        .writeTimeout(6, TimeUnit.SECONDS)
         .addInterceptor(headersInterceptor)
         .addInterceptor(loggingInterceptor)
         .build()
