@@ -10,6 +10,7 @@ import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.WarehouseInventoryRepository
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
+import kz.das.dasaccounting.utils.InternetAccess
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -40,17 +41,21 @@ class AcceptConfirmationVM : BaseVM(), KoinComponent {
 
     fun acceptInventory(comment: String) {
         viewModelScope.launch {
-            showLoading()
-            try {
-                warehouseInventory?.let {
-                    warehouseRepository.acceptInventory(it, comment, fileIds)
+            if (InternetAccess.internetCheck(context)) {
+                showLoading()
+                try {
+                    warehouseInventory?.let {
+                        warehouseRepository.acceptInventory(it, comment, fileIds)
+                    }
+                    warehouseInventoryAcceptedLV.postValue(true)
+                } catch (t: Throwable) {
+                    throwableHandler.handle(t)
+                    warehouseInventoryAcceptedLV.postValue(false)
+                } finally {
+                    hideLoading()
                 }
-                warehouseInventoryAcceptedLV.postValue(true)
-            } catch (t: Throwable) {
-                throwableHandler.handle(t)
+            } else {
                 warehouseInventoryAcceptedLV.postValue(false)
-            } finally {
-                hideLoading()
             }
         }
     }

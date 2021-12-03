@@ -6,6 +6,7 @@ import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.data.Profile
+import kz.das.dasaccounting.utils.InternetAccess
 import org.koin.core.KoinComponent
 
 class ProfileVM: BaseVM(), KoinComponent {
@@ -27,18 +28,20 @@ class ProfileVM: BaseVM(), KoinComponent {
     }
 
     private fun getProfile() {
-        viewModelScope.launch {
-            showLoading()
-            try {
-                val profile = userRepository.getUserProfile()
-                profile?.let {
-                    profileLV.postValue(it)
-                    userRepository.setUser(it)
+        if (InternetAccess.internetCheck(context)) {
+            viewModelScope.launch {
+                showLoading()
+                try {
+                    val profile = userRepository.getUserProfile()
+                    profile?.let {
+                        profileLV.postValue(it)
+                        userRepository.setUser(it)
+                    }
+                } catch (t: Throwable) {
+                    throwableHandler.handle(t)
+                } finally {
+                    hideLoading()
                 }
-            } catch (t: Throwable) {
-                throwableHandler.handle(t)
-            } finally {
-                hideLoading()
             }
         }
     }

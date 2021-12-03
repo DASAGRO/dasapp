@@ -14,6 +14,7 @@ import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import kz.das.dasaccounting.domain.data.office.NomenclatureOfficeInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
+import kz.das.dasaccounting.utils.InternetAccess
 import org.koin.core.inject
 import java.util.*
 import kotlin.collections.ArrayList
@@ -54,18 +55,49 @@ class TransferConfirmFligelDataVM: BaseVM() {
 
     fun acceptInventory(comment: String) {
         viewModelScope.launch {
-            showLoading()
-            try {
-                fligelProduct?.let {
-                    it.comment = comment
-                    driverInventoryRepository.receiveFligelData(it, fileIds)
+            if (InternetAccess.internetCheck(context)) {
+                showLoading()
+                try {
+                    fligelProduct?.let {
+                        it.comment = comment
+                        driverInventoryRepository.receiveFligelData(it, fileIds)
+                    }
+                    driverInventoryDataLV.postValue(true)
+                } catch (t: Throwable) {
+                    fligelProduct?.let {
+                        driverInventoryRepository.saveAwaitReceiveFligelData(it)
+                    }
+                    val nomenclatureOfficeInventory =
+                        nomenclatures.find { it.fieldNumber == fligelProduct?.fieldNumber.toString() }
+                    val constructOfficeInventory = OfficeInventory(
+                        id = 1,
+                        date = System.currentTimeMillis(),
+                        name = nomenclatureOfficeInventory?.name ?: "",
+                        humidity = fligelProduct?.humidity,
+                        latitude = userRepository.getLastLocation().lat,
+                        longitude = userRepository.getLastLocation().long,
+                        materialUUID = nomenclatureOfficeInventory?.materialUUID
+                            ?: "Not found UUID",
+                        senderUUID = userRepository.getUser()?.userId,
+                        requestId = UUID.randomUUID().toString(),
+                        quantity = fligelProduct?.harvestWeight,
+                        type = nomenclatureOfficeInventory?.measurement,
+                        syncRequire = 0,
+                        senderName = userRepository.getUser()?.firstName + " " + userRepository.getUser()?.lastName,
+                        comment = ""
+                    )
+                    officeInventoryRepository.saveOfficeInventory(constructOfficeInventory)
+                    isOnAwaitLV.postValue(true)
+                    hideLoading()
+                } finally {
+                    hideLoading()
                 }
-                driverInventoryDataLV.postValue(true)
-            } catch (t: Throwable) {
+            } else {
                 fligelProduct?.let {
                     driverInventoryRepository.saveAwaitReceiveFligelData(it)
                 }
-                val nomenclatureOfficeInventory = nomenclatures.find { it.fieldNumber == fligelProduct?.fieldNumber.toString() }
+                val nomenclatureOfficeInventory =
+                    nomenclatures.find { it.fieldNumber == fligelProduct?.fieldNumber.toString() }
                 val constructOfficeInventory = OfficeInventory(
                     id = 1,
                     date = System.currentTimeMillis(),
@@ -73,7 +105,8 @@ class TransferConfirmFligelDataVM: BaseVM() {
                     humidity = fligelProduct?.humidity,
                     latitude = userRepository.getLastLocation().lat,
                     longitude = userRepository.getLastLocation().long,
-                    materialUUID = nomenclatureOfficeInventory?.materialUUID ?: "Not found UUID",
+                    materialUUID = nomenclatureOfficeInventory?.materialUUID
+                        ?: "Not found UUID",
                     senderUUID = userRepository.getUser()?.userId,
                     requestId = UUID.randomUUID().toString(),
                     quantity = fligelProduct?.harvestWeight,
@@ -84,9 +117,6 @@ class TransferConfirmFligelDataVM: BaseVM() {
                 )
                 officeInventoryRepository.saveOfficeInventory(constructOfficeInventory)
                 isOnAwaitLV.postValue(true)
-                hideLoading()
-            } finally {
-                hideLoading()
             }
         }
     }
