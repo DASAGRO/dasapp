@@ -1,6 +1,5 @@
 package kz.das.dasaccounting.ui.drivers.accept
 
-import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -11,16 +10,13 @@ import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.utils.writeObjectToLog
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.DriverInventoryRepository
-import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class AcceptTransportConfirmationVM : BaseVM(), KoinComponent {
-    private val context: Context by inject()
 
     private val officeInventoryRepository: DriverInventoryRepository by inject()
-    private val userRepository: UserRepository by inject()
 
     private var transportInventory: TransportInventory? = null
 
@@ -40,6 +36,8 @@ class AcceptTransportConfirmationVM : BaseVM(), KoinComponent {
 
     fun getUserRole() = userRepository.getUserRole()
 
+    fun getUserLocation() = userRepository.getLastLocation()
+
     fun setTransportInventory(officeInventory: TransportInventory?) {
         this.transportInventory = officeInventory
         transportInventoryLV.postValue(officeInventory)
@@ -52,11 +50,13 @@ class AcceptTransportConfirmationVM : BaseVM(), KoinComponent {
         viewModelScope.launch {
             showLoading()
             try {
-                transportInventory?.let {
-                    writeObjectToLog(it.toString(), context)
+                transportInventory?.apply {
+                    latitude = getUserLocation().lat
+                    longitude = getUserLocation().long
+                    writeObjectToLog(this.toString(), context)
 
-                    officeInventoryRepository.acceptInventory(it, comment, fileIds)
-                    officeInventoryRepository.addItem(it)
+                    officeInventoryRepository.acceptInventory(this, comment, fileIds)
+                    officeInventoryRepository.addItem(this)
                 }
                 driverInventoryAcceptedLV.postValue(true)
             } catch (t: Throwable) {

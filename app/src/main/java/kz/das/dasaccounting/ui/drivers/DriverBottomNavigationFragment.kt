@@ -78,20 +78,22 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
 
             override fun onInventoryTransfer(officeInventory: OfficeInventory) {
-                val inventoryTransferDialog = TransferFormalizeFragment.newInstance(officeInventory)
-                inventoryTransferDialog.setOnTransferCallback(object : TransferFormalizeFragment.OnTransferCallback {
-                    override fun onTransfer(officeInventory: OfficeInventory) {
-                        showTransferDialog(officeInventory)
-                    }
-                })
-                inventoryTransferDialog.show(childFragmentManager, inventoryTransferDialog.tag)
+                if (!driverBottomNavigationVM.isHaveSavedInventory()) {
+                    showInventoryTransferDialog(officeInventory)
+                } else {
+                    showExistInventory()
+                }
             }
 
             override fun onInventoryTransportTransfer(transportInventory: TransportInventory) {
-                if (transportInventory.model.toUpperCase(Locale.getDefault()).contains("НАКОПИТЕЛЬ")) {
-                    showFligelTransportTransferDialog(transportInventory)
+                if (!driverBottomNavigationVM.isHaveSavedInventory()) {
+                    if (transportInventory.model.toUpperCase(Locale.getDefault()).contains("НАКОПИТЕЛЬ")) {
+                        showFligelTransportTransferDialog(transportInventory)
+                    } else {
+                        showTransportTransferDialog(transportInventory)
+                    }
                 } else {
-                    showTransportTransferDialog(transportInventory)
+                    showExistInventory()
                 }
             }
         })
@@ -137,47 +139,6 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
                 operationsAdapter?.addItems(getTransports(it))
             }
         })
-
-//        driverBottomNavigationVM.getAwaitAcceptedOperationsLocally().observe(viewLifecycleOwner, Observer {
-//            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_operations)))
-//            operationsAdapter?.clearAwaitAcceptedOperations()
-//            if (it.isNotEmpty()) {
-//                operationsAdapter?.addItems(getAwaitAcceptedOperations(it))
-//            }
-//        })
-//
-//        driverBottomNavigationVM.getAwaitSentOperationsLocally().observe(viewLifecycleOwner, Observer {
-//            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_operations)))
-//            operationsAdapter?.clearAwaitSentOperations()
-//            if (it.isNotEmpty()) {
-//                operationsAdapter?.addItems(getAwaitSentOperations(it))
-//            }
-//        })
-//
-//        driverBottomNavigationVM.getAwaitAcceptedTransportsLocally().observe(viewLifecycleOwner, Observer {
-//            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_accepted_transports)))
-//            operationsAdapter?.clearAwaitAcceptedTransports()
-//            if (it.isNotEmpty()) {
-//                operationsAdapter?.addItems(getAwaitAcceptedTransports(it))
-//            }
-//        })
-//
-//        driverBottomNavigationVM.getAwaitSentTransportsLocally().observe(viewLifecycleOwner, Observer {
-//            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_sent_transports)))
-//            operationsAdapter?.clearAwaitSentTransports()
-//            if (it.isNotEmpty()) {
-//                operationsAdapter?.addItems(getAwaitSentTransports(it))
-//            }
-//        })
-//
-//        driverBottomNavigationVM.getAwaitFligelDataLocally().observe(viewLifecycleOwner, Observer {
-//            operationsAdapter?.removeHead(OperationHead(getString(R.string.await_fligel_data)))
-//            operationsAdapter?.clearAwaitFligelData()
-//            if (it.isNotEmpty()) {
-//                operationsAdapter?.addItems(getAwaitFligelData(it))
-//            }
-//        })
-
     }
 
     private fun initAcceptOperation() {
@@ -250,6 +211,16 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
         })
         transferFragment.show(childFragmentManager, transferFragment.tag)
+    }
+
+    private fun showInventoryTransferDialog(officeInventory: OfficeInventory) {
+        val transferFormalizeFragment = TransferFormalizeFragment.newInstance(officeInventory)
+        transferFormalizeFragment.setOnTransferCallback(object : TransferFormalizeFragment.OnTransferCallback {
+            override fun onTransfer(officeInventory: OfficeInventory) {
+                showTransferDialog(officeInventory)
+            }
+        })
+        transferFormalizeFragment.show(childFragmentManager, this.tag)
     }
 
     private fun getOperations(inventories: List<OfficeInventory>): ArrayList<OperationAct> {

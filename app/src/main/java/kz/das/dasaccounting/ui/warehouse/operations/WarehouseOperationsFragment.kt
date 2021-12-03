@@ -31,17 +31,25 @@ class WarehouseOperationsFragment: BaseFragment<WarehouseOperationsVM, FragmentS
 
     override fun getViewBinding() = FragmentSearchBinding.inflate(layoutInflater)
 
-        override fun setupUI(savedInstanceState: Bundle?) {
+    override fun setupUI(savedInstanceState: Bundle?) {
         warehouseOperationsAdapter = WarehouseOperationsAdapter(requireContext(), arrayListOf())
         warehouseOperationsAdapter?.setWarehouseOperationsAdapterEvent(object : WarehouseOperationsAdapter.OnWarehouseOperationsAdapterEvent {
             override fun onOfficeInventory(officeInventory: OfficeInventory) {
                 officeInventory.storeUUIDSender = mViewModel.getWarehouseInventory()?.storeUUID
-                showTransferDialog(officeInventory)
+                if (!mViewModel.isHaveSavedInventory()) {
+                    showTransferDialog(officeInventory)
+                } else {
+                    showExistInventory()
+                }
             }
 
             override fun onTransportInventory(transportInventory: TransportInventory) {
                 transportInventory.storeUUIDSender = mViewModel.getWarehouseInventory()?.storeUUID
-                showTransportTransferDialog(transportInventory)
+                if (!mViewModel.isHaveSavedInventory()) {
+                    showTransportTransferDialog(transportInventory)
+                } else {
+                    showExistInventory()
+                }
             }
         })
 

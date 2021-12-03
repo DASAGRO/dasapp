@@ -73,13 +73,19 @@ class DriverBottomNavigationVM : BaseVM() {
     }
 
     fun initAwaitRequests() {
-
         viewModelScope.launch {
             try {
-                shiftRepository.getAwaitShiftStarted()?.let {
-                    shiftRepository.startShift(it.latitude, it.longitude, it.time, it.qr)
-                            .collect { shiftRepository.initAwaitShiftFinished() }
-                } ?: run { shiftRepository.initAwaitShiftFinished() }
+                shiftRepository.apply {
+                    getAwaitShiftStarted()?.let {
+                        startShift(it.latitude, it.longitude, it.time, it.qr)
+                                .collect {
+                                    clearAwaitStartWork()
+                                    sendAwaitShiftFinish()
+                                }
+                    } ?: run {
+                        sendAwaitShiftFinish()
+                    }
+                }
             } catch (t: Throwable) { throwableHandler.handle(t) }
         }
 
@@ -94,6 +100,16 @@ class DriverBottomNavigationVM : BaseVM() {
 
     }
 
+    private suspend fun sendAwaitShiftFinish() {
+        shiftRepository.apply {
+            getAwaitShiftFinished()?.let {
+                finishShift(it.latitude, it.longitude, it.time)
+                        .collect {
+                            clearAwaitFinishWork()
+                        }
+            }
+        }
+    }
 
 
     fun getAwaitSentOperationsLocally() = officeInventoryRepository.getOfficeSentMaterialsLocally()

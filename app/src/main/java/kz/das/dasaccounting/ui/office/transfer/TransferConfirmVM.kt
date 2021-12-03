@@ -1,6 +1,5 @@
 package kz.das.dasaccounting.ui.office.transfer
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -9,15 +8,12 @@ import kz.das.dasaccounting.core.ui.utils.writeObjectToLog
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.data.entities.common.TransferItem
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
-import kz.das.dasaccounting.domain.UserRepository
+import kz.das.dasaccounting.domain.common.UserRole
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.inject
 
 class TransferConfirmVM: BaseVM() {
-    private val context: Context by inject()
-
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
-    private val userRepository: UserRepository by inject()
 
     private var officeInventory: OfficeInventory? = null
     private var generatedRequestId: String? = null
@@ -45,7 +41,14 @@ class TransferConfirmVM: BaseVM() {
 
     fun getGeneratedRequestId() = generatedRequestId
 
+    fun getUserLocation() = userRepository.getLastLocation()
+
     fun setOfficeInventory(officeInventory: OfficeInventory?) {
+        officeInventory?.date = System.currentTimeMillis()
+        if(userRepository.getUserRole() != UserRole.WAREHOUSE.role) {
+            officeInventory?.storeUUIDSender = null
+        }
+
         this.officeInventory = officeInventory
         this.officeInventory?.senderUUID = userRepository.getUser()?.userId
         this.officeInventory?.senderName = userRepository.getUser()?.lastName + " " +
@@ -88,11 +91,13 @@ class TransferConfirmVM: BaseVM() {
         viewModelScope.launch {
             showLoading()
             try {
-                officeInventory?.let {
-                    writeObjectToLog(officeInventory.toString(), context)
+                officeInventory?.apply {
+                    latitude = getUserLocation().lat
+                    longitude = getUserLocation().long
+                    writeObjectToLog(this.toString(), context)
 
-                    officeInventoryRepository.sendInventory(it)
-                    officeInventoryRepository.initCheckAwaitSentOperation(it)
+                    officeInventoryRepository.sendInventory(this)
+                    officeInventoryRepository.initCheckAwaitSentOperation(this)
                 }
                 isOfficeInventorySentLV.postValue(true)
             } catch (t: Throwable) {
@@ -101,6 +106,7 @@ class TransferConfirmVM: BaseVM() {
                 }
                 isOnAwaitLV.postValue(true)
             } finally {
+                deleteSavedInventory()
                 hideLoading()
             }
         }

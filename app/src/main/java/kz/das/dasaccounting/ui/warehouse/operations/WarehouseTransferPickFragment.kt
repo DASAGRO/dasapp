@@ -34,10 +34,19 @@ class WarehouseTransferPickFragment: BaseFragment<WarehouseTransferPickVM, Fragm
         mViewBinding.toolbar.setNavigationOnClickListener { requireRouter().exit() }
 
         mViewBinding.btnSecurity.setOnClickListener {
-            showSecurityTransferDialog()
+            if (!mViewModel.isHaveSavedInventory()) {
+                showSecurityTransferDialog()
+            } else {
+                showExistInventory()
+            }
         }
         mViewBinding.btnWarehouseHead.setOnClickListener {
-            showWarehouseTransferDialog()
+            if (!mViewModel.isHaveSavedInventory()) {
+                showWarehouseTransferDialog()
+            } else {
+                showExistInventory()
+            }
+
         }
     }
 

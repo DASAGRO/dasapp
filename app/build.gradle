@@ -17,8 +17,8 @@ android {
         applicationId "kz.das.dasaccounting"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 3
-        versionName "1.2"
+        versionCode 6
+        versionName "1.2.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,6 +42,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
     }
 }
 

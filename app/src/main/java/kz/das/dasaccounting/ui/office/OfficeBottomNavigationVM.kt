@@ -32,10 +32,17 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
 
         viewModelScope.launch {
             try {
-                shiftRepository.getAwaitShiftStarted()?.let {
-                    shiftRepository.startShift(it.latitude, it.longitude, it.time, it.qr)
-                            .collect { shiftRepository.initAwaitShiftFinished() }
-                } ?: run { shiftRepository.initAwaitShiftFinished() }
+                shiftRepository.apply {
+                    getAwaitShiftStarted()?.let {
+                        startShift(it.latitude, it.longitude, it.time, it.qr)
+                                .collect {
+                                    shiftRepository.clearAwaitStartWork()
+                                    sendAwaitShiftFinish()
+                                }
+                    } ?: run {
+                        sendAwaitShiftFinish()
+                    }
+                }
             } catch (t: Throwable) { throwableHandler.handle(t) }
         }
 
@@ -48,6 +55,17 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
             }
         }
 
+    }
+
+    private suspend fun sendAwaitShiftFinish() {
+        shiftRepository.apply {
+            getAwaitShiftFinished()?.let {
+                finishShift(it.latitude, it.longitude, it.time)
+                        .collect {
+                            clearAwaitFinishWork()
+                        }
+            }
+        }
     }
 
     private fun retrieve() {

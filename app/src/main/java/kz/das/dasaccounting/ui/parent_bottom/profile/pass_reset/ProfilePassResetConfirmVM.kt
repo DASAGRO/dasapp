@@ -6,13 +6,10 @@ import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.utils.exceptions.UiResponseException
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
-import kz.das.dasaccounting.domain.UserRepository
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 
 class ProfilePassResetConfirmVM: BaseVM(), KoinComponent {
 
-    private val userRepository: UserRepository by inject()
     private val isPassUpdateLV = SingleLiveEvent<Boolean>()
     fun isPassUpdated(): LiveData<Boolean> = isPassUpdateLV
 

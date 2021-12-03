@@ -1,14 +1,27 @@
 package kz.das.dasaccounting.core.ui.view_model
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
+import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.data.ExceptionModel
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.utils.UIThrowableHandler
+import kz.das.dasaccounting.domain.UserRepository
+import kz.das.dasaccounting.domain.common.InventoryType
+import kz.das.dasaccounting.domain.data.action.InventoryRetain
+import kz.das.dasaccounting.domain.data.drivers.FligelProduct
+import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.domain.data.office.OfficeInventory
+import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
 import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 abstract class BaseVM : ViewModel(), KoinComponent {
+    protected val userRepository: UserRepository by inject()
+    protected val context: Context by inject()
 
     private val _isLoading: MutableLiveData<Boolean> = SingleLiveEvent()
     fun isLoading(): LiveData<Boolean> = _isLoading
@@ -77,6 +90,105 @@ abstract class BaseVM : ViewModel(), KoinComponent {
             navigateBack()
         }
     }
+
+    fun isHaveSavedInventory() = userRepository.getSavedInventory() != null
+
+    fun getSavedInventory() = userRepository.getSavedInventory()
+
+    fun getSavedInventoryInfo(): HashMap<String, Any?> {
+        val gson = Gson()
+        val inventoryInfo: HashMap<String, Any?> = HashMap()
+
+        userRepository.getSavedInventory()?.let {
+            when (it.type) {
+                InventoryType.OFFICE -> {
+                    val inventory = gson.fromJson(it.body, OfficeInventory::class.java)
+                    inventoryInfo["name"] = inventory.name
+                    inventoryInfo["imgRes"] = R.drawable.ic_inventory
+                    inventoryInfo["desc"] = (context.getString(R.string.inventory_total_quantity) +
+                            " " + inventory.quantity +
+                            " " + it.type)
+                }
+
+                InventoryType.TRANSPORT -> {
+                    val inventory = gson.fromJson(it.body, TransportInventory::class.java)
+                    inventoryInfo["name"] = inventory.model
+                    inventoryInfo["imgRes"] = R.drawable.ic_tractor
+                    inventoryInfo["desc"] = (context.getString(R.string.gov_number) + " " + inventory.stateNumber)
+                }
+
+                InventoryType.FLIGER -> {
+                    val inventory = gson.fromJson(it.body, FligelProduct::class.java)
+                    inventoryInfo["imgRes"] = R.drawable.ic_tractor
+                    inventoryInfo["desc"] = ("Номер комбайна: " + inventory.combinerNumber + "\n" +
+                            "Номер поля: " + inventory.fieldNumber + "\n" +
+                            "Вес урожая: " + inventory.harvestWeight)
+                }
+
+                InventoryType.WAREHOUSE -> {
+                    val inventory = gson.fromJson(it.body, WarehouseInventory::class.java)
+                    inventoryInfo["name"] = inventory.name
+                    inventoryInfo["imgRes"] = R.drawable.ic_warehouse
+                    inventoryInfo["desc"] = (context.getString(R.string.seal_number) + " " + inventory.sealNumber)
+                }
+            }
+        }
+        return inventoryInfo
+    }
+
+    fun saveInventory(inventory: Any, inventoryType: InventoryType) {
+        when(inventoryType) {
+            InventoryType.OFFICE -> {
+                userRepository.saveInventory(
+                        InventoryRetain(inventoryType, Gson().toJson(inventory as OfficeInventory))
+                )
+            }
+
+            InventoryType.TRANSPORT -> {
+                userRepository.saveInventory(
+                        InventoryRetain(inventoryType, Gson().toJson(inventory as TransportInventory))
+                )
+            }
+
+            InventoryType.FLIGER -> {
+                userRepository.saveInventory(
+                        InventoryRetain(inventoryType, Gson().toJson(inventory as FligelProduct))
+                )
+            }
+
+            InventoryType.WAREHOUSE -> {
+                userRepository.saveInventory(
+                        InventoryRetain(inventoryType, Gson().toJson(inventory as WarehouseInventory))
+                )
+            }
+        }
+    }
+
+    fun getSavedInventory(inventoryType: InventoryType): Any? {
+        userRepository.getSavedInventory()?.let {
+            when (inventoryType) {
+                InventoryType.OFFICE -> {
+                    return Gson().fromJson(it.body, OfficeInventory::class.java)
+                }
+
+                InventoryType.TRANSPORT -> {
+                    return Gson().fromJson(it.body, TransportInventory::class.java)
+                }
+
+                InventoryType.WAREHOUSE -> {
+                    return Gson().fromJson(it.body, WarehouseInventory::class.java)
+                }
+
+                InventoryType.FLIGER -> {
+                    return Gson().fromJson(it.body, FligelProduct::class.java)
+                }
+
+                else -> return null
+            }
+        } ?: run { return null }
+    }
+
+    fun deleteSavedInventory() = userRepository.deleteSavedInventory()
 
     fun navigateBack() {
         navigateBackLV.value = true

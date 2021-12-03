@@ -67,10 +67,10 @@ private fun provideOkHttpClient(
     headersInterceptor: HeadersInterceptor
 ): OkHttpClient {
     return OkHttpClient.Builder()
-        .callTimeout(5, TimeUnit.SECONDS)
-        .connectTimeout(5, TimeUnit.SECONDS)
-        .readTimeout(5, TimeUnit.SECONDS)
-        .writeTimeout(5, TimeUnit.SECONDS)
+        .callTimeout(20, TimeUnit.SECONDS)
+        .connectTimeout(20, TimeUnit.SECONDS)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .writeTimeout(20, TimeUnit.SECONDS)
         .addInterceptor(headersInterceptor)
         .addInterceptor(loggingInterceptor)
         .build()
@@ -78,8 +78,8 @@ private fun provideOkHttpClient(
 
 private fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
     return Retrofit.Builder()
-//        .baseUrl("https://app.dasagro.kz") //PROD
-        .baseUrl("https://test-app.dasagro.kz") //TEST
+        .baseUrl("https://app.dasagro.kz") //PROD
+//        .baseUrl("https://test-app.dasagro.kz") //TEST
         //.baseUrl(GATEWAY_DEBUG_HOST)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .client(okHttpClient)
