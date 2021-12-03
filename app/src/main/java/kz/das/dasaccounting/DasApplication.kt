@@ -52,7 +52,8 @@ class DasApplication: Application(), LifecycleObserver {
                 getOfficeViewModels(),
                 getDriverViewModels(),
                 getProfileViewModels(),
-                getLocationViewModels()
+                getLocationViewModels(),
+                getSavedInventoryModels()
             )
         }
     }

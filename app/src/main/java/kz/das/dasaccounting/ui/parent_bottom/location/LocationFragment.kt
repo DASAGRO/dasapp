@@ -27,6 +27,7 @@ import kz.das.dasaccounting.core.ui.extensions.zoomAnimation
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentLocationBinding
 import kz.das.dasaccounting.domain.common.UserRole
+import kz.das.dasaccounting.domain.common.ShiftType
 import kz.das.dasaccounting.ui.parent_bottom.CoreBottomNavigationVM
 import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
 import kz.das.dasaccounting.ui.utils.GeolocationUtils
@@ -88,11 +89,14 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
                         .setOnScanCallback(object : QrFragment.OnScanCallback {
                             override fun onScan(qrScan: String) {
                                 delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
-                                    coreMainVM.startWork(qrScan)
+                                    if(coreMainVM.isQrSessionStartOrStop(ShiftType.OPEN.type, qrScan)) {
+                                        coreMainVM.startWork(qrScan)
+                                    } else {
+                                        showError(getString(R.string.common_error), getString(R.string.qr_session_incorrect))
+                                    }
                                 }
                             }
-                        })
-                        .build()
+                        }).build()
                     qrFragment.show(childFragmentManager, "QrShiftFragment")
                 } else {
                     coreMainVM.startWork()
@@ -100,7 +104,31 @@ class LocationFragment : BaseFragment<LocationVM, FragmentLocationBinding>(), On
             }
 
             btnStop.setOnClickListener {
-                coreMainVM.stopWork()
+                if (coreMainVM.getUserRole() == UserRole.OFFICE.role) {
+                    val qrFragment = QrFragment.Builder()
+                        .setCancelable(true)
+                        .setOnScanCallback(object : QrFragment.OnScanCallback {
+                            override fun onScan(qrScan: String) {
+                                delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
+                                    if (coreMainVM.isQrSessionStartOrStop(
+                                            ShiftType.CLOSE.type,
+                                            qrScan
+                                        ) && coreMainVM.isQrSessionEqual(qrScan)
+                                    ) {
+                                        coreMainVM.stopWork()
+                                    } else {
+                                        showError(
+                                            getString(R.string.common_error),
+                                            getString(R.string.qr_session_incorrect)
+                                        )
+                                    }
+                                }
+                            }
+                        }).build()
+                    qrFragment.show(childFragmentManager, "QrShiftFragment")
+                } else {
+                    coreMainVM.stopWork()
+                }
             }
 
         }

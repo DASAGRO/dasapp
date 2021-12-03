@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.recyclerview.BaseViewHolder
 import kz.das.dasaccounting.databinding.ItemHistoryBinding
+import kz.das.dasaccounting.domain.data.history.HistoryEnum
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import kz.das.dasaccounting.domain.data.history.OperationType
 
@@ -62,6 +63,8 @@ class UserTransferHistoryAdapter(val context: Context, private var operations: A
                 userName = item.senderName
                 if (item.status == "В ожидании") {
                     this.ivStatus.setImageResource(R.drawable.ic_banner_waiting_oval)
+                } else if (item.status == HistoryEnum.UNFINISHED.status) {
+                    this.ivStatus.setImageResource(R.drawable.ic_edit_blue)
                 } else {
                     this.ivStatus.setImageResource(R.drawable.ic_banner_success_oval)
                 }

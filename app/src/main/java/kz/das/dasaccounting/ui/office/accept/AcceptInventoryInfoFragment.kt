@@ -32,18 +32,9 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
         mViewModel.setOfficeInventory(getOfficeInventory())
 
         mViewBinding.apply {
-            toolbar.setNavigationOnClickListener {
-                requireRouter().exit()
-            }
+            toolbar.setNavigationOnClickListener { requireRouter().exit() }
 
-            btnAccept.setOnClickListener {
-                getOfficeInventory()?.let {
-                    it.date = System.currentTimeMillis()
-                    it.latitude = mViewModel.getLocation().lat
-                    it.longitude = mViewModel.getLocation().long
-                    requireRouter().replaceScreen(AcceptInventoryCheckFragment.getScreen(it))
-                }
-            }
+            btnAccept.setOnClickListener { mViewModel.acceptInventory("") }
         }
     }
 
@@ -61,6 +52,23 @@ class AcceptInventoryInfoFragment: BaseFragment<AcceptInventoryInfoVM, FragmentI
                             String.format(getString(R.string.inventory_sender_name), it.senderName))
             }
         })
+
+        mViewModel.isOfficeInventoryAccepted().observe(viewLifecycleOwner, Observer {
+            if (it) { openInventoryCheck() }
+        })
+
+        mViewModel.isOnAwait().observe(viewLifecycleOwner, Observer {
+            if (it) { openInventoryCheck() }
+        })
+    }
+
+    private fun openInventoryCheck() {
+        getOfficeInventory()?.let {
+            it.date = System.currentTimeMillis()
+            it.latitude = mViewModel.getLocation().lat
+            it.longitude = mViewModel.getLocation().long
+            requireRouter().replaceScreen(AcceptInventoryCheckFragment.getScreen(it))
+        }
     }
 
     private fun getOfficeInventory(): OfficeInventory? {

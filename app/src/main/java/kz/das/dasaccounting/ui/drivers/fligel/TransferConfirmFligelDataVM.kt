@@ -15,9 +15,6 @@ import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import kz.das.dasaccounting.domain.data.office.NomenclatureOfficeInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import org.koin.core.inject
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -25,8 +22,6 @@ class TransferConfirmFligelDataVM: BaseVM() {
 
     private val driverInventoryRepository: DriverInventoryRepository by inject()
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
-
-    private val userRepository: UserRepository by inject()
 
     private var fligelProduct: FligelProduct? = null
 

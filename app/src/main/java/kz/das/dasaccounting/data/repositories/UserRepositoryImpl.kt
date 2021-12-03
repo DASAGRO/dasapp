@@ -22,6 +22,7 @@ import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
+import kz.das.dasaccounting.domain.data.action.InventoryRetain
 import kz.das.dasaccounting.domain.data.file.File
 import kz.das.dasaccounting.domain.data.history.HistoryEnum
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
@@ -105,6 +106,7 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
 
     override fun stopWork() {
         userPreferences.finishWork()
+        userPreferences.clearAwaitFinishWork()
     }
 
     override fun saveLastLocation(location: Location) {
@@ -112,6 +114,18 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
     }
 
     override fun getLastLocation(): Location = userPreferences.getLastLocation()
+
+    override fun saveInventory(inventoryRetain: InventoryRetain) = userPreferences.saveInventory(inventoryRetain)
+
+    override fun getSavedInventory() = userPreferences.getSavedInventory()
+
+    override fun deleteSavedInventory() = userPreferences.deleteSavedInventory()
+
+    override fun saveStartQrScan(qrString: String) = userPreferences.saveStartQrScan(qrString)
+
+    override fun getStartQrScan() = userPreferences.getStartQrScan()
+
+    override fun deleteStartQrScan() = userPreferences.deleteStartQrScan()
 
     override suspend fun deleteData() {
         userPreferences.clearUser()

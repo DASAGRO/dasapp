@@ -1,28 +1,27 @@
 package kz.das.dasaccounting.ui.parent_bottom
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
-import kz.das.dasaccounting.domain.DriverInventoryRepository
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.ShiftRepository
-import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.Location
+import kz.das.dasaccounting.domain.data.office.QrSession
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.io.InterruptedIOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 class CoreBottomNavigationVM: BaseVM(), KoinComponent {
 
-    private val userRepository: UserRepository by inject()
     private val shiftRepository: ShiftRepository by inject()
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
 
@@ -65,27 +64,30 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
             showLoading()
             try {
                 userRepository.startWork()
-                shiftRepository.startShift(userRepository.getLastLocation().lat,
+                shiftRepository.startShift(
+                        userRepository.getLastLocation().lat,
                         userRepository.getLastLocation().long,
-                        System.currentTimeMillis())
-                        .catch {
-                            if (it is SocketTimeoutException
-                                    || it is UnknownHostException
-                                    || it is ConnectException
-                            ) {
-                                shiftRepository.saveAwaitStartShift(userRepository.getLastLocation().lat,
-                                        userRepository.getLastLocation().long,
-                                        System.currentTimeMillis())
-                                setControlOptionsState(isOnWork())
-                                isWorkStartedLV.postValue(true)
-                            } else {
-                                throwableHandler.handle(it)
-                            }
-                        }
-                        .collect {
-                            setControlOptionsState(isOnWork())
-                            isWorkStartedLV.postValue(true)
-                        }
+                        System.currentTimeMillis()
+                ).catch {
+                    if (it is SocketTimeoutException
+                        || it is UnknownHostException
+                        || it is ConnectException
+                        || it is InterruptedIOException
+                    ) {
+                        shiftRepository.saveAwaitStartShift(userRepository.getLastLocation().lat,
+                                userRepository.getLastLocation().long,
+                                System.currentTimeMillis())
+                        setControlOptionsState(isOnWork())
+                        isWorkStartedLV.postValue(true)
+                    } else {
+                        throwableHandler.handle(it)
+                    }
+                }.collect {
+                    shiftRepository.clearAwaitStartWork()
+
+                    setControlOptionsState(isOnWork())
+                    isWorkStartedLV.postValue(true)
+                }
             } finally {
                 hideLoading()
             }
@@ -96,24 +98,32 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
         viewModelScope.launch {
             showLoading()
             try {
-                shiftRepository.startShift(userRepository.getLastLocation().lat,
-                    userRepository.getLastLocation().long,
-                    System.currentTimeMillis(), qrScan)
                 userRepository.startWork()
-                setControlOptionsState(isOnWork())
-                isWorkStartedLV.postValue(true)
-            } catch (t: Throwable) {
-                if (t is SocketTimeoutException
-                    || t is UnknownHostException
-                    || t is ConnectException
-                ) {
-                    shiftRepository.saveAwaitStartShift(userRepository.getLastLocation().lat,
+                userRepository.saveStartQrScan(qrScan)
+
+                shiftRepository.startShift(
+                        userRepository.getLastLocation().lat,
                         userRepository.getLastLocation().long,
-                        System.currentTimeMillis(), qrScan)
+                        System.currentTimeMillis(), qrScan
+                ).catch {
+                    if (it is SocketTimeoutException
+                        || it is UnknownHostException
+                        || it is ConnectException
+                        || it is InterruptedIOException
+                    ) {
+                        shiftRepository.saveAwaitStartShift(userRepository.getLastLocation().lat,
+                                userRepository.getLastLocation().long,
+                                System.currentTimeMillis(), qrScan)
+                        setControlOptionsState(isOnWork())
+                        isWorkStartedLV.postValue(true)
+                    } else {
+                        throwableHandler.handle(it)
+                    }
+                }.collect {
+                    shiftRepository.clearAwaitStartWork()
+
                     setControlOptionsState(isOnWork())
                     isWorkStartedLV.postValue(true)
-                } else {
-                    throwableHandler.handle(t)
                 }
             } finally {
                 hideLoading()
@@ -121,28 +131,54 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
         }
     }
 
-    // TODO add request params from userRepository in shiftRepository
+    fun isQrSessionStartOrStop(type: String, qrScan: String): Boolean{
+        return try {
+            val currentQrSession = Gson().fromJson(qrScan, QrSession::class.java)
+            currentQrSession.shift == type
+        } catch (t: Throwable) {
+            false
+        }
+    }
+
+    fun isQrSessionEqual(currentQrScan: String): Boolean {
+        val gson = Gson()
+        return try{
+            val currentQrSession = gson.fromJson(currentQrScan, QrSession::class.java)
+            val startQrSession = gson.fromJson(userRepository.getStartQrScan(), QrSession::class.java)
+
+            currentQrSession.uuid == startQrSession.uuid
+        } catch (t: Throwable) {
+            false
+        }
+    }
+
     fun stopWork() {
         viewModelScope.launch {
             try {
-                shiftRepository.finishShift(userRepository.getLastLocation().lat,
-                    userRepository.getLastLocation().long,
-                    System.currentTimeMillis())
-                userRepository.stopWork()
-                setControlOptionsState(isOnWork())
-                isWorkStoppedLV.postValue(true)
-            } catch (t: Throwable) {
-                if (t is SocketTimeoutException
-                    || t is UnknownHostException
-                    || t is ConnectException
-                ) {
-                    shiftRepository.saveAwaitFinishShift(userRepository.getLastLocation().lat,
+                shiftRepository.finishShift(
+                        userRepository.getLastLocation().lat,
                         userRepository.getLastLocation().long,
-                        System.currentTimeMillis())
+                        System.currentTimeMillis()
+                ).catch {
+                    if (it is SocketTimeoutException
+                        || it is UnknownHostException
+                        || it is ConnectException
+                        || it is InterruptedIOException
+                    ) {
+                        shiftRepository.saveAwaitFinishShift(userRepository.getLastLocation().lat,
+                                userRepository.getLastLocation().long,
+                                System.currentTimeMillis())
+                        setControlOptionsState(isOnWork())
+                        isWorkStoppedLV.postValue(true)
+                    } else {
+                        throwableHandler.handle(it)
+                    }
+                }.collect {
+                    userRepository.stopWork()
+                    shiftRepository.clearAwaitFinishWork()
+
                     setControlOptionsState(isOnWork())
                     isWorkStoppedLV.postValue(true)
-                } else {
-                    throwableHandler.handle(t)
                 }
             } finally {
                 hideLoading()

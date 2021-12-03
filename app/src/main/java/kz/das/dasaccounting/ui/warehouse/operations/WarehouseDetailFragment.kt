@@ -35,13 +35,17 @@ class WarehouseDetailFragment: BaseFragment<WarehouseDetailVM, FragmentWarehouse
 
     override fun getViewBinding() = FragmentWarehouseActionsBinding.inflate(layoutInflater)
 
-        override fun setupUI(savedInstanceState: Bundle?) {
+    override fun setupUI(savedInstanceState: Bundle?) {
         mViewModel.setWarehouseInventory(getWarehouse())
         mViewBinding.apply {
             toolbar.setNavigationOnClickListener { requireRouter().exit() }
             tvWarehouseActionsTitle.text = mViewModel.getWarehouseInventory()?.name
             llActionList.setOnClickListener {
-                requireRouter().navigateTo(WarehouseOperationsFragment.getScreen(mViewModel.getWarehouseInventory()))
+                if (!mViewModel.isHaveSavedInventory()) {
+                    requireRouter().navigateTo(WarehouseOperationsFragment.getScreen(mViewModel.getWarehouseInventory()))
+                } else {
+                    showExistInventory()
+                }
             }
             llActionAdd.setOnClickListener {
                 showQrDialog()

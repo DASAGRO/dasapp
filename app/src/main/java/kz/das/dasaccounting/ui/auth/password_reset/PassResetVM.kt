@@ -9,7 +9,6 @@ import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.utils.exceptions.NetworkResponseException
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.AuthRepository
-import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.Profile
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -17,7 +16,6 @@ import org.koin.core.inject
 class PassResetVM(val profile: Profile): BaseVM(), KoinComponent {
 
     private val authRepository: AuthRepository by inject()
-    private val userRepository: UserRepository by inject()
 
     private val remainedTimeLV: MutableLiveData<Long> = MutableLiveData()
     fun getRemainedTime(): LiveData<Long> = remainedTimeLV

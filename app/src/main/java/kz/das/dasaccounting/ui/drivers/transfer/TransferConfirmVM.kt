@@ -1,6 +1,5 @@
 package kz.das.dasaccounting.ui.drivers.transfer
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -9,15 +8,11 @@ import kz.das.dasaccounting.core.ui.utils.writeObjectToLog
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.data.entities.common.TransferItem
 import kz.das.dasaccounting.domain.DriverInventoryRepository
-import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import org.koin.core.inject
 
 class TransferConfirmVM: BaseVM() {
-    private val context: Context by inject()
-
     private val transportInventoryRepository: DriverInventoryRepository by inject()
-    private val userRepository: UserRepository by inject()
 
     private var transportInventory: TransportInventory? = null
     private var generatedRequestId: String? = null
@@ -44,7 +39,11 @@ class TransferConfirmVM: BaseVM() {
 
     fun getGeneratedRequestId() = generatedRequestId
 
+    fun getUserLocation() = userRepository.getLastLocation()
+
     fun setTransportInventory(transportInventory: TransportInventory?) {
+        transportInventory?.dateTime = System.currentTimeMillis()
+
         this.transportInventory = transportInventory
         this.transportInventory?.senderName = userRepository.getUser()?.lastName + " "
                 if (userRepository.getUser()?.firstName?.length ?: 0 > 0) {
@@ -89,11 +88,13 @@ class TransferConfirmVM: BaseVM() {
         viewModelScope.launch {
             showLoading()
             try {
-                transportInventory?.let {
-                    writeObjectToLog(it.toString(), context)
+                transportInventory?.apply {
+                    latitude = getUserLocation().lat
+                    longitude = getUserLocation().long
+                    writeObjectToLog(this.toString(), context)
 
-                    transportInventoryRepository.sendInventory(it)
-                    transportInventoryRepository.removeItem(it)
+                    transportInventoryRepository.sendInventory(this)
+                    transportInventoryRepository.removeItem(this)
                 }
                 isTransportInventorySentLV.postValue(true)
             } catch (t: Throwable) {
@@ -102,6 +103,7 @@ class TransferConfirmVM: BaseVM() {
                 }
                 isOnAwaitLV.postValue(true)
             } finally {
+                deleteSavedInventory()
                 hideLoading()
             }
         }

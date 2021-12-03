@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import kz.das.dasaccounting.core.extensions.ApiResponseMessage
 import kz.das.dasaccounting.domain.data.Location
 import kz.das.dasaccounting.domain.data.Profile
+import kz.das.dasaccounting.domain.data.action.InventoryRetain
 import kz.das.dasaccounting.domain.data.file.File
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 
@@ -66,4 +67,15 @@ interface UserRepository {
 
     fun getHistoryAcceptedTransportInventoriesLocally(): LiveData<List<HistoryTransfer>>
 
+    fun saveInventory(inventoryRetain: InventoryRetain)
+
+    fun deleteSavedInventory()
+
+    fun getSavedInventory(): InventoryRetain?
+
+    fun saveStartQrScan(qrString: String)
+
+    fun getStartQrScan(): String?
+
+    fun deleteStartQrScan()
 }

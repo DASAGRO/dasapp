@@ -7,9 +7,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
+import com.google.gson.Gson
+import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.requireRouter
 import kz.das.dasaccounting.core.ui.activities.BaseActivity
+import kz.das.dasaccounting.core.ui.dialogs.ActionInventoryConfirmDialog
+import kz.das.dasaccounting.core.ui.dialogs.InventoryExistDialog
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
+import kz.das.dasaccounting.domain.common.InventoryType
+import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.domain.data.office.OfficeInventory
+import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
+import kz.das.dasaccounting.ui.office.transfer.TransferConfirmFragment
+import kz.das.dasaccounting.ui.saved_inventory.DeleteSavedInventoryFragment
 
 abstract class BaseFragment<VM: BaseVM, VB: ViewBinding>(): Fragment(), ViewCallback {
 
@@ -138,6 +148,66 @@ abstract class BaseFragment<VM: BaseVM, VB: ViewBinding>(): Fragment(), ViewCall
 
     override fun navigateBack() {
         requireRouter().exit()
+    }
+
+    protected fun showExistInventory() {
+        mViewModel.getSavedInventoryInfo().apply {
+            showExistInventoryDialog(
+                    this["name"] as String?,
+                    this["desc"] as String?,
+                    this["imgRes"] as Int?
+            )
+        }
+    }
+
+    private fun showExistInventoryDialog(title: String?, description: String?, imgRes: Int? = null) {
+        val actionDialog = InventoryExistDialog.Builder()
+                .setCancelable(true)
+                .setMainTitle(getString(R.string.not_ended_inventory))
+                .setTitle(title ?: "")
+                .setDescription(description ?: "")
+                .setImage(imgRes ?: R.drawable.ic_tractor)
+                .setOnConfirmCallback(object : InventoryExistDialog.OnInventoryExistCallback {
+                    override fun onContinueClicked() {
+                        val inventory = mViewModel.getSavedInventory()!!
+                        if (inventory.type == InventoryType.OFFICE) {
+                            requireRouter().navigateTo(
+                                    TransferConfirmFragment.getScreen(
+                                            Gson().fromJson(
+                                                    inventory.body,
+                                                    OfficeInventory::class.java
+                                            )
+                                    )
+                            )
+                        } else if (inventory.type == InventoryType.TRANSPORT) {
+                            requireRouter().navigateTo(
+                                    kz.das.dasaccounting.ui.drivers.transfer.TransferConfirmFragment.getScreen(
+                                            Gson().fromJson(
+                                                    inventory.body,
+                                                    TransportInventory::class.java
+                                            )
+                                    )
+                            )
+                        } else if (inventory.type == InventoryType.WAREHOUSE) {
+                            requireRouter().replaceScreen(
+                                    kz.das.dasaccounting.ui.warehouse.transfer.TransferConfirmFragment.getScreen(
+                                            Gson().fromJson(
+                                                    inventory.body,
+                                                    WarehouseInventory::class.java
+                                            ), arrayListOf()
+                                    )
+                            )
+                        } else {
+
+                            //Fligger
+                        }
+                    }
+
+                    override fun onCancelClicked() {
+                        requireRouter().navigateTo(DeleteSavedInventoryFragment.getScreen())
+                    }
+                }).build()
+        actionDialog.show(childFragmentManager, ActionInventoryConfirmDialog.TAG)
     }
     
 }
