@@ -55,6 +55,10 @@ interface UserRepository {
 
     suspend fun getHistoryTransportInventories(): List<HistoryTransfer>
 
+    fun setHistoryInventoriesLoaded(value: Boolean)
+
+    fun isHistoryInventoriesNotEmpty(): Boolean
+
     fun getHistorySentWarehouseInventoriesLocally(): LiveData<List<HistoryTransfer>>
 
     fun getHistorySentOfficeInventoriesLocally(): LiveData<List<HistoryTransfer>>
