@@ -49,31 +49,15 @@ class AcceptTransportConfirmationVM : BaseVM(), KoinComponent {
 
     fun acceptInventory(comment: String) {
         viewModelScope.launch {
-            if (InternetAccess.internetCheck(context)) {
-                showLoading()
-                try {
-                    transportInventory?.apply {
-                        latitude = getUserLocation().lat
-                        longitude = getUserLocation().long
-                        writeObjectToLog(this.toString(), context)
+            transportInventory?.apply {
+                latitude = getUserLocation().lat
+                longitude = getUserLocation().long
+                writeObjectToLog(this.toString(), context)
 
-                        officeInventoryRepository.acceptInventory(this, comment, fileIds)
-                        officeInventoryRepository.addItem(this)
-                    }
-                    driverInventoryAcceptedLV.postValue(true)
-                } catch (t: Throwable) {
-                    transportInventory?.let {
-                        officeInventoryRepository.saveAwaitAcceptInventory(it, comment, fileIds)
-                    }
-                    isOnAwaitLV.postValue(true)
-                } finally {
-                    hideLoading()
-                }
-            } else {
-                transportInventory?.let {
-                    officeInventoryRepository.saveAwaitAcceptInventory(it, comment, fileIds)
-                }
+                officeInventoryRepository.saveAwaitAcceptInventory(this, comment, fileIds)
                 isOnAwaitLV.postValue(true)
+
+                startAwaitRequestWorker()
             }
         }
     }

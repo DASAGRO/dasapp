@@ -24,8 +24,8 @@ class ProfileHistoryVM: BaseVM() {
     fun retrieve() {
         viewModelScope.launch {
             try {
-                awaitRequestInventoryRepository.initAwaitRequests()
-                awaitRequestInventoryRepository.removeAllAwaitRequests()
+//                awaitRequestInventoryRepository.initAwaitRequests()
+//                awaitRequestInventoryRepository.removeAllAwaitRequests()
                 userRepository.getHistoryOfficeInventories()
                 userRepository.getHistoryTransportInventories()
                 userRepository.getHistoryWarehouseInventories()

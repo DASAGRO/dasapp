@@ -35,39 +35,15 @@ class AcceptInventoryInfoVM: BaseVM() {
 
     fun acceptInventory(comment: String) {
         viewModelScope.launch {
-            if (InternetAccess.internetCheck(context)) {
-                showLoading()
-                try {
-                    officeInventory?.apply {
-                        latitude = getLocation().lat
-                        longitude = getLocation().long
-                        writeObjectToLog(this.toString(), context)
+            officeInventory?.apply {
+                latitude = getLocation().lat
+                longitude = getLocation().long
+                writeObjectToLog(this.toString(), context)
 
-                        officeInventoryRepository.acceptInventory(this, comment, arrayListOf())
-                        officeInventoryRepository.initCheckAwaitAcceptOperation(this)
-                    }
-                    officeInventoryAcceptedLV.postValue(true)
-                } catch (t: Throwable) {
-                    officeInventory?.let {
-                        officeInventoryRepository.saveAwaitAcceptInventory(
-                            it,
-                            comment,
-                            arrayListOf()
-                        )
-                    }
-                    isOnAwaitLV.postValue(true)
-                } finally {
-                    hideLoading()
-                }
-            } else {
-                officeInventory?.let {
-                    officeInventoryRepository.saveAwaitAcceptInventory(
-                        it,
-                        comment,
-                        arrayListOf()
-                    )
-                }
+                officeInventoryRepository.saveAwaitAcceptInventory(this, comment, arrayListOf())
                 isOnAwaitLV.postValue(true)
+
+                startAwaitRequestWorker()
             }
         }
     }

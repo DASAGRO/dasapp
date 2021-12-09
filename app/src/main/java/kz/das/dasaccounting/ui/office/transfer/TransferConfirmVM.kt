@@ -10,7 +10,6 @@ import kz.das.dasaccounting.data.entities.common.TransferItem
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.common.UserRole
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
-import kz.das.dasaccounting.utils.InternetAccess
 import org.koin.core.inject
 
 class TransferConfirmVM: BaseVM() {
@@ -90,36 +89,17 @@ class TransferConfirmVM: BaseVM() {
 
     fun sendInventory() {
         viewModelScope.launch {
-            if (InternetAccess.internetCheck(context)) {
-                showLoading()
-                try {
-                    officeInventory?.apply {
-                        latitude = getUserLocation().lat
-                        longitude = getUserLocation().long
-                        writeObjectToLog(this.toString(), context)
+            officeInventory?.apply {
+                latitude = getUserLocation().lat
+                longitude = getUserLocation().long
+                writeObjectToLog(this.toString(), context)
 
-                        officeInventoryRepository.sendInventory(this)
-                        officeInventoryRepository.initCheckAwaitSentOperation(this)
-                    }
-                    isOfficeInventorySentLV.postValue(true)
-                } catch (t: Throwable) {
-                    officeInventory?.let {
-                        officeInventoryRepository.saveAwaitSentInventory(it)
-                    }
-                    isOnAwaitLV.postValue(true)
-                } finally {
-                    deleteSavedInventory()
-                    hideLoading()
-                }
-            } else {
-                officeInventory?.let {
-                    officeInventoryRepository.saveAwaitSentInventory(it)
-                }
+                officeInventoryRepository.saveAwaitSentInventory(this)
                 isOnAwaitLV.postValue(true)
+
                 deleteSavedInventory()
+                startAwaitRequestWorker()
             }
         }
     }
-
-
 }

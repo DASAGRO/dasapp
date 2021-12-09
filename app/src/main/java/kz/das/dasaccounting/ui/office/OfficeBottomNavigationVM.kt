@@ -46,14 +46,14 @@ class OfficeBottomNavigationVM: BaseVM(), KoinComponent {
             } catch (t: Throwable) { throwableHandler.handle(t) }
         }
 
-        viewModelScope.launch {
-            try {
-                awaitRequestInventoryRepository.initAwaitRequests()
-                awaitRequestInventoryRepository.removeAllAwaitRequests()
-            } catch (t: Throwable) {
-                //throwableHandler.handle(t)
-            }
-        }
+//        viewModelScope.launch {
+//            try {
+//                awaitRequestInventoryRepository.initAwaitRequests()
+//                awaitRequestInventoryRepository.removeAllAwaitRequests()
+//            } catch (t: Throwable) {
+//                //throwableHandler.handle(t)
+//            }
+//        }
 
     }
 

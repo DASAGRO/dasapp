@@ -1,6 +1,7 @@
 package kz.das.dasaccounting.data.repositories
 
-import kz.das.dasaccounting.core.extensions.unwrap
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kz.das.dasaccounting.data.entities.driver.toDomain
 import kz.das.dasaccounting.data.entities.driver.toFligelProduct
 import kz.das.dasaccounting.data.entities.driver.toGetRequest
@@ -22,16 +23,20 @@ class AwaitRequestInventoryRepositoryImpl: AwaitRequestInventoryRepository, Koin
     private val dasAppDatabase: DasAppDatabase by inject()
 
     // TODO Refactor as return method
-    override suspend fun initAwaitRequests(): Any {
-        return lateCallApi.initAllAwaitRequests(
-            AwaitSendGetRequest(
-                getTMCList        = if (dasAppDatabase.officeInventoryAcceptedDao().all.isNotEmpty()) dasAppDatabase.officeInventoryAcceptedDao().all.map { it.toDomain().toGetRequest() } else null,
-                sendTMCList       = if (dasAppDatabase.officeInventorySentDao().all.isNotEmpty()) dasAppDatabase.officeInventorySentDao().all.map { it.toDomain().toSendRequest() } else null,
-                getTSList         = if (dasAppDatabase.driverAcceptedInventoryDao().all.isNotEmpty()) dasAppDatabase.driverAcceptedInventoryDao().all.map { it.toDomain().toGetRequest("", arrayListOf()) } else null,
-                sendTSList        = if (dasAppDatabase.driverSentInventoryDao().all.isNotEmpty()) dasAppDatabase.driverSentInventoryDao().all.map { it.toDomain().toSentRequest() } else null,
-                receiveFligelList = if (dasAppDatabase.driverFligelDataDao().all.isNotEmpty()) dasAppDatabase.driverFligelDataDao().all.map { it.toFligelProduct().toReceiveFligelDataRequest() } else null
+    override suspend fun initAwaitRequests(): Flow<Any> {
+        return flow {
+            emit(
+                lateCallApi.initAllAwaitRequests(
+                    AwaitSendGetRequest(
+                        getTMCList        = if (dasAppDatabase.officeInventoryAcceptedDao().all.isNotEmpty()) dasAppDatabase.officeInventoryAcceptedDao().all.map { it.toDomain().toGetRequest() } else null,
+                        sendTMCList       = if (dasAppDatabase.officeInventorySentDao().all.isNotEmpty()) dasAppDatabase.officeInventorySentDao().all.map { it.toDomain().toSendRequest() } else null,
+                        getTSList         = if (dasAppDatabase.driverAcceptedInventoryDao().all.isNotEmpty()) dasAppDatabase.driverAcceptedInventoryDao().all.map { it.toDomain().toGetRequest("", arrayListOf()) } else null,
+                        sendTSList        = if (dasAppDatabase.driverSentInventoryDao().all.isNotEmpty()) dasAppDatabase.driverSentInventoryDao().all.map { it.toDomain().toSentRequest() } else null,
+                        receiveFligelList = if (dasAppDatabase.driverFligelDataDao().all.isNotEmpty()) dasAppDatabase.driverFligelDataDao().all.map { it.toFligelProduct().toReceiveFligelDataRequest() } else null
+                   )
+                )
             )
-        ).unwrap()
+        }
     }
 
     override suspend fun removeAllAwaitRequests() {

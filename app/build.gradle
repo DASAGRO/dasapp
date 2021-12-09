@@ -107,6 +107,9 @@ dependencies {
     implementation rootProject.ext.dependencies["room_testing"]
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
+    //WORK MANGER
+    implementation rootProject.ext.dependencies["work_manager"]
+
     // SHAPE OF VIEW
     implementation 'io.github.florent37:shapeofview:1.4.7'
 

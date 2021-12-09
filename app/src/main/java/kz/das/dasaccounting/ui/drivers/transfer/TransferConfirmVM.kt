@@ -87,33 +87,16 @@ class TransferConfirmVM: BaseVM() {
 
     fun sendInventory() {
         viewModelScope.launch {
-            if (InternetAccess.internetCheck(context)) {
-                showLoading()
-                try {
-                    transportInventory?.apply {
-                        latitude = getUserLocation().lat
-                        longitude = getUserLocation().long
-                        writeObjectToLog(this.toString(), context)
+            transportInventory?.apply {
+                latitude = getUserLocation().lat
+                longitude = getUserLocation().long
+                writeObjectToLog(this.toString(), context)
 
-                        transportInventoryRepository.sendInventory(this)
-                        transportInventoryRepository.removeItem(this)
-                    }
-                    isTransportInventorySentLV.postValue(true)
-                } catch (t: Throwable) {
-                    transportInventory?.let {
-                        transportInventoryRepository.saveAwaitSentInventory(it)
-                    }
-                    isOnAwaitLV.postValue(true)
-                } finally {
-                    deleteSavedInventory()
-                    hideLoading()
-                }
-            } else {
-                transportInventory?.let {
-                    transportInventoryRepository.saveAwaitSentInventory(it)
-                }
+                transportInventoryRepository.saveAwaitSentInventory(this)
                 isOnAwaitLV.postValue(true)
+
                 deleteSavedInventory()
+                startAwaitRequestWorker()
             }
         }
     }
