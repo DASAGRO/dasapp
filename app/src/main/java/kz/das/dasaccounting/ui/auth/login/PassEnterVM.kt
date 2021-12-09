@@ -59,6 +59,13 @@ class PassEnterVM(val profile: Profile?): BaseVM(), KoinComponent {
                 userRepository.updateToken(profile.token ?: "")
                 profile.token = ""
                 userRepository.setUser(profile)
+
+                userRepository.getHistoryOfficeInventories()
+                userRepository.getHistoryTransportInventories()
+                userRepository.getHistoryWarehouseInventories()
+
+                userRepository.setHistoryInventoriesLoaded(true)
+
                 isOnBoardingConfirmedLV.postValue(onBoardingRequired)
                 if (!onBoardingRequired) {
                     isLoginConfirmedLV.postValue(true)
@@ -67,6 +74,7 @@ class PassEnterVM(val profile: Profile?): BaseVM(), KoinComponent {
                 if (t is NetworkResponseException && t.httpResponseCode == 400) {
                     isLoginConfirmedLV.postValue(false)
                 } else {
+                    userRepository.setHistoryInventoriesLoaded(false)
                     throwableHandler.handle(t)
                 }
             } finally {

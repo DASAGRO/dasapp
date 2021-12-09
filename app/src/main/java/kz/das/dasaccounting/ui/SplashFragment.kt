@@ -27,15 +27,18 @@ class SplashFragment: BaseFragment<SplashVM, FragmentSplashBinding>() {
         mViewBinding.ivLogo.animateInfinitePulse(0.5f, 0.5f, 250)
         mViewBinding.tvVersion.text = "Version ${context?.packageManager?.getPackageInfo(context?.packageName!!, 0)!!.versionName}"
 
-        delayedTask(1000, CoroutineScope(Dispatchers.Main)) {
-            if (mViewModel.isUserOnSession()) {
-                mViewModel.getUserRole()?.let {
-                    Screens.getRoleScreens(it)?.let { screen -> requireRouter().newRootScreen(screen) }
+        mViewModel.isUserOk().observe(viewLifecycleOwner, {
+            delayedTask(1000, CoroutineScope(Dispatchers.Main)) {
+                if (it) {
+                    mViewModel.getUserRole()?.let {
+                        Screens.getRoleScreens(it)
+                            ?.let { screen -> requireRouter().newRootScreen(screen) }
+                    }
+                } else {
+                    requireRouter().newRootScreen(LoginFragment.getScreen())
                 }
-            } else {
-                requireRouter().newRootScreen(LoginFragment.getScreen())
             }
-        }
+        })
     }
 
 }

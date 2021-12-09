@@ -48,7 +48,6 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
     init {
         checkShiftState()
         retrieveNomenclatures()
-        retrieveTransferHistory()
     }
 
     fun saveLocation(long: Double, lat: Double) {
@@ -190,18 +189,6 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
         viewModelScope.launch {
             try {
                 officeInventoryRepository.getNomenclatures()
-            } catch (t: Throwable) {
-                throwableHandler.handle(t)
-            }
-        }
-    }
-
-    private fun retrieveTransferHistory() {
-        viewModelScope.launch {
-            try {
-                userRepository.getHistoryOfficeInventories()
-                userRepository.getHistoryTransportInventories()
-                userRepository.getHistoryWarehouseInventories()
             } catch (t: Throwable) {
                 throwableHandler.handle(t)
             }

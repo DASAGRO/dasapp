@@ -26,9 +26,6 @@ class ProfileHistoryVM: BaseVM() {
             try {
 //                awaitRequestInventoryRepository.initAwaitRequests()
 //                awaitRequestInventoryRepository.removeAllAwaitRequests()
-                userRepository.getHistoryOfficeInventories()
-                userRepository.getHistoryTransportInventories()
-                userRepository.getHistoryWarehouseInventories()
 
                 setRefresh(false)
             } catch (t: Throwable) {
