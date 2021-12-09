@@ -89,28 +89,17 @@ class TransferConfirmVM: BaseVM() {
 
     fun sendInventory() {
         viewModelScope.launch {
-            showLoading()
-            try {
-                officeInventory?.apply {
-                    latitude = getUserLocation().lat
-                    longitude = getUserLocation().long
-                    writeObjectToLog(this.toString(), context)
+            officeInventory?.apply {
+                latitude = getUserLocation().lat
+                longitude = getUserLocation().long
+                writeObjectToLog(this.toString(), context)
 
-                    officeInventoryRepository.sendInventory(this)
-                    officeInventoryRepository.initCheckAwaitSentOperation(this)
-                }
-                isOfficeInventorySentLV.postValue(true)
-            } catch (t: Throwable) {
-                officeInventory?.let {
-                    officeInventoryRepository.saveAwaitSentInventory(it)
-                }
+                officeInventoryRepository.saveAwaitSentInventory(this)
                 isOnAwaitLV.postValue(true)
-            } finally {
+
                 deleteSavedInventory()
-                hideLoading()
+                startAwaitRequestWorker()
             }
         }
     }
-
-
 }

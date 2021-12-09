@@ -5,6 +5,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
 import kz.das.dasaccounting.core.navigation.requireRouter
+import kz.das.dasaccounting.core.ui.extensions.animateRepeatPulse
+import kz.das.dasaccounting.core.ui.extensions.rotateAnimation
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentProfileHistoryBinding
 import kz.das.dasaccounting.ui.parent_bottom.showBottomNavMenu
@@ -18,6 +20,8 @@ class ProfileHistoryFragment: BaseFragment<ProfileHistoryVM, FragmentProfileHist
 
     override val mViewModel: ProfileHistoryVM by viewModel()
 
+    private var hAdapter: ProfileHistoryPageAdapter? = null
+
     override fun getViewBinding() = FragmentProfileHistoryBinding.inflate(layoutInflater)
 
     override fun setupUI(savedInstanceState: Bundle?) {
@@ -26,14 +30,23 @@ class ProfileHistoryFragment: BaseFragment<ProfileHistoryVM, FragmentProfileHist
             toolbar.setNavigationOnClickListener { requireRouter().exit() }
 
             ivRefresh.setOnClickListener {
+                mViewBinding.ivRefresh.animateRepeatPulse()
+                mViewBinding.ivRefresh.rotateAnimation()
+                mViewModel.setRefresh(true)
+
                 mViewModel.retrieve()
+
+                val curr = vpHistory.currentItem
+                vpHistory.adapter = hAdapter
+                vpHistory.currentItem = curr
             }
+            hAdapter = ProfileHistoryPageAdapter(childFragmentManager, lifecycle,
+                HistoryAcceptedFragment.newInstance(), HistoryGivenFragment.newInstance())
 
             vpHistory.run {
                 isSaveEnabled = true
                 isUserInputEnabled = false
-                adapter = ProfileHistoryPageAdapter(childFragmentManager, lifecycle,
-                        HistoryAcceptedFragment.newInstance(), HistoryGivenFragment.newInstance())
+                adapter = hAdapter
                 offscreenPageLimit = 2
                 TabLayoutMediator(mViewBinding.tlHistory, mViewBinding.vpHistory) {
                     tab, position ->

@@ -46,41 +46,38 @@ class AcceptTransportCheckFragment: BaseFragment<AcceptTransportCheckVM, Fragmen
         mViewModel.setTransportInventory(getTransportInventory())
         mViewBinding.apply {
             tvWarning.text = getString(R.string.barcode_bottom_text)
-            btnConfirm.text = getString(R.string.ready)
+            btnConfirm.text = getString(R.string.need_back_scan)
 
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }
-            btnConfirm.setOnClickListener {
-
-                when(getResponseType()) {
-                    AppConstants.IS_SUCCESS ->{
-                        showSuccess(getString(R.string.common_banner_success),
-                                if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
-                                    getString(R.string.transport_accessory_inventory_accepted_successfully)
-                                } else {
-                                    getString(R.string.transport_inventory_accepted_successfully)
-                                }
-                        )
-                    }
-
-                    AppConstants.IS_ON_AWAIT ->{
-                        showAwait(getString(R.string.common_banner_await),
-                                if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
-                                    getString(R.string.transport_accessory_inventory_await)
-                                } else {
-                                    getString(R.string.transport_inventory_await)
-                                }
-                        )
-                    }
-                }
-
-
-                MediaPlayerUtils.playSuccessSound(requireContext())
-                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-                    requireRouter().newRootScreen(screen)
-                }
-            }
+//            btnConfirm.setOnClickListener {
+//                when(getResponseType()) {
+//                    AppConstants.IS_SUCCESS ->{
+//                        showSuccess(getString(R.string.common_banner_success),
+//                                if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
+//                                    getString(R.string.transport_accessory_inventory_accepted_successfully)
+//                                } else {
+//                                    getString(R.string.transport_inventory_accepted_successfully)
+//                                }
+//                        )
+//                    }
+//                    AppConstants.IS_ON_AWAIT ->{
+//                        showAwait(getString(R.string.common_banner_await),
+//                                if (mViewModel.getTransportInventory().value?.tsType.toString() == TransportType.TRAILED.type) {
+//                                    getString(R.string.transport_accessory_inventory_await)
+//                                } else {
+//                                    getString(R.string.transport_inventory_await)
+//                                }
+//                        )
+//                    }
+//                }
+//
+//                MediaPlayerUtils.playSuccessSound(requireContext())
+//                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+//                    requireRouter().newRootScreen(screen)
+//                }
+//            }
         }
     }
 

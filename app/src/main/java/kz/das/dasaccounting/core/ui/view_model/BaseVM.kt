@@ -4,11 +4,16 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.work.BackoffPolicy
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.google.gson.Gson
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.data.ExceptionModel
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.utils.UIThrowableHandler
+import kz.das.dasaccounting.data.source.workmanagers.AwaitRequestWorker
 import kz.das.dasaccounting.domain.UserRepository
 import kz.das.dasaccounting.domain.common.InventoryType
 import kz.das.dasaccounting.domain.data.action.InventoryRetain
@@ -16,8 +21,10 @@ import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
+import kz.das.dasaccounting.utils.AppConstants
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.util.concurrent.TimeUnit
 
 abstract class BaseVM : ViewModel(), KoinComponent {
     protected val userRepository: UserRepository by inject()
@@ -189,6 +196,19 @@ abstract class BaseVM : ViewModel(), KoinComponent {
     }
 
     fun deleteSavedInventory() = userRepository.deleteSavedInventory()
+
+    fun startAwaitRequestWorker() {
+        val workRequest = OneTimeWorkRequest.Builder(AwaitRequestWorker::class.java)
+            .setBackoffCriteria(BackoffPolicy.LINEAR, 2, TimeUnit.MINUTES)
+            .addTag(AppConstants.AWAIT_INVENTORY_WORK_TAG)
+            .build()
+
+        WorkManager.getInstance(context).enqueueUniqueWork(
+            AppConstants.AWAIT_INVENTORY_WORK_TAG,
+            ExistingWorkPolicy.REPLACE,
+            workRequest
+        )
+    }
 
     fun navigateBack() {
         navigateBackLV.value = true

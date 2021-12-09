@@ -167,6 +167,14 @@ class UserRepositoryImpl: UserRepository, KoinComponent {
             })
     }
 
+    override fun setHistoryInventoriesLoaded(value: Boolean) {
+        userPreferences.setHistoryInventoriesLoad(value)
+    }
+
+    override fun isHistoryInventoriesNotEmpty(): Boolean {
+        return userPreferences.isHistoryInventoriesLoaded()
+    }
+
     override fun getHistorySentWarehouseInventoriesLocally(): LiveData<List<HistoryTransfer>>{
         return dasAppDatabase.historyWarehouseInventoryDao().allAsLiveData.map { list -> list.map { it.toHistoryTransfer() }.filter { it.status == HistoryEnum.SENT.status  }}
     }

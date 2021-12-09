@@ -9,6 +9,7 @@ import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.data.entities.common.TransferItem
 import kz.das.dasaccounting.domain.DriverInventoryRepository
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.utils.InternetAccess
 import org.koin.core.inject
 
 class TransferConfirmVM: BaseVM() {
@@ -86,25 +87,16 @@ class TransferConfirmVM: BaseVM() {
 
     fun sendInventory() {
         viewModelScope.launch {
-            showLoading()
-            try {
-                transportInventory?.apply {
-                    latitude = getUserLocation().lat
-                    longitude = getUserLocation().long
-                    writeObjectToLog(this.toString(), context)
+            transportInventory?.apply {
+                latitude = getUserLocation().lat
+                longitude = getUserLocation().long
+                writeObjectToLog(this.toString(), context)
 
-                    transportInventoryRepository.sendInventory(this)
-                    transportInventoryRepository.removeItem(this)
-                }
-                isTransportInventorySentLV.postValue(true)
-            } catch (t: Throwable) {
-                transportInventory?.let {
-                    transportInventoryRepository.saveAwaitSentInventory(it)
-                }
+                transportInventoryRepository.saveAwaitSentInventory(this)
                 isOnAwaitLV.postValue(true)
-            } finally {
+
                 deleteSavedInventory()
-                hideLoading()
+                startAwaitRequestWorker()
             }
         }
     }

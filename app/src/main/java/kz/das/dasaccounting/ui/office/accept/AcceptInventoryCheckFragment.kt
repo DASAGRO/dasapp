@@ -42,28 +42,28 @@ class AcceptInventoryCheckFragment: BaseFragment<AcceptInventoryCheckVM, Fragmen
         mViewModel.setOfficeInventory(getOfficeInventory())
         mViewBinding.apply {
             tvWarning.text = getString(R.string.barcode_bottom_text)
-            btnConfirm.text = getString(R.string.ready)
+            btnConfirm.text = getString(R.string.need_back_scan)
 
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
             }
-            btnConfirm.setOnClickListener {
-                when(getResponseType()) {
-                    AppConstants.IS_SUCCESS ->{
-                        showSuccess(getString(R.string.common_banner_success),
-                                getString(R.string.office_inventory_accepted_successfully))
-                    }
-
-                    AppConstants.IS_ON_AWAIT ->{
-                        showAwait(getString(R.string.common_banner_await), "Получение ТМЦ в ожидании!")
-                    }
-                }
-
-                MediaPlayerUtils.playSuccessSound(requireContext())
-                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
-                    requireRouter().newRootScreen(screen)
-                }
-            }
+//            btnConfirm.setOnClickListener {
+//                when(getResponseType()) {
+//                    AppConstants.IS_SUCCESS ->{
+//                        showSuccess(getString(R.string.common_banner_success),
+//                                getString(R.string.office_inventory_accepted_successfully))
+//                    }
+//
+//                    AppConstants.IS_ON_AWAIT ->{
+//                        showAwait(getString(R.string.common_banner_await), "Получение ТМЦ в ожидании!")
+//                    }
+//                }
+//
+//                MediaPlayerUtils.playSuccessSound(requireContext())
+//                Screens.getRoleScreens(mViewModel.getUserRole() ?: "")?.let { screen ->
+//                    requireRouter().newRootScreen(screen)
+//                }
+//            }
         }
     }
 

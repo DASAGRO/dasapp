@@ -105,10 +105,12 @@
     <string name="camera_qr_scan_permission_required_rationale">Для корректной работы нужно дать разрешение камеры для QR-сканера!</string>
     <string name="camera_access_title">Доступ к камере</string>
     <string name="make_transfer">Сформировать передачу</string>
-    <string name="barcode_bottom_text">Внимание! Для Передачи просим нажать на кнопку “Готово”</string>
-    <string name="barcode_next_bottom_text">Внимание! Для Передачи просим нажать на кнопку “Далее”</string>
+    <string name="barcode_bottom_text">Внимание! Для Передачи просим нажать на кнопку “Требуется обратное сканирование”</string>
+    <string name="barcode_next_bottom_text">Внимание! Для Передачи просим нажать на кнопку “Обратное сканирование”</string>
     <string name="barcode_bottom_text_reverse_scan">Внимание! Для подтверждения передачи просим нажать на кнопку “Готово”</string>
     <string name="ready">Готово</string>
+    <string name="need_back_scan">Требуется обратное сканирование</string>
+    <string name="back_scan">Обратное сканирование</string>
     <string name="accept_gather">Принять урожай</string>
     <string name="transport_type">Номер комбайна</string>
     <string name="field_number">Номер поля</string>

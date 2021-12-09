@@ -1,6 +1,7 @@
 package kz.das.dasaccounting.ui.warehouse.transfer
 
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.navigation.DasAppScreen
@@ -44,7 +45,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
         mViewModel.setFileIds(getFileIds())
         mViewBinding.apply {
             tvWarning.text = getString(R.string.barcode_next_bottom_text)
-            btnConfirm.text = getString(R.string.next)
+            btnConfirm.text = getString(R.string.back_scan)
 
             toolbar.setNavigationOnClickListener {
                 requireRouter().exit()
@@ -52,6 +53,7 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
             btnConfirm.setOnClickListener {
                 showConfirmDialog()
             }
+            btnConfirm.background = ContextCompat.getDrawable(requireContext(), R.drawable.selectable_red_semi_10dp)
         }
 
         mViewModel.apply {
