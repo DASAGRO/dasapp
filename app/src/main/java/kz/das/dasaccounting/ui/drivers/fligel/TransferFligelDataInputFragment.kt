@@ -1,5 +1,6 @@
 package kz.das.dasaccounting.ui.drivers.fligel
 
+import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.Observer
 import kz.das.dasaccounting.R
 import kz.das.dasaccounting.core.ui.dialogs.ActionConfirmDialog
@@ -37,6 +38,12 @@ class TransferFligelDataInputFragment: BaseBottomSheetFragment<FragmentBottomShe
         mViewBinding.apply {
             this.ivClose.setOnClickListener {
                 dismiss()
+            }
+            edtGatherWeight.setOnEditorActionListener { textView, actionId, keyEvent ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    true
+                }
+                false
             }
             this.btnMakeTransfer.setOnClickListener {
                 if (!edtFieldNumber.text.isNullOrEmpty() &&

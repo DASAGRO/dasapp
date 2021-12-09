@@ -1,6 +1,7 @@
 package kz.das.dasaccounting.ui.office.transfer
 
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,11 +44,12 @@ class TransferConfirmFragment: BaseFragment<TransferConfirmVM, FragmentBarcodeGe
     override fun setupUI(savedInstanceState: Bundle?) {
         mViewBinding.apply {
             tvWarning.text = getString(R.string.barcode_next_bottom_text)
-            btnConfirm.text = getString(R.string.next)
+            btnConfirm.text = getString(R.string.back_scan)
 
             toolbar.setNavigationOnClickListener { requireRouter().exit() }
 
             btnConfirm.setOnClickListener { showBarcodeQR() }
+            btnConfirm.background = ContextCompat.getDrawable(requireContext(), R.drawable.selectable_red_semi_10dp)
 
             mViewModel.apply {
                 getSavedInventory(InventoryType.OFFICE)?.let {

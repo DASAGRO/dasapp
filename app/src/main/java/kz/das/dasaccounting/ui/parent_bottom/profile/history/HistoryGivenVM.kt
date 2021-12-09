@@ -21,22 +21,6 @@ class HistoryGivenVM: BaseVM() {
     private val driverInventoryRepository: DriverInventoryRepository by inject()
     private val officeInventoryRepository: OfficeInventoryRepository by inject()
 
-    init {
-        retrieve()
-    }
-
-    private fun retrieve() {
-        viewModelScope.launch {
-            try {
-                userRepository.getHistoryOfficeInventories()
-                userRepository.getHistoryTransportInventories()
-                userRepository.getHistoryWarehouseInventories()
-            } catch (t: Throwable) {
-                throwableHandler.handle(t)
-            }
-        }
-    }
-
     fun getUser() = userRepository.getUser()
 
     fun getZippedHistory() = zipLiveDataAny(getHistoryWarehouseInventoriesLocally(),

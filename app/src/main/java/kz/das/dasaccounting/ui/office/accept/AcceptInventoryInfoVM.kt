@@ -8,6 +8,7 @@ import kz.das.dasaccounting.core.ui.utils.writeObjectToLog
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.OfficeInventoryRepository
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
+import kz.das.dasaccounting.utils.InternetAccess
 import org.koin.core.inject
 
 class AcceptInventoryInfoVM: BaseVM() {
@@ -34,24 +35,15 @@ class AcceptInventoryInfoVM: BaseVM() {
 
     fun acceptInventory(comment: String) {
         viewModelScope.launch {
-            showLoading()
-            try {
-                officeInventory?.apply {
-                    latitude = getLocation().lat
-                    longitude = getLocation().long
-                    writeObjectToLog(this.toString(), context)
+            officeInventory?.apply {
+                latitude = getLocation().lat
+                longitude = getLocation().long
+                writeObjectToLog(this.toString(), context)
 
-                    officeInventoryRepository.acceptInventory(this, comment, arrayListOf())
-                    officeInventoryRepository.initCheckAwaitAcceptOperation(this)
-                }
-                officeInventoryAcceptedLV.postValue(true)
-            } catch (t: Throwable) {
-                officeInventory?.let {
-                    officeInventoryRepository.saveAwaitAcceptInventory(it, comment, arrayListOf())
-                }
+                officeInventoryRepository.saveAwaitAcceptInventory(this, comment, arrayListOf())
                 isOnAwaitLV.postValue(true)
-            } finally {
-                hideLoading()
+
+                startAwaitRequestWorker()
             }
         }
     }

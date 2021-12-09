@@ -89,14 +89,14 @@ class DriverBottomNavigationVM : BaseVM() {
             } catch (t: Throwable) { throwableHandler.handle(t) }
         }
 
-        viewModelScope.launch {
-            try {
-                awaitRequestInventoryRepository.initAwaitRequests()
-                awaitRequestInventoryRepository.removeAllAwaitRequests()
-            } catch (t: Throwable) {
-                //throwableHandler.handle(t)
-            }
-        }
+//        viewModelScope.launch {
+//            try {
+//                awaitRequestInventoryRepository.initAwaitRequests()
+//                awaitRequestInventoryRepository.removeAllAwaitRequests()
+//            } catch (t: Throwable) {
+//                //throwableHandler.handle(t)
+//            }
+//        }
 
     }
 

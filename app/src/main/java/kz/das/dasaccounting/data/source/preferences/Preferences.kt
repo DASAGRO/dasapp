@@ -13,6 +13,7 @@ import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 private const val PREFERENCES_USER_ACCESS_TOKEN = "user_access_token"
 private const val PREFERENCES_USER_PROFILE = "user_profile"
 private const val PREFERENCES_USER_ON_WORK = "user_on_work"
+private const val PREFERENCES_HISTORY_INVENTORIES_IS_LOADED = "history_invents_loaded"
 
 private const val PREFERENCES_LAST_LOCATION = "last_location"
 private const val PREFERENCES_AWAIT_START_WORK = "await_start_work"
@@ -90,9 +91,18 @@ class UserPreferences(private val preferences: SharedPreferences) {
         preferences.edit().remove(PREFERENCES_USER_ACCESS_TOKEN).apply()
         preferences.edit().remove(PREFERENCES_USER_PROFILE).apply()
         preferences.edit().remove(PREFERENCES_USER_ON_WORK).apply()
+        preferences.edit().remove(PREFERENCES_HISTORY_INVENTORIES_IS_LOADED).apply()
         preferences.edit().remove(PREFERENCES_LAST_LOCATION).apply()
         preferences.edit().remove(PREFERENCES_AWAIT_START_WORK).apply()
         preferences.edit().remove(PREFERENCES_AWAIT_FINISH_WORK).apply()
+    }
+
+    fun setHistoryInventoriesLoad(value: Boolean) {
+        preferences.edit().putBoolean(PREFERENCES_HISTORY_INVENTORIES_IS_LOADED, value).apply()
+    }
+
+    fun isHistoryInventoriesLoaded(): Boolean {
+        return preferences.getBoolean(PREFERENCES_HISTORY_INVENTORIES_IS_LOADED, false)
     }
 
     fun isUserOnWork(): Boolean {

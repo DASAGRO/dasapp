@@ -44,6 +44,7 @@ fun SentTransportEntity.toDomain(): TransportInventory {
         model = this.model,
         molUuid = this.molUuid,
         requestId = this.requestId,
+        receiverUUID = this.receiverUUID,
         storeUUIDSender = this.storeUUIDSender,
         storeUUIDReceiver = this.storeUUIDReceiver,
         stateNumber = this.stateNumber,

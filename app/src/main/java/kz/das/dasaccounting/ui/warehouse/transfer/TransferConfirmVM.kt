@@ -2,13 +2,13 @@ package kz.das.dasaccounting.ui.warehouse.transfer
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import kz.das.dasaccounting.core.ui.utils.SingleLiveEvent
 import kz.das.dasaccounting.core.ui.utils.writeObjectToLog
 import kz.das.dasaccounting.core.ui.view_model.BaseVM
 import kz.das.dasaccounting.domain.WarehouseInventoryRepository
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
+import kz.das.dasaccounting.utils.InternetAccess
 import org.koin.core.inject
 
 
@@ -49,22 +49,26 @@ class TransferConfirmVM: BaseVM() {
 
     fun sendInventory() {
         viewModelScope.launch {
-            showLoading()
-            try {
-                warehouseInventory?.apply {
-                    latitude = getUserLocation().lat
-                    longitude = getUserLocation().long
-                    writeObjectToLog(this.toString(), context)
+            if (InternetAccess.internetCheck(context)) {
+                showLoading()
+                try {
+                    warehouseInventory?.apply {
+                        latitude = getUserLocation().lat
+                        longitude = getUserLocation().long
+                        writeObjectToLog(this.toString(), context)
 
-                    warehouseInventoryRepository.sendInventory(this, fileIds)
+                        warehouseInventoryRepository.sendInventory(this, fileIds)
+                    }
+                    isWarehouseInventorySentLV.postValue(true)
+                } catch (t: Throwable) {
+                    throwableHandler.handle(t)
+                    isWarehouseInventorySentLV.postValue(false)
+                } finally {
+                    deleteSavedInventory()
+                    hideLoading()
                 }
-                isWarehouseInventorySentLV.postValue(true)
-            } catch (t: Throwable) {
-                throwableHandler.handle(t)
+            } else {
                 isWarehouseInventorySentLV.postValue(false)
-            } finally {
-                deleteSavedInventory()
-                hideLoading()
             }
         }
     }
