@@ -118,8 +118,6 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
 
-
-
     // Fingerprint Scanner
     implementation 'co.infinum:goldfinger:2.0.1'
 
