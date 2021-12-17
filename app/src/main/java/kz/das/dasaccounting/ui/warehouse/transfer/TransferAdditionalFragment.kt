@@ -4,12 +4,16 @@ import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kz.das.dasaccounting.R
+import kz.das.dasaccounting.core.extensions.delayedTask
 import kz.das.dasaccounting.core.ui.dialogs.BaseBottomSheetFragment
 import kz.das.dasaccounting.databinding.FragmentBottomSheetWarehouseTransferBinding
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.ProfileSupportAttachedMediaAdapter
 import kz.das.dasaccounting.ui.parent_bottom.profile.support.data.Media
+import kz.das.dasaccounting.ui.parent_bottom.qr.QrFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class TransferAdditionalFragment: BaseBottomSheetFragment<FragmentBottomSheetWarehouseTransferBinding, TransferAdditionalVM>() {
@@ -79,6 +83,20 @@ class TransferAdditionalFragment: BaseBottomSheetFragment<FragmentBottomSheetWar
                         mViewModel.upload(list)
                     }
             }
+
+            btnScanQr.setOnClickListener {
+                val qrFragment = QrFragment.Builder()
+                    .setCancelable(true)
+                    .setOnScanCallback(object : QrFragment.OnScanCallback {
+                        override fun onScan(qrScan: String) {
+                            delayedTask(300L, CoroutineScope(Dispatchers.Main)) {
+                                edtSealNumber.setText(qrScan)
+                            }
+                        }
+                    }).build()
+                qrFragment.show(parentFragmentManager, "QrAcceptFragment")
+            }
+
             btnTransfer.setOnClickListener {
                 if (edtSealNumber.text.isNullOrEmpty()) {
                     showError(getString(R.string.common_error), "Введите номер пломбы!")
