@@ -125,12 +125,6 @@ class DriverBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
         })
 
-        mViewModel.isRefresh().observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                driverBottomNavigationVM.refresh()
-            }
-        })
-
         driverBottomNavigationVM.getTransportsLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.removeHead(OperationHead(getString(R.string.transport_tracktor_title)))
             operationsAdapter?.removeHead(OperationHead(getString(R.string.transport_trailer_title)))

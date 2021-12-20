@@ -65,12 +65,6 @@ open class CoreBottomNavigationFragment : BaseFragment<CoreBottomNavigationVM, F
 
         mViewBinding.bottomNavigationView.background = null
 
-        mViewBinding.ivRefresh.setOnClickListener {
-            mViewBinding.ivRefresh.animateRepeatPulse()
-            mViewBinding.ivRefresh.rotateAnimation()
-            mViewModel.setRefresh(true)
-        }
-
         mViewBinding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {

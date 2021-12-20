@@ -88,12 +88,6 @@ class OfficeBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
         })
 
-        mViewModel.isRefresh().observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                officeBottomNavigationVM.refresh()
-            }
-        })
-
         officeBottomNavigationVM.getOperationsLocally().observe(viewLifecycleOwner, Observer {
             operationsAdapter?.removeHead(OperationHead(getString(R.string.inventory_title)))
             operationsAdapter?.clearOperationItems()
