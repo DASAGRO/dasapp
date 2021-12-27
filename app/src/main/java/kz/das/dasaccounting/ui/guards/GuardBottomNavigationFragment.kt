@@ -97,11 +97,6 @@ class GuardBottomNavigationFragment: CoreBottomNavigationFragment() {
             }
         })
 
-        mViewModel.isRefresh().observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                warehouseBottomNavigationVM.refresh()
-            }
-        })
     }
 
     private fun initAcceptOperation() {

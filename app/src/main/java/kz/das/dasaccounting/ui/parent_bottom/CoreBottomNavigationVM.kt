@@ -34,11 +34,6 @@ class CoreBottomNavigationVM: BaseVM(), KoinComponent {
     private val isWorkStoppedLV = SingleLiveEvent<Boolean>()
     fun isWorkStopped(): LiveData<Boolean> = isWorkStoppedLV
 
-    private val isRefreshLV = MutableLiveData<Boolean>()
-    fun isRefresh(): LiveData<Boolean> = isRefreshLV
-
-    fun setRefresh(refresh: Boolean) = isRefreshLV.postValue(refresh)
-
     fun setControlOptionsState(isShow: Boolean) = isControlOptionsShowLV.postValue(isShow)
 
     fun getUserRole() = userRepository.getUserRole()

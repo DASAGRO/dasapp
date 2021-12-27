@@ -1,6 +1,5 @@
 package kz.das.dasaccounting.ui.parent_bottom.profile.history
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -13,7 +12,6 @@ class ProfileHistoryVM: BaseVM() {
     private val awaitRequestInventoryRepository: AwaitRequestInventoryRepository by inject()
 
     private val isRefreshLV = MutableLiveData<Boolean>()
-    fun isRefresh(): LiveData<Boolean> = isRefreshLV
 
     fun setRefresh(refresh: Boolean) = isRefreshLV.postValue(refresh)
 
@@ -26,6 +24,9 @@ class ProfileHistoryVM: BaseVM() {
             try {
 //                awaitRequestInventoryRepository.initAwaitRequests()
 //                awaitRequestInventoryRepository.removeAllAwaitRequests()
+                userRepository.getHistoryOfficeInventories()
+                userRepository.getHistoryTransportInventories()
+                userRepository.getHistoryWarehouseInventories()
 
                 setRefresh(false)
             } catch (t: Throwable) {
