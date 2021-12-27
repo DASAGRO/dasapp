@@ -12,6 +12,7 @@ import kz.das.dasaccounting.domain.AuthRepository
 import kz.das.dasaccounting.domain.data.Profile
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.io.InterruptedIOException
 
 class PassEnterVM(val profile: Profile?): BaseVM(), KoinComponent {
 
@@ -28,6 +29,9 @@ class PassEnterVM(val profile: Profile?): BaseVM(), KoinComponent {
 
     private val isOnBoardingConfirmedLV = SingleLiveEvent<Boolean>()
     fun isOnBoardingConfirmed(): LiveData<Boolean> = isOnBoardingConfirmedLV
+
+    private val _numberAttemptsLV = MutableLiveData<Int?>()
+    fun numberAttemptsLV(): LiveData<Int?> = _numberAttemptsLV
 
     fun getUserRole() = userRepository.getUserRole()
 
@@ -73,6 +77,8 @@ class PassEnterVM(val profile: Profile?): BaseVM(), KoinComponent {
             } catch (t: Throwable) {
                 if (t is NetworkResponseException && t.httpResponseCode == 400) {
                     isLoginConfirmedLV.postValue(false)
+                } else if(t is InterruptedIOException) {
+                    _numberAttemptsLV.postValue((numberAttemptsLV().value ?: 0) + 1)
                 } else {
                     userRepository.setHistoryInventoriesLoaded(false)
                     throwableHandler.handle(t)

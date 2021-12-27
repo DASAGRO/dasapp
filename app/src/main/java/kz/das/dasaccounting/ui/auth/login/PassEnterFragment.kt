@@ -73,6 +73,15 @@ class PassEnterFragment: BaseFragment<PassEnterVM, FragmentPasswordBinding>(), K
             getRemainedTime().observe(viewLifecycleOwner, Observer {
                 mViewBinding.tvRemaining.text = String.format(getString(R.string.enter_password_retry_remaining), it)
             })
+            numberAttemptsLV().observe(viewLifecycleOwner, { it?.let {
+                if (it <= 5)
+                    mViewModel.login(mViewBinding.edtPassword.text.toString())
+                else
+                    showError(
+                        getString(R.string.common_error),
+                        getString(R.string.common_error_could_not_connect_to_server)
+                    )
+            }})
         }
     }
 

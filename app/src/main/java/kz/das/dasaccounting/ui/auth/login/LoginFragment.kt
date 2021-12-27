@@ -36,17 +36,30 @@ class LoginFragment: BaseFragment<LoginVM, FragmentLoginBinding>() {
 
     override fun observeLiveData() {
         super.observeLiveData()
-        mViewModel.isValidPhoneNumberLV.observe(viewLifecycleOwner, Observer {
-            mViewBinding.btnConfirm.isEnabled = it
-        })
+        mViewModel.run {
+            isValidPhoneNumberLV.observe(viewLifecycleOwner, Observer {
+                mViewBinding.btnConfirm.isEnabled = it
+            })
 
-        mViewModel.isLoginExist().observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                requireRouter().navigateTo(PassEnterFragment.getScreen(it))
-            } else {
-                showError(getString(R.string.common_error), getString(R.string.error_not_exist))
-            }
-        })
+            isLoginExist().observe(viewLifecycleOwner, Observer {
+                if (it != null) {
+                    resetNumberAttempts()
+                    requireRouter().navigateTo(PassEnterFragment.getScreen(it))
+                } else {
+                    showError(getString(R.string.common_error), getString(R.string.error_not_exist))
+                }
+            })
+
+            numberAttemptsLV().observe(viewLifecycleOwner, { it?.let {
+                if (it <= 5)
+                    checkUser()
+                else
+                    showError(
+                        getString(R.string.common_error),
+                        getString(R.string.common_error_could_not_connect_to_server)
+                    )
+            }})
+        }
     }
 
     private fun setupPhoneField() {

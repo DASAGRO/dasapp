@@ -13,6 +13,7 @@ import kz.das.dasaccounting.domain.AuthRepository
 import kz.das.dasaccounting.domain.data.Profile
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.io.InterruptedIOException
 
 class LoginVM: BaseVM(), KoinComponent {
 
@@ -29,6 +30,9 @@ class LoginVM: BaseVM(), KoinComponent {
 
     private val _isLoginExistLV = SingleLiveEvent<Profile?>()
     fun isLoginExist(): LiveData<Profile?> = _isLoginExistLV
+
+    private val _numberAttemptsLV = MutableLiveData<Int?>()
+    fun numberAttemptsLV(): LiveData<Int?> = _numberAttemptsLV
 
     private fun checkPhoneNumber(phoneNumber: String) {
         if (phoneNumber.isNotBlank() && phoneNumber.length == 18) {
@@ -48,6 +52,8 @@ class LoginVM: BaseVM(), KoinComponent {
             } catch (t: Throwable) {
                 if (t is NetworkResponseException && t.httpResponseCode == 400) {
                     _isLoginExistLV.postValue(null)
+                } else if(t is InterruptedIOException) {
+                    _numberAttemptsLV.postValue((numberAttemptsLV().value?: 0) + 1)
                 } else {
                     throwableHandler.handle(t)
                 }
@@ -62,4 +68,7 @@ class LoginVM: BaseVM(), KoinComponent {
         checkPhoneNumber(phoneNumber)
     }
 
+    fun resetNumberAttempts() {
+        _numberAttemptsLV.postValue(null)
+    }
 }

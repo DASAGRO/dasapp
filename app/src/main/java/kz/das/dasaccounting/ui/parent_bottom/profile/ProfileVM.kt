@@ -30,7 +30,6 @@ class ProfileVM: BaseVM(), KoinComponent {
     private fun getProfile() {
         if (InternetAccess.internetCheck(context)) {
             viewModelScope.launch {
-                showLoading()
                 try {
                     val profile = userRepository.getUserProfile()
                     profile?.let {
@@ -39,8 +38,6 @@ class ProfileVM: BaseVM(), KoinComponent {
                     }
                 } catch (t: Throwable) {
                     throwableHandler.handle(t)
-                } finally {
-                    hideLoading()
                 }
             }
         }
