@@ -25,7 +25,7 @@ class AwaitRequestWorker(context: Context, params: WorkerParameters) :
                 .catch {
                     result = Result.retry()
                 }.collect {
-                    awaitRequestInventoryRepository.removeAllAwaitRequests()
+                    awaitRequestInventoryRepository.editSyncStatusAwaitRequests()
                     result = Result.success()
                 }
             Log.d("awaitRequest", result.toString())

@@ -46,7 +46,11 @@ interface OfficeInventoryRepository {
 
     fun getHistoryOfficeAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>>
 
+    fun deleteHistoryOfficeAcceptedMaterialsLocally()
+
     fun getHistoryOfficeSentMaterialsLocally(): LiveData<List<HistoryTransfer>>
+
+    fun deleteHistoryOfficeSentMaterialsLocally()
 
     suspend fun initDeleteData()
 

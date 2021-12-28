@@ -11,6 +11,7 @@ import kz.das.dasaccounting.databinding.ItemHistoryBinding
 import kz.das.dasaccounting.domain.data.history.HistoryEnum
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import kz.das.dasaccounting.domain.data.history.OperationType
+import kz.das.dasaccounting.utils.AppConstants.Companion.AWAITING
 
 class UserTransferHistoryAdapter(val context: Context, private var operations: ArrayList<HistoryTransfer>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -61,7 +62,7 @@ class UserTransferHistoryAdapter(val context: Context, private var operations: A
             this.itemBinding.run {
                 historyTransfer = item
                 userName = item.senderName
-                if (item.status == "В ожидании") {
+                if (item.status == "В ожидании" || item.status == AWAITING) {
                     this.ivStatus.setImageResource(R.drawable.ic_banner_waiting_oval)
                 } else if (item.status == HistoryEnum.UNFINISHED.status) {
                     this.ivStatus.setImageResource(R.drawable.ic_edit_blue)

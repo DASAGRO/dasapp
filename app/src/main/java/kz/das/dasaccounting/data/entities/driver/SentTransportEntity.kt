@@ -8,6 +8,7 @@ import kz.das.dasaccounting.data.entities.requests.SendTransportRequest
 import kz.das.dasaccounting.data.source.local.typeconvertors.DriverInventoryTypeConvertor
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
 import kz.das.dasaccounting.domain.data.drivers.TransportSentInventory
+import kz.das.dasaccounting.utils.AppConstants.Companion.AWAITING
 import java.io.Serializable
 import kotlin.collections.ArrayList
 
@@ -31,7 +32,8 @@ data class SentTransportEntity(
     val tsType: String,
     @PrimaryKey
     val uuid: String,
-    val senderName: String?
+    val senderName: String?,
+    var syncStatus: String = AWAITING
 ): Serializable
 
 fun SentTransportEntity.toDomain(): TransportInventory {
@@ -72,7 +74,8 @@ fun SentTransportEntity.toSent(): TransportSentInventory {
         receiverName = this.receiverName,
         senderUUID = this.senderUUID,
         senderName = this.senderName,
-        uuid = this.uuid
+        uuid = this.uuid,
+        syncStatus = syncStatus
     )
 }
 

@@ -10,6 +10,7 @@ import kz.das.dasaccounting.core.ui.extensions.rotateAnimation
 import kz.das.dasaccounting.core.ui.fragments.BaseFragment
 import kz.das.dasaccounting.databinding.FragmentProfileHistoryBinding
 import kz.das.dasaccounting.ui.parent_bottom.showBottomNavMenu
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ProfileHistoryFragment: BaseFragment<ProfileHistoryVM, FragmentProfileHistoryBinding>() {
@@ -18,7 +19,7 @@ class ProfileHistoryFragment: BaseFragment<ProfileHistoryVM, FragmentProfileHist
         fun getScreen() = DasAppScreen(ProfileHistoryFragment())
     }
 
-    override val mViewModel: ProfileHistoryVM by viewModel()
+    override val mViewModel: ProfileHistoryVM by sharedViewModel()
 
     private var hAdapter: ProfileHistoryPageAdapter? = null
 
@@ -32,7 +33,6 @@ class ProfileHistoryFragment: BaseFragment<ProfileHistoryVM, FragmentProfileHist
             ivRefresh.setOnClickListener {
                 mViewBinding.ivRefresh.animateRepeatPulse()
                 mViewBinding.ivRefresh.rotateAnimation()
-                mViewModel.setRefresh(true)
 
                 mViewModel.retrieve()
 

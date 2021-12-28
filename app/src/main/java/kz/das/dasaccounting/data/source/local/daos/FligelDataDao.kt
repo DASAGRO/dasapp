@@ -3,6 +3,7 @@ package kz.das.dasaccounting.data.source.local.daos
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import kz.das.dasaccounting.data.entities.driver.FligelProductEntity
+import kz.das.dasaccounting.data.entities.driver.SentTransportEntity
 
 @Dao
 interface FligelDataDao {
@@ -18,6 +19,9 @@ interface FligelDataDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertWithIgnore(item: FligelProductEntity)
+
+    @Update(entity = FligelProductEntity::class)
+    fun updateEntity(item: FligelProductEntity)
 
     @get:Query("SELECT * FROM fligel_products")
     val allAsLiveData: LiveData<List<FligelProductEntity>>

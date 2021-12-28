@@ -78,8 +78,8 @@ private fun provideOkHttpClient(
 
 private fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
     return Retrofit.Builder()
-        .baseUrl("https://app.dasagro.kz") //PROD
-//        .baseUrl("https://test-app.dasagro.kz") //TEST
+//        .baseUrl("https://app.dasagro.kz") //PROD
+        .baseUrl("https://test-app.dasagro.kz") //TEST
         //.baseUrl(GATEWAY_DEBUG_HOST)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .client(okHttpClient)

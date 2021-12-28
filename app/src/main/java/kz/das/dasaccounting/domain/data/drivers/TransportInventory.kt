@@ -11,6 +11,7 @@ import kz.das.dasaccounting.domain.data.action.OperationAct
 import kz.das.dasaccounting.domain.data.history.HistoryEnum
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import kz.das.dasaccounting.domain.data.history.OperationType
+import kz.das.dasaccounting.utils.AppConstants.Companion.AWAITING
 
 @Parcelize
 data class TransportInventory(
@@ -137,7 +138,7 @@ fun TransportAcceptedInventory.toHistoryTransfer(transferType: String? = null): 
         operationType = if (this.tsType == TransportType.TRAILED.type) OperationType.DRIVER_ACCESSORY.status else OperationType.DRIVER.status,
         qrData = DriverInventoryTypeConvertor().transportTransportToString(this.toDomain().toEntity()),
         isAwait = true,
-        status = HistoryEnum.AWAIT.status,
+        status = syncStatus,
         transferType = transferType ?: "transport_type"
     )
 }
@@ -153,7 +154,7 @@ fun TransportSentInventory.toHistoryTransfer(): HistoryTransfer {
         operationType = if (this.tsType == TransportType.TRAILED.type) OperationType.DRIVER_ACCESSORY.status else OperationType.DRIVER.status,
         isAwait = true,
         qrData = DriverInventoryTypeConvertor().transportTransportToString(this.toDomain().toEntity()),
-        status = HistoryEnum.AWAIT.status
+        status = syncStatus
     )
 }
 
@@ -176,7 +177,8 @@ data class TransportSentInventory(
     var senderName: String?,
     var receiverName: String? = "",
     var uuid: String,
-    var isPending: Boolean = false
+    var isPending: Boolean = false,
+    var syncStatus: String = AWAITING
 ) : OperationAct(), Parcelable
 
 @Parcelize
@@ -198,5 +200,6 @@ data class TransportAcceptedInventory(
     var senderName: String?,
     var receiverName: String? = "",
     var uuid: String,
-    var isPending: Boolean = false
+    var isPending: Boolean = false,
+    var syncStatus: String = AWAITING
 ) : OperationAct(), Parcelable

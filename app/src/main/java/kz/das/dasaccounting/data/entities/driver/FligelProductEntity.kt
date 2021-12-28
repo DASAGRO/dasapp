@@ -8,6 +8,7 @@ import kz.das.dasaccounting.domain.data.drivers.FligelProduct
 import kz.das.dasaccounting.domain.data.history.HistoryEnum
 import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import kz.das.dasaccounting.domain.data.history.OperationType
+import kz.das.dasaccounting.utils.AppConstants.Companion.AWAITING
 
 
 @Entity(tableName = "fligel_products")
@@ -23,7 +24,8 @@ data class FligelProductEntity(
     var harvestWeight: Double?,
     var requestUUID: String?,
     var humidity: Int?,
-    var name: String
+    var name: String,
+    var syncStatus: String = AWAITING
 )
 
 fun FligelProductEntity.toFligelProduct(): FligelProduct {
@@ -72,6 +74,6 @@ fun FligelProductEntity.toHistoryTransfer(): HistoryTransfer {
         operationType = OperationType.OFFICE.status,
         isAwait = false,
         qrData = FligelProductEntityTypeConverter().fligelProductEntityToString(this),
-        status = HistoryEnum.AWAIT.status
+        status = syncStatus
     )
 }

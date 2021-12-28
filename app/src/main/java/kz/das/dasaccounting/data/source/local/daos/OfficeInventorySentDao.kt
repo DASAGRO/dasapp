@@ -19,6 +19,9 @@ interface OfficeInventorySentDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertWithIgnore(item: OfficeInventorySentEntity)
 
+    @Update(entity = OfficeInventorySentEntity::class)
+    fun updateEntity(item: OfficeInventorySentEntity)
+
     @get:Query("SELECT * FROM materials_sent")
     val allAsLiveData: LiveData<List<OfficeInventorySentEntity>>
 

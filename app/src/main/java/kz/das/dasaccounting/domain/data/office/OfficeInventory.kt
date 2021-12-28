@@ -29,7 +29,8 @@ data class OfficeInventory(
     var syncRequire: Int = 0,
     var senderName: String? = "",
     var receiverName: String? = "",
-    var comment: String? = ""
+    var comment: String? = "",
+    var syncStatus: String? = null
 ): OperationAct(), Parcelable
 
 fun OfficeInventory.toAccepted(): OfficeAcceptedInventory {

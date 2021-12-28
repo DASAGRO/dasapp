@@ -3,9 +3,9 @@ package kz.das.dasaccounting.data.entities.driver
 import androidx.annotation.Nullable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kz.das.dasaccounting.data.entities.office.toDomain
 import kz.das.dasaccounting.domain.data.drivers.TransportAcceptedInventory
 import kz.das.dasaccounting.domain.data.drivers.TransportInventory
+import kz.das.dasaccounting.utils.AppConstants.Companion.AWAITING
 import java.io.Serializable
 
 @Entity(tableName = "accepted_transports")
@@ -28,7 +28,8 @@ data class AcceptedTransportEntity (
     val tsType: String,
     @PrimaryKey
     val uuid: String,
-    val senderName: String?
+    val senderName: String?,
+    var syncStatus: String = AWAITING
     ): Serializable
 
 fun AcceptedTransportEntity.toDomain(): TransportInventory {
@@ -72,7 +73,8 @@ fun AcceptedTransportEntity.toAccepted(): TransportAcceptedInventory {
         receiverName = this.receiverName,
         stateNumber = this.stateNumber,
         tsType = this.tsType,
-        uuid = this.uuid
+        uuid = this.uuid,
+        syncStatus = syncStatus
     )
 }
 

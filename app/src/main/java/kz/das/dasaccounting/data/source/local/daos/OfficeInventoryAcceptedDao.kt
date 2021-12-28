@@ -19,6 +19,9 @@ interface OfficeInventoryAcceptedDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertWithIgnore(item: OfficeInventoryAcceptedEntity)
 
+    @Update(entity = OfficeInventoryAcceptedEntity::class)
+    fun updateEntity(item: OfficeInventoryAcceptedEntity)
+
     @get:Query("SELECT * FROM materials_accepted")
     val allAsLiveData: LiveData<List<OfficeInventoryAcceptedEntity>>
 
