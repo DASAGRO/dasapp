@@ -17,8 +17,8 @@ android {
         applicationId "kz.das.dasaccounting"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 8
-        versionName "1.3.3"
+        versionCode 9
+        versionName "1.3.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
