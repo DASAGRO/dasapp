@@ -119,8 +119,16 @@ class DriverInventoryRepositoryImpl : DriverInventoryRepository, KoinComponent {
         return dasAppDatabase.driverSentInventoryDao().allAsLiveData.map { it -> it.map { it.toSent().toHistoryTransfer() } }
     }
 
+    override fun deleteDriverSentMaterialsLocally() {
+        dasAppDatabase.driverSentInventoryDao().removeAll()
+    }
+
     override fun getDriverAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>> {
         return dasAppDatabase.driverAcceptedInventoryDao().allAsLiveData.map { it -> it.map { it.toAccepted().toHistoryTransfer() } }
+    }
+
+    override fun deleteDriverAcceptedMaterialsLocally() {
+        dasAppDatabase.driverAcceptedInventoryDao().removeAll()
     }
 
     override fun getHistoryDriverAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>> {

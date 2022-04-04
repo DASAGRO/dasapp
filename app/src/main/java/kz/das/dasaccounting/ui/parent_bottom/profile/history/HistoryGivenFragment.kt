@@ -13,6 +13,7 @@ import kz.das.dasaccounting.domain.data.history.HistoryTransfer
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import kz.das.dasaccounting.domain.data.warehouse.WarehouseInventory
 import kz.das.dasaccounting.ui.office.transfer.TransferConfirmFragment
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryGivenBinding>() {
@@ -23,6 +24,7 @@ class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryG
 
     private var historyAdapter: UserTransferHistoryAdapter? = null
 
+    private val historyViewModel: ProfileHistoryVM by sharedViewModel()
     override val mViewModel: HistoryGivenVM by viewModel()
 
     override fun getViewBinding() = FragmentProfileHistoryGivenBinding.inflate(layoutInflater)
@@ -87,11 +89,20 @@ class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryG
         mViewBinding.rvGiven.apply {
             this.adapter = historyAdapter
         }
+        observeHistory()
     }
 
     override fun observeLiveData() {
         super.observeLiveData()
 
+        historyViewModel.isNeedRefresh.observe(viewLifecycleOwner, {
+            if(it){
+                observeHistory()
+            }
+        })
+    }
+
+    private fun observeHistory() {
         mViewModel.getZippedHistory().observe(viewLifecycleOwner, Observer { list ->
             val historyList = arrayListOf<HistoryTransfer>()
             list.forEach {
@@ -108,7 +119,5 @@ class HistoryGivenFragment: BaseFragment<HistoryGivenVM, FragmentProfileHistoryG
             val sorted = distinctList.sortedByDescending { it.date }
             historyAdapter?.putItems(sorted)
         })
-
     }
-
 }

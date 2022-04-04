@@ -47,7 +47,11 @@ interface DriverInventoryRepository {
 
     fun getDriverSentMaterialsLocally(): LiveData<List<HistoryTransfer>>
 
+    fun deleteDriverSentMaterialsLocally()
+
     fun getDriverAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>>
+
+    fun deleteDriverAcceptedMaterialsLocally()
 
     fun getHistoryDriverAcceptedMaterialsLocally(): LiveData<List<HistoryTransfer>>
 

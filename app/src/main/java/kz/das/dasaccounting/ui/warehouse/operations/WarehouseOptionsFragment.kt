@@ -27,6 +27,9 @@ class WarehouseOptionsFragment: BaseFragment<WarehouseOptionsVM, FragmentWarehou
         mViewModel.setWarehouseInventory(getWarehouse())
 
         mViewBinding.apply {
+            toolbar.setNavigationOnClickListener {
+                requireRouter().exit()
+            }
             tvWarehouseActionsTitle.text = getWarehouse()?.name
             llTransferWarehouse.setOnClickListener {
                 requireRouter().navigateTo(WarehouseTransferPickFragment.getScreen(getWarehouse()))

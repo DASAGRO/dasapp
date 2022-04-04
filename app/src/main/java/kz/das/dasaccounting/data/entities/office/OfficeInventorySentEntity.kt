@@ -11,6 +11,8 @@ import kz.das.dasaccounting.domain.data.history.OperationType
 import kz.das.dasaccounting.domain.data.office.OfficeAcceptedInventory
 import kz.das.dasaccounting.domain.data.office.OfficeInventory
 import kz.das.dasaccounting.domain.data.office.OfficeSentInventory
+import kz.das.dasaccounting.utils.AppConstants
+import kz.das.dasaccounting.utils.AppConstants.Companion.AWAITING
 import java.io.Serializable
 
 @Entity(tableName = "materials_sent")
@@ -36,7 +38,8 @@ data class OfficeInventorySentEntity(
     val syncRequire: Int = 0,
     val senderName: String? = null,
     val isSend: Int = 0,
-    val isAccepted: Int = 0
+    val isAccepted: Int = 0,
+    var syncStatus: String = AWAITING
 ) : Serializable
 
 
@@ -76,7 +79,7 @@ fun OfficeInventorySentEntity.toHistory(): HistoryTransfer {
         operationType = OperationType.OFFICE.status,
         isAwait = false,
         qrData = OfficeInventorySentTypeConvertor().officeSentInventoryToString(this),
-        status = HistoryEnum.AWAIT.status
+        status = syncStatus
     )
 }
 

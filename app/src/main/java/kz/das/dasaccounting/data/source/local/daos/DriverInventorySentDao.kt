@@ -3,6 +3,7 @@ package kz.das.dasaccounting.data.source.local.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import kz.das.dasaccounting.data.entities.driver.AcceptedTransportEntity
 import kz.das.dasaccounting.data.entities.driver.SentTransportEntity
 
 @Dao
@@ -19,6 +20,9 @@ interface DriverInventorySentDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertWithIgnore(item: SentTransportEntity)
+
+    @Update(entity = SentTransportEntity::class)
+    fun updateEntity(item: SentTransportEntity)
 
     @get:Query("SELECT * FROM sent_transports")
     val allAsLiveData: LiveData<List<SentTransportEntity>>

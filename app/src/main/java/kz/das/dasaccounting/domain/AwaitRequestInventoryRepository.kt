@@ -6,6 +6,6 @@ interface AwaitRequestInventoryRepository {
 
     suspend fun initAwaitRequests(): Flow<Any>
 
-    suspend fun removeAllAwaitRequests()
+    suspend fun editSyncStatusAwaitRequests()
 
 }

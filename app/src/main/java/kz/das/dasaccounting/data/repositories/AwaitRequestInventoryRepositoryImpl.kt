@@ -14,6 +14,7 @@ import kz.das.dasaccounting.data.entities.requests.toSendRequest
 import kz.das.dasaccounting.data.source.local.DasAppDatabase
 import kz.das.dasaccounting.data.source.network.LateCallApi
 import kz.das.dasaccounting.domain.AwaitRequestInventoryRepository
+import kz.das.dasaccounting.utils.AppConstants.Companion.SYNCED
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -39,12 +40,47 @@ class AwaitRequestInventoryRepositoryImpl: AwaitRequestInventoryRepository, Koin
         }
     }
 
-    override suspend fun removeAllAwaitRequests() {
-        dasAppDatabase.officeInventoryAcceptedDao().removeAll()
-        dasAppDatabase.officeInventorySentDao().removeAll()
-        dasAppDatabase.driverFligelDataDao().removeAll()
-        dasAppDatabase.driverAcceptedInventoryDao().removeAll()
-        dasAppDatabase.driverSentInventoryDao().removeAll()
-    }
+    override suspend fun editSyncStatusAwaitRequests() {
+        val officeInventoryAcceptedList = dasAppDatabase.officeInventoryAcceptedDao().all
+        val officeInventorySentList = dasAppDatabase.officeInventorySentDao().all
+        val driverAcceptedInventoryList = dasAppDatabase.driverAcceptedInventoryDao().all
+        val driverSentInventoryList = dasAppDatabase.driverSentInventoryDao().all
+        val driverFligelList = dasAppDatabase.driverFligelDataDao().all
 
+
+        if (officeInventoryAcceptedList.isNotEmpty()) {
+            officeInventoryAcceptedList.forEach {
+                it.syncStatus = SYNCED
+                dasAppDatabase.officeInventoryAcceptedDao().updateEntity(it)
+            }
+        }
+
+        if (officeInventorySentList.isNotEmpty()) {
+            officeInventorySentList.forEach {
+                it.syncStatus = SYNCED
+                dasAppDatabase.officeInventorySentDao().updateEntity(it)
+            }
+        }
+
+        if (driverAcceptedInventoryList.isNotEmpty()) {
+            driverAcceptedInventoryList.forEach {
+                it.syncStatus = SYNCED
+                dasAppDatabase.driverAcceptedInventoryDao().updateEntity(it)
+            }
+        }
+
+        if (driverSentInventoryList.isNotEmpty()) {
+            driverSentInventoryList.forEach {
+                it.syncStatus = SYNCED
+                dasAppDatabase.driverSentInventoryDao().updateEntity(it)
+            }
+        }
+
+        if (driverFligelList.isNotEmpty()) {
+            driverFligelList.forEach {
+                it.syncStatus = SYNCED
+                dasAppDatabase.driverFligelDataDao().updateEntity(it)
+            }
+        }
+    }
 }

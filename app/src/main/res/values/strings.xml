@@ -194,4 +194,5 @@
     <string name="success_deleted_inventory">Заявка успешно удалена!</string>
     <string name="qr_session_error">Текущий Qr не предыдущий!</string>
     <string name="qr_session_incorrect">Текущий Qr неправильный!</string>
+    <string name="qr_scan_plomb">Считывать QR пломбы</string>
 </resources>

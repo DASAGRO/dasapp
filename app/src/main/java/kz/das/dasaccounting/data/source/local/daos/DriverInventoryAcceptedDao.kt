@@ -19,6 +19,9 @@ interface DriverInventoryAcceptedDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertWithIgnore(item: AcceptedTransportEntity)
 
+    @Update(entity = AcceptedTransportEntity::class)
+    fun updateEntity(item: AcceptedTransportEntity)
+
     @get:Query("SELECT * FROM accepted_transports")
     val allAsLiveData: LiveData<List<AcceptedTransportEntity>>
 

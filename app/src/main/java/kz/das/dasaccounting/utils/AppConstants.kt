@@ -8,6 +8,8 @@ class AppConstants {
         const val IS_ON_AWAIT = "isOnAwait"
 
         const val AWAIT_INVENTORY_WORK_TAG = "send_inventory_worker_tag"
+        const val AWAITING = "awaiting"
+        const val SYNCED = "synced"
 
         const val EXIT = 0
         const val PASS_RESET = 1
